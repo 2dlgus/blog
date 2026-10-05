@@ -187,25 +187,14 @@ def footer():
 </body></html>'''
 
 
-def thumb(p):
-    if p['thumb']:
-        return f'<div class="th"><img src="{p["thumb"]}" alt="" loading="lazy" decoding="async" width="480" height="320"></div>'
-    top, *sub = p['cat'].split('/')
-    k = top.lower()
-    no, lab = '', (sub[0] if sub else top)
-    if p['series']:
-        s = SER[p['series'][0]]
-        no = f'<b class="no">{p["series"][1]:02d}<small>/{s["count"]}</small></b>'
-        lab = s['name']
-    return (f'<div class="th auto c-{k}">{no}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
-            f'stroke-linecap="round" stroke-linejoin="round">{ICON.get(k, ICON["archive"])}</svg><span>{E(lab)}</span></div>')
-
-
 def item(p, feat=False):
     ex = f'<p class="le">{E(p["excerpt"])}</p>' if p['excerpt'] else ''
+    sr = ''
+    if p['series']:
+        sr = f'<span class="sr">{E(SER[p["series"][0]]["name"])} {p["series"][1]}/{SER[p["series"][0]]["count"]}</span>'
     return (f'<li{" class=feat" if feat else ""}><a href="/{p["id"]}"><div><p class="lt">{E(p["title"])}</p>{ex}'
-            f'<div class="lm"><span class="cat">{E(p["cat"].replace("/", " · "))}</span><span class="dot"></span>'
-            f'<span>{fdate(p["date"])}</span></div></div>{thumb(p)}</a></li>')
+            f'<div class="lm">{sr}<span class="cat">{E(p["cat"].replace("/", " · "))}</span><span class="dot"></span>'
+            f'<span>{fdate(p["date"])}</span></div></div></a></li>')
 
 
 def side():

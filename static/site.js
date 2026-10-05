@@ -10,12 +10,17 @@
   });
   var mb=document.getElementById('menu'),dr=document.getElementById('drawer');
   if(mb&&dr)mb.addEventListener('click',function(){var on=dr.classList.toggle('on');mb.setAttribute('aria-expanded',on)});
+  var segOn=document.querySelector('.seg a.on');if(segOn&&segOn.parentNode.scrollWidth>segOn.parentNode.clientWidth)segOn.parentNode.scrollLeft=segOn.getBoundingClientRect().left-segOn.parentNode.getBoundingClientRect().left-20;
   // pagination
   document.querySelectorAll('ul.list[data-page]').forEach(function(ul){
     var per=+ul.dataset.page,items=[].slice.call(ul.children),pages=Math.ceil(items.length/per),pager=ul.nextElementSibling;
     if(pages<2||!pager)return;
     function show(n){items.forEach(function(li,i){li.hidden=Math.floor(i/per)!==n-1});
-      pager.innerHTML='';for(var i=1;i<=pages;i++){var b=document.createElement('button');b.type='button';b.textContent=i;if(i===n)b.className='on';b.onclick=(function(k){return function(){show(k);history.replaceState(null,'','#p'+k);ul.closest('.card').scrollIntoView()}})(i);pager.appendChild(b)}}
+      pager.innerHTML='';
+      var go=function(k){return function(){show(k);history.replaceState(null,'','#p'+k);ul.closest('.card').scrollIntoView()}};
+      var add=function(t,k,on,lab){var b=document.createElement('button');b.type='button';b.textContent=t;if(lab)b.setAttribute('aria-label',lab);if(on)b.className='on';if(k<1||k>pages||k===n&&!on)b.disabled=true;else if(!on)b.onclick=go(k);pager.appendChild(b)};
+      var s=Math.max(1,Math.min(n-2,pages-4)),e=Math.min(pages,s+4);
+      add('‹',n-1,false,'이전');for(var i=s;i<=e;i++)add(i,i,i===n);add('›',n+1,false,'다음')}
     var m=location.hash.match(/^#p(\d+)$/);show(m?Math.min(+m[1],pages):1);
   });
   // search
