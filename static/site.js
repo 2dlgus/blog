@@ -23,6 +23,16 @@
       add('‹',n-1,false,'이전');for(var i=s;i<=e;i++)add(i,i,i===n);add('›',n+1,false,'다음')}
     var m=location.hash.match(/^#p(\d+)$/);show(m?Math.min(+m[1],pages):1);
   });
+  // option explanations in study posts (label lost in migration)
+  document.addEventListener('click',function(e){var w=e.target.closest&&e.target.closest('.opt-wrap');if(!w||e.target.closest('.opt-detail'))return;var c=w.querySelector('.opt-chk');if(c&&e.target!==c)c.checked=!c.checked});
+  // toc highlight
+  var tl=[].slice.call(document.querySelectorAll('.toc a'));
+  if(tl.length&&'IntersectionObserver' in window){
+    var hs=tl.map(function(a){return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))}).filter(Boolean),cur=null;
+    var mark=function(id){if(cur===id)return;cur=id;tl.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+id)})};
+    var io=new IntersectionObserver(function(){var y=120,best=hs[0];hs.forEach(function(h){if(h.getBoundingClientRect().top<y)best=h});if(best)mark(best.id)},{rootMargin:'0px 0px -60% 0px',threshold:[0,1]});
+    hs.forEach(function(h){io.observe(h)});addEventListener('scroll',function(){var y=120,best=hs[0];hs.forEach(function(h){if(h.getBoundingClientRect().top<y)best=h});if(best)mark(best.id)},{passive:true});
+  }
   // search
   var q=document.getElementById('q'),res=document.getElementById('results');
   if(q&&res){
@@ -32,7 +42,7 @@
       if(!data)return;var w=q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
       if(!w.length){res.innerHTML='';return}
       var hit=data.filter(function(p){var s=(p.t+' '+p.e+' '+p.g.join(' ')+' '+p.c).toLowerCase();return w.every(function(x){return s.indexOf(x)>-1})});
-      res.innerHTML=hit.length?hit.slice(0,50).map(function(p){return '<li><a href="/'+p.i+'" style="grid-template-columns:1fr"><div><p class="lt">'+esc(p.t)+'</p><p class="le">'+esc(p.e)+'</p><div class="lm"><span class="cat">'+esc(p.c.replace('/',' · '))+'</span><span class="dot"></span><span>'+p.d+'</span></div></div></a></li>'}).join(''):'<li class="empty">결과 없음</li>';
+      res.innerHTML=hit.length?hit.slice(0,50).map(function(p){return '<li><a href="/'+p.i+'/"><div><p class="lt">'+esc(p.t)+'</p><p class="le">'+esc(p.e)+'</p><div class="lm"><span class="cat">'+esc(p.c.replace('/',' · '))+'</span><span class="dot"></span><span>'+p.d+'</span></div></div></a></li>'}).join(''):'<li class="empty">결과 없음</li>';
     }
     q.addEventListener('input',run);q.focus();
   }

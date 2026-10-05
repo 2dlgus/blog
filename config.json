@@ -4,7 +4,7 @@
   "lead": "프로세스 혁신(PI)과 데이터 엔지니어링 실무 기록",
   "since": "2024",
   "github": "https://github.com/2dlgus",
-  "about": "/38",
+  "about": "/38/",
   "adsense": "ca-pub-1236479716773685",
   "google_verification": "Bu2aaxwXZWMkQ8xlrXuUcwjFIFCzYCfzBPIjmwa3fOc",
   "giscus": {
@@ -15,13 +15,8 @@
   },
   "menu": [
     [
-      "About",
-      []
-    ],
-    [
       "Stack",
       [
-        "AWS",
         "Lowcode",
         "PythonFramework",
         "FDE",
@@ -29,15 +24,14 @@
       ]
     ],
     [
-      "Investment",
-      []
-    ],
-    [
-      "Wisdom",
-      []
-    ],
-    [
       "Study",
+      [
+        "AWS",
+        "OPIc"
+      ]
+    ],
+    [
+      "Investment",
       []
     ],
     [
@@ -46,7 +40,8 @@
         "주식",
         "독서",
         "직무",
-        "이력"
+        "이력",
+        "Wisdom"
       ]
     ]
   ],
@@ -71,48 +66,148 @@
       "key": "DAY",
       "name": "AWS DEA 각색 문제",
       "desc": "하루 5문제 · 보기별 오답 해설",
-      "category": "Stack/AWS",
+      "category": "Study/AWS",
       "title": "각색 문제 Day (\\d+)",
-      "home": true
+      "home": false
     },
     {
       "key": "SAMPLE",
       "name": "AWS DEA 공식 샘플 문제",
       "desc": "공식 샘플 문제 한 문제씩 · 도식과 정답 해설",
-      "category": "Stack/AWS",
+      "category": "Study/AWS",
       "title": "공식 샘플 문제()",
-      "home": true
+      "home": false
     },
     {
       "key": "DOMAIN",
       "name": "AWS DEA 도메인 요약",
       "desc": "시험 4개 도메인 핵심 서비스 정리",
-      "category": "Stack/AWS",
-      "title": "Domain (\\d) 핵심 요약"
+      "category": "Study/AWS",
+      "title": "Domain (\\d) 핵심 요약",
+      "home": false
     },
     {
       "key": "FDE",
       "name": "FDE 커리어",
       "desc": "Forward Deployed Engineer 직군과 전환 준비",
-      "category": "Stack/FDE"
+      "category": "Stack/FDE",
+      "home": false
     },
     {
       "key": "MF",
       "name": "글로벌 머니플로우 트래커",
       "desc": "주간 자금 흐름과 섹터 등락",
       "category": "Investment",
-      "title": "글로벌 머니플로우 트래커()"
+      "title": "글로벌 머니플로우 트래커()",
+      "home": false
     },
     {
       "key": "IPO",
       "name": "IPO 레이더",
       "desc": "상장 예정 기업 분석",
       "category": "Investment",
-      "title": "IPO 레이더 #0*(\\d+)"
+      "title": "IPO 레이더 #0*(\\d+)",
+      "home": false
     }
   ],
   "hidden_categories": [
     "Archive"
   ],
-  "goatcounter": "hyeonlee"
+  "goatcounter": "hyeonlee",
+  "labels": {
+    "Stack": "실무",
+    "Study": "공부",
+    "Investment": "투자",
+    "Archive": "보관",
+    "Lowcode": "로우코드",
+    "PythonFramework": "Python",
+    "VibeCoding": "바이브코딩"
+  },
+  "unlisted": [
+    "About"
+  ],
+  "featured": [
+    121,
+    136,
+    152
+  ],
+  "redirects": {
+    "/category/Stack/AWS/": "/category/Study/AWS/",
+    "/category/Wisdom/": "/",
+    "/category/About/": "/38/"
+  },
+  "tag_alias": {
+    "pi": "PI",
+    "mendix": "Mendix",
+    "멘딕스": "Mendix",
+    "flask": "Flask",
+    "python": "Python",
+    "lowcode": "로우코드",
+    "로우코드": "로우코드",
+    "kubernetes": "Kubernetes",
+    "k8s": "Kubernetes",
+    "javascript": "JavaScript",
+    "js": "JavaScript",
+    "llm": "LLM",
+    "saml": "SAML",
+    "sso": "SSO",
+    "eventbridge": "EventBridge",
+    "lambda": "Lambda",
+    "lakeformation": "Lake Formation",
+    "fde": "FDE",
+    "claude": "Claude",
+    "kinesis": "Kinesis",
+    "spa": "SPA",
+    "css": "CSS",
+    "docker": "Docker",
+    "palantir": "팔란티어",
+    "pltr": "팔란티어",
+    "팔란티어": "팔란티어",
+    "해외주식": "미국주식",
+    "미국주식": "미국주식",
+    "redshift": "Redshift",
+    "glue": "Glue",
+    "s3": "S3",
+    "iam": "IAM",
+    "sql": "SQL",
+    "bi": "BI",
+    "ux": "UX",
+    "oidc": "OIDC",
+    "tls": "TLS",
+    "dynamodb": "DynamoDB",
+    "sqlite": "SQLite",
+    "sqs": "SQS",
+    "cicd": "CI/CD",
+    "머신러닝": "머신러닝",
+    "machinelearning": "머신러닝",
+    "ml": "머신러닝",
+    "데이터시각화": "데이터 시각화",
+    "대시보드": "대시보드",
+    "htmlsnippet": "HTMLSnippet",
+    "datagrid2": "Datagrid2",
+    "deeplink": "DeepLink",
+    "microflow": "Microflow",
+    "javaaction": "JavaAction",
+    "테슬라": "테슬라",
+    "tesla": "테슬라",
+    "구글": "구글",
+    "google": "구글",
+    "nasdaq": "나스닥",
+    "나스닥": "나스닥"
+  },
+  "tag_drop": [
+    "aws",
+    "dea",
+    "데이터엔지니어링",
+    "dataengineering",
+    "dataengineer",
+    "데이터엔지니어",
+    "자격증",
+    "aws자격증",
+    "awsdeac01",
+    "deac01",
+    "aws_dea_c01",
+    "awsdea"
+  ],
+  "tag_min": 2
 }
