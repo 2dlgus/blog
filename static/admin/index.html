@@ -212,10 +212,11 @@ async function stats(){
   var d=function(n){var x=new Date(Date.now()-n*864e5);return x.toISOString().slice(0,10)};
   if(key){try{
     var h={headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'}};
-    var tot=async function(n){var r=await fetch(base+'/api/v0/stats/total?start='+d(n)+'&end='+d(-1),h);var j=await r.json();return j.total};
+    var api=async function(p){for(var i=0;i<3;i++){var r=await fetch(base+'/api/v0'+p,h);if(r.status===429){await new Promise(function(f){setTimeout(f,1500)});continue}if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}throw new Error('요청이 많아 잠시 후 다시 시도')};
+    var tot=async function(n){var j=await api('/stats/total?start='+d(n)+'&end='+d(-1));return (j.total||0)};
     $('k-today').textContent=(await tot(0)).toLocaleString();$('k-7').textContent=(await tot(7)).toLocaleString();$('k-30').textContent=(await tot(30)).toLocaleString();
-    var r=await fetch(base+'/api/v0/stats/hits?start='+d(30)+'&end='+d(-1)+'&limit=10',h);var j=await r.json();var mx=Math.max.apply(null,j.hits.map(function(x){return x.count}).concat([1]));
-    $('top').innerHTML=j.hits.map(function(x){return '<tr><td class="bar-cell"><i style="width:'+(x.count/mx*100)+'%"></i><span><a class="lk" href="'+esc(x.path)+'" target="_blank">'+esc(x.title||x.path)+'</a></span></td><td class="n">'+x.count.toLocaleString()+'</td></tr>'}).join('');
+    var j=await api('/stats/hits?start='+d(30)+'&end='+d(-1)+'&limit=10');j.hits=j.hits||[];var mx=Math.max.apply(null,j.hits.map(function(x){return x.count}).concat([1]));
+    $('top').innerHTML=j.hits.map(function(x){return '<tr><td class="bar-cell"><i style="width:'+(x.count/mx*100)+'%"></i><span><a class="lk" href="'+esc(x.path)+'" target="_blank">'+esc(x.title||x.path)+'</a></span></td><td class="n">'+x.count.toLocaleString()+'</td></tr>'}).join('')||'<tr><td class="mute">아직 방문 기록이 없습니다</td><td></td></tr>';
     $('stat-msg').textContent='';return;
   }catch(e){$('stat-msg').textContent='API로 가져오지 못했습니다 ('+e.message+'). 아래 공개 카운터로 표시합니다.'}}
   try{var c=await fetch(base+'/counter/TOTAL.json').then(function(r){return r.json()});$('k-30').textContent=c.count;$('k-today-s').textContent='누적';$('k-today').textContent=c.count}catch(e){}
