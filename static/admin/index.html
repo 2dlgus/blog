@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>관리 | hyeonlee.net</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/base.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+body{background:var(--bg)}
+.a-top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.a-top .in{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:24px}
+.a-top .logo{font-size:19px;font-weight:700}
+.a-top .logo small{font-size:13px;font-weight:400;color:var(--mute);margin-left:8px}
+.a-tabs{display:flex;gap:4px;flex:1}
+.a-tabs button{height:40px;padding:0 14px;border:0;border-radius:6px;background:none;font:inherit;font-size:15px;color:var(--sub);cursor:pointer}
+.a-tabs button:hover{background:var(--inner);color:var(--text)}
+.a-tabs button.on{background:var(--inner);color:var(--text);font-weight:700}
+.a-main{max-width:1200px;margin:0 auto;padding:32px 24px 64px}
+@media (max-width:767px){.a-top .in{padding:0 16px;gap:12px;height:auto;flex-wrap:wrap;padding-top:12px;padding-bottom:8px}.a-tabs{order:3;flex:1 1 100%;overflow-x:auto}.a-main{padding:24px 16px 48px}}
+.a-card{background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:24px;margin:0 0 24px}
+.a-card h2{font-size:19px;margin:0 0 16px}
+.a-h{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:0 0 16px;flex-wrap:wrap}
+.a-h h2{margin:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0 0 24px}
+.kpi{background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:20px}
+.kpi span{display:block;font-size:13px;color:var(--mute)}
+.kpi b{display:block;font-size:28px;line-height:1.4}
+.kpi em{display:block;font-style:normal;font-size:13px;color:var(--mute)}
+@media (max-width:767px){.kpis{grid-template-columns:1fr 1fr}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:1023px){.g2{grid-template-columns:1fr}}
+table.t{width:100%;border-collapse:collapse;font-size:15px}
+table.t th,table.t td{padding:10px 8px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:middle}
+table.t th{font-size:13px;color:var(--mute);font-weight:500}
+table.t td.n{text-align:right;white-space:nowrap}
+table.t tr:hover td{background:var(--inner)}
+.tw{overflow-x:auto}
+.bar-cell{position:relative}
+.bar-cell i{position:absolute;left:0;top:8px;bottom:8px;background:var(--p5);border-radius:4px;z-index:0}
+.bar-cell span{position:relative;z-index:1}
+input.f,select.f,textarea.f{width:100%;height:40px;padding:0 12px;border:1px solid var(--g50);border-radius:6px;background:var(--surface);color:var(--text);font:inherit;font-size:15px}
+textarea.f{height:auto;min-height:420px;padding:12px;font-family:D2Coding,Consolas,Menlo,monospace;font-size:13px;line-height:1.6;resize:vertical}
+label.l{display:block;font-size:13px;color:var(--sub);margin:0 0 4px}
+.row{display:grid;gap:12px;grid-template-columns:repeat(4,1fr);margin:0 0 12px}
+.row .w2{grid-column:span 2}.row .w4{grid-column:span 4}
+@media (max-width:767px){.row{grid-template-columns:1fr}.row .w2,.row .w4{grid-column:auto}}
+.b{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--text);font:inherit;font-size:15px;cursor:pointer;white-space:nowrap}
+.b:hover{background:var(--inner)}
+.b.p{background:var(--p50);border-color:var(--p50);color:#fff;font-weight:700}
+.b.p:hover{background:var(--p60);border-color:var(--p60)}
+.b.d{color:var(--r60);border-color:var(--r10)}
+.b.s{height:32px;padding:0 10px;font-size:13px}
+.b:disabled{background:var(--g10);border-color:var(--g10);color:var(--g40);cursor:default}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:13px;line-height:1.5;padding:2px 8px;border-radius:4px;border:1px solid}
+.chip.on{background:var(--s5);border-color:var(--s10);color:var(--s60)}
+.chip.off{background:var(--g5);border-color:var(--g10);color:var(--g70)}
+.chip.run{background:var(--i5);border-color:var(--i10);color:var(--i60)}
+.chip.err{background:var(--r5);border-color:var(--r10);color:var(--r60)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tools .f{width:auto;min-width:160px}
+.mute{color:var(--mute)}
+.msg{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:var(--g90);color:var(--g0);padding:12px 20px;border-radius:8px;font-size:15px;box-shadow:var(--sh3)}
+:root[data-theme=dark] .msg{background:#f4f5f6;color:#1e2124}
+.ed{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ed iframe{width:100%;min-height:420px;height:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+@media (max-width:1023px){.ed{grid-template-columns:1fr}}
+.dlg{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;padding:16px}
+.dlg .box{background:var(--surface);border-radius:10px;padding:24px;max-width:420px;width:100%;box-shadow:var(--sh3)}
+.dlg .box p{margin:8px 0 24px;color:var(--sub);font-size:15px}
+.dlg .box .tools{justify-content:flex-end}
+.login{max-width:520px;margin:48px auto}
+.login ol{padding-left:20px;font-size:15px;color:var(--sub);line-height:1.8}
+.pg{display:flex;justify-content:center;gap:4px;margin-top:16px}
+.pg button{min-width:32px;height:32px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--sub);font:inherit;font-size:13px;cursor:pointer}
+.pg button.on{border-color:var(--accent);color:var(--link);font-weight:700}
+a.lk{color:var(--link)}
+</style>
+</head>
+<body>
+<header class="a-top"><div class="in">
+  <a class="logo" href="/">hyeonlee.net<small>관리</small></a>
+  <nav class="a-tabs" id="tabs" hidden>
+    <button data-v="dash" class="on">대시보드</button><button data-v="posts">글 관리</button><button data-v="edit">글 쓰기</button><button data-v="settings">설정</button>
+  </nav>
+  <div class="tools"><button class="b s" id="logout" hidden>로그아웃</button></div>
+</div></header>
+
+<main class="a-main">
+  <!-- login -->
+  <section id="v-login" hidden>
+    <div class="a-card login">
+      <h2>GitHub 토큰으로 로그인</h2>
+      <ol>
+        <li>GitHub → Settings → Developer settings → <a class="lk" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Fine-grained tokens</a></li>
+        <li>Repository access: <b>Only select repositories → 2dlgus/blog</b></li>
+        <li>Permissions: <b>Contents</b> 읽기·쓰기, <b>Actions</b> 읽기</li>
+        <li>만든 토큰을 아래에 붙여넣기</li>
+      </ol>
+      <label class="l" for="tok">토큰</label>
+      <input class="f" id="tok" type="password" autocomplete="off" placeholder="github_pat_...">
+      <p class="mute" style="font-size:13px;margin:8px 0 16px">이 브라우저에만 저장됩니다.</p>
+      <button class="b p" id="login">로그인</button>
+    </div>
+  </section>
+
+  <!-- dashboard -->
+  <section id="v-dash" hidden>
+    <div class="kpis">
+      <div class="kpi"><span>오늘 방문</span><b id="k-today">-</b><em id="k-today-s"></em></div>
+      <div class="kpi"><span>최근 7일</span><b id="k-7">-</b><em>페이지뷰</em></div>
+      <div class="kpi"><span>최근 30일</span><b id="k-30">-</b><em>페이지뷰</em></div>
+      <div class="kpi"><span>전체 글</span><b id="k-posts">-</b><em id="k-draft"></em></div>
+    </div>
+    <div class="g2">
+      <div class="a-card"><div class="a-h"><h2>많이 본 글 · 30일</h2><a class="lk" id="gc-link" target="_blank" rel="noopener" style="font-size:15px">통계 자세히</a></div><div class="tw"><table class="t"><tbody id="top"></tbody></table></div><p class="mute" id="stat-msg" style="font-size:15px"></p></div>
+      <div class="a-card"><h2>배포 기록</h2><div class="tw"><table class="t"><thead><tr><th>상태</th><th>내용</th><th class="n">시각</th></tr></thead><tbody id="runs"></tbody></table></div></div>
+    </div>
+    <div class="a-card"><h2>카테고리별 글</h2><div class="tw"><table class="t"><tbody id="cats"></tbody></table></div></div>
+  </section>
+
+  <!-- posts -->
+  <section id="v-posts" hidden>
+    <div class="a-card">
+      <div class="a-h"><h2>글 관리 <span class="mute" id="p-count"></span></h2>
+        <div class="tools"><input class="f" id="q" type="search" placeholder="제목·태그 검색"><select class="f" id="fc"><option value="">전체 카테고리</option></select><select class="f" id="fs"><option value="">전체</option><option value="on">공개</option><option value="off">비공개</option></select><button class="b p" id="new">새 글</button></div>
+      </div>
+      <div class="tw"><table class="t"><thead><tr><th>번호</th><th>제목</th><th>카테고리</th><th>날짜</th><th>상태</th><th></th></tr></thead><tbody id="plist"></tbody></table></div>
+      <div class="pg" id="ppg"></div>
+    </div>
+  </section>
+
+  <!-- editor -->
+  <section id="v-edit" hidden>
+    <div class="a-card">
+      <div class="a-h"><h2 id="e-title">새 글</h2><div class="tools"><a class="lk" id="e-view" target="_blank" rel="noopener" hidden>사이트에서 보기</a><button class="b" id="e-img">이미지 올리기</button><input type="file" id="e-file" accept="image/*" hidden><button class="b p" id="e-save">저장하고 배포</button></div></div>
+      <div class="row">
+        <div class="w2"><label class="l" for="e-t">제목</label><input class="f" id="e-t"></div>
+        <div><label class="l" for="e-c">카테고리</label><select class="f" id="e-c"></select></div>
+        <div><label class="l" for="e-d">날짜</label><input class="f" id="e-d" placeholder="2026-10-05 18:00"></div>
+        <div class="w2"><label class="l" for="e-g">태그 (쉼표로 구분)</label><input class="f" id="e-g"></div>
+        <div><label class="l" for="e-f">형식</label><select class="f" id="e-f"><option value="pc">pc (사이트 컴포넌트)</option><option value="html">html (자체 스타일)</option><option value="legacy">legacy (기본 글)</option></select></div>
+        <div><label class="l" for="e-p">공개</label><select class="f" id="e-p"><option value="Y">공개</option><option value="N">비공개</option></select></div>
+        <div class="w4"><label class="l" for="e-th">썸네일 (선택)</label><input class="f" id="e-th" placeholder="/img/t/파일명.webp"></div>
+      </div>
+      <div class="ed">
+        <div><label class="l" for="e-b">본문 HTML</label><textarea class="f" id="e-b" spellcheck="false"></textarea></div>
+        <div><label class="l">미리보기</label><iframe id="e-prev" title="미리보기"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- settings -->
+  <section id="v-settings" hidden>
+    <div class="a-card">
+      <div class="a-h"><h2>사이트 설정 <span class="mute" style="font-size:15px">config.json</span></h2><button class="b p" id="s-save">저장하고 배포</button></div>
+      <p class="mute" style="font-size:15px;margin:0 0 16px">메뉴 순서, 시리즈, 숨김 카테고리, 통계 코드(goatcounter)를 여기서 바꿉니다.</p>
+      <textarea class="f" id="s-json" spellcheck="false" style="min-height:560px"></textarea>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+var REPO='2dlgus/blog', API='https://api.github.com/repos/'+REPO, RAW='https://raw.githubusercontent.com/'+REPO+'/main/';
+var TOKEN='', POSTS=[], CONF=null, CONF_SHA='', CUR=null, page=1;
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
+function msg(t){var m=document.createElement('div');m.className='msg';m.textContent=t;document.body.appendChild(m);setTimeout(function(){m.remove()},3200)}
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+function b64e(s){var b=new TextEncoder().encode(s),o='';for(var i=0;i<b.length;i+=8192)o+=String.fromCharCode.apply(null,b.subarray(i,i+8192));return btoa(o)}
+function b64d(s){var bin=atob(s.replace(/\n/g,'')),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
+async function gh(path,opt){opt=opt||{};var r=await fetch(path.indexOf('http')===0?path:API+path,{method:opt.method||'GET',headers:{'Authorization':'Bearer '+TOKEN,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},body:opt.body?JSON.stringify(opt.body):undefined});if(!r.ok){var t=await r.text();throw new Error(r.status+' '+t.slice(0,140))}return r.status===204?null:r.json()}
+function ask(text){return new Promise(function(res){var d=document.createElement('div');d.className='dlg';d.innerHTML='<div class="box"><b>'+esc(text)+'</b><p>GitHub 기록에는 남아서 되돌릴 수 있습니다.</p><div class="tools"><button class="b" data-a="0">취소</button><button class="b p" data-a="1">확인</button></div></div>';d.onclick=function(e){var a=e.target.getAttribute('data-a');if(a!==null){d.remove();res(a==='1')}};document.body.appendChild(d)})}
+
+// ---- header parse/format
+function parse(raw){var m=raw.match(/^\s*<!--([\s\S]*?)-->\s*/),meta={};if(m)m[1].trim().split('\n').forEach(function(l){var i=l.indexOf(':');if(i>0)meta[l.slice(0,i).trim()]=l.slice(i+1).trim()});return {meta:meta,body:m?raw.slice(m[0].length):raw}}
+function format(meta,body){var order=['id','제목','카테고리','태그','날짜','수정','형식','썸네일','공개'],out=['<!--'];order.forEach(function(k){if(meta[k]!==undefined&&meta[k]!=='')out.push(k+': '+meta[k])});Object.keys(meta).forEach(function(k){if(order.indexOf(k)<0&&meta[k]!=='')out.push(k+': '+meta[k])});out.push('-->');return out.join('\n')+'\n'+body.replace(/^\s+/,'')}
+function now(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())}
+
+// ---- data
+async function loadPosts(){
+  var files=await gh('/contents/content/posts?ref=main');
+  files=files.filter(function(f){return /^\d+\.html$/.test(f.name)});
+  var out=[];var i=0;
+  async function worker(){while(i<files.length){var f=files[i++];try{var t;try{var r=await fetch(RAW+'content/posts/'+f.name,{headers:{Range:'bytes=0-1499'}});t=await r.text()}catch(e1){t=(await (await fetch(RAW+'content/posts/'+f.name)).text()).slice(0,1500)}var p=parse(t+'\n-->');out.push({id:+f.name.replace('.html',''),sha:f.sha,path:f.path,t:p.meta['제목']||'(제목 없음)',c:p.meta['카테고리']||'',g:p.meta['태그']||'',d:p.meta['날짜']||'',on:!/^(n|no|비공개)$/i.test(p.meta['공개']||'')})}catch(e){}}}
+  await Promise.all([worker(),worker(),worker(),worker(),worker(),worker()]);
+  POSTS=out.sort(function(a,b){return b.id-a.id});
+}
+async function loadConf(){var f=await gh('/contents/config.json?ref=main');CONF_SHA=f.sha;CONF=JSON.parse(b64d(f.content));return CONF}
+function cats(){var s=[];(CONF&&CONF.menu||[]).forEach(function(m){s.push(m[0]);m[1].forEach(function(x){s.push(m[0]+'/'+x)})});POSTS.forEach(function(p){if(p.c&&s.indexOf(p.c)<0)s.push(p.c)});return s}
+
+// ---- views
+function show(v){['login','dash','posts','edit','settings'].forEach(function(k){$('v-'+k).hidden=k!==v});document.querySelectorAll('#tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});location.hash=v;window.scrollTo(0,0)}
+$('tabs').onclick=function(e){var b=e.target.closest('button');if(!b)return;var v=b.dataset.v;if(v==='edit'&&!CUR)newPost();if(v==='posts')renderPosts();if(v==='settings')renderSettings();if(v==='dash')renderDash();show(v)};
+
+async function renderDash(){
+  var on=POSTS.filter(function(p){return p.on}).length;$('k-posts').textContent=POSTS.length;$('k-draft').textContent='비공개 '+(POSTS.length-on);
+  var cc={};POSTS.forEach(function(p){if(!p.on)return;var t=p.c.split('/')[0];cc[t]=(cc[t]||0)+1});var mx=Math.max.apply(null,Object.values(cc).concat([1]));
+  $('cats').innerHTML=Object.keys(cc).sort(function(a,b){return cc[b]-cc[a]}).map(function(k){return '<tr><td style="width:160px">'+esc(k)+'</td><td class="bar-cell"><i style="width:'+(cc[k]/mx*100)+'%"></i><span>&nbsp;</span></td><td class="n">'+cc[k]+'편</td></tr>'}).join('');
+  gh('/actions/runs?per_page=6').then(function(r){$('runs').innerHTML=r.workflow_runs.map(function(w){var s=w.status!=='completed'?'<span class="chip run">진행 중</span>':w.conclusion==='success'?'<span class="chip on">완료</span>':'<span class="chip err">실패</span>';return '<tr><td>'+s+'</td><td>'+esc((w.head_commit&&w.head_commit.message||'').split('\n')[0]).slice(0,60)+'</td><td class="n mute">'+new Date(w.created_at).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})+'</td></tr>'}).join('')}).catch(function(){$('runs').innerHTML='<tr><td class="mute">Actions 읽기 권한이 없습니다</td></tr>'});
+  stats();
+}
+async function stats(){
+  var code=CONF&&CONF.goatcounter;$('gc-link').hidden=!code;
+  if(!code){$('stat-msg').innerHTML='방문 통계가 아직 연결되지 않았습니다. 설정에서 <b>goatcounter</b> 값을 넣어주세요.';return}
+  var base='https://'+code+'.goatcounter.com';$('gc-link').href=base;
+  var key=store('gc_key');
+  var d=function(n){var x=new Date(Date.now()-n*864e5);return x.toISOString().slice(0,10)};
+  if(key){try{
+    var h={headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'}};
+    var tot=async function(n){var r=await fetch(base+'/api/v0/stats/total?start='+d(n)+'&end='+d(-1),h);var j=await r.json();return j.total};
+    $('k-today').textContent=(await tot(0)).toLocaleString();$('k-7').textContent=(await tot(7)).toLocaleString();$('k-30').textContent=(await tot(30)).toLocaleString();
+    var r=await fetch(base+'/api/v0/stats/hits?start='+d(30)+'&end='+d(-1)+'&limit=10',h);var j=await r.json();var mx=Math.max.apply(null,j.hits.map(function(x){return x.count}).concat([1]));
+    $('top').innerHTML=j.hits.map(function(x){return '<tr><td class="bar-cell"><i style="width:'+(x.count/mx*100)+'%"></i><span><a class="lk" href="'+esc(x.path)+'" target="_blank">'+esc(x.title||x.path)+'</a></span></td><td class="n">'+x.count.toLocaleString()+'</td></tr>'}).join('');
+    $('stat-msg').textContent='';return;
+  }catch(e){$('stat-msg').textContent='API로 가져오지 못했습니다 ('+e.message+'). 아래 공개 카운터로 표시합니다.'}}
+  try{var c=await fetch(base+'/counter/TOTAL.json').then(function(r){return r.json()});$('k-30').textContent=c.count;$('k-today-s').textContent='누적';$('k-today').textContent=c.count}catch(e){}
+  if(!key)$('stat-msg').innerHTML='오늘·7일 통계와 인기 글을 보려면 GoatCounter API 키를 넣어주세요.<div class="tools" style="margin-top:8px"><input class="f" id="gc-in" type="password" placeholder="API 키" style="flex:1"><button class="b s" id="gc-key">저장</button></div>';
+  var kb=$('gc-key');if(kb)kb.onclick=function(){var v=$('gc-in').value.trim();if(v){store('gc_key',v);stats()}};
+}
+
+function renderPosts(){
+  var fc=$('fc');if(fc.options.length<2)cats().forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;fc.appendChild(o)});
+  var q=$('q').value.trim().toLowerCase(),c=fc.value,s=$('fs').value;
+  var list=POSTS.filter(function(p){return (!q||(p.t+' '+p.g).toLowerCase().indexOf(q)>=0)&&(!c||p.c===c||p.c.indexOf(c+'/')===0)&&(!s||(s==='on')===p.on)});
+  $('p-count').textContent=list.length+'편';
+  var per=20,pages=Math.max(1,Math.ceil(list.length/per));if(page>pages)page=1;
+  $('plist').innerHTML=list.slice((page-1)*per,page*per).map(function(p){return '<tr><td class="mute">'+p.id+'</td><td><a class="lk" href="/'+p.id+'" target="_blank">'+esc(p.t)+'</a></td><td class="mute">'+esc(p.c)+'</td><td class="mute" style="white-space:nowrap">'+esc(p.d.slice(0,10))+'</td><td><button class="b s" data-a="tog" data-id="'+p.id+'">'+(p.on?'<span class="chip on">공개</span>':'<span class="chip off">비공개</span>')+'</button></td><td class="n"><button class="b s" data-a="edit" data-id="'+p.id+'">수정</button> <button class="b s d" data-a="del" data-id="'+p.id+'">삭제</button></td></tr>'}).join('')||'<tr><td colspan="6" class="mute">글이 없습니다</td></tr>';
+  $('ppg').innerHTML=pages>1?Array.from({length:pages},function(_,i){return '<button class="'+(i+1===page?'on':'')+'" data-pg="'+(i+1)+'">'+(i+1)+'</button>'}).join(''):'';
+}
+$('q').oninput=$('fc').onchange=$('fs').onchange=function(){page=1;renderPosts()};
+$('ppg').onclick=function(e){var b=e.target.closest('button');if(b){page=+b.dataset.pg;renderPosts()}};
+$('plist').onclick=async function(e){var b=e.target.closest('button');if(!b)return;var id=+b.dataset.id,p=POSTS.find(function(x){return x.id===id});
+  if(b.dataset.a==='edit')return openPost(id);
+  if(b.dataset.a==='tog'){b.disabled=true;try{var f=await gh('/contents/'+p.path+'?ref=main');var x=parse(b64d(f.content));x.meta['공개']=p.on?'N':'Y';x.meta['수정']=now();await gh('/contents/'+p.path,{method:'PUT',body:{message:(p.on?'Unpublish ':'Publish ')+id,content:b64e(format(x.meta,x.body)),sha:f.sha}});p.on=!p.on;msg((p.on?'공개':'비공개')+'로 바꿨습니다. 1~2분 뒤 반영됩니다.')}catch(err){msg('실패: '+err.message)}renderPosts()}
+  if(b.dataset.a==='del'){if(!await ask(id+'번 글 "'+p.t+'"을 삭제할까요?'))return;try{var f2=await gh('/contents/'+p.path+'?ref=main');await gh('/contents/'+p.path,{method:'DELETE',body:{message:'Delete post '+id,sha:f2.sha}});POSTS=POSTS.filter(function(x){return x.id!==id});msg('삭제했습니다.');renderPosts()}catch(err){msg('실패: '+err.message)}}
+};
+
+// ---- editor
+function fillCats(sel,val){$('e-c').innerHTML=cats().map(function(c){return '<option'+(c===val?' selected':'')+'>'+esc(c)+'</option>'}).join('')}
+function newPost(){var id=POSTS.reduce(function(m,p){return Math.max(m,p.id)},0)+1;CUR={id:id,path:'content/posts/'+id+'.html',sha:null,meta:{}};$('e-title').textContent='새 글 · '+id+'번';$('e-view').hidden=true;
+  $('e-t').value='';fillCats(null,'Stack');$('e-d').value=now();$('e-g').value='';$('e-f').value='pc';$('e-p').value='Y';$('e-th').value='';
+  $('e-b').value='<div class="pc">\n<p class="pc-lead">첫 문단</p>\n\n<h2>소제목</h2>\n<p>본문</p>\n</div>\n';preview()}
+async function openPost(id){var p=POSTS.find(function(x){return x.id===id});try{var f=await gh('/contents/'+p.path+'?ref=main');var x=parse(b64d(f.content));CUR={id:id,path:p.path,sha:f.sha,meta:x.meta};
+  $('e-title').textContent=id+'번 글 수정';$('e-view').hidden=false;$('e-view').href='/'+id;
+  $('e-t').value=x.meta['제목']||'';fillCats(null,x.meta['카테고리']||'');$('e-d').value=x.meta['날짜']||'';$('e-g').value=x.meta['태그']||'';$('e-f').value=x.meta['형식']||'html';$('e-p').value=/^(n|no|비공개)$/i.test(x.meta['공개']||'')?'N':'Y';$('e-th').value=x.meta['썸네일']||'';$('e-b').value=x.body;preview();show('edit')}catch(err){msg('불러오기 실패: '+err.message)}}
+var pt;function preview(){clearTimeout(pt);pt=setTimeout(function(){var f=$('e-f').value,b=$('e-b').value;if(f==='legacy')b='<div class="legacy">'+b+'</div>';$('e-prev').srcdoc='<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"><link rel="stylesheet" href="'+location.origin+'/base.css"><base href="'+location.origin+'/" target="_blank"></head><body style="background:#fff;padding:24px"><div class="post-body">'+b+'</div></body></html>'},400)}
+$('e-b').oninput=$('e-f').onchange=preview;
+$('e-save').onclick=async function(){if(!$('e-t').value.trim())return msg('제목을 입력하세요');var btn=this;btn.disabled=true;
+  var meta=Object.assign({},CUR.meta,{id:String(CUR.id),'제목':$('e-t').value.trim(),'카테고리':$('e-c').value,'태그':$('e-g').value.trim(),'날짜':$('e-d').value.trim()||now(),'형식':$('e-f').value,'썸네일':$('e-th').value.trim(),'공개':$('e-p').value==='N'?'N':''});
+  if(CUR.sha)meta['수정']=now();
+  try{var r=await gh('/contents/'+CUR.path,{method:'PUT',body:{message:(CUR.sha?'Edit post ':'Add post ')+CUR.id,content:b64e(format(meta,$('e-b').value)),sha:CUR.sha||undefined}});CUR.sha=r.content.sha;CUR.meta=meta;
+    var p=POSTS.find(function(x){return x.id===CUR.id});var row={id:CUR.id,sha:CUR.sha,path:CUR.path,t:meta['제목'],c:meta['카테고리'],g:meta['태그'],d:meta['날짜'],on:meta['공개']!=='N'};if(p)Object.assign(p,row);else POSTS.unshift(row);
+    $('e-title').textContent=CUR.id+'번 글 수정';$('e-view').hidden=false;$('e-view').href='/'+CUR.id;msg('저장했습니다. 1~2분 뒤 사이트에 반영됩니다.')}catch(err){msg('저장 실패: '+err.message)}btn.disabled=false};
+$('e-img').onclick=function(){$('e-file').click()};
+$('e-file').onchange=async function(){var f=this.files[0];if(!f)return;this.value='';msg('이미지 올리는 중...');
+  try{var bmp=await createImageBitmap(f);var sc=Math.min(1,1600/bmp.width);var c=new OffscreenCanvas(Math.round(bmp.width*sc),Math.round(bmp.height*sc));c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);var blob=await c.convertToBlob({type:'image/webp',quality:.86});
+    var ab=new Uint8Array(await blob.arrayBuffer()),s='';for(var i=0;i<ab.length;i+=8192)s+=String.fromCharCode.apply(null,ab.subarray(i,i+8192));
+    var name='p'+CUR.id+'-'+Date.now().toString(36)+'.webp';await gh('/contents/static/img/'+name,{method:'PUT',body:{message:'Add image '+name,content:btoa(s)}});
+    var tag='<figure class="tt-img"><img src="/img/'+name+'" alt="" width="'+c.width+'" height="'+c.height+'" loading="lazy"></figure>\n';var ta=$('e-b');var at=ta.selectionStart||ta.value.length;ta.value=ta.value.slice(0,at)+tag+ta.value.slice(at);preview();
+    msg('이미지를 올렸습니다. 배포 후 미리보기에 보입니다.')}catch(err){msg('이미지 실패: '+err.message)}};
+$('new').onclick=function(){newPost();show('edit')};
+
+// ---- settings
+async function renderSettings(){try{await loadConf();$('s-json').value=JSON.stringify(CONF,null,2)}catch(e){msg('설정 불러오기 실패')}}
+$('s-save').onclick=async function(){var v;try{v=JSON.parse($('s-json').value)}catch(e){return msg('JSON 형식이 올바르지 않습니다: '+e.message)}
+  try{var r=await gh('/contents/config.json',{method:'PUT',body:{message:'Update config',content:b64e(JSON.stringify(v,null,2)+'\n'),sha:CONF_SHA}});CONF_SHA=r.content.sha;CONF=v;msg('저장했습니다. 1~2분 뒤 반영됩니다.')}catch(err){msg('저장 실패: '+err.message)}};
+
+// ---- auth
+async function start(){
+  TOKEN=store('gh_token')||'';
+  if(!TOKEN){$('tabs').hidden=true;$('logout').hidden=true;show('login');return}
+  try{await gh('');}catch(e){store('gh_token',null);TOKEN='';msg('토큰이 맞지 않습니다');show('login');return}
+  var v=(location.hash||'#dash').slice(1);
+  $('tabs').hidden=false;$('logout').hidden=false;
+  show('dash');$('k-posts').textContent='…';
+  try{await loadConf()}catch(e){}
+  await loadPosts();
+  if(v==='edit')newPost();if(v==='posts')renderPosts();if(v==='settings')renderSettings();
+  renderDash();show(['dash','posts','edit','settings'].indexOf(v)>=0?v:'dash');
+}
+$('login').onclick=function(){var t=$('tok').value.trim();if(!t)return;store('gh_token',t);$('tok').value='';start()};
+$('logout').onclick=function(){store('gh_token',null);store('gc_key',null);location.hash='';start()};
+start();
+})();
+</script>
+</body>
+</html>

@@ -126,6 +126,8 @@ def head(title, desc, url, image=None, extra=''):
     img = C['url'] + (image or '/img/cover.webp')
     ads = (f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={C["adsense"]}" '
            f'crossorigin="anonymous"></script>') if C.get('adsense') else ''
+    if C.get('goatcounter'):
+        ads += f'<script data-goatcounter="https://{C["goatcounter"]}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
     return f'''<!doctype html>
 <html lang="ko">
 <head>
@@ -361,7 +363,7 @@ urls = ['/', '/category/'] + [cat_url(t) for t, _ in menu] + [cat_url(f'{t}/{s}'
 open(os.path.join(DIST, 'sitemap.xml'), 'w', encoding='utf-8').write(
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
     ''.join(f'<url><loc>{C["url"]}{u}</loc></url>' for u in urls) + '</urlset>')
-open(os.path.join(DIST, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {C["url"]}/sitemap.xml\n')
+open(os.path.join(DIST, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: {C["url"]}/sitemap.xml\n')
 if C.get('adsense'):
     open(os.path.join(DIST, 'ads.txt'), 'w').write(f'google.com, {C["adsense"].replace("ca-", "")}, DIRECT, f08c47fec0942fa0\n')
 open(os.path.join(DIST, 'CNAME'), 'w').write(C['url'].split('//')[1] + '\n')
