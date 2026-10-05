@@ -1,0 +1,390 @@
+<!--
+id: 56
+제목: AWS DEA-C01 공식 샘플 문제 — 데이터 공유 + Redshift 서버리스 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: AWS, 서버리스, 데이터 공유, DEA, Redshift, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, Severless
+날짜: 2026-03-10 20:33
+수정: 2026-03-24 22:26
+형식: html
+썸네일: /img/t/dJMcagSfxpg.webp
+-->
+<style>
+.pb-56 *, .pb-56, .pb-56 *::before, .pb-56 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-56{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-56{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-56 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-56 .post-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-56 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-56 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-56 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-56 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-56 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-56 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-56 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-56 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-56 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-56 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-56 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-56 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-56 .question-box p{font-size:15px;line-height:1.85}
+.pb-56 .hl-blue{color:var(--blue);font-weight:700}
+.pb-56 .hl-orange{color:var(--orange);font-weight:700}
+.pb-56 .hl-purple{color:var(--purple);font-weight:700}
+.pb-56 .hl-green{color:var(--green);font-weight:700}
+.pb-56 .hl-teal{color:var(--teal);font-weight:700}
+.pb-56 .hl-bold{font-weight:900}
+.pb-56 .req-list{list-style:none;padding:0}
+.pb-56 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-56 .req-list li:last-child{border-bottom:none}
+.pb-56 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-56 .timeline{display:flex;align-items:center;gap:0;background:var(--g0);border-radius:10px;padding:14px 16px;border:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
+.pb-56 .tl-seg{flex-shrink:0;text-align:center;padding:0 8px}
+.pb-56 .tl-bar{height:28px;border-radius:6px;margin-bottom:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;white-space:nowrap;padding:0 8px}
+.pb-56 .tl-label{font-size:10px;color:var(--muted)}
+.pb-56 .tl-divider{flex-shrink:0;width:2px;height:40px;background:var(--border);margin:0 4px}
+.pb-56 .cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width: 500px){.pb-56 .cost-grid{grid-template-columns:1fr}}
+.pb-56 .cost-card{border-radius:12px;padding:15px 14px;border:1.5px solid var(--border)}
+.pb-56 .cost-card.best{background:var(--green-light);border-color:var(--green-border)}
+.pb-56 .cost-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-56 .cost-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-56 .cost-card .cc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pb-56 .cost-card .cc-icon{font-size:20px}
+.pb-56 .cost-card .cc-name{font-weight:700;font-size:13px}
+.pb-56 .cost-card.best .cc-name{color:var(--green)}
+.pb-56 .cost-card.bad  .cc-name{color:var(--red)}
+.pb-56 .cost-card.warn .cc-name{color:var(--yellow)}
+.pb-56 .cost-card .cc-type{font-size:11px;color:var(--muted)}
+.pb-56 .cc-items{list-style:none;padding:0}
+.pb-56 .cc-items li{font-size:12px;padding:3px 0;border-bottom:1px solid color-mix(in srgb, var(--g90) 5%, transparent);line-height:1.5}
+.pb-56 .cc-items li:last-child{border-bottom:none}
+.pb-56 .cc-items li::before{content:'• ';color:var(--muted)}
+.pb-56 .cc-cost{margin-top:10px;padding:7px 10px;border-radius:7px;font-size:12px;font-weight:700;text-align:center}
+.pb-56 .cost-card.best .cc-cost{background:var(--s10);color:var(--green)}
+.pb-56 .cost-card.bad  .cc-cost{background:var(--r5);color:var(--red)}
+.pb-56 .cost-card.warn .cc-cost{background:var(--y10);color:var(--yellow)}
+.pb-56 .cost-bars{display:flex;flex-direction:column;gap:10px}
+.pb-56 .cost-bar-row{display:flex;align-items:center;gap:10px}
+.pb-56 .cb-label{width:160px;flex-shrink:0;font-size:12px;font-weight:700}
+.pb-56 .cb-wrap{flex:1;background:var(--p5);border-radius:99px;height:22px;overflow:hidden}
+.pb-56 .cb-bar{height:100%;border-radius:99px;display:flex;align-items:center;padding-left:10px;font-size:10px;font-weight:700;color:#fff}
+.pb-56 .cb-val{flex-shrink:0;font-size:11px;font-weight:700;width:72px;text-align:right}
+@media (max-width: 480px){.pb-56 .cb-label{width:100px;font-size:11px}
+.pb-56 .cb-val{width:60px;font-size:10px}}
+.pb-56 .options-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.pb-56 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-56 .option:hover{border-color:var(--p50)}
+.pb-56 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-56 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-56 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-56 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-56 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-56 .opt-body{flex:1;min-width:0}
+.pb-56 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-56 .opt-main.correct{color:var(--green)}
+.pb-56 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-56 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-56 .opt-why.show{display:block}
+.pb-56 .opt-why.ok-why{background:var(--s10)}
+.pb-56 .opt-why.bad-why{background:var(--r5)}
+.pb-56 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-56 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-56 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-56 .answer-body{display:none;margin-top:14px}
+.pb-56 .answer-body.show{display:block}
+.pb-56 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-56 .answer-body strong{color:var(--orange)}
+.pb-56 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-56 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-56 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-56 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-56 .summary-table tr:last-child td{border-bottom:none}
+.pb-56 .summary-table tr:hover td{background:var(--g0)}
+.pb-56 .ok-text{color:var(--green);font-weight:700}
+.pb-56 .bad-text{color:var(--red);font-weight:700}
+.pb-56 .warn-text{color:var(--yellow);font-weight:700}
+.pb-56 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-56 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-56 .wrap{padding:20px 14px 50px}
+.pb-56 h1.post-title{font-size:19px}
+.pb-56 .question-box p{font-size:14px}
+.pb-56 .opt-main{font-size:13px}
+.pb-56 .code-block{font-size:11px}}
+.pb-56 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-56 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-56 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-56 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-56 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-56 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-56 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-56 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-56 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-56 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-56 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-56 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-56 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-56 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-56 .ans-label::before{content:'🎯 '}
+.pb-56 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-56 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-56 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-56 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-56 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-56 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-56">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">데이터 엔지니어</span> <span class="badge badge-teal">Redshift &middot; 비용 최적화</span> <span class="badge badge-orange">데이터 공유 &middot; 서버리스</span></div>
+<h1 class="post-title">Redshift 테스트 환경 비용 최적화 &mdash; 데이터 공유 + 서버리스가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 Redshift 비용 최적화 문제입니다. <b>2주마다 단 2시간만 사용하는 테스트 Redshift 환경</b>을 <b>가장 비용 효율적으로</b> 구성할 때, 데이터 공유 + 서버리스 / S3 언로드 + Glue / Spectrum / 스냅샷 복원 4가지 방식의 비용 구조를 도식으로 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16"><span class="hl-blue">Amazon Redshift 클러스터</span>를 운영 중인 회사가 있다. 데이터 엔지니어는 <span class="hl-bold">별도의 테스트 환경</span>에서 분석 자료를 얻을 수 있도록 솔루션을 설계해야 한다. 솔루션은 <span class="hl-orange">기본 Redshift 클러스터의 데이터를 사용</span>한다. 두 번째 클러스터는 새로운 테스트 프로세스의 일환으로 <span class="hl-bold">2주마다 2시간 동안만 사용</span>될 것으로 예상된다. <br /><br />다음 중 <span class="hl-bold">가장 비용 효율적인 방식</span>으로 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 체크</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">📊</span>
+<div><b>기본 Redshift 클러스터 데이터 활용</b><br /><span style="font-size:13px;color:var(--muted)">데이터를 복제하거나 별도로 이동하지 않고 프로덕션 데이터를 테스트 환경에서 사용</span></div>
+</li>
+<li><span class="req-icon">⏱️</span>
+<div><b>2주마다 2시간만 사용 (극히 간헐적 사용)</b><br /><span style="font-size:13px;color:var(--muted)">한 달 기준 약 4시간만 실행 &rarr; 상시 프로비저닝된 클러스터는 낭비, 사용 시간만 과금되는 구조 필요</span></div>
+</li>
+<li><span class="req-icon">💰</span>
+<div><b>가장 비용 효율적인 솔루션</b><br /><span style="font-size:13px;color:var(--muted)">데이터 복제 비용 + 추가 서비스 비용 + 컴퓨팅 비용 모두 고려하여 최저 총비용(TCO) 달성</span></div>
+</li>
+</ul>
+<!-- 사용 패턴 타임라인 -->
+<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">⏰ 테스트 환경 사용 패턴 (4주 기준)</p>
+<div class="timeline">
+<div class="tl-seg">
+<div class="tl-bar" style="width:80px;background:var(--p5);color:var(--muted)">미사용 (13일)</div>
+<div class="tl-label">1주차</div>
+</div>
+<div class="tl-divider">&nbsp;</div>
+<div class="tl-seg">
+<div class="tl-bar" style="width:40px;background:var(--s60);color:#fff">2h</div>
+<div class="tl-label">2주 도래</div>
+</div>
+<div class="tl-divider">&nbsp;</div>
+<div class="tl-seg">
+<div class="tl-bar" style="width:80px;background:var(--p5);color:var(--muted)">미사용 (13일)</div>
+<div class="tl-label">3주차</div>
+</div>
+<div class="tl-divider">&nbsp;</div>
+<div class="tl-seg">
+<div class="tl-bar" style="width:40px;background:var(--s60);color:#fff">2h</div>
+<div class="tl-label">4주 도래</div>
+</div>
+</div>
+<p style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center" data-ke-size="size16">한 달 336시간 중 실제 사용 <b>4시간</b> &rarr; 상시 프로비저닝 클러스터는 332시간 낭비 💸</p>
+</div>
+</div>
+<!-- 비용 구조 비교 -->
+<h2 class="section-title" data-ke-size="size26">📐 솔루션별 비용 구조</h2>
+<div class="card">
+<div class="cost-grid"><!-- 정답 -->
+<div class="cost-card best">
+<div class="cc-header"><span class="cc-icon">🔗</span>
+<div>
+<div class="cc-name">데이터 공유 + Redshift 서버리스 ⭐</div>
+<div class="cc-type">Data Sharing + Serverless</div>
+</div>
+</div>
+<ul class="cc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>데이터 공유: 추가 비용 없음</li>
+<li>데이터 복제 없음 &rarr; S3 비용 없음</li>
+<li>서버리스: 사용 시간(2h&times;2)만 과금</li>
+<li>미사용 시 컴퓨팅 비용 완전 0</li>
+</ul>
+<div class="cc-cost">✅ 총비용 최저</div>
+</div>
+<!-- 오답 A -->
+<div class="cost-card warn">
+<div class="cc-header"><span class="cc-icon">⚙️</span>
+<div>
+<div class="cc-name">S3 언로드 + Glue ETL</div>
+<div class="cc-type">S3 Unload + AWS Glue Job</div>
+</div>
+</div>
+<ul class="cc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>S3 저장 비용 발생 (데이터 복제)</li>
+<li>Glue ETL 작업 실행 비용 발생</li>
+<li>데이터 로드 시간 추가 소요</li>
+<li>2주마다 반복 실행 비용 누적</li>
+</ul>
+<div class="cc-cost" style="background:var(--y10);color:var(--yellow)">⚠️ 복제 + ETL 비용 발생</div>
+</div>
+<!-- 오답 C -->
+<div class="cost-card warn">
+<div class="cc-header"><span class="cc-icon">🔭</span>
+<div>
+<div class="cc-name">S3 언로드 + Redshift Spectrum</div>
+<div class="cc-type">S3 + Spectrum 외부 테이블</div>
+</div>
+</div>
+<ul class="cc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>S3 저장 비용 발생 (데이터 복제)</li>
+<li>Spectrum: S3 스캔량 기준 과금</li>
+<li>테스트 클러스터 컴퓨팅 비용</li>
+<li>스캔 쿼리 반복 시 비용 급증</li>
+</ul>
+<div class="cc-cost" style="background:var(--y10);color:var(--yellow)">⚠️ 복제 + 스캔 비용 발생</div>
+</div>
+<!-- 오답 D -->
+<div class="cost-card bad">
+<div class="cc-header"><span class="cc-icon">💾</span>
+<div>
+<div class="cc-name">수동 스냅샷 복원 (동일 노드)</div>
+<div class="cc-type">Manual Snapshot &rarr; 동일 클러스터 복원</div>
+</div>
+</div>
+<ul class="cc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>프로덕션과 동일 노드 구성 복원</li>
+<li>미사용 시에도 상시 컴퓨팅 과금</li>
+<li>스냅샷 스토리지 비용 별도</li>
+<li>선택지 중 비용 가장 높음</li>
+</ul>
+<div class="cc-cost">❌ 비용 가장 높음</div>
+</div>
+</div>
+<!-- 비용 바 비교 -->
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:14px" data-ke-size="size16">💰 솔루션별 예상 월 비용 비교 (낮을수록 좋음)</p>
+<div class="cost-bars">
+<div class="cost-bar-row">
+<div class="cb-label">데이터공유 + 서버리스 ⭐</div>
+<div class="cb-wrap">
+<div class="cb-bar" style="width:10%;background:var(--s60)">최저</div>
+</div>
+<div class="cb-val ok-text">사용분만 과금</div>
+</div>
+<div class="cost-bar-row">
+<div class="cb-label">S3 언로드 + Glue</div>
+<div class="cb-wrap">
+<div class="cb-bar" style="width:48%;background:var(--y50)">중간</div>
+</div>
+<div class="cb-val warn-text">S3 + Glue 비용</div>
+</div>
+<div class="cost-bar-row">
+<div class="cb-label">S3 언로드 + Spectrum</div>
+<div class="cb-wrap">
+<div class="cb-bar" style="width:60%;background:var(--y50)">중간</div>
+</div>
+<div class="cb-val warn-text">S3 + 스캔 비용</div>
+</div>
+<div class="cost-bar-row">
+<div class="cb-label">스냅샷 복원 (동일 노드)</div>
+<div class="cb-wrap">
+<div class="cb-bar" style="width:95%;background:var(--r50)">상시 과금</div>
+</div>
+<div class="cb-val bad-text">가장 높음</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ 2주마다 S3 언로드 &rarr; Glue ETL &rarr; 테스트 클러스터 로드</div>
+<div class="opt-sub">AWS Glue ETL 작업으로 S3에서 Redshift로 데이터 이동</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 기술적으로 가능하지만 <b>S3 데이터 복제 비용</b>과 <b>Glue ETL 작업 실행 비용</b>이 2주마다 추가로 발생합니다. 데이터 공유를 사용하면 이 비용들이 완전히 사라지므로 상대적으로 비용 효율적이지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">B</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Redshift 데이터 공유 &rarr; Redshift 서버리스(테스트 환경)</div>
+<div class="opt-sub">Data Sharing (추가 비용 없음) + Serverless (사용 시간만 과금)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Redshift 데이터 공유(Data Sharing)는 <b>데이터 복제 없이 클러스터 간 실시간 데이터 접근</b>을 제공하며 추가 비용이 없습니다. 테스트 환경에 <b>Redshift 서버리스</b>를 사용하면 워크로드가 없을 때 컴퓨팅 비용이 0이 되고, 2시간 사용 시간에 대해서만 과금됩니다. 한 달 기준 4시간치 서버리스 비용만 발생해 <b>총비용이 가장 낮습니다.</b></div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ 2주마다 S3 언로드 &rarr; Redshift Spectrum으로 외부 테이블 쿼리</div>
+<div class="opt-sub">Redshift Spectrum &mdash; S3 데이터를 외부 테이블로 쿼리 (스캔량 기준 과금)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Spectrum은 S3 데이터를 직접 쿼리할 수 있지만 <b>스캔한 데이터 양(TB 단위)에 따라 요금이 청구</b>됩니다. 또한 S3로 데이터를 복제해야 하므로 스토리지 비용도 발생합니다. 테스트 쿼리를 반복할수록 스캔 비용이 누적되어 비용 효율이 떨어집니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ 2주마다 수동 스냅샷 생성 &rarr; 기본 클러스터와 동일 노드로 테스트 클러스터 복원</div>
+<div class="opt-sub">수동 스냅샷 복원 &mdash; 프로덕션과 동일 구성의 상시 프로비저닝 클러스터</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 프로덕션과 동일한 노드 수&middot;구성으로 클러스터를 복원하면 <b>2시간만 사용해도 나머지 시간 동안 컴퓨팅 비용이 그대로 청구</b>됩니다. 프로비저닝된 Redshift 클러스터는 실행 중이면 항상 과금됩니다. 선택지 중 비용이 가장 높은 방식입니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: B &mdash; Redshift 데이터 공유 + Redshift 서버리스</b></p>
+<p data-ke-size="size16">두 가지 비용 절감 포인트가 결합된 정답입니다. <b>데이터 공유</b>로 복제&middot;이동 비용을 제거하고, <b>서버리스</b>로 미사용 시간의 컴퓨팅 비용을 완전히 없앱니다. 한 달에 4시간만 사용하는 워크로드에서 가장 효율적인 구성입니다.</p>
+<div class="code-block"># 비용 절감 포인트 2가지 1. Redshift 데이터 공유 (Data Sharing) 프로덕션 클러스터 ──(공유, 복제 없음)──▶ 테스트 서버리스 추가 비용: $0 (데이터 이동 없음) 2. Redshift 서버리스 (Serverless) 미사용 시간 (332h) &rarr; 컴퓨팅 비용 $0 실제 사용 (4h/월) &rarr; 사용 시간만 과금 vs 프로비저닝 클러스터: 미사용 332h에도 ⚠️ 시간당 과금 계속 발생</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>데이터 이동</th>
+<th>추가 비용 항목</th>
+<th>미사용 과금</th>
+<th>비용 효율</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A. S3 + Glue</b></td>
+<td class="bad-text">S3 복제</td>
+<td>S3 + Glue 실행비</td>
+<td class="ok-text">없음</td>
+<td class="warn-text">보통</td>
+</tr>
+<tr>
+<td><b>B. 데이터공유 + 서버리스 ⭐</b></td>
+<td class="ok-text">없음 (공유)</td>
+<td class="ok-text">없음</td>
+<td class="ok-text">없음</td>
+<td class="ok-text">최고</td>
+</tr>
+<tr>
+<td><b>C. S3 + Spectrum</b></td>
+<td class="bad-text">S3 복제</td>
+<td>S3 + 스캔량 과금</td>
+<td class="warn-text">클러스터 과금</td>
+<td class="warn-text">보통</td>
+</tr>
+<tr>
+<td><b>D. 스냅샷 복원</b></td>
+<td class="warn-text">스냅샷</td>
+<td>스냅샷 스토리지</td>
+<td class="bad-text">상시 과금</td>
+<td class="bad-text">최저</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWS데이터엔지니어</span> <span class="seo-tag">#AmazonRedshift</span> <span class="seo-tag">#Redshift데이터공유</span> <span class="seo-tag">#RedshiftServerless</span> <span class="seo-tag">#Redshift서버리스</span> <span class="seo-tag">#RedshiftSpectrum</span> <span class="seo-tag">#Redshift스냅샷</span> <span class="seo-tag">#비용최적화</span> <span class="seo-tag">#테스트환경</span> <span class="seo-tag">#AWSGlue</span> <span class="seo-tag">#데이터웨어하우스</span> <span class="seo-tag">#AWS자격증</span></div>
+</article>
+</div>

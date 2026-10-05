@@ -1,0 +1,271 @@
+<!--
+id: 100
+제목: [Mendix] SAML SSO 환경에서 딥링크(DeepLink) 구현 삽질기
+카테고리: Stack/Lowcode
+태그: 쿠키, SSO, saml, query string, DeepLink, 토큰전달, mendix, 멘딕스, HTMLSnippet
+날짜: 2026-03-23 23:08
+수정: 2026-03-23 23:09
+형식: html
+썸네일: /img/t/dJMcad2otFn.webp
+-->
+<style>
+.pb-100 .mdx-wrap{max-width:760px;margin:0 auto;color:var(--p70);line-height:1.85;font-size:15.5px}
+.pb-100 .mdx-wrap *{box-sizing:border-box}
+.pb-100 .mdx-hero{background:linear-gradient(135deg,var(--p70) 0%,var(--p70) 100%);border-radius:16px;padding:40px 32px;margin-bottom:32px;color:#fff;position:relative;overflow:hidden}
+.pb-100 .mdx-hero::after{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,color-mix(in srgb, var(--p50) 15%, transparent) 0%,transparent 70%);border-radius:50%}
+.pb-100 .mdx-hero-sub{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--p50);margin-bottom:10px;text-transform:uppercase}
+.pb-100 .mdx-hero h1{font-size:24px;font-weight:900;line-height:1.4;margin-bottom:12px}
+.pb-100 .mdx-hero p{font-size:14px;color:var(--p50);line-height:1.7}
+.pb-100 .mdx-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pb-100 .mdx-meta span{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:color-mix(in srgb, var(--g0) 10%, transparent);color:var(--p50)}
+.pb-100 .mdx-toc{background:var(--g0);border:1px solid var(--p10);border-radius:12px;padding:20px 24px;margin-bottom:32px}
+.pb-100 .mdx-toc-title{font-size:13px;font-weight:700;color:var(--g50);margin-bottom:10px;letter-spacing:1px}
+.pb-100 .mdx-toc ol{margin:0;padding-left:20px}
+.pb-100 .mdx-toc li{margin:5px 0;font-size:14px}
+.pb-100 .mdx-toc a{color:var(--p50);text-decoration:none;font-weight:500}
+.pb-100 .mdx-toc a:hover{text-decoration:underline}
+.pb-100 .mdx-h2{font-size:20px;font-weight:800;margin:40px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--p10);color:var(--p70)}
+.pb-100 .mdx-h3{font-size:16px;font-weight:700;margin:24px 0 10px;color:var(--p70)}
+.pb-100 .mdx-card{background:var(--g0);border:1px solid var(--p10);border-radius:12px;padding:20px 24px;margin:16px 0}
+.pb-100 .mdx-card.blue{background:var(--g0)}
+.pb-100 .mdx-card.green{background:var(--g0)}
+.pb-100 .mdx-card.red{background:var(--g0)}
+.pb-100 .mdx-card.yellow{background:var(--g0)}
+.pb-100 .mdx-card.gray{background:var(--g0)}
+.pb-100 .mdx-label{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.pb-100 .mdx-label.problem{background:var(--r5);color:var(--r60)}
+.pb-100 .mdx-label.solution{background:var(--s10);color:var(--s60)}
+.pb-100 .mdx-label.info{background:var(--p10);color:var(--p60)}
+.pb-100 .mdx-label.warn{background:var(--y10);color:var(--y60)}
+.pb-100 pre.mdx-code{font-family:'JetBrains Mono','D2Coding',monospace;font-size:13px;line-height:1.65;background:var(--p70);color:var(--p10);border-radius:10px;padding:18px 20px;margin:12px 0;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+.pb-100 pre.mdx-code .cm{color:var(--g50)}
+.pb-100 pre.mdx-code .kw{color:var(--p50)}
+.pb-100 pre.mdx-code .st{color:var(--s60)}
+.pb-100 pre.mdx-code .fn{color:var(--y60)}
+.pb-100 code.mdx-inline{font-family:'JetBrains Mono','D2Coding',monospace;font-size:13px;background:var(--p5);padding:2px 6px;border-radius:4px;color:var(--p50)}
+.pb-100 .mdx-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+.pb-100 .mdx-table th{text-align:left;padding:10px 12px;background:var(--p5);border:1px solid var(--p10);font-weight:600;color:var(--p60);font-size:13px}
+.pb-100 .mdx-table td{padding:10px 12px;border:1px solid var(--p10);vertical-align:top}
+.pb-100 .mdx-flow{background:var(--g0);border:1px solid var(--p10);border-radius:12px;padding:20px 24px;margin:16px 0;font-size:14px;line-height:2.2}
+.pb-100 .mdx-flow .arr{color:var(--p50);font-weight:700}
+.pb-100 .mdx-flow .ok{color:var(--s60);font-weight:700}
+.pb-100 .mdx-flow .fail{color:var(--r60);font-weight:700}
+.pb-100 .mdx-step{display:flex;align-items:flex-start;gap:14px;margin:14px 0;padding:16px 20px;background:var(--g0);border:1px solid var(--p10);border-radius:10px}
+.pb-100 .mdx-step-num{background:var(--p50);color:#fff;font-size:13px;font-weight:700;min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.pb-100 .mdx-step-body{flex:1}
+.pb-100 .mdx-step-title{font-weight:700;margin-bottom:4px}
+.pb-100 .mdx-img-placeholder{background:var(--p5);border:2px dashed var(--p50);border-radius:10px;padding:24px;text-align:center;color:var(--p50);font-size:13px;margin:12px 0}
+.pb-100 .mdx-tags{margin-top:40px;padding-top:16px;border-top:1px solid var(--p10);display:flex;flex-wrap:wrap;gap:6px}
+.pb-100 .mdx-tags span{font-size:12px;color:var(--g50);background:var(--p5);padding:4px 10px;border-radius:20px}
+.pb-100 .mdx-seo-lead{color:var(--g50);font-size:14px;line-height:1.8;margin-bottom:24px}
+@media(max-width:600px){.pb-100 .mdx-hero{padding:28px 20px}
+.pb-100 .mdx-hero h1{font-size:20px}
+.pb-100 .mdx-card{padding:16px 18px}
+.pb-100 .mdx-step{flex-direction:column;gap:8px}}
+</style>
+<div class="pb pb-100">
+<article class="dea-wrap">
+<div>
+
+</div>
+<div class="mdx-wrap"><!-- SEO 리드 -->
+<p class="mdx-seo-lead" data-ke-size="size16">Mendix 앱에서 SAML SSO 환경의 딥링크(DeepLink)를 구현하면서 만난 5가지 환경 제약과 최종 해결법을 정리합니다. SPA 라우팅, ADFS SSO cont 파라미터 무시, 세션 불일치, HTMLSnippet script 태그 미작동, 메일 클라이언트 URL fragment 제거 문제까지 &mdash; 각각의 원인과 우회 방법을 실무 경험 기반으로 공유합니다.</p>
+<!-- 히어로 -->
+<div class="mdx-hero">
+<div class="mdx-hero-sub">MENDIX TROUBLESHOOTING</div>
+<h1><span style="color:#fff">Mendix + SAML SSO 환경에서</span><br /><span style="color:#fff">딥링크(DeepLink) 구현 삽질기</span></h1>
+<p data-ke-size="size16">표준 DeepLink 모듈이 안 통하는 환경에서 쿠키 기반 우회로 해결하기까지</p>
+<div class="mdx-meta"><span>Mendix 10.12</span> <span>SAML SSO (ADFS)</span> <span>DeepLink 모듈</span> <span>SPA</span></div>
+</div>
+<!-- 목차 -->
+<div class="mdx-toc">
+<div class="mdx-toc-title">📋 목차</div>
+<ol style="list-style-type:decimal" data-ke-list-type="decimal">
+<li><a href="#mdx-goal">목표 &mdash; 뭘 만들려고 했나</a></li>
+<li><a href="#mdx-env">환경 제약 &mdash; 왜 표준 방식이 안 됐나</a></li>
+<li><a href="#mdx-tries">시도한 접근법 5가지와 실패 이유</a></li>
+<li><a href="#mdx-solution">최종 해결 &mdash; 쿠키 기반 우회 아키텍처</a></li>
+<li><a href="#mdx-code">구현 코드</a></li>
+<li><a href="#mdx-lessons">교훈 &mdash; 삽질에서 배운 것</a></li>
+</ol>
+</div>
+<!-- 1. 목표 -->
+<h2 id="mdx-goal" class="mdx-h2" data-ke-size="size26">1. 목표 &mdash; 뭘 만들려고 했나</h2>
+<div class="mdx-card blue"><span class="mdx-label info">요구사항</span><br />회의록 생성 시 관련자에게 메일 발송 &rarr; 메일 내 <b>"시스템 바로가기"</b> 링크 클릭 &rarr; <b>SSO 자동 로그인 &rarr; 해당 회의록 상세 페이지 자동 오픈</b></div>
+<p data-ke-size="size16">간단해 보이지만, Mendix의 DeepLink 모듈 문서대로 구현했는데 전혀 작동하지 않았습니다. 이유는 환경 제약 5가지가 동시에 존재했기 때문입니다.</p>
+<!-- 2. 환경 제약 -->
+<h2 id="mdx-env" class="mdx-h2" data-ke-size="size26">2. 환경 제약 &mdash; 왜 표준 방식이 안 됐나</h2>
+<p data-ke-size="size16">하나씩은 흔한 문제인데, 5개가 동시에 걸리니까 해결책 하나가 다른 제약에 의해 무효화되는 연쇄 구조였습니다.</p>
+<table class="mdx-table" data-ke-align="alignLeft">
+<tbody>
+<tr>
+<th style="width:25%">제약사항</th>
+<th>증상</th>
+<th style="width:30%">영향</th>
+</tr>
+<tr>
+<td><b>① SPA 라우팅</b></td>
+<td>Mendix 앱이 SPA 모드로 동작. <code class="mdx-inline">/p/페이지이름</code> 형태의 직접 URL 접근 시 page not found</td>
+<td>외부 랜딩 페이지 방식 불가</td>
+</tr>
+<tr>
+<td><b>② ADFS SSO</b></td>
+<td>회사 SSO(ADFS)가 로그인 후 <code class="mdx-inline">cont</code> 파라미터를 무시하고 항상 홈으로 리다이렉트</td>
+<td>SSO 후 딥링크 URL 복귀 불가</td>
+</tr>
+<tr>
+<td><b>③ 세션 불일치</b></td>
+<td>DeepLink 모듈이 세션 ID 기반 PendingLink를 저장하나, SSO 후 새 세션 생성으로 조회 실패</td>
+<td>DeepLink 표준 방식 사용 불가</td>
+</tr>
+<tr>
+<td><b>④ HTMLSnippet</b></td>
+<td>SPA 환경에서 <code class="mdx-inline">&lt;script&gt;</code> 태그가 렌더링 안 됨</td>
+<td><code class="mdx-inline">&lt;img onerror&gt;</code> 트릭으로 우회 필요</td>
+</tr>
+<tr>
+<td><b>⑤ 메일 클라이언트</b></td>
+<td>링크의 URL fragment(<code class="mdx-inline">#</code> 이후)가 클릭 시 전달 안 됨</td>
+<td>hash 기반 토큰 전달 불가</td>
+</tr>
+</tbody>
+</table>
+<!-- 3. 시도한 접근법 -->
+<h2 id="mdx-tries" class="mdx-h2" data-ke-size="size26">3. 시도한 접근법 5가지와 실패 이유</h2>
+<div class="mdx-card red"><span class="mdx-label problem">시도 1 &mdash; DeepLink 모듈 표준 방식</span>
+<p data-ke-size="size16"><code class="mdx-inline">/link/reviewmeeting/토큰</code> &rarr; DeepLink 핸들러 &rarr; PendingLink DB 저장 &rarr; SSO &rarr; 홈에서 조회</p>
+<p data-ke-size="size16"><b>실패:</b> SSO 로그인 시 세션 ID가 바뀌어 PendingLink 조회 실패. <code class="mdx-inline">deeplink$pendinglink</code> 테이블이 항상 비어있었음.</p>
+</div>
+<div class="mdx-card red"><span class="mdx-label problem">시도 2 &mdash; LoginLocation &rarr; /sso + cont 파라미터</span>
+<p data-ke-size="size16">DeepLink 모듈이 <code class="mdx-inline">/sso?cont=/link/reviewmeeting/토큰</code>으로 리다이렉트하도록 설정</p>
+<p data-ke-size="size16"><b>실패:</b> ADFS가 cont 파라미터를 무시하고 항상 홈으로 보냄.</p>
+</div>
+<div class="mdx-card red"><span class="mdx-label problem">시도 3 &mdash; Anonymous 랜딩 페이지</span>
+<p data-ke-size="size16"><code class="mdx-inline">/p/PG_DeepLink_Landing?token=토큰</code>에서 쿠키 저장 후 SSO 이동</p>
+<p data-ke-size="size16"><b>실패:</b> SPA 앱에서 <code class="mdx-inline">/p/페이지이름</code> 직접 접근 자체가 불가. page not found.</p>
+</div>
+<div class="mdx-card red"><span class="mdx-label problem">시도 4 &mdash; URL hash (#) 기반 토큰 전달</span>
+<p data-ke-size="size16"><code class="mdx-inline">https://도메인/#dl=reviewmeeting&amp;tk=토큰</code></p>
+<p data-ke-size="size16"><b>실패:</b> 메일 클라이언트가 <code class="mdx-inline">#</code> 이후를 전달하지 않음. 주소복사하면 있지만 클릭하면 사라짐.</p>
+</div>
+<div class="mdx-card green"><span class="mdx-label solution">시도 5 &mdash; Query string + 쿠키 + img onerror ✅</span>
+<p data-ke-size="size16"><code class="mdx-inline">https://도메인/?dl=reviewmeeting&amp;tk=토큰</code></p>
+<p data-ke-size="size16"><b>성공!</b> query string은 모든 환경에서 전달됨. <code class="mdx-inline">&lt;img onerror&gt;</code>로 <code class="mdx-inline">&lt;script&gt;</code> 없이 JS 실행. 쿠키로 SSO 너머로 토큰 전달.</p>
+</div>
+<!-- 4. 최종 해결 -->
+<h2 id="mdx-solution" class="mdx-h2" data-ke-size="size26">4. 최종 해결 &mdash; 쿠키 기반 우회 아키텍처</h2>
+<h3 class="mdx-h3" data-ke-size="size23">비로그인 사용자 흐름</h3>
+<div class="mdx-flow">메일 "시스템 바로가기" 클릭<br /><span class="arr">&rarr;</span> <code class="mdx-inline">https://도메인/?dl=reviewmeeting&amp;tk=토큰</code><br /><span class="arr">&rarr;</span> 비로그인이라 PG_Login으로 리다이렉트 (query string 유지됨)<br /><span class="arr">&rarr;</span> <b>PG_Login HTMLSnippet</b>: query string에서 토큰 읽어 쿠키 저장<br /><span class="arr">&rarr;</span> 자동으로 <code class="mdx-inline">/sso</code> 이동 &rarr; ADFS SSO 로그인<br /><span class="arr">&rarr;</span> 로그인 완료 &rarr; PG_Home<br /><span class="arr">&rarr;</span> <b>PG_Home HTMLSnippet</b>: 쿠키 감지 &rarr; <code class="mdx-inline">/link/reviewmeeting/토큰</code> 이동<br /><span class="arr">&rarr;</span> 이미 로그인 상태이므로 DeepLink 핸들러가 MF 즉시 실행<br /><span class="arr">&rarr;</span> <span class="ok">회의록 페이지 오픈 ✅</span></div>
+<h3 class="mdx-h3" data-ke-size="size23">이미 로그인 사용자 흐름</h3>
+<div class="mdx-flow">메일 "시스템 바로가기" 클릭<br /><span class="arr">&rarr;</span> <code class="mdx-inline">https://도메인/?dl=reviewmeeting&amp;tk=토큰</code><br /><span class="arr">&rarr;</span> PG_Home 로드<br /><span class="arr">&rarr;</span> <b>HTMLSnippet</b>: query string에서 토큰 읽음 &rarr; <code class="mdx-inline">/link/reviewmeeting/토큰</code> 이동<br /><span class="arr">&rarr;</span> DeepLink 핸들러: MF 즉시 실행<br /><span class="arr">&rarr;</span> <span class="ok">회의록 페이지 오픈 ✅</span></div>
+<div class="mdx-card yellow"><span class="mdx-label warn">핵심 포인트</span><br />DeepLink 모듈의 PendingLink(세션 기반)를 <b>완전히 우회</b>합니다. 쿠키로 토큰을 SSO 너머로 전달하고, 로그인 완료 후에 DeepLink URL로 재진입하면 이미 로그인 상태이므로 세션 문제가 발생하지 않습니다.</div>
+<!-- 5. 구현 코드 -->
+<h2 id="mdx-code" class="mdx-h2" data-ke-size="size26">5. 구현 코드</h2>
+<h3 class="mdx-h3" data-ke-size="size23">① 메일 URL (MF의 Change Object)</h3>
+<pre class="mdx-code awk"><code>// IVK_ShowPage_ReviewMeeting_NewEdit &rarr; Change Object &rarr; Details
+
+'https://도메인/?dl=reviewmeeting&amp;tk=' + $NewReviewMeeting/Token</code></pre>
+<h3 class="mdx-h3" data-ke-size="size23">② PG_Login HTMLSnippet</h3>
+<p data-ke-size="size16">Content Type: <b>HTML</b>. <code class="mdx-inline">&lt;script&gt;</code> 태그가 SPA에서 작동하지 않으므로 <code class="mdx-inline">&lt;img onerror&gt;</code> 트릭 사용.</p>
+<pre class="mdx-code stata"><code>&lt;!-- PG_Login HTMLSnippet (Content Type: HTML) --&gt;
+&lt;img src="x" onerror="
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var dl = params.get('dl');
+  var tk = params.get('tk');
+  if (!dl || !tk) return;
+
+  var path = '/link/' + dl + '/' + tk;
+  document.cookie = 'dl_path=' + encodeURIComponent(path)
+    + '; path=/; max-age=300';
+
+  // 자동 SSO 이동 (일반 로그인에는 영향 없음)
+  window.location.href = '/sso';
+})();
+" style="display:none"&gt;</code></pre>
+<h3 class="mdx-h3" data-ke-size="size23">③ PG_Home HTMLSnippet</h3>
+<pre class="mdx-code stata"><code>&lt;!-- PG_Home HTMLSnippet (Content Type: HTML) --&gt;
+&lt;img src="x" onerror="
+(function() {
+  // 1) 쿠키 확인 (SSO 로그인 후 복귀)
+  var match = document.cookie.match(/dl_path=([^;]+)/);
+  if (match) {
+    var path = decodeURIComponent(match[1]);
+    document.cookie = 'dl_path=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setTimeout(function() {
+      window.location.href = path;
+    }, 500);
+    return;
+  }
+
+  // 2) query string 확인 (이미 로그인 상태)
+  var params = new URLSearchParams(window.location.search);
+  var dl = params.get('dl');
+  var tk = params.get('tk');
+  if (!dl || !tk) return;
+
+  var path = '/link/' + dl + '/' + tk;
+  setTimeout(function() {
+    window.location.href = path;
+  }, 500);
+})();
+" style="display:none"&gt;</code></pre>
+<h3 class="mdx-h3" data-ke-size="size23">④ MF_DeepLink_OpenReviewMeeting (딥링크 MF)</h3>
+<pre class="mdx-code php"><code>// 파라미터: UrlPath (String)
+
+① Retrieve ReviewMeeting
+   XPath: [Token = $UrlPath]
+   Range: First
+
+② if $ReviewMeeting != empty:
+     ③ Retrieve ActionItem
+     ④ Retrieve ActionItemClear
+     ⑤ Retrieve ExternalInspectionIssue
+     ⑥ Create UIContext_2
+     ⑦ Show Page: PG_ReviewMeeting_NewEdit
+        // 파라미터 5개 전부 넘기기
+   else:
+     Show message: '해당 회의록을 찾을 수 없습니다'</code></pre>
+<div class="mdx-card gray"><span class="mdx-label info">Token 생성 팁</span><br />Create 시 <code class="mdx-inline">random()</code>으로 Token을 생성하면 표현식이 두 번 평가되어 Create와 Change Object에서 다른 값이 들어갈 수 있습니다. <b>Change Object 하나에서 Token과 Details를 분리해서 Set</b>하거나, <b>Token Set을 별도 Change Object로 먼저 실행</b>한 후 Details에서 <code class="mdx-inline">$Object/Token</code>을 참조하세요.</div>
+<!-- 6. 교훈 -->
+<h2 id="mdx-lessons" class="mdx-h2" data-ke-size="size26">6. 교훈 &mdash; 삽질에서 배운 것</h2>
+<div class="mdx-step">
+<div class="mdx-step-num">1</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Mendix DeepLink 모듈은 SAML SSO와 궁합이 안 맞는다</div>
+<p data-ke-size="size16">PendingLink가 세션 ID 기반이라, SSO처럼 세션이 바뀌는 환경에서는 근본적으로 작동하지 않습니다. 공식 문서에는 이 제약이 명시되어 있지 않습니다.</p>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">2</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">SPA 앱에서 /p/ 직접 접근을 가정하지 말 것</div>
+<p data-ke-size="size16">Mendix 앱이 SPA 모드일 때 <code class="mdx-inline">/p/페이지이름</code> URL 직접 접근이 안 됩니다. 모든 라우팅이 <code class="mdx-inline">/#/</code> hash 기반으로 동작하며, 외부에서 특정 페이지를 직접 여는 것이 불가능합니다.</p>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">3</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">&lt;script&gt; 태그 대신 &lt;img onerror&gt; 트릭</div>
+<p data-ke-size="size16">Mendix SPA의 HTMLSnippet에서 <code class="mdx-inline">&lt;script&gt;</code> 태그가 렌더링되지 않는 경우가 있습니다. <code class="mdx-inline">&lt;img src="x" onerror="JS코드" style="display:none"&gt;</code>로 우회하면 확실하게 JS가 실행됩니다.</p>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">4</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">메일 링크에 # (fragment)를 쓰지 말 것</div>
+<p data-ke-size="size16">Outlook 등 메일 클라이언트가 URL의 <code class="mdx-inline">#</code> 이후를 제거합니다. 토큰 전달은 반드시 <b>query string (<code class="mdx-inline">?key=value</code>)</b> 방식을 사용해야 합니다.</p>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">5</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">쿠키는 SSO를 넘어서도 살아남는다</div>
+<p data-ke-size="size16">ADFS SSO가 cont 파라미터를 무시하더라도, 같은 도메인의 쿠키는 SSO 리다이렉트를 거쳐도 유지됩니다. 이 특성을 활용해 로그인 전에 쿠키로 토큰을 저장하고, 로그인 후에 읽어서 딥링크를 실행할 수 있습니다.</p>
+</div>
+</div>
+<!-- 태그 -->
+<div class="mdx-tags"><span>Mendix</span> <span>DeepLink</span> <span>SAML SSO</span> <span>ADFS</span> <span>SPA</span> <span>HTMLSnippet</span> <span>쿠키</span> <span>로우코드</span> <span>멘딕스</span> <span>딥링크</span></div>
+</div>
+</article>
+</div>

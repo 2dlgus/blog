@@ -1,0 +1,381 @@
+<!--
+id: 69
+제목: AWS DEA-C01 공식 샘플 문제 — Spectrum + S3 Glacier Deep Archive 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, spectrum, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, S3 Glacier Deep Archive
+날짜: 2026-03-11 22:29
+수정: 2026-03-24 22:26
+형식: html
+썸네일: /img/t/dJMcajakyAw.webp
+-->
+<style>
+.pb-69 *, .pb-69, .pb-69 *::before, .pb-69 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-69{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-69{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-69 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-69 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-69 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-69 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-69 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-69 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-69 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-69 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-69 .badge-indigo{background:var(--p5);color:var(--indigo);border:1px solid var(--p10)}
+.pb-69 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-69 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-69 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-69 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-69 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-69 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-69 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-69 .question-box p:last-child{margin-bottom:0}
+.pb-69 .hl-blue{color:var(--blue);font-weight:700}
+.pb-69 .hl-orange{color:var(--orange);font-weight:700}
+.pb-69 .hl-green{color:var(--green);font-weight:700}
+.pb-69 .hl-teal{color:var(--teal);font-weight:700}
+.pb-69 .hl-purple{color:var(--purple);font-weight:700}
+.pb-69 .hl-bold{font-weight:900}
+.pb-69 .req-list{list-style:none;padding:0}
+.pb-69 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-69 .req-list li:last-child{border-bottom:none}
+.pb-69 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-69 .lifecycle{display:flex;align-items:stretch;gap:0;border-radius:12px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow);background:var(--g0);margin-bottom:16px}
+.pb-69 .lc-seg{flex:1;min-width:0;padding:14px 10px;text-align:center;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px}
+.pb-69 .lc-seg:last-child{border-right:none}
+.pb-69 .lc-seg .lc-period{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-bottom:4px}
+.pb-69 .lc-seg .lc-icon{font-size:22px}
+.pb-69 .lc-seg .lc-name{font-size:11px;font-weight:700;line-height:1.3}
+.pb-69 .lc-seg .lc-sub{font-size:10px;color:var(--muted);line-height:1.4}
+.pb-69 .lc-seg.phase1{background:var(--p5)}
+.pb-69 .lc-seg.phase1 .lc-period{background:var(--blue);color:#fff}
+.pb-69 .lc-seg.phase1 .lc-name{color:var(--blue)}
+.pb-69 .lc-seg.phase2{background:var(--s5)}
+.pb-69 .lc-seg.phase2 .lc-period{background:var(--green);color:#fff}
+.pb-69 .lc-seg.phase2 .lc-name{color:var(--green)}
+.pb-69 .lc-seg.phase3{background:var(--g5)}
+.pb-69 .lc-seg.phase3 .lc-period{background:var(--purple);color:#fff}
+.pb-69 .lc-seg.phase3 .lc-name{color:var(--purple)}
+.pb-69 .lc-arrow{flex-shrink:0;width:20px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);background:var(--g0);border-right:1px solid var(--border)}
+@media (max-width: 540px){.pb-69 .lifecycle{flex-direction:column}
+.pb-69 .lc-seg{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;text-align:left;padding:10px 14px;gap:10px}
+.pb-69 .lc-seg:last-child{border-bottom:none}
+.pb-69 .lc-seg .lc-period{white-space:nowrap}
+.pb-69 .lc-arrow{width:100%;height:20px;border-right:none;border-bottom:1px solid var(--border)}}
+.pb-69 .glacier-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media (max-width: 560px){.pb-69 .glacier-grid{grid-template-columns:1fr}}
+.pb-69 .glacier-card{border-radius:12px;padding:14px 13px;border:1.5px solid var(--border)}
+.pb-69 .glacier-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-69 .glacier-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-69 .glacier-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-69 .glacier-card .gc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pb-69 .glacier-card .gc-icon{font-size:18px}
+.pb-69 .glacier-card .gc-name{font-weight:700;font-size:12px;line-height:1.3}
+.pb-69 .glacier-card.ok   .gc-name{color:var(--green)}
+.pb-69 .glacier-card.warn .gc-name{color:var(--yellow)}
+.pb-69 .glacier-card.bad  .gc-name{color:var(--red)}
+.pb-69 .gc-items{list-style:none;padding:0}
+.pb-69 .gc-items li{font-size:11px;padding:2px 0;border-bottom:1px solid color-mix(in srgb, var(--g90) 5%, transparent);line-height:1.5}
+.pb-69 .gc-items li:last-child{border-bottom:none}
+.pb-69 .gc-items li::before{content:'• ';color:var(--muted)}
+.pb-69 .gc-result{margin-top:8px;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700;text-align:center}
+.pb-69 .glacier-card.ok   .gc-result{background:var(--s10);color:var(--green)}
+.pb-69 .glacier-card.warn .gc-result{background:var(--y10);color:var(--yellow)}
+.pb-69 .glacier-card.bad  .gc-result{background:var(--r5);color:var(--red)}
+.pb-69 .flow-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pb-69 .flow-box{padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid;white-space:nowrap}
+.pb-69 .flow-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-69 .flow-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-69 .flow-box.purple{background:var(--g5);color:var(--purple);border-color:var(--p10)}
+.pb-69 .flow-box.gray{background:var(--p5);color:var(--muted);border-color:var(--border)}
+.pb-69 .flow-arrow{font-size:14px;color:var(--muted);flex-shrink:0}
+.pb-69 .flow-note{font-size:11px;color:var(--muted);padding:4px 8px;background:var(--g0);border-radius:6px;border:1px solid var(--border)}
+.pb-69 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-69 .option:hover{border-color:var(--p50)}
+.pb-69 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-69 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-69 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-69 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-69 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-69 .opt-body{flex:1;min-width:0}
+.pb-69 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-69 .opt-main.correct{color:var(--green)}
+.pb-69 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-69 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-69 .opt-why.show{display:block}
+.pb-69 .opt-why.ok-why{background:var(--s10)}
+.pb-69 .opt-why.bad-why{background:var(--r5)}
+.pb-69 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-69 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-69 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-69 .answer-body{display:none;margin-top:14px}
+.pb-69 .answer-body.show{display:block}
+.pb-69 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-69 .answer-body strong{color:var(--orange)}
+.pb-69 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-69 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-69 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-69 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-69 .summary-table tr:last-child td{border-bottom:none}
+.pb-69 .summary-table tr:hover td{background:var(--g0)}
+.pb-69 .ok-text{color:var(--green);font-weight:700}
+.pb-69 .bad-text{color:var(--red);font-weight:700}
+.pb-69 .warn-text{color:var(--yellow);font-weight:700}
+.pb-69 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-69 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-69 .wrap{padding:20px 14px 50px}
+.pb-69 h1.post-title{font-size:19px}
+.pb-69 .question-box p{font-size:14px}
+.pb-69 .opt-main{font-size:13px}
+.pb-69 .code-block{font-size:11px}}
+.pb-69 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-69 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-69 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-69 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-69 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-69 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-69 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-69 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-69 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-69 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-69 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-69 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-69 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-69 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-69 .ans-label::before{content:'🎯 '}
+.pb-69 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-69 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-69 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-69 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-69 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-69 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-69">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">데이터 엔지니어</span> <span class="badge badge-teal">Redshift Spectrum</span> <span class="badge badge-purple">S3 Glacier &middot; 수명주기</span> <span class="badge badge-orange">비용 최적화</span></div>
+<h1 class="post-title">Redshift 데이터 수명주기 비용 최적화 &mdash; Spectrum + S3 Glacier Deep Archive가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 데이터 수명주기 비용 최적화 문제입니다. <b>최근 3개월은 Redshift에서 활성 분석</b>, <b>3~12개월은 S3 + Redshift Spectrum으로 연간 분석</b>, <b>12개월 이후는 S3 Glacier Deep Archive로 규정 준수 보관</b>하는 3단계 수명주기 아키텍처를 도식으로 비교 정리합니다. Redshift Spectrum이 접근할 수 없는 스토리지 등급도 함께 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사에서는 여러 운영 소스에서 <span class="hl-blue">Amazon S3 데이터 레이크</span>로 데이터를 수집하고, 비즈니스 분석팀이 분석할 수 있도록 <span class="hl-blue">Amazon Redshift</span>에 수집한다. 분석팀은 <span class="hl-bold">최근 3개월의 고객 데이터에만 상시 액세스</span>할 수 있어야 한다.</p>
+<p data-ke-size="size16">또한 회사는 <span class="hl-orange">일 년에 한 번 전년도 데이터를 상세 분석</span>하여 지난 12개월 전체 결과와 비교한다. 분석 후에는 <span class="hl-bold">데이터에 더 이상 액세스할 수 없다.</span> 그러나 <span class="hl-green">규정 준수를 위해 12개월 이후에도 데이터를 보관</span>해야 한다.</p>
+<p data-ke-size="size16">다음 중 <span class="hl-bold">가장 비용 효율적인 방식</span>으로 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 분석</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">📊</span>
+<div><b>상시 분석: 최근 3개월 데이터</b><br /><span style="font-size:13px;color:var(--muted)">분석팀이 빠르게 쿼리해야 하는 활성 데이터 &rarr; Redshift 클러스터에 적재</span></div>
+</li>
+<li><span class="req-icon">📅</span>
+<div><b>연 1회 분석: 최대 12개월 전 데이터</b><br /><span style="font-size:13px;color:var(--muted)">연간 한 번만 접근 &rarr; Redshift에 12개월치 모두 유지하면 낭비, S3 + Spectrum이 적합</span></div>
+</li>
+<li><span class="req-icon">🔒</span>
+<div><b>장기 보관(규정 준수): 12개월 이후</b><br /><span style="font-size:13px;color:var(--muted)">더 이상 접근 없음, 비용 최저화 필요 &rarr; S3 Glacier Deep Archive (GB당 가장 저렴)</span></div>
+</li>
+</ul>
+</div>
+<!-- 데이터 수명주기 도식 -->
+<h2 class="section-title" data-ke-size="size26">📐 정답 데이터 수명주기 아키텍처</h2>
+<div class="card">
+<div class="lifecycle">
+<div class="lc-seg phase1">
+<div class="lc-period">0 ~ 3개월</div>
+<div class="lc-icon">🏢</div>
+<div class="lc-name">Amazon Redshift</div>
+<div class="lc-sub">상시 쿼리<br />고성능 분석</div>
+</div>
+<div class="lc-arrow">&rarr;</div>
+<div class="lc-seg phase2">
+<div class="lc-period">3 ~ 12개월</div>
+<div class="lc-icon">🪣</div>
+<div class="lc-name">Amazon S3<br />+ Spectrum</div>
+<div class="lc-sub">연 1회 분석<br />언로드 후 삭제</div>
+</div>
+<div class="lc-arrow">&rarr;</div>
+<div class="lc-seg phase3">
+<div class="lc-period">12개월 이후</div>
+<div class="lc-icon">🧊</div>
+<div class="lc-name">S3 Glacier<br />Deep Archive</div>
+<div class="lc-sub">규정 준수 보관<br />액세스 없음</div>
+</div>
+</div>
+<!-- 흐름 다이어그램 -->
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">🔄 데이터 이동 흐름</p>
+<div class="flow-row">
+<div class="flow-box blue">데이터 수집 (S3 &rarr; Redshift)</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-note">3개월치만 유지</div>
+</div>
+<div class="flow-row">
+<div class="flow-box blue">Redshift (3개월 초과 데이터)</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box green">S3 언로드 후 Redshift 삭제</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-note">자동화 프로세스</div>
+</div>
+<div class="flow-row">
+<div class="flow-box green">S3 (3~12개월 데이터)</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box blue">Redshift Spectrum으로 연간 분석</div>
+</div>
+<div class="flow-row">
+<div class="flow-box green">S3 (12개월 초과 데이터)</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box purple">S3 수명주기 정책 &rarr; Glacier Deep Archive</div>
+</div>
+<!-- Glacier 등급 비교 -->
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">🧊 S3 Glacier 등급 비교 &mdash; Redshift Spectrum 접근 가능 여부</p>
+<div class="glacier-grid">
+<div class="glacier-card warn">
+<div class="gc-header"><span class="gc-icon">⚡</span>
+<div class="gc-name">Glacier<br />Instant Retrieval</div>
+</div>
+<ul class="gc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>즉시 조회 가능 (ms)</li>
+<li>분기별 접근 대상</li>
+<li>S3 Standard보다 저렴</li>
+<li>Redshift UNLOAD<br />직접 불가 ⚠️</li>
+<li>Spectrum 접근 불가 ⚠️</li>
+</ul>
+<div class="gc-result">⚠️ Spectrum 불가</div>
+</div>
+<div class="glacier-card warn">
+<div class="gc-header"><span class="gc-icon">🕐</span>
+<div class="gc-name">Glacier<br />Flexible Retrieval</div>
+</div>
+<ul class="gc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>조회 1~12시간</li>
+<li>연 1~2회 접근</li>
+<li>Instant보다 저렴</li>
+<li>Redshift UNLOAD<br />직접 불가 ⚠️</li>
+<li>Spectrum 접근 불가 ⚠️</li>
+</ul>
+<div class="gc-result">⚠️ Spectrum 불가</div>
+</div>
+<div class="glacier-card ok">
+<div class="gc-header"><span class="gc-icon">🧊</span>
+<div class="gc-name">Glacier<br />Deep Archive ⭐</div>
+</div>
+<ul class="gc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>조회 12시간 이내</li>
+<li>연 1회 이하 접근</li>
+<li>GB당 가장 저렴</li>
+<li>S3 수명주기로<br />자동 이전 가능 ✅</li>
+<li>장기 보관 최적</li>
+</ul>
+<div class="gc-result">✅ 규정 준수 보관 최적</div>
+</div>
+</div>
+<p style="font-size:11px;color:var(--red);font-weight:bold;margin-top:10px;padding:8px 12px;background:var(--g5);border-radius:8px" data-ke-size="size16">⚠️ 핵심 함정: Redshift UNLOAD 명령은 S3 Glacier 계열로 직접 언로드 불가 &rarr; 반드시 S3 Standard/Intelligent-Tiering으로 언로드 후 수명주기 정책으로 이전해야 함</p>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ 12개월 데이터를 Redshift에 수집 &rarr; 12개월 초과 시 S3 언로드 &rarr; Glacier Deep Archive</div>
+<div class="opt-sub">Redshift에 12개월치 전부 유지 &mdash; 미사용 데이터 과금 발생</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Glacier Deep Archive 이전 방식은 올바르지만, <b>분석팀이 필요한 건 최근 3개월 데이터뿐인데 Redshift에 12개월치 전부를 유지</b>합니다. 3~12개월 데이터는 연 1회만 접근하는데, 이 기간 내내 Redshift 클러스터 컴퓨팅 비용이 발생합니다. 가장 비용 효율적인 방식이 아닙니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ 3개월 초과 시 Redshift &rarr; S3 Glacier Deep Archive 직접 언로드 &rarr; Spectrum으로 연간 분석</div>
+<div class="opt-sub">Redshift UNLOAD는 Glacier 직접 불가 + Spectrum도 Glacier 접근 불가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 치명적 오류가 있습니다. 첫째, <b>Redshift UNLOAD 명령은 S3 Glacier Deep Archive로 직접 언로드할 수 없습니다.</b> 반드시 S3 Standard로 먼저 언로드해야 합니다. 둘째, <b>Redshift Spectrum은 S3 Glacier Deep Archive에 저장된 데이터에 접근&middot;쿼리할 수 없습니다.</b> Spectrum은 S3 Standard, Intelligent-Tiering 등 즉시 접근 가능한 스토리지 클래스만 지원합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">C</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 3개월 데이터만 Redshift &rarr; 3개월 초과 시 S3 언로드 삭제 &rarr; Spectrum으로 연간 분석 &rarr; 12개월 초과 시 수명주기 정책으로 Glacier Deep Archive</div>
+<div class="opt-sub">3단계 수명주기 &mdash; Redshift(3개월) + S3(3~12개월) + Glacier Deep Archive(12개월+)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> 3단계 수명주기 전략이 모든 요건을 비용 최적화 방식으로 충족합니다. ① <b>Redshift에는 3개월치만 유지</b> &rarr; 최소 컴퓨팅 비용, ② <b>3~12개월 데이터는 S3에 보관 + Redshift Spectrum</b> &rarr; 연 1회 분석 가능 (S3 스캔 비용만 발생), ③ <b>12개월 이후 S3 수명주기 정책으로 Glacier Deep Archive 자동 이전</b> &rarr; 규정 준수 + 최저 보관 비용. Redshift UNLOAD &rarr; S3 &rarr; 수명주기 &rarr; Glacier Deep Archive 순서가 기술적으로도 정확합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ 3개월 초과 시 S3 Glacier Instant Retrieval로 직접 언로드 &rarr; Spectrum 분석 &rarr; 12개월 후 Glacier Deep Archive</div>
+<div class="opt-sub">Redshift UNLOAD는 Glacier Instant Retrieval 직접 불가 + Spectrum도 접근 불가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 B와 동일한 두 가지 오류입니다. <b>Redshift UNLOAD는 S3 Glacier Instant Retrieval로 직접 언로드할 수 없습니다.</b> 또한 <b>Redshift Spectrum은 S3 Glacier Instant Retrieval 데이터에 접근&middot;쿼리할 수 없습니다.</b> Glacier 계열 스토리지는 Spectrum이 직접 쿼리하는 S3 표준 접근 방식을 지원하지 않습니다. 수명주기 정책으로 Glacier Deep Archive 이전하는 마지막 단계는 올바르지만, 앞 단계가 잘못되었습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: C &mdash; 3단계 수명주기 아키텍처</b></p>
+<p data-ke-size="size16">이 문제의 핵심 함정은 두 가지입니다. <b>① Redshift UNLOAD는 Glacier로 직접 언로드 불가</b> (S3 Standard &rarr; 수명주기 이전), <b>② Redshift Spectrum은 Glacier 계열 데이터 접근 불가</b> (S3 Standard만 가능). 정답 C는 이 두 제약을 모두 우회하면서 비용을 최소화합니다.</p>
+<div class="code-block"># 정답 C &mdash; 3단계 데이터 수명주기 [0~3개월] 데이터 수집 &rarr; Amazon Redshift (상시 분석) &darr; (3개월 초과 시 자동화 프로세스) [3~12개월] Redshift UNLOAD &rarr; Amazon S3 Standard ├─ Redshift에서 삭제 (비용 절감) └─ Redshift Spectrum으로 연간 분석 ✅ &darr; (S3 수명주기 정책, 12개월 후) [12개월+] S3 Glacier Deep Archive (규정 준수 보관) └─ 더 이상 접근 없음, 최저 스토리지 비용 # 핵심 제약 사항 UNLOAD &rarr; Glacier 직접 ❌ (S3 &rarr; 수명주기 이전만 가능) Spectrum &rarr; Glacier 쿼리 ❌ (S3 Standard 계열만 가능)</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>Redshift 데이터</th>
+<th>UNLOAD 방식</th>
+<th>연간 분석</th>
+<th>장기 보관</th>
+<th>비용 효율</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A. 12개월 유지</b></td>
+<td class="bad-text">12개월치</td>
+<td class="ok-text">S3 &rarr; Glacier ✅</td>
+<td class="warn-text">Redshift 직접</td>
+<td class="ok-text">Deep Archive ✅</td>
+<td class="bad-text">낭비 많음</td>
+</tr>
+<tr>
+<td><b>B. Glacier 직접</b></td>
+<td class="ok-text">3개월치</td>
+<td class="bad-text">Glacier 직접 ❌</td>
+<td class="bad-text">Spectrum 불가 ❌</td>
+<td class="ok-text">Deep Archive ✅</td>
+<td class="bad-text">기술적 불가</td>
+</tr>
+<tr>
+<td><b>C. 3단계 수명주기 ⭐</b></td>
+<td class="ok-text">3개월치</td>
+<td class="ok-text">S3 &rarr; 수명주기 ✅</td>
+<td class="ok-text">Spectrum ✅</td>
+<td class="ok-text">Deep Archive ✅</td>
+<td class="ok-text">최고</td>
+</tr>
+<tr>
+<td><b>D. Instant 직접</b></td>
+<td class="ok-text">3개월치</td>
+<td class="bad-text">Glacier 직접 ❌</td>
+<td class="bad-text">Spectrum 불가 ❌</td>
+<td class="ok-text">Deep Archive ✅</td>
+<td class="bad-text">기술적 불가</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWS데이터엔지니어</span> <span class="seo-tag">#AmazonRedshift</span> <span class="seo-tag">#RedshiftSpectrum</span> <span class="seo-tag">#S3GlacierDeepArchive</span> <span class="seo-tag">#S3수명주기정책</span> <span class="seo-tag">#데이터수명주기</span> <span class="seo-tag">#비용최적화</span> <span class="seo-tag">#데이터레이크</span> <span class="seo-tag">#규정준수</span> <span class="seo-tag">#S3GlacierInstant</span> <span class="seo-tag">#AWS자격증</span></div>
+</article>
+</div>

@@ -1,0 +1,1257 @@
+<!--
+id: 53
+제목: AWS DEA-C01 아키텍처 플로우차트 (Architecture Flowchart)
+카테고리: Stack/AWS
+태그: AWS, Flowchart, 플로우차트, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, AWS 아키텍처
+날짜: 2026-03-10 19:58
+수정: 2026-03-21 23:44
+형식: html
+썸네일: /img/t/dJMcagkn6TL.webp
+-->
+<style>
+.pb-53 *, .pb-53, .pb-53 *::before, .pb-53 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-53{--bg:var(--p5);--surface:var(--g0);--surface2:var(--g0);--border:var(--p10);--border2:var(--p5);--text:var(--p70);--muted:var(--g50);--dim:var(--g40);--c-src:var(--p60);--c-src-bg:var(--p5);--c-src-bd:var(--p50);--c-ing:var(--i60);--c-ing-bg:var(--i5);--c-ing-bd:var(--i50);--c-sto:var(--y60);--c-sto-bg:var(--y10);--c-sto-bd:var(--y50);--c-etl:var(--s60);--c-etl-bg:var(--s10);--c-etl-bd:var(--s50);--c-gov:var(--p50);--c-gov-bg:var(--g5);--c-gov-bd:var(--p10);--c-ana:var(--r60);--c-ana-bg:var(--r5);--c-ana-bd:var(--r50);--c-ml:var(--r60);--c-ml-bg:var(--p5);--c-ml-bd:var(--p50);--c-sec:var(--p50);--c-sec-bg:var(--p10);--c-sec-bd:var(--p50);--c-orch:var(--p50);--c-orch-bg:var(--p5);--c-orch-bd:var(--p50);--c-srv:var(--i60);--c-srv-bg:var(--s10);--c-srv-bd:var(--i50);--c-cdc:var(--r60);--c-cdc-bg:var(--y5);--c-cdc-bd:var(--y50)}
+.pb-53{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.pb-53 .seo-intro{max-width:860px;margin:0 auto;padding:40px 20px 0;font-size:14px;color:var(--muted);line-height:1.8}
+.pb-53 .seo-intro h1{font-size:clamp(18px,3vw,26px);font-weight:900;color:var(--text);margin-bottom:12px}
+.pb-53 .seo-intro h2{font-size:15px;font-weight:700;color:var(--c-ing);margin:16px 0 6px}
+.pb-53 .seo-divider{max-width:960px;margin:28px auto 0;height:1px;background:linear-gradient(to right, transparent, var(--border), transparent)}
+.pb-53 .page-header{background:var(--g0);border-bottom:1px solid var(--border);padding:36px 24px 28px;text-align:center}
+.pb-53 .page-header .badge{display:inline-block;font-family:'DM Mono', monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--c-ing);background:var(--c-ing-bg);border:1px solid var(--c-ing-bd);border-radius:4px;padding:3px 10px;margin-bottom:14px}
+.pb-53 .page-header h1{font-size:clamp(20px, 4vw, 36px);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
+.pb-53 .page-header h1 em{font-style:normal;color:var(--c-ing)}
+.pb-53 .page-header p{color:var(--muted);font-size:13px;font-weight:400}
+.pb-53 .legend-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--border2)}
+.pb-53 .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-family:'DM Mono', monospace}
+.pb-53 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.pb-53 .tab-bar{display:flex;gap:0;background:var(--surface);border-bottom:2px solid var(--border);overflow-x:auto;padding:0 20px;-webkit-overflow-scrolling:touch}
+.pb-53 .tab-bar::-webkit-scrollbar{height:0}
+.pb-53 .tab-btn{flex-shrink:0;padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--dim);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;white-space:nowrap;transition:color 0.15s, border-color 0.15s;display:flex;align-items:center;gap:6px}
+.pb-53 .tab-btn:hover{color:var(--muted)}
+.pb-53 .tab-btn.active{color:var(--c-ing);border-bottom-color:var(--c-ing)}
+.pb-53 .tab-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;font-family:'DM Mono', monospace;font-size:10px;background:var(--border2);color:var(--dim)}
+.pb-53 .tab-btn.active .tab-num{background:var(--c-ing-bg);color:var(--c-ing)}
+.pb-53 .panel{display:none;padding:24px 20px 48px;max-width:1000px;margin:0 auto}
+.pb-53 .panel.active{display:block}
+.pb-53 .layer{display:flex;align-items:stretch;gap:12px;margin-bottom:6px}
+.pb-53 .layer-label{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-family:'DM Mono', monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);flex-shrink:0;width:20px;display:flex;align-items:center;justify-content:center}
+.pb-53 .layer-content{flex:1;display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;position:relative}
+.pb-53 .layer-content.highlight{background:var(--g0);border-color:var(--c-ing-bd)}
+.pb-53 .node{display:flex;align-items:flex-start;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;min-width:130px;max-width:200px;position:relative;transition:box-shadow 0.15s, transform 0.15s}
+.pb-53 .node:hover{box-shadow:0 3px 12px rgba(0,0,0,0.08);transform:translateY(-1px)}
+.pb-53 .node-icon{font-size:18px;flex-shrink:0;line-height:1;margin-top:1px}
+.pb-53 .node-body{}
+.pb-53 .node-name{font-size:12px;font-weight:700;line-height:1.3;font-family:'DM Mono', monospace}
+.pb-53 .node-desc{font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.pb-53 .node.src{border-color:var(--c-src-bd);background:var(--c-src-bg)}
+.pb-53 .node.src   .node-name{color:var(--c-src)}
+.pb-53 .node.ing{border-color:var(--c-ing-bd);background:var(--c-ing-bg)}
+.pb-53 .node.ing   .node-name{color:var(--c-ing)}
+.pb-53 .node.sto{border-color:var(--c-sto-bd);background:var(--c-sto-bg)}
+.pb-53 .node.sto   .node-name{color:var(--c-sto)}
+.pb-53 .node.etl{border-color:var(--c-etl-bd);background:var(--c-etl-bg)}
+.pb-53 .node.etl   .node-name{color:var(--c-etl)}
+.pb-53 .node.gov{border-color:var(--c-gov-bd);background:var(--c-gov-bg)}
+.pb-53 .node.gov   .node-name{color:var(--c-gov)}
+.pb-53 .node.ana{border-color:var(--c-ana-bd);background:var(--c-ana-bg)}
+.pb-53 .node.ana   .node-name{color:var(--c-ana)}
+.pb-53 .node.ml{border-color:var(--c-ml-bd);background:var(--c-ml-bg)}
+.pb-53 .node.ml    .node-name{color:var(--c-ml)}
+.pb-53 .node.sec{border-color:var(--c-sec-bd);background:var(--c-sec-bg)}
+.pb-53 .node.sec   .node-name{color:var(--c-sec)}
+.pb-53 .node.orch{border-color:var(--c-orch-bd);background:var(--c-orch-bg)}
+.pb-53 .node.orch  .node-name{color:var(--c-orch)}
+.pb-53 .node.srv{border-color:var(--c-srv-bd);background:var(--c-srv-bg)}
+.pb-53 .node.srv   .node-name{color:var(--c-srv)}
+.pb-53 .node.cdc{border-color:var(--c-cdc-bd);background:var(--c-cdc-bg)}
+.pb-53 .node.cdc   .node-name{color:var(--c-cdc)}
+.pb-53 .arrow-h{display:flex;align-items:center;color:var(--dim);font-size:18px;flex-shrink:0;align-self:center;user-select:none}
+.pb-53 .arrow-label{font-family:'DM Mono', monospace;font-size:9px;color:var(--dim);text-align:center;margin:0 2px;line-height:1.3}
+.pb-53 .v-arrow{display:flex;flex-direction:column;align-items:center;padding:4px 0;color:var(--dim);gap:0}
+.pb-53 .v-arrow-line{width:2px;height:20px;background:var(--border);flex-shrink:0}
+.pb-53 .v-arrow-head{font-size:16px;line-height:1;margin-top:-2px}
+.pb-53 .v-arrow.center{align-items:center;width:100%}
+.pb-53 .v-arrow-label{font-family:'DM Mono', monospace;font-size:9px;color:var(--dim);margin:2px 0;letter-spacing:0.5px}
+.pb-53 .branch-row{display:flex;gap:8px;flex-wrap:wrap}
+.pb-53 .branch-col{display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex:1;min-width:180px}
+.pb-53 .branch-label{font-family:'DM Mono', monospace;font-size:9px;color:var(--c-ing);background:var(--c-ing-bg);border:1px solid var(--c-ing-bd);border-radius:3px;padding:2px 7px;align-self:flex-start}
+.pb-53 .case-title{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border2)}
+.pb-53 .case-num{font-family:'DM Mono', monospace;font-size:11px;font-weight:500;color:var(--dim);background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.pb-53 .case-name{font-size:16px;font-weight:800;letter-spacing:-0.3px}
+.pb-53 .case-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-53 .note-box{background:var(--g5);border:1px solid var(--y50);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--y60);line-height:1.6;margin-top:4px}
+.pb-53 .note-box strong{color:var(--y60)}
+.pb-53 .key-points{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.pb-53 .kp{font-family:'DM Mono', monospace;font-size:10.5px;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.pb-53 .kp::before{content:'★';font-size:9px}
+.pb-53 .kp.blue{background:var(--c-ing-bg);color:var(--c-ing);border:1px solid var(--c-ing-bd)}
+.pb-53 .kp.green{background:var(--c-etl-bg);color:var(--c-etl);border:1px solid var(--c-etl-bd)}
+.pb-53 .kp.amber{background:var(--c-sto-bg);color:var(--c-sto);border:1px solid var(--c-sto-bd)}
+.pb-53 .kp.red{background:var(--c-ana-bg);color:var(--c-ana);border:1px solid var(--c-ana-bd)}
+.pb-53 .kp.purple{background:var(--c-gov-bg);color:var(--c-gov);border:1px solid var(--c-gov-bd)}
+.pb-53 .kp.pink{background:var(--c-ml-bg);color:var(--c-ml);border:1px solid var(--c-ml-bd)}
+.pb-53 .sub-divider{height:1px;background:var(--border2);margin:16px 0}
+.pb-53 .diagram{display:flex;flex-direction:column;align-items:stretch;gap:0}
+@media (max-width: 640px){.pb-53 .layer{flex-direction:column}
+.pb-53 .layer-label{writing-mode:horizontal-tb;transform:none;width:auto;height:20px}
+.pb-53 .layer-content{padding:10px}
+.pb-53 .node{min-width:110px}
+.pb-53 .tab-btn{padding:10px 12px;font-size:11.5px}
+.pb-53 .panel{padding:16px 12px 40px}
+.pb-53 .branch-col{min-width:140px}}
+</style>
+<div class="pb pb-53">
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<!-- SEO INTRO -->
+<article class="seo-intro">
+<h1>AWS 데이터 아키텍처 플로우차트 &mdash; 6가지 케이스</h1>
+<p data-ke-size="size16">AWS Data Engineer Associate 시험에 나오는 핵심 아키텍처 패턴을 케이스별로 정리한 플로우차트이다. 배치 ETL 파이프라인, 실시간 스트리밍 파이프라인, 레이크하우스 Bronze Silver Gold, ML 모델 학습 서빙, 데이터 거버넌스 보안 아키텍처, CDC DB에서 DW 마이그레이션 6가지 아키텍처를 박스와 화살표 흐름으로 도식화했다.</p>
+<h2 data-ke-size="size26">포함된 AWS 서비스</h2>
+<p data-ke-size="size16">Kinesis Data Streams, Kinesis Firehose, Kinesis Data Analytics, AWS Glue, AWS Glue Crawler, AWS Glue Data Catalog, Amazon EMR, Amazon Athena, Amazon Redshift, Amazon S3, AWS DMS, Amazon RDS, AWS Lambda, Amazon DynamoDB, Amazon OpenSearch, Amazon SageMaker, Amazon QuickSight, AWS Lake Formation, AWS IAM, Amazon Cognito, AWS KMS, AWS CloudTrail, Amazon Macie, Amazon CloudWatch, AWS Step Functions, Amazon MWAA</p>
+</article>
+<div class="seo-divider">&nbsp;</div>
+<!-- PAGE HEADER -->
+<div class="page-header">
+<div class="badge">AWS Architecture Reference</div>
+<h1>AWS 데이터 아키텍처<br /><i>케이스별 플로우차트</i></h1>
+<p data-ke-size="size16">시험에 나오는 6가지 핵심 패턴 &mdash; 박스와 화살표로 한눈에</p>
+</div>
+<!-- LEGEND -->
+<div class="legend-bar">
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-src-bg);border:1px solid var(--c-src-bd)">&nbsp;</div>
+데이터 소스</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-ing-bg);border:1px solid var(--c-ing-bd)">&nbsp;</div>
+수집 Ingestion</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-sto-bg);border:1px solid var(--c-sto-bd)">&nbsp;</div>
+저장 Storage</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-etl-bg);border:1px solid var(--c-etl-bd)">&nbsp;</div>
+처리/ETL</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-gov-bg);border:1px solid var(--c-gov-bd)">&nbsp;</div>
+거버넌스</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-ana-bg);border:1px solid var(--c-ana-bd)">&nbsp;</div>
+분석/서빙</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-ml-bg);border:1px solid var(--c-ml-bd)">&nbsp;</div>
+ML</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-sec-bg);border:1px solid var(--c-sec-bd)">&nbsp;</div>
+보안</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-orch-bg);border:1px solid var(--c-orch-bd)">&nbsp;</div>
+오케스트레이션</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--c-cdc-bg);border:1px solid var(--c-cdc-bd)">&nbsp;</div>
+CDC/마이그레이션</div>
+</div>
+<!-- TABS -->
+<div class="tab-bar"><button class="tab-btn active"><span class="tab-num">1</span>배치 ETL</button> <button class="tab-btn"><span class="tab-num">2</span>실시간 스트리밍</button> <button class="tab-btn"><span class="tab-num">3</span>레이크하우스</button> <button class="tab-btn"><span class="tab-num">4</span>ML 학습&middot;서빙</button> <button class="tab-btn"><span class="tab-num">5</span>거버넌스&middot;보안</button> <button class="tab-btn"><span class="tab-num">6</span>CDC / DW 마이그</button></div>
+<!-- ════════════════════════════ PANEL 1: 배치 ETL ════════════════════════════ -->
+<div id="panel-0" class="panel active">
+<div class="case-title"><span class="case-num">CASE 01</span>
+<div>
+<div class="case-name">배치 ETL 파이프라인</div>
+<div class="case-desc">정기 스케줄로 데이터를 수집 &rarr; 변환 &rarr; 적재하는 가장 기본적인 패턴</div>
+</div>
+</div>
+<div class="diagram"><!-- Layer 1: Sources -->
+<div class="layer">
+<div class="layer-label">소스</div>
+<div class="layer-content">
+<div class="node src">
+<div class="node-icon">🏢</div>
+<div class="node-body">
+<div class="node-name">RDS / Aurora</div>
+<div class="node-desc">운영 DB (MySQL, PostgreSQL)</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">📁</div>
+<div class="node-body">
+<div class="node-name">S3 Raw Upload</div>
+<div class="node-desc">파일 드롭존 (CSV, JSON)</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">🌐</div>
+<div class="node-body">
+<div class="node-name">External API</div>
+<div class="node-desc">공공데이터, SaaS</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Layer 2: Orchestration -->
+<div class="layer">
+<div class="layer-label">오케</div>
+<div class="layer-content highlight">
+<div class="node orch">
+<div class="node-icon">🌪️</div>
+<div class="node-body">
+<div class="node-name">Amazon MWAA</div>
+<div class="node-desc">DAG 스케줄러<br />(Airflow 그대로)</div>
+</div>
+</div>
+<div class="arrow-h">
+<div>
+<div class="arrow-h">&rarr;</div>
+<div class="arrow-label">트리거</div>
+</div>
+</div>
+<div class="node orch">
+<div class="node-icon">📋</div>
+<div class="node-body">
+<div class="node-name">Step Functions</div>
+<div class="node-desc">AWS 서비스 연결<br />State Machine</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Layer 3: Ingestion -->
+<div class="layer">
+<div class="layer-label">수집</div>
+<div class="layer-content">
+<div class="node ing">
+<div class="node-icon">🔍</div>
+<div class="node-body">
+<div class="node-name">Glue Crawler</div>
+<div class="node-desc">스키마 자동 감지<br />메타데이터 카탈로깅</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ing">
+<div class="node-icon">📚</div>
+<div class="node-body">
+<div class="node-name">Glue Data Catalog</div>
+<div class="node-desc">중앙 메타데이터<br />Hive Metastore 역할</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Raw Zone</div>
+<div class="node-desc">원본 그대로 보존<br />Bronze Layer</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Layer 4: ETL -->
+<div class="layer">
+<div class="layer-label">ETL</div>
+<div class="layer-content">
+<div class="node etl">
+<div class="node-icon">🦎</div>
+<div class="node-body">
+<div class="node-name">AWS Glue ETL Job</div>
+<div class="node-desc">서버리스 Spark<br />스키마 변환, 클렌징</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node etl">
+<div class="node-icon">🐘</div>
+<div class="node-body">
+<div class="node-name">Amazon EMR</div>
+<div class="node-desc">대규모 Spark 처리<br />복잡한 집계/조인</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Cleansed Zone</div>
+<div class="node-desc">Parquet / ORC<br />파티셔닝 적용</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Layer 5: Load -->
+<div class="layer">
+<div class="layer-label">적재</div>
+<div class="layer-content">
+<div class="node sto">
+<div class="node-icon">🏪</div>
+<div class="node-body">
+<div class="node-name">Amazon Redshift</div>
+<div class="node-desc">DW 적재<br />COPY 명령으로 S3&rarr;DW</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Curated Zone</div>
+<div class="node-desc">Gold Layer<br />Athena 직쿼리용</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Layer 6: Analytics -->
+<div class="layer">
+<div class="layer-label">분석</div>
+<div class="layer-content">
+<div class="node ana">
+<div class="node-icon">🔍</div>
+<div class="node-body">
+<div class="node-name">Amazon Athena</div>
+<div class="node-desc">S3 직접 SQL 쿼리<br />스캔량만큼 과금</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ana">
+<div class="node-icon">📈</div>
+<div class="node-body">
+<div class="node-name">Amazon QuickSight</div>
+<div class="node-desc">BI 대시보드<br />SPICE 인메모리 캐시</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:16px"><b>시험 포인트:</b> Glue vs EMR 선택 기준 &mdash; <b>서버리스&middot;빠른 시작</b>이면 Glue, <b>클러스터 직접 튜닝&middot;대용량</b>이면 EMR. Redshift로 적재할 때는 <b>S3 COPY 명령</b>이 가장 빠름.</div>
+<div class="key-points"><span class="kp blue">MWAA = 관리형 Airflow</span> <span class="kp green">Glue Crawler = 자동 스키마 감지</span> <span class="kp amber">S3 Raw&rarr;Cleansed&rarr;Curated</span> <span class="kp red">Athena = 스캔량 과금</span></div>
+</div>
+<!-- ════════════════════════════ PANEL 2: 실시간 스트리밍 ════════════════════════════ -->
+<div id="panel-1" class="panel">
+<div class="case-title"><span class="case-num">CASE 02</span>
+<div>
+<div class="case-name">실시간 스트리밍 파이프라인</div>
+<div class="case-desc">이벤트/로그를 실시간 수집해 즉시 처리하거나 분기해 저장하는 패턴</div>
+</div>
+</div>
+<div class="diagram"><!-- Layer 1: Sources -->
+<div class="layer">
+<div class="layer-label">소스</div>
+<div class="layer-content">
+<div class="node src">
+<div class="node-icon">📱</div>
+<div class="node-body">
+<div class="node-name">App / Mobile</div>
+<div class="node-desc">클릭스트림, 사용자 이벤트</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">🌡️</div>
+<div class="node-body">
+<div class="node-name">IoT Sensor</div>
+<div class="node-desc">실시간 센서 데이터</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">📋</div>
+<div class="node-body">
+<div class="node-name">Application Log</div>
+<div class="node-desc">서버 로그, 에러 로그</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Layer 2: Kinesis Streams -->
+<div class="layer">
+<div class="layer-label">수집</div>
+<div class="layer-content highlight">
+<div class="node ing">
+<div class="node-icon">🌊</div>
+<div class="node-body">
+<div class="node-name">Kinesis Data Streams</div>
+<div class="node-desc">샤드 기반 파티셔닝<br />최대 365일 보존<br />소비자가 직접 처리</div>
+</div>
+</div>
+<div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);align-self:center">vs Kafka &rarr; MSK</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 분기(Fan-out)</div>
+</div>
+<!-- Layer 3: Branch -->
+<div class="layer">
+<div class="layer-label">처리</div>
+<div class="layer-content">
+<div class="branch-row" style="width:100%;gap:12px"><!-- Branch A: Analytics -->
+<div class="branch-col">
+<div class="branch-label">경로 A &mdash; 실시간 분석</div>
+<div class="node ing">
+<div class="node-icon">⚡</div>
+<div class="node-body">
+<div class="node-name">Kinesis Data Analytics</div>
+<div class="node-desc">Apache Flink 기반<br />SQL 스트림 처리</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node srv">
+<div class="node-icon">🗄️</div>
+<div class="node-body">
+<div class="node-name">Amazon DynamoDB</div>
+<div class="node-desc">집계 결과 실시간 서빙<br />ms 레이턴시</div>
+</div>
+</div>
+</div>
+<!-- Branch B: Storage -->
+<div class="branch-col">
+<div class="branch-label">경로 B &mdash; 저장&middot;배치 분석</div>
+<div class="node ing">
+<div class="node-icon">🔥</div>
+<div class="node-body">
+<div class="node-name">Kinesis Firehose</div>
+<div class="node-desc">자동 버퍼링 &rarr; 전달<br />변환 없이 적재</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 (Parquet 변환)</div>
+<div class="node-desc">Firehose 내장 변환<br />파티셔닝 자동 적용</div>
+</div>
+</div>
+</div>
+<!-- Branch C: Search/Monitor -->
+<div class="branch-col">
+<div class="branch-label">경로 C &mdash; 검색&middot;모니터링</div>
+<div class="node ing" style="opacity:0.7">
+<div class="node-icon">⚡</div>
+<div class="node-body">
+<div class="node-name">AWS Lambda</div>
+<div class="node-desc">이벤트 트리거<br />가벼운 변환 처리</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node ana">
+<div class="node-icon">🔎</div>
+<div class="node-body">
+<div class="node-name">Amazon OpenSearch</div>
+<div class="node-desc">로그 검색 &amp; 시각화<br />Kibana 대시보드</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; (배치 분석 경로)</div>
+</div>
+<!-- Layer 4: Analysis -->
+<div class="layer">
+<div class="layer-label">분석</div>
+<div class="layer-content">
+<div class="node ana">
+<div class="node-icon">🔍</div>
+<div class="node-body">
+<div class="node-name">Amazon Athena</div>
+<div class="node-desc">S3 데이터 SQL 분석<br />임시 쿼리</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ana">
+<div class="node-icon">📈</div>
+<div class="node-body">
+<div class="node-name">Amazon QuickSight</div>
+<div class="node-desc">실시간 대시보드<br />이상 탐지 시각화</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:16px"><b>핵심 구분:</b> <b>Kinesis Data Streams</b> = 소비자가 직접 처리, 보존&middot;재처리 가능. <b>Kinesis Firehose</b> = 전달 자동화, 소비자 코드 불필요. <b>Kinesis Data Analytics</b> = Streams에서 읽어 실시간 SQL/Flink 처리.</div>
+<div class="key-points"><span class="kp blue">Streams &ne; Firehose (구분 필수)</span> <span class="kp green">Flink = Data Analytics</span> <span class="kp amber">Firehose &rarr; S3 자동 전달</span> <span class="kp red">DynamoDB = 실시간 서빙 DB</span></div>
+</div>
+<!-- ════════════════════════════ PANEL 3: 레이크하우스 ════════════════════════════ -->
+<div id="panel-2" class="panel">
+<div class="case-title"><span class="case-num">CASE 03</span>
+<div>
+<div class="case-name">레이크하우스 &mdash; Bronze &rarr; Silver &rarr; Gold</div>
+<div class="case-desc">내가 직접 Iceberg로 짰던 그 구조, AWS로 치환한 버전</div>
+</div>
+</div>
+<div class="diagram"><!-- Sources -->
+<div class="layer">
+<div class="layer-label">소스</div>
+<div class="layer-content">
+<div class="node src">
+<div class="node-icon">🌐</div>
+<div class="node-body">
+<div class="node-name">공공 API</div>
+<div class="node-desc">배치 수집</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">🏢</div>
+<div class="node-body">
+<div class="node-name">계열사 DB</div>
+<div class="node-desc">DMS or JDBC</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">📁</div>
+<div class="node-body">
+<div class="node-name">파일 업로드</div>
+<div class="node-desc">CSV, Excel</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">📡</div>
+<div class="node-body">
+<div class="node-name">실시간 이벤트</div>
+<div class="node-desc">Kinesis &rarr; Firehose</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 원본 그대로 적재</div>
+</div>
+<!-- Bronze -->
+<div class="layer">
+<div class="layer-label" style="color:var(--c-cdc)">🥉 BRONZE</div>
+<div class="layer-content" style="background:var(--g5);border-color:var(--c-cdc-bd)">
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Raw Zone</div>
+<div class="node-desc">원본 무결성 보존<br />절대 수정 금지</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">📚</div>
+<div class="node-body">
+<div class="node-name">Glue Data Catalog</div>
+<div class="node-desc">메타데이터 등록<br />Crawler 자동 실행</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">🛡️</div>
+<div class="node-body">
+<div class="node-name">Lake Formation</div>
+<div class="node-desc">테이블 등록<br />접근 권한 부여</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 정제&middot;변환 (Glue ETL / EMR)</div>
+</div>
+<!-- Silver -->
+<div class="layer">
+<div class="layer-label" style="color:var(--c-etl)">🥈 SILVER</div>
+<div class="layer-content" style="background:var(--s5);border-color:var(--c-etl-bd)">
+<div class="node etl">
+<div class="node-icon">🦎</div>
+<div class="node-body">
+<div class="node-name">AWS Glue ETL</div>
+<div class="node-desc">스키마 변환<br />NULL 처리, 중복 제거</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node etl">
+<div class="node-icon">🐘</div>
+<div class="node-body">
+<div class="node-name">Amazon EMR</div>
+<div class="node-desc">대규모 Spark<br />복잡한 조인&middot;집계</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Cleansed Zone</div>
+<div class="node-desc">Parquet + Partitioning<br />Iceberg 테이블 포맷</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">📚</div>
+<div class="node-body">
+<div class="node-name">Glue Catalog<br />업데이트</div>
+<div class="node-desc">새 스키마 반영<br />계보 추적</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 비즈니스 로직 적용 (집계&middot;지표)</div>
+</div>
+<!-- Gold -->
+<div class="layer">
+<div class="layer-label" style="color:var(--c-sto)">🥇 GOLD</div>
+<div class="layer-content" style="background:var(--y5);border-color:var(--c-sto-bd)">
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Curated Zone</div>
+<div class="node-desc">집계&middot;지표 완료<br />Athena 서빙용</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🏪</div>
+<div class="node-body">
+<div class="node-name">Amazon Redshift</div>
+<div class="node-desc">DW 적재<br />복잡한 BI 쿼리</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 소비</div>
+</div>
+<!-- Serving -->
+<div class="layer">
+<div class="layer-label">서빙</div>
+<div class="layer-content">
+<div class="node ana">
+<div class="node-icon">🔍</div>
+<div class="node-body">
+<div class="node-name">Amazon Athena</div>
+<div class="node-desc">S3 임시 분석<br />데이터 과학자</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ana">
+<div class="node-icon">📈</div>
+<div class="node-body">
+<div class="node-name">Amazon QuickSight</div>
+<div class="node-desc">경영진 대시보드<br />Self-Service BI</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ml">
+<div class="node-icon">🧠</div>
+<div class="node-body">
+<div class="node-name">SageMaker Studio</div>
+<div class="node-desc">ML 피처 엔지니어링<br />모델 학습 데이터</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:16px"><b>내 Iceberg 스택 &rarr; AWS 치환:</b> Iceberg 테이블 포맷 = <b>S3 + Glue Catalog + Lake Formation</b> 조합. Trino = Athena, Doris = Redshift, DataHub = Glue Catalog. Bronze는 절대 수정하지 않고, Silver에서 품질 보증, Gold에서 비즈니스 로직 완성.</div>
+<div class="key-points"><span class="kp amber">Iceberg = S3+Glue+LakeFormation</span> <span class="kp purple">Lake Formation = 행/열 단위 권한</span> <span class="kp green">Bronze 원본불변 원칙</span> <span class="kp blue">Trino 자리 = Athena</span></div>
+</div>
+<!-- ════════════════════════════ PANEL 4: ML ════════════════════════════ -->
+<div id="panel-3" class="panel">
+<div class="case-title"><span class="case-num">CASE 04</span>
+<div>
+<div class="case-name">ML 모델 학습 &middot; 서빙 파이프라인</div>
+<div class="case-desc">데이터 준비부터 프로덕션 배포까지 &mdash; SageMaker 중심 MLOps</div>
+</div>
+</div>
+<div class="diagram"><!-- Data -->
+<div class="layer">
+<div class="layer-label">데이터</div>
+<div class="layer-content">
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Gold Zone</div>
+<div class="node-desc">Feature 엔지니어링 완료<br />학습 데이터셋</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ml">
+<div class="node-icon">🔬</div>
+<div class="node-body">
+<div class="node-name">SageMaker Feature Store</div>
+<div class="node-desc">피처 재사용<br />온라인/오프라인 저장</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Development -->
+<div class="layer">
+<div class="layer-label">개발</div>
+<div class="layer-content highlight">
+<div class="node ml">
+<div class="node-icon">📓</div>
+<div class="node-body">
+<div class="node-name">SageMaker Studio</div>
+<div class="node-desc">JupyterLab IDE<br />내 JupyterHub 자리</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ml">
+<div class="node-icon">📊</div>
+<div class="node-body">
+<div class="node-name">SageMaker Experiments</div>
+<div class="node-desc">실험 추적<br />내 MLflow 자리</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 학습 Job 제출</div>
+</div>
+<!-- Training -->
+<div class="layer">
+<div class="layer-label">학습</div>
+<div class="layer-content" style="background:var(--g5);border-color:var(--c-ml-bd)">
+<div class="node ml">
+<div class="node-icon">🚂</div>
+<div class="node-body">
+<div class="node-name">SageMaker Training Job</div>
+<div class="node-desc">분산 GPU 클러스터<br />자동 스케일 후 종료</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ml">
+<div class="node-icon">🔁</div>
+<div class="node-body">
+<div class="node-name">SageMaker Pipelines</div>
+<div class="node-desc">MLOps 워크플로우<br />자동화 재학습</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 모델 아티팩트</div>
+<div class="node-desc">model.tar.gz 저장<br />버전별 보관</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 모델 등록</div>
+</div>
+<!-- Registry -->
+<div class="layer">
+<div class="layer-label">등록</div>
+<div class="layer-content">
+<div class="node ml">
+<div class="node-icon">📦</div>
+<div class="node-body">
+<div class="node-name">SageMaker Model Registry</div>
+<div class="node-desc">버전 관리, 승인 워크플로우<br />A/B 비교</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ml">
+<div class="node-icon">✅</div>
+<div class="node-body">
+<div class="node-name">승인(Approve)</div>
+<div class="node-desc">프로덕션 배포 승인<br />Staging &rarr; Prod</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 배포 (분기)</div>
+</div>
+<!-- Serving branch -->
+<div class="layer">
+<div class="layer-label">서빙</div>
+<div class="layer-content">
+<div class="branch-row" style="width:100%;gap:12px">
+<div class="branch-col">
+<div class="branch-label">실시간 추론</div>
+<div class="node ml">
+<div class="node-icon">🚀</div>
+<div class="node-body">
+<div class="node-name">SageMaker Real-time Endpoint</div>
+<div class="node-desc">내 Kserve/Triton 자리<br />ms 레이턴시</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node srv">
+<div class="node-icon">🌐</div>
+<div class="node-body">
+<div class="node-name">API Gateway + Lambda</div>
+<div class="node-desc">외부 서비스 연동<br />인증&middot;라우팅</div>
+</div>
+</div>
+</div>
+<div class="branch-col">
+<div class="branch-label">배치 추론</div>
+<div class="node ml">
+<div class="node-icon">📦</div>
+<div class="node-body">
+<div class="node-name">SageMaker Batch Transform</div>
+<div class="node-desc">대량 데이터 일괄 추론<br />비동기 처리</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 결과 저장</div>
+<div class="node-desc">추론 결과 파일 출력<br />Athena로 분석</div>
+</div>
+</div>
+</div>
+<div class="branch-col">
+<div class="branch-label">벡터 검색</div>
+<div class="node ml">
+<div class="node-icon">🔮</div>
+<div class="node-body">
+<div class="node-name">임베딩 생성</div>
+<div class="node-desc">텍스트/이미지 벡터화<br />SageMaker Endpoint</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node ana">
+<div class="node-icon">🔎</div>
+<div class="node-body">
+<div class="node-name">OpenSearch k-NN</div>
+<div class="node-desc">내 Milvus 자리<br />유사도 검색</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:16px"><b>내 스택 치환 요약:</b> MLflow &rarr; SageMaker Experiments, JupyterHub &rarr; Studio, Kserve/Triton &rarr; Real-time Endpoint, Milvus &rarr; OpenSearch k-NN. SageMaker 하나가 MLflow + Jupyter + Kserve 역할을 모두 통합.</div>
+<div class="key-points"><span class="kp pink">MLflow = SageMaker Experiments</span> <span class="kp pink">Kserve = Real-time Endpoint</span> <span class="kp purple">Milvus = OpenSearch k-NN</span> <span class="kp blue">Pipelines = MLOps 자동화</span></div>
+</div>
+<!-- ════════════════════════════ PANEL 5: 거버넌스·보안 ════════════════════════════ -->
+<div id="panel-4" class="panel">
+<div class="case-title"><span class="case-num">CASE 05</span>
+<div>
+<div class="case-name">데이터 거버넌스 &middot; 보안 아키텍처</div>
+<div class="case-desc">누가, 어떤 데이터에, 어떻게 접근하는지 제어하는 전체 레이어</div>
+</div>
+</div>
+<div class="diagram"><!-- Identity -->
+<div class="layer">
+<div class="layer-label">신원</div>
+<div class="layer-content">
+<div class="node sec">
+<div class="node-icon">🔑</div>
+<div class="node-body">
+<div class="node-name">AWS IAM</div>
+<div class="node-desc">AWS 리소스 권한<br />역할(Role) 기반 접근</div>
+</div>
+</div>
+<div class="arrow-h">+</div>
+<div class="node sec">
+<div class="node-icon">👤</div>
+<div class="node-body">
+<div class="node-name">Amazon Cognito</div>
+<div class="node-desc">앱 사용자 인증<br />내 Keycloak 자리 (SSO)</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">🏛️</div>
+<div class="node-body">
+<div class="node-name">AWS Lake Formation</div>
+<div class="node-desc">데이터 레이크 통합 권한<br />행&middot;열 수준 접근 제어</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 접근 승인된 사용자만</div>
+</div>
+<!-- Catalog -->
+<div class="layer">
+<div class="layer-label">카탈로그</div>
+<div class="layer-content highlight">
+<div class="node gov">
+<div class="node-icon">📚</div>
+<div class="node-body">
+<div class="node-name">Glue Data Catalog</div>
+<div class="node-desc">중앙 메타데이터 저장소<br />내 DataHub 자리</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">🔍</div>
+<div class="node-body">
+<div class="node-name">데이터 검색 &amp; 계보</div>
+<div class="node-desc">테이블 정의, 파티션<br />컬럼 통계 자동 수집</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">🏷️</div>
+<div class="node-body">
+<div class="node-name">태그 기반 접근 제어</div>
+<div class="node-desc">Lake Formation 태그<br />민감도 레벨 분류</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Encryption -->
+<div class="layer">
+<div class="layer-label">암호화</div>
+<div class="layer-content">
+<div class="node sec">
+<div class="node-icon">🔐</div>
+<div class="node-body">
+<div class="node-name">AWS KMS</div>
+<div class="node-desc">암호화 키 중앙 관리<br />키 로테이션 자동화</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 SSE-KMS</div>
+<div class="node-desc">서버사이드 암호화<br />버킷 정책 강제</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sec">
+<div class="node-icon">🔒</div>
+<div class="node-body">
+<div class="node-name">Redshift 암호화</div>
+<div class="node-desc">DW 저장 데이터 암호화<br />전송 중 TLS</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Sensitive Data Detection -->
+<div class="layer">
+<div class="layer-label">탐지</div>
+<div class="layer-content">
+<div class="node sec">
+<div class="node-icon">🕵️</div>
+<div class="node-body">
+<div class="node-name">Amazon Macie</div>
+<div class="node-desc">S3 내 PII 자동 탐지<br />개인정보 위험 알림</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sec">
+<div class="node-icon">🚨</div>
+<div class="node-body">
+<div class="node-name">AWS Security Hub</div>
+<div class="node-desc">보안 경고 통합<br />규정 준수 점수</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node etl">
+<div class="node-icon">🛠️</div>
+<div class="node-body">
+<div class="node-name">자동 대응 (Lambda)</div>
+<div class="node-desc">마스킹&middot;격리 자동화<br />EventBridge 트리거</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<!-- Audit & Monitor -->
+<div class="layer">
+<div class="layer-label">감사</div>
+<div class="layer-content">
+<div class="node sec">
+<div class="node-icon">📋</div>
+<div class="node-body">
+<div class="node-name">AWS CloudTrail</div>
+<div class="node-desc">모든 API 호출 기록<br />"누가 무엇을 했는가"</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ana">
+<div class="node-icon">📊</div>
+<div class="node-body">
+<div class="node-name">Amazon CloudWatch</div>
+<div class="node-desc">메트릭&middot;로그&middot;알람<br />내 Grafana+Prometheus</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node sec">
+<div class="node-icon">🔭</div>
+<div class="node-body">
+<div class="node-name">AWS X-Ray</div>
+<div class="node-desc">분산 추적<br />내 Kiali 자리</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:16px"><b>시험 포인트:</b> <b>CloudTrail</b> = API 감사 로그 (누가 뭘 했는가). <b>CloudWatch</b> = 운영 모니터링 (CPU, 메모리, 알람). <b>Macie</b> = S3 PII 자동 탐지. <b>Lake Formation</b> = Glue Catalog 위에 행&middot;열 단위 권한 추가.</div>
+<div class="key-points"><span class="kp blue">CloudTrail = 감사 (Who Did What)</span> <span class="kp blue">CloudWatch = 운영 모니터링</span> <span class="kp purple">Lake Formation = 열 단위 권한</span> <span class="kp red">Macie = PII 자동 탐지</span></div>
+</div>
+<!-- ════════════════════════════ PANEL 6: CDC / DW 마이그레이션 ════════════════════════════ -->
+<div id="panel-5" class="panel">
+<div class="case-title"><span class="case-num">CASE 06</span>
+<div>
+<div class="case-name">CDC / DB &rarr; DW 마이그레이션</div>
+<div class="case-desc">운영 DB 변경분을 실시간으로 잡아 DW에 반영하는 패턴 (DMS 기반)</div>
+</div>
+</div>
+<div class="diagram"><!-- Source DB -->
+<div class="layer">
+<div class="layer-label">소스 DB</div>
+<div class="layer-content">
+<div class="node src">
+<div class="node-icon">🏢</div>
+<div class="node-body">
+<div class="node-name">RDS MySQL / PostgreSQL</div>
+<div class="node-desc">운영 트랜잭션 DB<br />binlog / WAL 활성화 필요</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">🏛️</div>
+<div class="node-body">
+<div class="node-name">On-prem Oracle / SQL Server</div>
+<div class="node-desc">레거시 DW<br />마이그레이션 대상</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node src">
+<div class="node-icon">☁️</div>
+<div class="node-body">
+<div class="node-name">Amazon Aurora</div>
+<div class="node-desc">AWS 관리형 RDB<br />소스로도 타깃으로도</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; DMS 연결 (Full Load + CDC 동시)</div>
+</div>
+<!-- DMS -->
+<div class="layer">
+<div class="layer-label">DMS</div>
+<div class="layer-content highlight" style="background:var(--g5);border-color:var(--c-cdc-bd)">
+<div class="node cdc">
+<div class="node-icon">🔄</div>
+<div class="node-body">
+<div class="node-name">AWS DMS</div>
+<div class="node-desc">Database Migration Service<br />초기 Full Load + CDC 병행</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node cdc">
+<div class="node-icon">📡</div>
+<div class="node-body">
+<div class="node-name">CDC 변경 캡처</div>
+<div class="node-desc">INSERT / UPDATE / DELETE<br />binlog 기반 실시간 추적</div>
+</div>
+</div>
+<div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--c-cdc);align-self:center;background:var(--c-cdc-bg);border:1px solid var(--c-cdc-bd);border-radius:4px;padding:4px 8px">SCT 도구로<br />스키마 변환</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 분기 (타깃 선택)</div>
+</div>
+<!-- Target branch -->
+<div class="layer">
+<div class="layer-label">타깃</div>
+<div class="layer-content">
+<div class="branch-row" style="width:100%;gap:12px"><!-- A: DMS → Redshift Direct -->
+<div class="branch-col">
+<div class="branch-label">경로 A &mdash; DW 직접 적재</div>
+<div class="node sto">
+<div class="node-icon">🏪</div>
+<div class="node-body">
+<div class="node-name">Amazon Redshift</div>
+<div class="node-desc">DMS 직접 타깃<br />Full Load 후 CDC 적용</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node ana">
+<div class="node-icon">📈</div>
+<div class="node-body">
+<div class="node-name">QuickSight</div>
+<div class="node-desc">마이그레이션 완료 후<br />BI 즉시 연결</div>
+</div>
+</div>
+</div>
+<!-- B: DMS → S3 → Glue → Redshift -->
+<div class="branch-col">
+<div class="branch-label">경로 B &mdash; S3 경유 레이크하우스</div>
+<div class="node sto">
+<div class="node-icon">🪣</div>
+<div class="node-body">
+<div class="node-name">S3 Landing Zone</div>
+<div class="node-desc">DMS &rarr; S3 원본 보존<br />Parquet 변환 전</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node etl">
+<div class="node-icon">🦎</div>
+<div class="node-body">
+<div class="node-name">Glue ETL</div>
+<div class="node-desc">타입 변환, 정규화<br />Redshift 스키마 맞춤</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node sto">
+<div class="node-icon">🏪</div>
+<div class="node-body">
+<div class="node-name">Amazon Redshift</div>
+<div class="node-desc">COPY로 S3&rarr;DW 고속 적재</div>
+</div>
+</div>
+</div>
+<!-- C: DMS → Kinesis → Real-time CDC -->
+<div class="branch-col">
+<div class="branch-label">경로 C &mdash; 실시간 CDC 스트림</div>
+<div class="node ing">
+<div class="node-icon">🌊</div>
+<div class="node-body">
+<div class="node-name">Kinesis Data Streams</div>
+<div class="node-desc">DMS CDC &rarr; Kinesis<br />실시간 변경분 스트리밍</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node ing">
+<div class="node-icon">⚡</div>
+<div class="node-body">
+<div class="node-name">Lambda / Glue Streaming</div>
+<div class="node-desc">변경분 실시간 처리<br />Upsert 로직 적용</div>
+</div>
+</div>
+<div class="v-arrow">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr;</div>
+</div>
+<div class="node sto">
+<div class="node-icon">🏪</div>
+<div class="node-body">
+<div class="node-name">Redshift Streaming Ingestion</div>
+<div class="node-desc">Kinesis &rarr; Redshift 직접<br />지연 수초 이내</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="v-arrow center">
+<div class="v-arrow-line">&nbsp;</div>
+<div class="v-arrow-head">&darr; 검증 &amp; 모니터링</div>
+</div>
+<!-- Validation -->
+<div class="layer">
+<div class="layer-label">검증</div>
+<div class="layer-content">
+<div class="node gov">
+<div class="node-icon">✅</div>
+<div class="node-body">
+<div class="node-name">DMS 검증 태스크</div>
+<div class="node-desc">소스 &harr; 타깃 행 수 비교<br />데이터 정합성 체크</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node ana">
+<div class="node-icon">📊</div>
+<div class="node-body">
+<div class="node-name">CloudWatch 메트릭</div>
+<div class="node-desc">CDC 지연 시간 모니터링<br />에러율 알람 설정</div>
+</div>
+</div>
+<div class="arrow-h">&rarr;</div>
+<div class="node gov">
+<div class="node-icon">🔄</div>
+<div class="node-body">
+<div class="node-name">컷오버 계획</div>
+<div class="node-desc">트래픽 전환 시점 결정<br />롤백 플랜 준비</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:16px"><b>시험 포인트:</b> <b>DMS</b> = DB 마이그레이션 + CDC 동시 가능. <b>SCT(Schema Conversion Tool)</b> = 이기종 DB 스키마 변환 (Oracle&rarr;Redshift). 동종 DB 마이그레이션(MySQL&rarr;Aurora)은 SCT 불필요. CDC는 binlog(MySQL) 또는 WAL(PostgreSQL) 활성화 필수.</div>
+<div class="key-points"><span class="kp red">DMS = 마이그레이션 + CDC</span> <span class="kp red">SCT = 이기종 스키마 변환</span> <span class="kp blue">CDC &rarr; Kinesis &rarr; 실시간 반영</span> <span class="kp amber">동종 DB = SCT 불필요</span></div>
+</div>
+<script>
+function switchTab(idx, el) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('panel-' + idx).classList.add('active');
+}
+</script>
+</div>

@@ -1,0 +1,55 @@
+<!--
+id: 32
+제목: [Mendix] 배포 실패! ConnectionBusException과 DB 동기화의 악몽 (feat. Unique Constraint)
+카테고리: Stack/Lowcode
+태그: 배포, DDL, lowcode, mendix, 멘딕스
+날짜: 2026-02-14 02:19
+수정: 2026-03-07 22:22
+형식: legacy
+썸네일: /img/t/dJMcaiWvWIV.webp
+-->
+<p><figure class="tt-img center"><img src="/img/dJMcaiWvWIV.webp" alt="" width="1000" height="600" loading="lazy" decoding="async"></figure></p>
+<p data-path-to-node="0" data-ke-size="size16">&nbsp;</p>
+<p data-path-to-node="0" data-ke-size="size16">Mendix 개발 과정에서 로컬 테스트는 완벽했는데, 운영(Production) 서버 배포 단계에서 DB 에러로 식은땀을 흘렸던 경험을 정리해 드립니다.</p>
+<p data-path-to-node="0" data-ke-size="size16">&nbsp;</p>
+<p data-path-to-node="0" data-ke-size="size16">로컬에서 기능 개발을 마치고 기분 좋게 운영 서버로 배포(Deploy)를 눌렀습니다. 그런데 진행률 바가 멈추더니 빨간색 에러 로그를 뱉어내며 배포가 중단되었습니다.</p>
+<h3 data-path-to-node="4" data-ke-size="size23">1. 문제 상황: 40개의 DB 명령, 그리고 실패</h3>
+<p data-path-to-node="5" data-ke-size="size16">로그를 확인해보니 GitHub 통신 오류 같은 네트워크 문제가 아니었습니다. 명백한 <b data-index-in-node="47" data-path-to-node="5">Database Synchronization(DB 동기화)</b> 오류였습니다.</p>
+<div data-ved="0CAAQhtANahgKEwii1oqE89aSAxUAAAAAHQAAAAAQqgY" data-hveid="0">
+<div><span>Plaintext</span>
+<div>&nbsp;</div>
+</div>
+<div>
+<div>
+<pre class="subunit"><code>ERROR: ... The database has to be updated.
+INFO - ConnectionBus: Executing 40 database synchronization command(s)...
+ERROR: Executing execute_ddl_commands did not succeed ... caused by ConnectionBusException ...
+</code></pre>
+</div>
+</div>
+</div>
+<p data-path-to-node="7" data-ke-size="size16">&nbsp;</p>
+<p data-path-to-node="7" data-ke-size="size16">Mendix가 "모델이 변경되었으니 운영 DB 구조도 업데이트해야겠다"라고 판단하고 40개의 SQL 명령(DDL)을 실행하다가, 그중 하나가 실패해서 전체 롤백(Rollback)된 상황이었습니다.</p>
+<h3 data-path-to-node="8" data-ke-size="size23">2. 원인 분석: "이미 중복인데 유니크(Unique) 하라니요?"</h3>
+<p data-path-to-node="9" data-ke-size="size16">원인은 바로 **'데이터 제약조건(Validation Rule)'**과 <b data-index-in-node="40" data-path-to-node="9">'기존 데이터(Existing Data)'</b> 간의 충돌이었습니다.</p>
+<p data-path-to-node="10" data-ke-size="size16">제가 메인 도메인 모델과 연관 관계(Association)가 있는 다른 모듈의 특정 속성(Attribute)에 <b data-index-in-node="62" data-path-to-node="10">Unique (중복 금지)</b> 조건을 새로 추가했었는데요.</p>
+<ul style="list-style-type: disc;" data-path-to-node="11" data-ke-list-type="disc">
+<li><b data-index-in-node="0" data-path-to-node="11,0,0">Mendix(모델):</b> "자, 이제부터 이 컬럼은 중복된 값이 들어오면 안 돼! DB야, 제약조건(Constraint) 걸어!"</li>
+<li><b data-index-in-node="0" data-path-to-node="11,1,0">운영 DB:</b> "잠깐만, 이미 쌓여있는 데이터 중에 중복된 값이 잔뜩 있는데? 이 조건 못 받아들여!"</li>
+</ul>
+<p data-path-to-node="12" data-ke-size="size16">로컬 환경에서는 개발 도중 DB를 날리고 새로 만들어서(Clean Deployment) 문제가 없었지만, <b data-index-in-node="59" data-path-to-node="12">실제 데이터가 쌓여있는 운영 서버</b>에서는 이 제약조건이 기존 데이터를 위배했기 때문에 DDL 실행이 거부된 것입니다.</p>
+<p data-path-to-node="13" data-ke-size="size16">[Image Prompt: A cartoon illustration showing a Database looking angry. A Mendix developer is trying to put a "Unique Constraint" sticker on a box full of duplicate items. The Database runs a red light and shows a "Rollback" sign.]</p>
+<h3 data-path-to-node="14" data-ke-size="size23">3. 해결: 타협과 정제</h3>
+<p data-path-to-node="15" data-ke-size="size16">해결 방법은 <b data-index-in-node="7" data-path-to-node="15">DB와의 타협</b>이었습니다. 운영 DB의 데이터를 쿼리로 직접 수정하기는 위험하니, Mendix 모델을 수정해서 우회해야 했습니다.</p>
+<p data-path-to-node="16" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="16">🚑 긴급 조치 순서:</b></p>
+<ol style="list-style-type: decimal;" data-path-to-node="17" data-ke-list-type="decimal">
+<li><b data-index-in-node="0" data-path-to-node="17,0,0">제약조건 해제:</b> Studio Pro에서 문제가 된 엔티티의 Validation Rules 탭으로 이동해 Unique 체크를 해제합니다.</li>
+<li><b data-index-in-node="0" data-path-to-node="17,1,0">재배포:</b> 제약조건이 없는 상태로 배포를 진행합니다. (DB가 거부할 명분이 사라지므로 성공!)</li>
+<li><b data-index-in-node="0" data-path-to-node="17,2,0">데이터 정제:</b> 배포된 앱(관리자 페이지)에 접속해 실제로 중복된 데이터를 눈으로 확인하고 정리합니다.</li>
+<li><b data-index-in-node="0" data-path-to-node="17,3,0">제약조건 재적용:</b> 데이터가 깔끔해진 것을 확인한 뒤, 다음 배포 때 다시 Unique 조건을 걸어줍니다.</li>
+</ol>
+<h3 data-path-to-node="18" data-ke-size="size23">4. 결과: 시행착오 없이 해결!</h3>
+<p data-path-to-node="19" data-ke-size="size16">로그만 보고 "DB가 깨졌나?" 하고 당황할 뻔했는데, **"운영 DB의 기존 데이터가 추가된 Validation 조건을 충족하지 않아서 DDL 작업 중에 터진 것"**이라는 원인을 바로 파악할 수 있었습니다.</p>
+<p data-path-to-node="20" data-ke-size="size16">덕분에 불필요한 삽질 없이 원인을 캐치하고 손쉽게 해결했네요! (개꿀따리)</p>
+<p data-path-to-node="20" data-ke-size="size16">&nbsp;</p>
+<p data-path-to-node="21" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="21">💡 Lesson Learned:</b> 운영 중인 시스템의 도메인 모델을 수정할 때, 특히 Unique 같은 강력한 제약조건(Constraint)을 추가할 때는 <b data-index-in-node="87" data-path-to-node="21">반드시 운영 DB에 이미 쌓여있는 데이터와 충돌하지 않는지</b> 먼저 확인해야 합니다!</p>

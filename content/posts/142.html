@@ -1,0 +1,317 @@
+<!--
+id: 142
+제목: Mendix 첫 접속 지연 줄이기: 워밍업과 캐시
+카테고리: Stack/Lowcode
+태그: javascript, 캐시, 대시보드, 성능개선, mendix, ScheduledEvent
+날짜: 2026-10-04 12:25
+수정: 2026-10-05 12:58
+형식: html
+-->
+<style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700');
+article.mxb-wrap:not(#mxb-x){--p50:#256ef4;--p60:#0b50d0;--p70:#083891;--p10:#d8e5fd;--p5:#ecf2fe;--g0:#fff;--g5:#f4f5f6;--g10:#e6e8ea;--g20:#cdd1d5;--g30:#b1b8be;--g40:#8a949e;--g50:#6d7882;--g70:#464c53;--g90:#1e2124;
+font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:var(--g90);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;max-width:100%;margin:0 auto;padding:0;text-align:left;-webkit-text-size-adjust:100%}
+article.mxb-wrap:not(#mxb-x) *{box-sizing:border-box}
+article.mxb-wrap:not(#mxb-x) p{margin:0 0 16px;font-size:17px;line-height:1.75;color:var(--g90)}
+article.mxb-wrap:not(#mxb-x) a{color:var(--p60);text-decoration:underline}
+article.mxb-wrap:not(#mxb-x) a:hover{color:var(--p70)}
+article.mxb-wrap:not(#mxb-x) strong{font-weight:700}
+article.mxb-wrap:not(#mxb-x) h2{font-family:inherit;font-size:24px;font-weight:700;line-height:1.5;margin:64px 0 16px;padding:0;border:0;background:none;color:var(--g90);letter-spacing:0}
+article.mxb-wrap:not(#mxb-x) h3{font-family:inherit;font-size:19px;font-weight:700;line-height:1.5;margin:40px 0 12px;padding:0;border:0;background:none;color:var(--g90)}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list,article.mxb-wrap:not(#mxb-x) ol.mxb-list{margin:0 0 16px;padding-left:24px}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list li,article.mxb-wrap:not(#mxb-x) ol.mxb-list li{margin:0 0 8px;font-size:17px;line-height:1.75}
+article.mxb-wrap:not(#mxb-x) code{font-family:'D2Coding',Consolas,Menlo,monospace;font-size:.88em;background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:1px 6px;color:var(--g90)}
+article.mxb-wrap:not(#mxb-x) ul.mxb-meta,article.mxb-wrap:not(#mxb-x) ul.mxb-tags,article.mxb-wrap:not(#mxb-x) ul.mxb-legend,article.mxb-wrap:not(#mxb-x) ul.mxb-bars,article.mxb-wrap:not(#mxb-x) ul.mxb-check,article.mxb-wrap:not(#mxb-x) ol.mxb-tl{list-style:none !important}
+article.mxb-wrap:not(#mxb-x) ul.mxb-meta li,article.mxb-wrap:not(#mxb-x) ul.mxb-tags li,article.mxb-wrap:not(#mxb-x) ul.mxb-legend li,article.mxb-wrap:not(#mxb-x) ul.mxb-bars li,article.mxb-wrap:not(#mxb-x) ul.mxb-check li,article.mxb-wrap:not(#mxb-x) ol.mxb-tl li{list-style:none !important;background-image:none}
+article.mxb-wrap:not(#mxb-x) ul.mxb-meta li:before,article.mxb-wrap:not(#mxb-x) ul.mxb-tags li:before,article.mxb-wrap:not(#mxb-x) ul.mxb-legend li:before,article.mxb-wrap:not(#mxb-x) ul.mxb-bars li:before,article.mxb-wrap:not(#mxb-x) ol.mxb-tl li:before{content:none !important;display:none !important}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list{list-style:disc}
+article.mxb-wrap:not(#mxb-x) ol.mxb-list{list-style:decimal}
+:not(#mxb-x) .mxb-meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;padding:0;list-style:none}
+:not(#mxb-x) .mxb-meta li{font-size:13px;line-height:1.5;color:var(--g70);background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:4px 10px;margin:0}
+article.mxb-wrap:not(#mxb-x) p.mxb-lead{font-size:19px;line-height:1.7;margin:0 0 32px}
+:not(#mxb-x) .mxb-sum{background:var(--g5);border:1px solid var(--g10);border-radius:10px;padding:8px 24px;margin:32px 0}
+:not(#mxb-x) .mxb-sum-row{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:start;padding:16px 0;border-top:1px solid var(--g10)}
+:not(#mxb-x) .mxb-sum-row:first-child{border-top:0}
+:not(#mxb-x) .mxb-sum-row p{margin:0 !important}
+:not(#mxb-x) .mxb-badge{display:inline-block;font-size:13px;font-weight:700;line-height:1.5;padding:2px 8px;border-radius:4px;background:var(--g0);border:1px solid var(--g20);color:var(--g70);text-align:center;white-space:nowrap}
+:not(#mxb-x) .mxb-badge-p{background:var(--p5);border-color:var(--p10);color:var(--p60)}
+:not(#mxb-x) .mxb-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin:24px 0}
+:not(#mxb-x) .mxb-kpi{border:1px solid var(--g20);border-radius:8px;padding:16px 20px;background:var(--g0)}
+:not(#mxb-x) .mxb-kpi-v{display:block;font-size:28px;font-weight:700;line-height:1.4;color:var(--g90)}
+:not(#mxb-x) .mxb-kpi-l{display:block;font-size:15px;line-height:1.5;color:var(--g70)}
+:not(#mxb-x) .mxb-fig{margin:32px 0;border:1px solid var(--g20);border-radius:10px;padding:24px;background:var(--g0)}
+:not(#mxb-x) .mxb-fig-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+:not(#mxb-x) .mxb-fig-scroll svg{display:block;width:100%;height:auto;min-width:600px;font-family:inherit}
+:not(#mxb-x) .mxb-fig figcaption{font-size:15px;line-height:1.5;color:var(--g70);margin:16px 0 0;text-align:left}
+:not(#mxb-x) .mxb-fig .s-box{fill:var(--g0);stroke:var(--g30);stroke-width:1}
+:not(#mxb-x) .mxb-fig .s-area{fill:var(--g5);stroke:var(--g20);stroke-width:1}
+:not(#mxb-x) .mxb-fig .s-pbox{fill:var(--p5);stroke:var(--p50);stroke-width:1.5}
+:not(#mxb-x) .mxb-fig .s-line{stroke:var(--g50);stroke-width:1.5;fill:none}
+:not(#mxb-x) .mxb-fig .s-pline{stroke:var(--p50);stroke-width:1.5;fill:none}
+:not(#mxb-x) .mxb-fig .s-dash{stroke-dasharray:5 4}
+:not(#mxb-x) .mxb-fig .s-head{fill:var(--g50)}
+:not(#mxb-x) .mxb-fig .s-phead{fill:var(--p50)}
+:not(#mxb-x) .mxb-fig .t{font-size:15px;font-weight:700;fill:var(--g90)}
+:not(#mxb-x) .mxb-fig .ts{font-size:13px;fill:var(--g70)}
+:not(#mxb-x) .mxb-fig .tp{font-size:13px;font-weight:700;fill:var(--p60)}
+:not(#mxb-x) .mxb-fig .ta{font-size:13px;font-weight:700;fill:var(--g70)}
+:not(#mxb-x) .mxb-code{margin:24px 0;border-radius:8px;background:var(--g90);overflow:hidden}
+:not(#mxb-x) .mxb-code-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--g70);font-size:13px;line-height:1.5;color:var(--g30)}
+:not(#mxb-x) .mxb-copy{display:none;font-family:inherit;font-size:13px;line-height:1.5;color:var(--g5);background:transparent;border:1px solid var(--g50);border-radius:6px;padding:4px 10px;cursor:pointer}
+:not(#mxb-x) .mxb-copy:hover{background:var(--g70)}
+:not(#mxb-x) .mxb-copy:active{background:var(--g50)}
+:not(#mxb-x) .mxb-copy:focus-visible{outline:2px solid #b1cefb;outline-offset:2px}
+:not(#mxb-x) .mxb-js .mxb-copy{display:inline-block}
+article.mxb-wrap:not(#mxb-x) .mxb-code pre{margin:0;padding:16px;overflow-x:auto;background:transparent;border:0;border-radius:0;box-shadow:none;font-family:'D2Coding',Consolas,Menlo,monospace;font-size:14px;line-height:1.6;color:var(--g5);white-space:pre;word-break:normal;overflow-wrap:normal;tab-size:2}
+article.mxb-wrap:not(#mxb-x) .mxb-code pre code{background:none;border:0;padding:0;font-size:inherit;color:inherit}
+:not(#mxb-x) .mxb-code .c{color:var(--g40)}
+:not(#mxb-x) .mxb-code .s{color:#b1cefb}
+:not(#mxb-x) .mxb-note{display:grid;grid-template-columns:20px 1fr;gap:12px;border:1px solid;border-radius:8px;padding:16px 20px;margin:24px 0}
+:not(#mxb-x) .mxb-note svg{display:block;width:20px;height:20px;margin-top:3px}
+:not(#mxb-x) .mxb-note-t{display:block;font-size:15px;font-weight:700;line-height:1.6;margin:0 0 4px}
+:not(#mxb-x) .mxb-note-b{display:block;font-size:15px;line-height:1.7;color:var(--g90)}
+:not(#mxb-x) .mxb-note-info{background:#e7f4fe;border-color:#d3ebfd}
+:not(#mxb-x) .mxb-note-info svg{fill:#0b78cb}
+:not(#mxb-x) .mxb-note-info .mxb-note-t{color:#096ab3}
+:not(#mxb-x) .mxb-note-warn{background:#fff3db;border-color:#ffe0a3}
+:not(#mxb-x) .mxb-note-warn svg{fill:#9e6a00}
+:not(#mxb-x) .mxb-note-warn .mxb-note-t{color:#8a5c00}
+:not(#mxb-x) .mxb-table-wrap{overflow-x:auto;margin:24px 0;-webkit-overflow-scrolling:touch}
+article.mxb-wrap:not(#mxb-x) table.mxb-table{width:100%;min-width:520px;border-collapse:collapse;font-size:15px;line-height:1.6;margin:0}
+article.mxb-wrap:not(#mxb-x) table.mxb-table th,article.mxb-wrap:not(#mxb-x) table.mxb-table td{border:1px solid var(--g20);padding:10px 12px;text-align:left;vertical-align:top;color:var(--g90);background:var(--g0)}
+article.mxb-wrap:not(#mxb-x) table.mxb-table th{background:var(--g5);font-weight:700}
+:not(#mxb-x) ul.mxb-check{list-style:none;margin:0 0 16px;padding:0}
+:not(#mxb-x) ul.mxb-check li{position:relative;padding-left:28px;margin:0 0 8px;font-size:17px;line-height:1.75}
+:not(#mxb-x) ul.mxb-check li:before{content:'';position:absolute;left:4px;top:.5em;width:12px;height:7px;border-left:2px solid var(--p50);border-bottom:2px solid var(--p50);transform:rotate(-45deg)}
+:not(#mxb-x) ol.mxb-tl{list-style:none;margin:24px 0;padding:0;border-bottom:1px solid var(--g10)}
+:not(#mxb-x) ol.mxb-tl li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--g10);margin:0}
+:not(#mxb-x) .mxb-tl-when{font-size:15px;font-weight:700;line-height:1.7;color:var(--g70)}
+:not(#mxb-x) .mxb-tl-what{display:block;font-size:17px;font-weight:700;line-height:1.6}
+:not(#mxb-x) .mxb-tl-desc{display:block;font-size:15px;line-height:1.6;color:var(--g70);margin-top:4px}
+:not(#mxb-x) ol.mxb-tl li.mxb-tl-next .mxb-tl-what{color:var(--g70)}
+:not(#mxb-x) .mxb-bars{margin:24px 0;padding:0;list-style:none}
+:not(#mxb-x) .mxb-bars li{display:grid;grid-template-columns:96px 1fr 56px;gap:12px;align-items:center;margin:0 0 12px}
+:not(#mxb-x) .mxb-bars-l{font-size:15px;line-height:1.5;color:var(--g90)}
+:not(#mxb-x) .mxb-bars-t{display:block;height:12px;border-radius:6px;background:var(--g10);overflow:hidden}
+:not(#mxb-x) .mxb-bars-f{display:block;height:12px;border-radius:6px;background:var(--p50)}
+:not(#mxb-x) .mxb-bars-f.mxb-muted{background:var(--g40)}
+:not(#mxb-x) .mxb-bars-v{font-size:15px;font-weight:700;line-height:1.5;text-align:right}
+:not(#mxb-x) .mxb-legend{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0 24px;padding:0;list-style:none;font-size:13px;color:var(--g70)}
+:not(#mxb-x) .mxb-legend li{display:flex;align-items:center;gap:6px;margin:0}
+:not(#mxb-x) .mxb-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--p50)}
+:not(#mxb-x) .mxb-legend i.mxb-muted{background:var(--g40)}
+:not(#mxb-x) .mxb-mods{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+:not(#mxb-x) .mxb-mod{border:1px solid var(--g20);border-radius:8px;padding:16px 20px;background:var(--g0)}
+:not(#mxb-x) .mxb-mod-n{display:block;font-size:17px;font-weight:700;line-height:1.6}
+:not(#mxb-x) .mxb-mod-d{display:block;font-size:15px;line-height:1.6;color:var(--g70);margin-top:4px}
+:not(#mxb-x) .mxb-common{margin-top:16px;background:var(--g5);border-radius:8px;padding:12px 20px;font-size:15px;line-height:1.7;color:var(--g70)}
+:not(#mxb-x) .mxb-common b{color:var(--g90);margin-right:8px}
+:not(#mxb-x) .mxb-arch{display:grid;grid-template-columns:1fr 112px 1fr;gap:12px;align-items:center}
+:not(#mxb-x) .mxb-grp{background:var(--g5);border:1px solid var(--g20);border-radius:8px;padding:16px}
+:not(#mxb-x) .mxb-grp-t{display:block;font-size:13px;font-weight:700;line-height:1.5;color:var(--g70);margin:0 0 12px}
+:not(#mxb-x) .mxb-node{display:block;background:var(--g0);border:1px solid var(--g30);border-radius:6px;padding:12px 16px;margin:0 0 8px}
+:not(#mxb-x) .mxb-node:last-child{margin-bottom:0}
+:not(#mxb-x) .mxb-node b{display:block;font-size:15px;font-weight:700;line-height:1.5;color:var(--g90)}
+:not(#mxb-x) .mxb-node span{display:block;font-size:13px;line-height:1.6;color:var(--g70)}
+:not(#mxb-x) .mxb-node-p{background:var(--p5);border-color:var(--p50)}
+:not(#mxb-x) .mxb-node-db{background:var(--g10);border-color:var(--g20)}
+:not(#mxb-x) .mxb-down{display:block;text-align:center;margin:0 0 8px;line-height:0}
+:not(#mxb-x) .mxb-down svg{width:12px;height:20px;fill:var(--g50)}
+:not(#mxb-x) .mxb-links{display:flex;flex-direction:column;gap:24px;align-items:stretch}
+:not(#mxb-x) .mxb-link{display:block;text-align:center;font-size:13px;font-weight:700;line-height:1.5;color:var(--g70)}
+:not(#mxb-x) .mxb-link svg{display:block;width:100%;height:12px;margin-top:4px;overflow:visible}
+:not(#mxb-x) .mxb-link path{stroke:var(--g50);stroke-width:1.5;fill:none}
+:not(#mxb-x) .mxb-link polygon{fill:var(--g50)}
+:not(#mxb-x) .mxb-link-p{color:var(--p60)}
+:not(#mxb-x) .mxb-link-p path{stroke:var(--p50)}
+:not(#mxb-x) .mxb-link-p polygon{fill:var(--p50)}
+:not(#mxb-x) ol.mxb-steps{list-style:none !important;counter-reset:mxbstep;margin:24px 0;padding:0}
+:not(#mxb-x) ol.mxb-steps>li{list-style:none !important;counter-increment:mxbstep;position:relative;padding:0 0 24px 48px;margin:0}
+:not(#mxb-x) ol.mxb-steps>li:before{content:counter(mxbstep);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:16px;background:var(--p5);border:1px solid var(--p10);color:var(--p60);font-size:15px;font-weight:700;line-height:30px;text-align:center}
+:not(#mxb-x) ol.mxb-steps>li:after{content:'';position:absolute;left:16px;top:40px;bottom:8px;width:1px;background:var(--g20)}
+:not(#mxb-x) ol.mxb-steps>li:last-child{padding-bottom:0}
+:not(#mxb-x) ol.mxb-steps>li:last-child:after{display:none}
+:not(#mxb-x) .mxb-step-t{display:block;font-size:17px;font-weight:700;line-height:1.9}
+:not(#mxb-x) .mxb-step-d{display:block;font-size:15px;line-height:1.7;color:var(--g70);margin-top:4px}
+:not(#mxb-x) .mxb-wire{border:1px solid var(--g20);border-radius:8px;overflow:hidden;background:var(--g10);font-size:13px;line-height:1.5}
+:not(#mxb-x) .mxb-wire-top{display:flex;gap:16px;align-items:center;background:var(--g0);border-bottom:1px solid var(--g20);padding:10px 16px}
+:not(#mxb-x) .mxb-wire-tab{color:var(--g70);padding:2px 0}
+:not(#mxb-x) .mxb-wire-tab.on{color:var(--p60);font-weight:700;border-bottom:2px solid var(--p50)}
+:not(#mxb-x) .mxb-wire-body{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:16px}
+:not(#mxb-x) .mxb-wire-toc{display:flex;flex-direction:column;gap:6px;color:var(--g70)}
+:not(#mxb-x) .mxb-wire-toc b{color:var(--p60)}
+:not(#mxb-x) .mxb-wire-main{display:flex;flex-direction:column;gap:12px}
+:not(#mxb-x) .mxb-wire-h{font-size:15px;font-weight:700;color:var(--g90)}
+:not(#mxb-x) .mxb-wire-box{background:var(--g0);border:1px solid var(--g20);border-radius:8px;padding:12px 16px}
+:not(#mxb-x) .mxb-wire-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;border-top:1px solid var(--g10);color:var(--g90)}
+:not(#mxb-x) .mxb-wire-row:first-child{border-top:0}
+:not(#mxb-x) .mxb-wire-chip{display:inline-block;font-size:12px;font-weight:700;border-radius:4px;padding:0 6px;border:1px solid}
+:not(#mxb-x) .mxb-wire-chip.d{color:#bd2c0f;background:#fdefec;border-color:#fcdfd9}
+:not(#mxb-x) .mxb-wire-chip.w{color:#8a5c00;background:#fff3db;border-color:#ffe0a3}
+:not(#mxb-x) .mxb-wire-more{color:var(--p60);text-decoration:underline;font-size:13px}
+:not(#mxb-x) .mxb-rel{margin:8px 0 0;font-size:15px;line-height:1.6;color:var(--g70)}
+:not(#mxb-x) details.mxb-series{margin:64px 0 0;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+:not(#mxb-x) details.mxb-series summary{cursor:pointer;padding:16px 20px;font-size:17px;font-weight:700;line-height:1.6;color:var(--g90)}
+:not(#mxb-x) details.mxb-series summary:focus-visible{outline:2px solid var(--p50);outline-offset:2px;border-radius:10px}
+:not(#mxb-x) details.mxb-series ol{margin:0;padding:0 20px 20px 44px}
+:not(#mxb-x) details.mxb-series li{font-size:15px;line-height:1.6;color:var(--g70);margin:0 0 6px}
+:not(#mxb-x) details.mxb-series li.mxb-now{color:var(--p60);font-weight:700}
+:not(#mxb-x) .mxb-tags{display:flex;flex-wrap:wrap;gap:8px;margin:32px 0 0;padding:0;list-style:none}
+:not(#mxb-x) .mxb-tags li{font-size:13px;line-height:1.5;color:var(--g70);background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:4px 10px;margin:0}
+@media (max-width:767px){
+article.mxb-wrap:not(#mxb-x) h2{font-size:22px;margin-top:48px}
+article.mxb-wrap:not(#mxb-x) p.mxb-lead{font-size:17px}
+:not(#mxb-x) .mxb-sum{padding:4px 16px}
+:not(#mxb-x) .mxb-sum-row{grid-template-columns:1fr;gap:6px}
+:not(#mxb-x) .mxb-sum-row .mxb-badge{justify-self:start}
+:not(#mxb-x) .mxb-fig{padding:16px}
+:not(#mxb-x) .mxb-mods{grid-template-columns:1fr}
+:not(#mxb-x) ol.mxb-tl li{grid-template-columns:1fr;gap:4px}
+:not(#mxb-x) .mxb-bars li{grid-template-columns:80px 1fr 48px;gap:8px}
+:not(#mxb-x) .mxb-kpi-v{font-size:24px}
+:not(#mxb-x) .mxb-wire-body{grid-template-columns:1fr}
+:not(#mxb-x) .mxb-wire-toc{flex-direction:row;flex-wrap:wrap;gap:12px}
+:not(#mxb-x) .mxb-arch{grid-template-columns:1fr;gap:16px}
+:not(#mxb-x) .mxb-links{flex-direction:row;justify-content:center;gap:32px}
+:not(#mxb-x) .mxb-link svg{width:12px;height:32px;margin:4px auto 0}
+:not(#mxb-x) .mxb-link svg.mxb-h{display:none}
+}
+:not(#mxb-x) .mxb-link svg.mxb-v{display:none}
+@media (max-width:767px){:not(#mxb-x) .mxb-link svg.mxb-v{display:block}}article.mxb-wrap:not(#mxb-x) p{word-break:keep-all}
+article.mxb-wrap:not(#mxb-x) table{table-layout:auto}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list>li{list-style:disc}
+article.mxb-wrap:not(#mxb-x) ol.mxb-list>li{list-style:decimal}
+</style>
+<article class="mxb-wrap">
+<ul class="mxb-meta"><li>시리즈 7/16</li><li>개발</li><li>Mendix 10</li><li>성능</li></ul>
+<p class="mxb-lead">오랜만에 접속하면 로그인 후 첫 화면이 뜨기까지 1분 넘게 걸렸고, 다시 접속하면 10초 안팎이었다. 목록 페이지를 오갈 때도 매번 서버 조회를 기다려야 했다. 서버 쪽은 주기적 워밍업으로, 화면 쪽은 브라우저 캐시로 대응했다.</p>
+
+<div class="mxb-sum"><div class="mxb-sum-row"><span class="mxb-badge">문제</span><p>첫 조회 72초, 재조회 10초. 점검 유형별 목록 페이지를 이동할 때마다 같은 데이터를 다시 조회</p></div><div class="mxb-sum-row"><span class="mxb-badge">원인</span><p>사용이 뜸하면 DB가 테이블 데이터를 메모리에서 내림. 목록 페이지 4개가 같은 데이터를 각자 조회</p></div><div class="mxb-sum-row"><span class="mxb-badge mxb-badge-p">해결</span><p>15분 주기 Scheduled Event로 같은 조회를 미리 실행. 목록 결과를 window에 10분 캐시하고 4개 페이지가 공유</p></div></div>
+
+<div class="mxb-kpis">
+  <div class="mxb-kpi"><span class="mxb-kpi-v">72초</span><span class="mxb-kpi-l">오랜만의 첫 조회</span></div>
+  <div class="mxb-kpi"><span class="mxb-kpi-v">10초</span><span class="mxb-kpi-l">재조회</span></div>
+  <div class="mxb-kpi"><span class="mxb-kpi-v">즉시</span><span class="mxb-kpi-l">캐시 적용 후 페이지 재방문</span></div>
+</div>
+
+<h2>첫 조회만 느린 이유</h2>
+<p>로그인 자체가 느린 것이 아니었다. 로그인 직후 열리는 대시보드가 전체 데이터를 조회하는데, 오래 사용이 없으면 DB가 그 테이블을 메모리 캐시에서 내린다. 첫 조회는 디스크에서 읽고, 그다음부터는 메모리에서 읽는다. 사진 컬럼 때문에 테이블이 2GB를 넘어 차이가 더 컸다.</p>
+
+<h2>서버: Scheduled Event 워밍업</h2>
+<ol class="mxb-steps">
+  <li><span class="mxb-step-t">Microflow 생성</span><span class="mxb-step-d">대시보드가 쓰는 조회 Java Action을 호출하고 결과는 버림. 액티비티 1개</span></li>
+  <li><span class="mxb-step-t">Scheduled Event 생성</span><span class="mxb-step-d">위 Microflow를 15분 간격으로 실행</span></li>
+  <li><span class="mxb-step-t">런타임 설정 확인</span><span class="mxb-step-d">ScheduledEventExecution 값이 ALL인지 확인. 꺼져 있으면 실행되지 않음</span></li>
+  <li><span class="mxb-step-t">로그로 확인</span><span class="mxb-step-d">15분마다 조회 로그가 찍히는지, 다음 날 첫 접속이 빨라졌는지</span></li>
+</ol>
+
+<div class="mxb-code"><div class="mxb-code-h"><span>m2ee.yaml (확인할 항목)</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">mxruntime:
+  ScheduledEventExecution: ALL</code></pre></div>
+
+<div class="mxb-note mxb-note-warn" role="note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8 0.8 18h18.4L10 1.8Zm1 13.2H9v-2h2v2Zm0-3.5H9V7h2v4.5Z"/></svg><div><strong class="mxb-note-t">워밍업은 증상 완화</strong><span class="mxb-note-b">15분마다 사용자 한 명이 대시보드를 여는 만큼의 부하가 생긴다. 서버 메모리가 빠듯하면 간격을 30분으로 늘린다. 근본적으로는 테이블 크기와 조회 컬럼을 줄여야 한다.</span></div></div>
+
+<h2>화면: 페이지 간 캐시 공유</h2>
+<p>Mendix는 페이지를 이동해도 window 객체가 유지된다. 3편에서는 이 특성이 문제였지만, 캐시에는 쓸모가 있다. 목록 페이지 4개는 같은 데이터를 날짜로 조회하고 점검 유형은 화면에서 나누기 때문에, 캐시 키에서 페이지 구분을 빼고 날짜 범위만 남겼다.</p>
+
+<div class="mxb-code"><div class="mxb-code-h"><span>JS: window 캐시</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">var CACHE_TTL = 10 * 60 * 1000;  <span class="c"> // 10분</span>
+
+function loadList(from, to, force, onDone) {
+  var key = from + <span class="s">'|'</span> + to;     <span class="c"> // 페이지 구분 없이 공유</span>
+  window._listCache = window._listCache || {};
+  var hit = window._listCache[key];
+
+  if (!force &amp;&amp; hit &amp;&amp; Date.now() - hit.ts &lt; CACHE_TTL) {
+    onDone(hit.data);
+    return;
+  }
+  fetchFromServer(from, to, function (rows) {
+    window._listCache[key] = { ts: Date.now(), data: rows };
+    onDone(rows);
+  });
+}
+
+<span class="c">// 저장, 삭제, 업로드 후에는 전체 무효화</span>
+function afterChange() {
+  window._listCache = {};
+  loadList(currentFrom, currentTo, true, render);
+}</code></pre></div>
+
+<figure class="mxb-fig">
+  <ol class="mxb-tl">
+    <li><span class="mxb-tl-when">첫 방문</span><div><span class="mxb-tl-what">서버 조회 1회</span><span class="mxb-tl-desc">결과를 window에 저장</span></div></li>
+    <li><span class="mxb-tl-when">다른 유형 페이지</span><div><span class="mxb-tl-what">즉시 표시</span><span class="mxb-tl-desc">같은 날짜 범위면 캐시 사용</span></div></li>
+    <li><span class="mxb-tl-when">10분 경과</span><div><span class="mxb-tl-what">서버 재조회</span><span class="mxb-tl-desc">캐시 만료</span></div></li>
+    <li><span class="mxb-tl-when">저장, 삭제</span><div><span class="mxb-tl-what">캐시 전체 삭제 후 재조회</span><span class="mxb-tl-desc">본인 변경은 바로 반영</span></div></li>
+  </ol>
+  <figcaption>캐시 동작</figcaption>
+</figure>
+
+<p>다른 사용자가 등록한 데이터는 최대 10분 늦게 보인다. 업무 특성상 실시간성이 중요하지 않아 받아들였다.</p>
+
+<h2>다음 단계: 결과를 미리 만들어 두기</h2>
+<p>워밍업과 캐시로 체감 속도는 해결했지만, 조회 자체는 여전히 무거웠다. 이후 대시보드와 목록 모두 스케줄러가 결과 테이블을 미리 만들고, 화면은 그 결과만 읽도록 바꿨다.</p>
+<figure class="mxb-fig">
+  <div class="mxb-arch">
+    <div class="mxb-grp"><span class="mxb-grp-t">스케줄러</span>
+      <div class="mxb-node"><b>원본 테이블</b><span>사진, 본문 포함</span></div>
+      <span class="mxb-down" aria-hidden="true"><svg viewBox="0 0 12 20"><rect x="5" y="0" width="2" height="12"/><polygon points="6,20 0,11 12,11"/></svg></span>
+      <div class="mxb-node mxb-node-p"><b>결과 테이블</b><span>화면에 쓰는 컬럼만, 상태 계산 완료</span></div>
+    </div>
+    <div class="mxb-links"><div class="mxb-link mxb-link-p">가벼운 조회<svg class="mxb-h" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6H90"/><polygon points="100,6 90,1 90,11"/></svg><svg class="mxb-v" viewBox="0 0 12 32" aria-hidden="true"><path d="M6 0V24"/><polygon points="6,32 1,22 11,22"/></svg></div></div>
+    <div class="mxb-grp"><span class="mxb-grp-t">화면</span>
+      <div class="mxb-node"><b>대시보드</b><span>결과 테이블 집계</span></div>
+      <div class="mxb-node"><b>목록</b><span>결과 테이블 조회</span></div>
+    </div>
+  </div>
+  <figcaption>사전 집계 구조</figcaption>
+</figure>
+
+<h2>점검 목록</h2>
+<ul class="mxb-check">
+  <li>느린 것이 로그인인지, 로그인 직후 첫 화면의 데이터 조회인지 구분했는가</li>
+  <li>Scheduled Event가 실제로 실행되는지 로그로 확인했는가</li>
+  <li>캐시 키가 서버 조회 조건과 정확히 같은가</li>
+  <li>데이터 변경 후 캐시를 지우는가</li>
+</ul>
+<details class="mxb-series"><summary>시리즈 목차 16편</summary><ol><li>PI 담당자가 로우코드로 사내 시스템을 직접 만들고 운영한 기록</li><li>Mendix Datagrid2 대신 HTMLSnippet과 JS로 목록 화면 만들기</li><li>Mendix SPA에서 HTMLSnippet JS가 꼬이는 이유: 이벤트 중복과 DOM 공존</li><li>Mendix mx.data.commit이 조용히 실패할 때</li><li>Mendix Java heap OOM 추적기: base64 이미지 컬럼</li><li>Mendix 커밋 롤백, 용량 문제가 아니었다: FileDocument 전환기</li><li class="mxb-now">Mendix 첫 접속 지연 줄이기: 워밍업과 캐시 (현재 글)</li><li>Mendix SAML SSO 자동 로그인과 딥링크 유지</li><li>Mendix Studio Pro에서 안 바뀌는 스타일 main.scss로 바꾸기</li><li>Mendix MPK 파일 열어서 마이크로플로우 구조 보기</li><li>SSO 로그 테이블로 MAU와 재방문율 구하는 SQL</li><li>Mendix DateTime이 BI 도구에서 하루 빠르게 보이는 이유</li><li>대시보드 숫자가 틀렸을 때 확인하는 순서</li><li>보기 좋은 대시보드에서 할 일을 알려주는 대시보드로</li><li>여러 점검 시스템을 하나로 합치는 데이터 모델</li><li>데이터 비전공자에게 분석 결과 보고하기</li></ol></details>
+<ul class="mxb-tags"><li>#Mendix</li><li>#ScheduledEvent</li><li>#캐시</li><li>#성능개선</li><li>#대시보드</li><li>#JavaScript</li></ul>
+</article>
+<script>(function () {
+  function copyText(t, done) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = t;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(true); } catch (e) { done(false); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(t).then(function () { done(true); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+  function bindCopy(btn) {
+    btn.addEventListener('click', function () {
+      var box = btn.parentNode.parentNode;
+      var pre = box.querySelector('pre');
+      if (!pre) { return; }
+      copyText(pre.textContent, function (ok) {
+        btn.textContent = ok ? '복사됨' : '복사 실패';
+        setTimeout(function () { btn.textContent = '복사'; }, 1500);
+      });
+    });
+  }
+  function setup(w) {
+    if (w.getAttribute('data-mxb-ready')) { return; }
+    w.setAttribute('data-mxb-ready', '1');
+    w.className += ' mxb-js';
+    var btns = w.querySelectorAll('.mxb-copy');
+    for (var i = 0; i !== btns.length; i++) { bindCopy(btns[i]); }
+  }
+  var wraps = document.querySelectorAll('article.mxb-wrap');
+  for (var j = 0; j !== wraps.length; j++) { setup(wraps[j]); }
+})();</script>

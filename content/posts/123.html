@@ -1,0 +1,401 @@
+<!--
+id: 123
+제목: 인프라 자원 신청서, 실측값으로 산정근거 쓰기
+카테고리: Stack/PythonFramework
+태그: PV, pI, 인프라, 스토리지, Kubernetes, Grafana, 자원산정, 용량산정
+날짜: 2026-10-04 11:53
+수정: 2026-10-04 11:53
+형식: html
+-->
+<article class="hl-post hl-p03">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+article.hl-post:not(#hl-x){--p50:#256ef4;--p60:#0b50d0;--p70:#083891;--p10:#d8e5fd;--p5:#ecf2fe;--g0:#ffffff;--g5:#f4f5f6;--g10:#e6e8ea;--g20:#cdd1d5;--g30:#b1b8be;--g40:#8a949e;--g50:#6d7882;--g70:#464c53;--g90:#1e2124;display:block;max-width:760px;margin:0 auto;padding:0 0 48px;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;font-weight:400;line-height:1.75;color:var(--g90);text-align:left;word-break:keep-all;overflow-wrap:break-word;-webkit-text-size-adjust:100%;letter-spacing:0}
+article.hl-post:not(#hl-x) *{box-sizing:border-box}
+article.hl-post:not(#hl-x) p{margin:0 0 16px;padding:0;font-size:17px;line-height:1.75;color:var(--g90)}
+article.hl-post:not(#hl-x) h2{margin:64px 0 16px;padding:0;border:0;background:none;font-size:24px;line-height:1.5;font-weight:700;color:var(--g90);letter-spacing:-0.01em;text-align:left}
+article.hl-post:not(#hl-x) h3{margin:40px 0 12px;padding:0;border:0;background:none;font-size:19px;line-height:1.5;font-weight:700;color:var(--g90);text-align:left}
+article.hl-post:not(#hl-x) h2::before,article.hl-post:not(#hl-x) h2::after,article.hl-post:not(#hl-x) h3::before,article.hl-post:not(#hl-x) h3::after{content:none;display:none}
+article.hl-post:not(#hl-x) ul,article.hl-post:not(#hl-x) ol{margin:0 0 16px;padding:0 0 0 24px}
+article.hl-post:not(#hl-x) ul > li{list-style:disc}
+article.hl-post:not(#hl-x) ol > li{list-style:decimal}
+article.hl-post:not(#hl-x) li{margin:0 0 8px;font-size:17px;line-height:1.75;color:var(--g90)}
+article.hl-post:not(#hl-x) a{color:var(--p60);text-decoration:underline;text-underline-offset:3px}
+article.hl-post:not(#hl-x) a:hover{color:var(--p70)}
+article.hl-post:not(#hl-x) strong,article.hl-post:not(#hl-x) b{font-weight:700;color:inherit}
+article.hl-post:not(#hl-x) small{font-size:inherit}
+article.hl-post:not(#hl-x) code{font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:.88em;background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:1px 6px;color:var(--g90)}
+article.hl-post:not(#hl-x) button{font-family:inherit}
+article.hl-post:not(#hl-x) button:focus-visible{outline:2px solid var(--p50);outline-offset:2px}
+
+/* 시리즈 머리 */
+article.hl-post:not(#hl-x) .hl-series{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px;font-size:15px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-series-bar{display:flex;gap:4px;flex:0 0 auto}
+article.hl-post:not(#hl-x) .hl-series-bar i{display:block;width:12px;height:4px;border-radius:2px;background:var(--g20)}
+article.hl-post:not(#hl-x) .hl-series-bar i.on{background:var(--p50)}
+article.hl-post:not(#hl-x) p.hl-lead{margin:0 0 32px;font-size:19px;line-height:1.7;color:var(--g90)}
+
+/* 목차 */
+article.hl-post:not(#hl-x) .hl-toc{margin:0 0 40px;padding:24px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-toc p.hl-toc-t{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-toc ol{margin:0;padding:0 0 0 20px}
+article.hl-post:not(#hl-x) .hl-toc li{margin:0 0 4px;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-toc-a{appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;background:none;font-size:15px;line-height:1.6;color:var(--g90);text-align:left;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-toc-a:hover{color:var(--p60);text-decoration:underline;text-underline-offset:3px}
+
+/* 그림 */
+article.hl-post:not(#hl-x) .hl-fig{margin:32px 0;padding:24px;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-fig > *:last-child{margin-bottom:0}
+article.hl-post:not(#hl-x) p.hl-cap{margin:16px 0 0;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-figt{margin:0 0 16px;font-size:17px;font-weight:700;color:var(--g90)}
+
+/* 흐름도 */
+article.hl-post:not(#hl-x) .hl-flow{display:flex;align-items:stretch;gap:8px}
+article.hl-post:not(#hl-x) .hl-node{flex:1 1 0;min-width:0;padding:16px 12px;background:var(--g5);border:1px solid var(--g10);border-radius:8px;text-align:center}
+article.hl-post:not(#hl-x) .hl-node b{display:block;font-size:15px;line-height:1.5;font-weight:700;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-node span{display:block;margin-top:4px;font-size:13px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-node.pri{background:var(--p5);border-color:var(--p10)}
+article.hl-post:not(#hl-x) .hl-node.pri b{color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-node.dim{background:var(--g0);border:1px dashed var(--g30)}
+article.hl-post:not(#hl-x) .hl-node.dim b{color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-node.risk{background:#fdefec;border-color:#fcdfd9}
+article.hl-post:not(#hl-x) .hl-node.risk b{color:#bd2c0f}
+article.hl-post:not(#hl-x) .hl-node.ok{background:#eaf6ec;border-color:#d8eedd}
+article.hl-post:not(#hl-x) .hl-node.ok b{color:#267337}
+article.hl-post:not(#hl-x) .hl-arr{flex:0 0 16px;display:flex;align-items:center;justify-content:center;color:var(--g40)}
+article.hl-post:not(#hl-x) .hl-arr svg{display:block;width:16px;height:16px}
+article.hl-post:not(#hl-x) .hl-stack{display:flex;flex-direction:column;gap:8px}
+article.hl-post:not(#hl-x) .hl-stack .hl-arr{transform:rotate(90deg);height:16px}
+
+/* 비교 열 */
+article.hl-post:not(#hl-x) .hl-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+article.hl-post:not(#hl-x) .hl-col{padding:20px;border:1px solid var(--g20);border-radius:8px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-col.soft{background:var(--g5);border-color:var(--g10)}
+article.hl-post:not(#hl-x) .hl-col.pri{background:var(--p5);border-color:var(--p10)}
+article.hl-post:not(#hl-x) p.hl-col-t{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-col.pri p.hl-col-t{color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-col ul{margin:0;padding-left:20px}
+article.hl-post:not(#hl-x) .hl-col li{font-size:15px;line-height:1.6;margin:0 0 4px}
+article.hl-post:not(#hl-x) .hl-col p{font-size:15px;line-height:1.6}
+
+/* 알림 상자 */
+article.hl-post:not(#hl-x) .hl-note{display:flex;gap:12px;align-items:flex-start;margin:24px 0;padding:16px 20px;border:1px solid;border-radius:8px}
+article.hl-post:not(#hl-x) .hl-note .hl-ic{flex:0 0 20px;width:20px;height:20px;margin-top:4px}
+article.hl-post:not(#hl-x) .hl-note > div{flex:1 1 auto;min-width:0}
+article.hl-post:not(#hl-x) .hl-note p{margin:0 0 8px}
+article.hl-post:not(#hl-x) .hl-note p:last-child{margin:0}
+article.hl-post:not(#hl-x) .hl-note.info{background:#e7f4fe;border-color:#d3ebfd}
+article.hl-post:not(#hl-x) .hl-note.info b.lbl{color:#096ab3}
+article.hl-post:not(#hl-x) .hl-note.warn{background:#fff3db;border-color:#ffe0a3}
+article.hl-post:not(#hl-x) .hl-note.warn b.lbl{color:#8a5c00}
+article.hl-post:not(#hl-x) .hl-note.ok{background:#eaf6ec;border-color:#d8eedd}
+article.hl-post:not(#hl-x) .hl-note.ok b.lbl{color:#267337}
+article.hl-post:not(#hl-x) .hl-note.risk{background:#fdefec;border-color:#fcdfd9}
+article.hl-post:not(#hl-x) .hl-note.risk b.lbl{color:#bd2c0f}
+article.hl-post:not(#hl-x) b.lbl{margin-right:8px}
+
+/* 코드 */
+article.hl-post:not(#hl-x) .hl-code{margin:24px 0;border-radius:8px;background:#1e2124;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-code-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 16px;background:#131416;font-size:13px;line-height:1.5;color:#cdd1d5}
+article.hl-post:not(#hl-x) .hl-copy{appearance:none;-webkit-appearance:none;margin:0;padding:4px 12px;border:1px solid #464c53;border-radius:6px;background:transparent;font-size:13px;line-height:1.5;color:#f4f5f6;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-copy:hover{background:#464c53}
+article.hl-post:not(#hl-x) .hl-code pre{margin:0;padding:16px;border:0;border-radius:0;background:none;overflow-x:auto;font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:15px;line-height:1.6;color:#f4f5f6;white-space:pre;word-break:normal;overflow-wrap:normal;tab-size:4}
+article.hl-post:not(#hl-x) .hl-code pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit}
+
+/* 표 */
+article.hl-post:not(#hl-x) .hl-tw{margin:24px 0;overflow-x:auto;border:1px solid var(--g20);border-radius:8px;background:var(--g0)}
+article.hl-post:not(#hl-x) table.hl-t{width:100%;margin:0;border:0;border-collapse:collapse;border-spacing:0;font-size:15px;line-height:1.6;background:var(--g0)}
+article.hl-post:not(#hl-x) table.hl-t th{padding:12px 16px;border:0;border-bottom:1px solid var(--g20);background:var(--g5);font-size:15px;font-weight:700;text-align:left;color:var(--g90);white-space:nowrap;vertical-align:bottom}
+article.hl-post:not(#hl-x) table.hl-t td{padding:12px 16px;border:0;border-bottom:1px solid var(--g10);font-size:15px;color:var(--g90);vertical-align:top;text-align:left}
+article.hl-post:not(#hl-x) table.hl-t tr:last-child td{border-bottom:0}
+article.hl-post:not(#hl-x) table.hl-t td.num,article.hl-post:not(#hl-x) table.hl-t th.num{text-align:right;white-space:nowrap}
+article.hl-post:not(#hl-x) table.hl-t td.sub{color:var(--g70)}
+article.hl-post:not(#hl-x) table.hl-t tr.hide{display:none}
+
+/* 탭, 칩, 버튼 */
+article.hl-post:not(#hl-x) .hl-tabs{margin:0}
+article.hl-post:not(#hl-x) .hl-seg{display:inline-flex;flex-wrap:wrap;gap:4px;margin:0 0 16px;padding:4px;background:var(--g5);border:1px solid var(--g10);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-seg button{appearance:none;-webkit-appearance:none;margin:0;padding:6px 16px;border:0;border-radius:6px;background:transparent;font-size:15px;line-height:1.5;font-weight:400;color:var(--g70);cursor:pointer}
+article.hl-post:not(#hl-x) .hl-seg button:hover{background:var(--g10);color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-seg button.on{background:var(--g0);color:var(--g90);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+article.hl-post:not(#hl-x) .hl-pane{display:none}
+article.hl-post:not(#hl-x) .hl-pane.on{display:block}
+article.hl-post:not(#hl-x) .hl-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+article.hl-post:not(#hl-x) .hl-chip{appearance:none;-webkit-appearance:none;margin:0;padding:6px 14px;border:1px solid var(--g30);border-radius:6px;background:var(--g0);font-size:15px;line-height:1.5;color:var(--g90);cursor:pointer;text-align:left}
+article.hl-post:not(#hl-x) .hl-chip:hover{border-color:var(--g50);background:var(--g5)}
+article.hl-post:not(#hl-x) .hl-chip.on{background:var(--p5);border-color:var(--p50);color:var(--p60);font-weight:700}
+article.hl-post:not(#hl-x) .hl-btn{appearance:none;-webkit-appearance:none;margin:0;padding:8px 16px;border:1px solid var(--p50);border-radius:6px;background:var(--p50);font-size:15px;line-height:1.5;font-weight:700;color:#fff;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-btn:hover{background:var(--p60);border-color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-btn:active{background:var(--p70);border-color:var(--p70)}
+article.hl-post:not(#hl-x) .hl-btn.line{background:var(--g0);color:var(--g90);border-color:var(--g30);font-weight:400}
+article.hl-post:not(#hl-x) .hl-btn.line:hover{background:var(--g5);border-color:var(--g50)}
+article.hl-post:not(#hl-x) .hl-out{margin:16px 0 0;padding:16px 20px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-out p{margin:0 0 4px}
+article.hl-post:not(#hl-x) .hl-out p:last-child{margin:0}
+article.hl-post:not(#hl-x) .hl-muted{color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-s{font-size:15px;line-height:1.6}
+
+/* 배지, 범례 */
+article.hl-post:not(#hl-x) .hl-badge{display:inline-block;padding:2px 8px;border-radius:4px;border:1px solid;font-size:13px;line-height:1.5;font-weight:700;vertical-align:middle;white-space:nowrap}
+article.hl-post:not(#hl-x) .hl-badge.info{background:#e7f4fe;border-color:#d3ebfd;color:#096ab3}
+article.hl-post:not(#hl-x) .hl-badge.warn{background:#fff3db;border-color:#ffe0a3;color:#8a5c00}
+article.hl-post:not(#hl-x) .hl-badge.ok{background:#eaf6ec;border-color:#d8eedd;color:#267337}
+article.hl-post:not(#hl-x) .hl-badge.risk{background:#fdefec;border-color:#fcdfd9;color:#bd2c0f}
+article.hl-post:not(#hl-x) .hl-badge.gray{background:var(--g5);border-color:var(--g10);color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-badge.pri{background:var(--p5);border-color:var(--p10);color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-legend{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-legend span{display:inline-flex;align-items:center;gap:6px}
+article.hl-post:not(#hl-x) .hl-legend i{display:inline-block;width:12px;height:12px;border-radius:2px}
+
+/* 막대 */
+article.hl-post:not(#hl-x) .hl-bars{margin:0}
+article.hl-post:not(#hl-x) .hl-brow{display:grid;grid-template-columns:140px 1fr 64px;gap:12px;align-items:center;margin:0 0 8px;font-size:15px;line-height:1.5}
+article.hl-post:not(#hl-x) .hl-bar{height:12px;background:var(--g10);border-radius:6px;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-bar i{display:block;height:100%;background:var(--p50);border-radius:6px}
+article.hl-post:not(#hl-x) .hl-brow .v{text-align:right;font-weight:700}
+
+/* 핵심 숫자 */
+article.hl-post:not(#hl-x) .hl-kv{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 40px}
+article.hl-post:not(#hl-x) .hl-kv > div{padding:16px 20px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-kv b{display:block;font-size:24px;line-height:1.4;font-weight:700;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-kv span{display:block;font-size:15px;line-height:1.5;color:var(--g70)}
+
+/* 체크리스트 */
+article.hl-post:not(#hl-x) .hl-checkwrap{margin:24px 0;padding:8px 24px 16px;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-prog{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--g20);font-size:15px;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-prog-b{flex:1 1 auto;height:8px;background:var(--g10);border-radius:4px;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-prog-b i{display:block;height:100%;width:0;background:var(--p50);border-radius:4px;transition:width .2s}
+article.hl-post:not(#hl-x) ul.hl-checks{list-style:none;margin:0;padding:0}
+article.hl-post:not(#hl-x) ul.hl-checks li{margin:0;padding:0;border-bottom:1px solid var(--g10);list-style:none}
+article.hl-post:not(#hl-x) ul.hl-checks li:last-child{border-bottom:0}
+article.hl-post:not(#hl-x) .hl-chk{appearance:none;-webkit-appearance:none;display:flex;gap:12px;align-items:flex-start;width:100%;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-box{flex:0 0 20px;width:20px;height:20px;margin-top:4px;border:1px solid var(--g50);border-radius:4px;background:var(--g0);display:flex;align-items:center;justify-content:center}
+article.hl-post:not(#hl-x) .hl-box svg{display:none;width:14px;height:14px}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-box{background:var(--p50);border-color:var(--p50)}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-box svg{display:block}
+article.hl-post:not(#hl-x) .hl-ct{display:block;font-size:17px;line-height:1.6}
+article.hl-post:not(#hl-x) .hl-ct small{display:block;margin-top:2px;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-ct{color:var(--g70)}
+
+/* 끝 */
+article.hl-post:not(#hl-x) .hl-end{margin:64px 0 0;padding:24px 0 0;border-top:1px solid var(--g20)}
+article.hl-post:not(#hl-x) .hl-nav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px}
+article.hl-post:not(#hl-x) .hl-nav > div{padding:16px;border:1px solid var(--g20);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-nav > div.r{text-align:right}
+article.hl-post:not(#hl-x) .hl-nav > div.none{visibility:hidden}
+article.hl-post:not(#hl-x) .hl-nav small{display:block;font-size:13px;line-height:1.5;color:var(--g50)}
+article.hl-post:not(#hl-x) .hl-nav span{display:block;margin-top:4px;font-size:15px;line-height:1.5;font-weight:500;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-tags{display:flex;flex-wrap:wrap;gap:8px}
+article.hl-post:not(#hl-x) .hl-tags span{padding:4px 8px;border-radius:4px;background:var(--g5);font-size:13px;line-height:1.5;color:var(--g70)}
+
+@media (max-width:600px){
+  article.hl-post:not(#hl-x) .hl-node{padding:12px}
+  article.hl-post:not(#hl-x) h2{margin:48px 0 16px;font-size:22px}
+  article.hl-post:not(#hl-x) p.hl-lead{font-size:17px}
+  article.hl-post:not(#hl-x) .hl-series-bar i{width:8px}
+  article.hl-post:not(#hl-x) .hl-fig{padding:16px}
+  article.hl-post:not(#hl-x) .hl-toc{padding:16px}
+  article.hl-post:not(#hl-x) .hl-flow{flex-direction:column}
+  article.hl-post:not(#hl-x) .hl-flow .hl-arr{transform:rotate(90deg);height:16px}
+  article.hl-post:not(#hl-x) .hl-cols{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-kv{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-kv b{font-size:22px}
+  article.hl-post:not(#hl-x) .hl-brow{grid-template-columns:96px 1fr 52px;gap:8px}
+  article.hl-post:not(#hl-x) .hl-code pre{font-size:13px}
+  article.hl-post:not(#hl-x) .hl-nav{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-nav > div.none{display:none}
+  article.hl-post:not(#hl-x) .hl-checkwrap{padding:8px 16px 12px}
+  article.hl-post:not(#hl-x) .hl-note{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){article.hl-post:not(#hl-x) *{transition:none !important;scroll-behavior:auto !important}}
+article.hl-post:not(#hl-x) p{word-break:keep-all}
+article.hl-post:not(#hl-x) table{table-layout:auto}
+</style>
+<div class="hl-series"><span>현장 데이터 서비스 구축기 3편</span><span class="hl-series-bar" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+<p class="hl-lead">사내 Kubernetes 자원과 DB를 신청하면서 산정근거표를 쓴 방법을 정리했다. Grafana 실측값으로 CPU·메모리를, 첨부파일 증가 추세로 스토리지를 계산하는 방식과 함께 내야 하는 서류 3종을 다룬다.</p>
+<div class="hl-toc"><p class="hl-toc-t">이 글의 순서</p><ol></ol></div>
+<h2>산정근거표가 되돌아오는 이유</h2>
+<p>사내 인프라 자원을 신청하면 거의 항상 산정근거를 요구한다. 처음에는 '사용자 몇 명, 넉넉하게 몇 코어' 식으로 썼다가 다시 써야 했다. 심사하는 쪽이 묻는 건 하나다. 그 숫자가 어디서 나왔는가.</p>
+<p>예상치는 반박하기 쉽고 실측치는 반박하기 어렵다. 이미 돌고 있는 서비스가 있다면 그 서비스의 모니터링 수치가 가장 강한 근거다. 이 글은 실측값으로 CPU, 메모리, 스토리지 근거를 쓰는 방법이다.</p>
+<div class="hl-note info"><svg class="hl-ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#0b78cb"/><rect x="9" y="8.5" width="2" height="6.5" rx="1" fill="#fff"/><circle cx="10" cy="5.8" r="1.25" fill="#fff"/></svg><div><p><b class="lbl">참고</b>연간 수요조사 시기를 놓치고 수시로 신청하면 별도 심사를 거친다. 신청 규모에 따라 최소 할당이 아니라 표준 구성으로 다시 신청하라는 안내를 받기도 한다. 수요조사 일정부터 확인해 두는 게 좋다.</p></div></div>
+
+<h2>내야 하는 서류 3종</h2>
+<div class="hl-tw"><table class="hl-t">
+  <thead><tr><th>서류</th><th>담는 내용</th></tr></thead>
+  <tbody>
+    <tr><td>시스템 개요표</td><td>목적, 사용자 규모, 운영 형태, 연계 시스템</td></tr>
+    <tr><td>시스템 구성도</td><td>클러스터 안의 구성요소와 클러스터 밖 외부 시스템</td></tr>
+    <tr><td>자원 산정근거표</td><td>CPU·메모리, 스토리지 각각의 계산식과 입력값 출처</td></tr>
+  </tbody>
+</table></div>
+<p>구성도에서 자주 하는 실수가 외부 시스템을 클러스터 안에 그리는 것이다. 신청하는 자원은 클러스터 안에 들어갈 것만이다. DB, SSO, 데이터 레이크, LLM API처럼 다른 조직이 운영하는 시스템은 반드시 바깥 박스로 그린다. 그래야 심사하는 쪽이 신청 범위를 오해하지 않는다.</p>
+<div class="hl-fig">
+  <p class="hl-figt">구성도 예시</p>
+  <div class="hl-cols" style="grid-template-columns:2fr 1fr">
+    <div class="hl-col pri">
+      <p class="hl-col-t">신청 범위: Namespace</p>
+      <div class="hl-stack">
+        <div class="hl-node"><b>Ingress</b><span>도메인, TLS</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>Service</b><span>Pod 앞의 고정 주소</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>Pod × N</b><span>WEB/WAS 컨테이너</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>PersistentVolume</b><span>첨부파일 저장</span></div>
+      </div>
+    </div>
+    <div class="hl-col soft">
+      <p class="hl-col-t">외부 시스템</p>
+      <div class="hl-stack">
+        <div class="hl-node dim"><b>DB</b><span>DBaaS</span></div>
+        <div class="hl-node dim"><b>SSO</b><span>통합인증</span></div>
+        <div class="hl-node dim"><b>데이터 레이크</b><span>조회 전용</span></div>
+        <div class="hl-node dim"><b>LLM API</b><span>사내 게이트웨이</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="hl-cap">점선 박스는 신청 대상이 아니다.</p>
+</div>
+
+<h2>CPU·메모리: 모니터링 실측값으로</h2>
+<p>이미 운영 중인 환경이 있다면 Grafana 같은 모니터링에서 최근 몇 주의 최대 사용량을 본다. 평균이 아니라 최대값이다. 계산식은 단순하게 둔다.</p>
+<div class="hl-out"><p><b>필요량</b> = 실측 최대 사용량 × 여유율 × Pod 수</p><p class="hl-muted hl-s">여유율은 사용자 증가 계획에 맞춰 근거와 함께 적는다.</p></div>
+<p>여기에 Kubernetes 특유의 사정 두 가지를 더해야 한다. 둘 다 실제로 겪은 일이다.</p>
+<h3>ML 모델을 메모리에 올리는 앱</h3>
+<p>scikit-learn이나 LightGBM 모델을 앱 시작 때 메모리에 올리는 Flask 서비스는 웹 워커 수만큼 모델이 복제된다. 워커 4개면 모델도 4벌이다. 실제로 메모리 한도 1Gi에서 Pod가 OOM으로 계속 재시작됐고, 워커를 1개로 줄이고 스레드로 동시 요청을 처리하도록 바꿔 해결했다. 산정할 때도 워커 구성을 먼저 정하고 그 기준으로 실측해야 한다.</p>
+<h3>롤링 업데이트는 잠깐 두 배를 쓴다</h3>
+<p>배포할 때 새 Pod를 먼저 띄우고 옛 Pod를 내리는 게 기본 동작이다. 그 사이에는 Pod가 하나 더 떠 있다. Namespace 메모리 할당량이 4Gi이고 이미 3Gi를 쓰는 상태에서 메모리를 2Gi 요청하는 Pod를 배포하면, 새 Pod를 띄울 자리가 없어 배포가 실패한다. 할당량은 배포 순간까지 계산해서 잡는다.</p>
+<div class="hl-out"><p><b>Namespace 할당량</b> ≥ Pod당 요청량 × (Pod 수 + 배포 중 추가 Pod 수)</p></div>
+
+<h2>스토리지: 첨부파일 증가 추세로</h2>
+<p>스토리지는 현재 사용량보다 증가 속도가 중요하다. 첨부파일을 저장하는 시스템이라면 현재 누적 용량, 건수, 월별 증가량을 뽑는다. 실제로 뽑은 값은 이랬다.</p>
+<div class="hl-kv">
+  <div><b>13.97 GiB</b><span>현재 누적</span></div>
+  <div><b>3.8 MB</b><span>건당 평균 (3,727건)</span></div>
+  <div><b>월 2 GiB</b><span>최근 7개월 평균 증가</span></div>
+</div>
+<p>여기에 보존 기간과 여유율을 곱하면 된다. 아래에서 조건을 바꿔 보면 숫자가 어떻게 달라지는지 볼 수 있다.</p>
+<div class="hl-fig hl-calc">
+  <p class="hl-figt">스토리지 산정</p>
+  <div>
+    <p class="hl-s hl-muted" style="margin:0 0 8px">보존 기간</p>
+    <div class="hl-seg hl-period"><button type="button" data-v="36" class="on">3년</button><button type="button" data-v="60">5년</button></div>
+  </div>
+  <p class="hl-s hl-muted" style="margin:0 0 8px">여유율</p>
+  <div class="hl-seg hl-margin"><button type="button" data-v="1.2" class="on">1.2배</button><button type="button" data-v="1.5">1.5배</button></div>
+  <div class="hl-out">
+    <p class="hl-s hl-muted hl-formula"></p>
+    <p style="font-size:24px;font-weight:700;line-height:1.4" class="hl-result"></p>
+  </div>
+</div>
+<p>DB 디스크도 같은 방식이다. 테이블별 행 수와 평균 행 크기에 인덱스 몫을 더하고, 월별 증가율과 보존 기간을 곱한다. 숫자 하나하나보다 '입력값을 어디서 뽑았는지'를 표에 같이 적는 게 핵심이다.</p>
+
+<h2>정리</h2>
+<ul>
+  <li>근거는 예상치보다 실측치가 강하다. 평균이 아니라 최대값을 쓴다.</li>
+  <li>구성도에서 외부 시스템은 클러스터 밖에 그린다.</li>
+  <li>ML 모델을 올리는 앱은 워커 수를 먼저 정하고 메모리를 잰다.</li>
+  <li>할당량은 롤링 업데이트 중 추가로 뜨는 Pod까지 포함해 잡는다.</li>
+  <li>스토리지는 현재 용량 + 월 증가량 × 보존 기간 × 여유율로 계산하고 입력값 출처를 함께 적는다.</li>
+</ul>
+<script>
+(function(){
+  var roots=document.querySelectorAll('article.hl-p03');
+  for(var r=0;r<roots.length;r++){(function(root){
+    if(root.getAttribute('data-p03')==='1'){return;}root.setAttribute('data-p03','1');
+    var calc=root.querySelector('.hl-calc');if(!calc){return;}
+    var NOW=13.97,GROW=2;
+    var state={m:36,k:1.2};
+    function bind(sel,key){
+      var bs=calc.querySelectorAll(sel+' button');
+      for(var i=0;i<bs.length;i++){(function(b){
+        b.addEventListener('click',function(){
+          for(var j=0;j<bs.length;j++){bs[j].className='';}
+          b.className='on';state[key]=parseFloat(b.getAttribute('data-v'));draw();
+        });
+      })(bs[i]);}
+    }
+    function draw(){
+      var raw=NOW+GROW*state.m;var need=raw*state.k;
+      calc.querySelector('.hl-formula').textContent='(13.97 + 2 × '+state.m+'개월) × '+state.k+' = '+need.toFixed(1)+' GiB';
+      calc.querySelector('.hl-result').textContent='약 '+(Math.ceil(need/10)*10)+' GiB';
+    }
+    bind('.hl-period','m');bind('.hl-margin','k');draw();
+  })(roots[r]);}
+})();
+</script>
+<div class="hl-end"><div class="hl-nav"><div class="l"><small>이전 편</small><span>2편. Mendix로 1년 만든 시스템을 코드로 다시 만들기로 한 이유</span></div><div class="r"><small>다음 편</small><span>4편. 3천 건 이슈 데이터로 등급 분류 모델 만들기: 10개 모델 비교와 재학습 가드</span></div></div><div class="hl-tags"><span>#자원산정</span><span>#용량산정</span><span>#인프라</span><span>#Kubernetes</span><span>#Grafana</span><span>#스토리지</span><span>#PV</span><span>#PI</span></div></div>
+<script>
+(function(){
+  function each(list,fn){for(var i=0;i<list.length;i++){fn(list[i],i);}}
+  function fallbackCopy(txt){
+    var ta=document.createElement('textarea');
+    ta.value=txt;ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.top='0';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+  }
+  function init(root){
+    if(root.getAttribute('data-hl-ready')==='1'){return;}
+    root.setAttribute('data-hl-ready','1');
+
+    var toc=root.querySelector('.hl-toc ol');
+    if(toc){
+      var hs=root.querySelectorAll('h2');
+      if(hs.length<3){root.querySelector('.hl-toc').style.display='none';}
+      each(hs,function(h){
+        var li=document.createElement('li');
+        var b=document.createElement('button');
+        b.type='button';b.className='hl-toc-a';b.textContent=h.textContent;
+        b.addEventListener('click',function(){
+          var y=h.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop)-24;
+          try{window.scrollTo({top:y,behavior:'smooth'});}catch(e){window.scrollTo(0,y);}
+        });
+        li.appendChild(b);toc.appendChild(li);
+      });
+    }
+
+    each(root.querySelectorAll('.hl-tabs'),function(t){
+      var btns=t.querySelectorAll('.hl-seg button');
+      var panes=t.querySelectorAll('.hl-pane');
+      each(btns,function(b,i){
+        b.setAttribute('aria-pressed',b.className.indexOf('on')>-1?'true':'false');
+        b.addEventListener('click',function(){
+          each(btns,function(x,j){x.className=(j===i)?'on':'';x.setAttribute('aria-pressed',(j===i)?'true':'false');});
+          each(panes,function(p,j){if(j===i){p.classList.add('on');}else{p.classList.remove('on');}});
+        });
+      });
+    });
+
+    each(root.querySelectorAll('.hl-code'),function(c){
+      var btn=c.querySelector('.hl-copy');var pre=c.querySelector('pre');
+      if(!btn||!pre){return;}
+      btn.addEventListener('click',function(){
+        var txt=pre.textContent;
+        var done=function(){btn.textContent='복사됨';setTimeout(function(){btn.textContent='복사';},1500);};
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(txt).then(done,function(){fallbackCopy(txt);done();});
+        }else{fallbackCopy(txt);done();}
+      });
+    });
+
+    each(root.querySelectorAll('.hl-checkwrap'),function(w){
+      var items=w.querySelectorAll('.hl-chk');
+      var t=w.querySelector('.hl-prog-t');var bar=w.querySelector('.hl-prog-b i');
+      function upd(){
+        var n=w.querySelectorAll('.hl-chk.on').length;
+        if(t){t.textContent=items.length+'개 중 '+n+'개 확인';}
+        if(bar){bar.style.width=(items.length?Math.round(n/items.length*100):0)+'%';}
+      }
+      each(items,function(it){
+        it.setAttribute('aria-pressed','false');
+        it.addEventListener('click',function(){
+          var on=it.classList.toggle('on');
+          it.setAttribute('aria-pressed',on?'true':'false');upd();
+        });
+      });
+      upd();
+    });
+  }
+  each(document.querySelectorAll('article.hl-post'),init);
+})();
+</script>
+</article>

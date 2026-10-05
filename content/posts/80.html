@@ -1,0 +1,324 @@
+<!--
+id: 80
+제목: AWS DEA-C01 공식 샘플 문제 — S3-IA + Glacier Flexible Retrieval 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, S3, AWS, glacier, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, Infrequent Access
+날짜: 2026-03-15 12:57
+수정: 2026-03-24 22:25
+형식: html
+썸네일: /img/t/dJMcadgX3Xr.webp
+-->
+<style>
+.pb-80 *, .pb-80, .pb-80 *::before, .pb-80 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-80{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-80{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-80 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-80 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-80 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.pb-80 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-80 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-80 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-80 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-80 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-80 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-80 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-80 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-80 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-80 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-80 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-80 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-80 .question-box p:last-child{margin-bottom:0}
+.pb-80 .hl-blue{color:var(--blue);font-weight:700}
+.pb-80 .hl-orange{color:var(--orange);font-weight:700}
+.pb-80 .hl-green{color:var(--green);font-weight:700}
+.pb-80 .hl-bold{font-weight:900}
+.pb-80 .lifecycle{display:flex;align-items:stretch;gap:0;border-radius:12px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow);margin-bottom:14px}
+.pb-80 .lc-seg{flex:1;min-width:0;padding:14px 10px;text-align:center;border-right:2px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:5px}
+.pb-80 .lc-seg:last-child{border-right:none}
+.pb-80 .lc-period{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
+.pb-80 .lc-icon{font-size:20px}
+.pb-80 .lc-class{font-size:11px;font-weight:800;line-height:1.3}
+.pb-80 .lc-sub{font-size:10px;color:var(--muted);line-height:1.4}
+.pb-80 .lc-tool{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-top:2px}
+.pb-80 .lc-seg.p1{background:var(--p5)}
+.pb-80 .lc-seg.p1 .lc-period{background:var(--blue);color:#fff}
+.pb-80 .lc-seg.p1 .lc-class{color:var(--blue)}
+.pb-80 .lc-seg.p1 .lc-tool{background:var(--p10);color:var(--blue)}
+.pb-80 .lc-seg.p2{background:var(--s5)}
+.pb-80 .lc-seg.p2 .lc-period{background:var(--green);color:#fff}
+.pb-80 .lc-seg.p2 .lc-class{color:var(--green)}
+.pb-80 .lc-seg.p2 .lc-tool{background:var(--s10);color:var(--green)}
+.pb-80 .lc-seg.p3{background:var(--red-light)}
+.pb-80 .lc-seg.p3 .lc-period{background:var(--red);color:#fff}
+.pb-80 .lc-seg.p3 .lc-class{color:var(--red)}
+@media (max-width: 540px){.pb-80 .lifecycle{flex-direction:column}
+.pb-80 .lc-seg{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;text-align:left;padding:10px 14px;gap:10px}
+.pb-80 .lc-seg:last-child{border-bottom:none}}
+.pb-80 .glacier-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width: 560px){.pb-80 .glacier-grid{grid-template-columns:1fr}}
+.pb-80 .glacier-card{border-radius:10px;padding:12px 11px;border:1.5px solid}
+.pb-80 .glacier-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-80 .glacier-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-80 .glacier-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-80 .gc-header{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.pb-80 .gc-icon{font-size:17px}
+.pb-80 .gc-name{font-weight:800;font-size:11px;line-height:1.3}
+.pb-80 .glacier-card.ok   .gc-name{color:var(--green)}
+.pb-80 .glacier-card.warn .gc-name{color:var(--yellow)}
+.pb-80 .glacier-card.bad  .gc-name{color:var(--red)}
+.pb-80 .gc-items{list-style:none;padding:0;margin-bottom:7px}
+.pb-80 .gc-items li{font-size:10px;padding:2px 0;border-bottom:1px solid color-mix(in srgb, var(--g90) 5%, transparent);line-height:1.5}
+.pb-80 .gc-items li:last-child{border-bottom:none}
+.pb-80 .gc-items li::before{content:'• ';color:var(--muted)}
+.pb-80 .gc-verdict{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;text-align:center}
+.pb-80 .glacier-card.ok   .gc-verdict{background:var(--s10);color:var(--green)}
+.pb-80 .glacier-card.warn .gc-verdict{background:var(--y10);color:var(--yellow)}
+.pb-80 .glacier-card.bad  .gc-verdict{background:var(--r5);color:var(--red)}
+.pb-80 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-80 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-80 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-80 .alert-red{background:var(--red-light);border-color:var(--red);color:var(--r60)}
+.pb-80 .alert-green{background:var(--green-light);border-color:var(--green);color:var(--s60)}
+.pb-80 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-80 .option:hover{border-color:var(--p50)}
+.pb-80 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-80 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-80 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-80 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-80 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-80 .opt-body{flex:1;min-width:0}
+.pb-80 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-80 .opt-main.correct{color:var(--green)}
+.pb-80 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-80 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-80 .opt-why.show{display:block}
+.pb-80 .opt-why.ok-why{background:var(--s10)}
+.pb-80 .opt-why.bad-why{background:var(--r5)}
+.pb-80 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-80 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-80 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-80 .answer-body{display:none;margin-top:14px}
+.pb-80 .answer-body.show{display:block}
+.pb-80 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-80 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-80 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-80 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-80 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-80 .summary-table tr:last-child td{border-bottom:none}
+.pb-80 .summary-table tr:hover td{background:var(--g0)}
+.pb-80 .ok-text{color:var(--green);font-weight:700}
+.pb-80 .bad-text{color:var(--red);font-weight:700}
+.pb-80 .warn-text{color:var(--yellow);font-weight:700}
+.pb-80 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-80 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-80 .wrap{padding:20px 14px 50px}
+.pb-80 h1.post-title{font-size:19px}
+.pb-80 .question-box p{font-size:14px}
+.pb-80 .opt-main{font-size:13px}
+.pb-80 .code-block{font-size:11px}}
+.pb-80 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-80 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-80 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-80 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-80 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-80 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-80 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-80 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-80 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-80 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-80 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-80 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-80 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-80 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-80 .ans-label::before{content:'🎯 '}
+.pb-80 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-80 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-80 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-80 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-80 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-80 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-80">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-teal">S3 수명주기</span> <span class="badge badge-orange">Glacier Flexible</span> <span class="badge badge-green">비용 최적화</span> <span class="badge badge-purple">데이터 보존 정책</span></div>
+<h1 class="post-title">S3 데이터 수명주기 3단계 &mdash; S3-IA + Glacier Flexible Retrieval + 삭제 조합이 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 S3 수명주기 비용 최적화 문제입니다. 0~3년 온라인 + SQL 분석 가능, 3~10년 12시간 내 복구, 10년 후 삭제 요건을 <b>S3 Infrequent Access &rarr; Glacier Flexible Retrieval &rarr; 삭제</b> 3단계로 구성하는 이유와, Glacier Deep Archive(12시간 초과), Intelligent-Tiering(패턴 알려진 경우 비적합), RDS 스냅샷(Glacier 직접 이전 불가)이 탈락하는 이유를 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사에서 <span class="hl-blue">Amazon S3 버킷</span>을 활용하여 데이터를 저장한다. 새로운 데이터 수명 주기 및 보존 정책은 다음과 같다.</p>
+<p data-ke-size="size16">① <span class="hl-bold">새로 생성된 데이터</span>: 온라인에서 사용 가능, <span class="hl-blue">SQL 분석 가능</span><br />② <span class="hl-bold">3년 이후 데이터</span>: 안전 보관 + <span class="hl-orange">12시간 이내 복구 가능</span> (규정 준수 평가용)<br />③ <span class="hl-bold">10년 이상 데이터</span>: <span class="hl-bold">안전하게 삭제</span></p>
+<p data-ke-size="size16">데이터 엔지니어는 이 정책에 따라 <span class="hl-bold">비용 효율적으로 저장할 수 있는 솔루션</span>을 구성해야 한다.</p>
+</div>
+<!-- 3단계 수명주기 타임라인 -->
+<h2 class="section-title" data-ke-size="size26">📐 정답 &mdash; 3단계 S3 수명주기 아키텍처</h2>
+<div class="card">
+<div class="lifecycle">
+<div class="lc-seg p1">
+<div class="lc-period">0 ~ 3년</div>
+<div class="lc-icon">🌐</div>
+<div class="lc-class">S3 Infrequent<br />Access (IA)</div>
+<div class="lc-sub">온라인 접근<br />비주기적 분석</div>
+<div class="lc-tool">+ Amazon Athena</div>
+</div>
+<div class="lc-seg p2">
+<div class="lc-period">3 ~ 10년</div>
+<div class="lc-icon">🧊</div>
+<div class="lc-class">S3 Glacier<br />Flexible Retrieval</div>
+<div class="lc-sub">아카이브 보관<br />&le; 12시간 복구</div>
+<div class="lc-tool">규정 준수 ✅</div>
+</div>
+<div class="lc-seg p3">
+<div class="lc-period">10년 이후</div>
+<div class="lc-icon">🗑️</div>
+<div class="lc-class">수명주기 삭제<br />규칙 실행</div>
+<div class="lc-sub">영구 삭제<br />스토리지 비용 0</div>
+</div>
+</div>
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">🧊 Glacier 스토리지 클래스별 검색 시간 &mdash; 12시간 요건이 핵심</p>
+<div class="glacier-grid">
+<div class="glacier-card warn">
+<div class="gc-header"><span class="gc-icon">⚡</span>
+<div class="gc-name">Glacier<br />Instant Retrieval</div>
+</div>
+<ul class="gc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>검색 시간: 밀리초(ms)</li>
+<li>분기별 접근에 최적</li>
+<li>Flexible보다 비쌈</li>
+</ul>
+<div class="gc-verdict">✅ 12시간 요건 충족 (과분)</div>
+</div>
+<div class="glacier-card ok">
+<div class="gc-header"><span class="gc-icon">🧊</span>
+<div class="gc-name">Glacier<br />Flexible Retrieval ⭐</div>
+</div>
+<ul class="gc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>표준 검색: 3~5시간</li>
+<li>대량 검색: 5~12시간</li>
+<li>12시간 이내 충족</li>
+<li>Instant보다 저렴</li>
+</ul>
+<div class="gc-verdict">✅ 12시간 요건 충족 + 비용 최적</div>
+</div>
+<div class="glacier-card bad">
+<div class="gc-header"><span class="gc-icon">🐢</span>
+<div class="gc-name">Glacier<br />Deep Archive</div>
+</div>
+<ul class="gc-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>표준 검색: 최대 12시간</li>
+<li>대량 검색: 최대 48시간</li>
+<li>12시간 초과 가능성</li>
+<li>가장 저렴하나 느림</li>
+</ul>
+<div class="gc-verdict">❌ 12시간 초과 위험</div>
+</div>
+</div>
+<div class="alert alert-orange">⚠️ <b>핵심 함정:</b> Glacier Deep Archive는 <b>최대 12시간</b>이 아니라 <b>최대 48시간</b>까지 걸릴 수 있습니다. "12시간 이내" 조건에는 Glacier <b>Flexible Retrieval</b>만 안전하게 충족합니다.</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">A</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ S3 IA 저장 + Athena SQL 쿼리 &rarr; 3년 후 Glacier Flexible Retrieval 이전 &rarr; 10년 후 삭제</div>
+<div class="opt-sub">3단계 수명주기: IA(온라인+SQL) &rarr; Glacier Flexible(12시간 내 복구) &rarr; 삭제</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> 세 가지 요건을 모두 비용 효율적으로 충족합니다. ① <b>S3 Infrequent Access</b>: 온라인으로 즉시 접근 가능하며 S3 Standard보다 저렴합니다. 비주기적 쿼리 패턴(가끔 SQL 분석)에 최적화된 클래스입니다. ② <b>Amazon Athena</b>: S3에 저장된 데이터를 이동 없이 직접 SQL로 쿼리합니다. 서버리스라 추가 인프라 없이 사용 가능합니다. ③ <b>Glacier Flexible Retrieval</b>: 표준 검색 3~5시간, 대량 검색 최대 12시간으로 "12시간 이내" 요건을 안전하게 충족합니다. ④ 10년 후 <b>수명주기 삭제 규칙</b>으로 자동 삭제합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ S3 Intelligent-Tiering (Deep Archive Access 포함) + Athena + 10년 후 삭제</div>
+<div class="opt-sub">패턴이 이미 알려진 경우 Intelligent-Tiering 부적합 + Deep Archive는 12시간 초과 가능</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 이유로 탈락합니다. 첫째, <b>S3 Intelligent-Tiering은 액세스 패턴이 불규칙하거나 알 수 없을 때 적합</b>합니다. 이 문제는 0~3년 온라인, 3~10년 아카이브라는 명확한 패턴이 이미 알려져 있어 수명주기 정책으로 직접 제어하는 것이 더 비용 효율적입니다. Intelligent-Tiering은 처음 3년 내에도 Archive Access 등급으로 자동 이전될 수 있어 "온라인 상시 접근 가능" 요건을 보장하지 못합니다. 둘째, <b>Deep Archive Access 등급은 검색에 최대 48시간이 걸릴 수 있어 12시간 요건 위반</b> 가능성이 있습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Redshift에 신규 데이터 저장 &rarr; S3 Standard 언로드 &rarr; 3년 후 Glacier Deep Archive 이전 &rarr; 10년 후 삭제</div>
+<div class="opt-sub">Redshift는 가끔 쿼리에 비용 낭비 + Deep Archive는 12시간 초과 가능</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 문제가 있습니다. 첫째, <b>Amazon Redshift는 상시 실행 클러스터 비용이 발생</b>합니다. 문제 조건에 따르면 데이터는 "가끔 SQL 분석"하는 비주기적 용도이므로 Redshift처럼 비용이 높은 상시 실행 DW를 사용하는 것은 비용 비효율적입니다. 서버리스 쿼리 서비스인 Athena가 훨씬 적합합니다. 둘째, <b>S3 Glacier Deep Archive는 최대 48시간의 검색 시간</b>이 걸릴 수 있어 "12시간 이내" 복구 요건을 충족하지 못할 수 있습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ RDS에 신규 데이터 저장 &rarr; S3 Standard로 스냅샷 &rarr; 3년 후 Glacier Flexible 이전 &rarr; 10년 후 삭제</div>
+<div class="opt-sub">RDS는 가끔 쿼리에 비용 낭비 + RDS 스냅샷 &rarr; S3 Glacier 직접 이전 불가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 치명적 문제가 있습니다. 첫째, <b>Amazon RDS는 항상 실행 중인 데이터베이스 인스턴스 비용</b>이 발생합니다. 가끔씩 SQL 분석을 수행하는 용도에는 훨씬 비용이 높아 비효율적입니다. 둘째, <b>RDS 스냅샷은 S3 Glacier로 직접 마이그레이션할 수 없습니다.</b> RDS 자동 백업 스냅샷은 AWS 관리형 S3 스토리지에 저장되며, 사용자가 임의로 Glacier 등급으로 전환하는 수명주기 정책을 적용할 수 없습니다. 이는 기술적으로 불가능한 구성입니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: A &mdash; S3 IA + Athena + Glacier Flexible + 삭제 수명주기</b></p>
+<p data-ke-size="size16">이 문제의 핵심 구분 포인트는 두 가지입니다. <b>① 12시간 이내 복구:</b> Glacier Flexible(3~12시간) ✅ vs Deep Archive(최대 48시간) ❌. <b>② 비용 효율:</b> 가끔 SQL 분석 &rarr; Athena(서버리스) ✅ vs Redshift&middot;RDS(상시 실행 비용) ❌.</p>
+<div class="code-block"># 정답 A &mdash; 3단계 S3 수명주기 구성 [0 ~ 3년] S3 Infrequent Access (IA) ├─ 온라인 즉시 접근 가능 ├─ SQL 분석: Amazon Athena (서버리스, S3 직접 쿼리) └─ S3 Standard보다 저렴 (비주기적 접근) [수명주기 규칙 #1] 생성 후 3년 &rarr; Glacier Flexible Retrieval 이전 ├─ 표준 검색: 3~5시간 ├─ 대량 검색: 5~12시간 └─ "12시간 이내" 요건 ✅ 충족 [수명주기 규칙 #2] 생성 후 10년 &rarr; 영구 삭제 # 탈락 이유 핵심 정리 B. Intelligent-Tiering &rarr; 패턴 알려짐 + Deep Archive 12시간 초과 C. Redshift + Deep Archive &rarr; 비용 낭비 + Deep Archive 12시간 초과 D. RDS 스냅샷 &rarr; 비용 낭비 + Glacier 직접 이전 불가 # Glacier 검색 시간 암기 Instant Retrieval : 밀리초 (ms) Flexible Retrieval : 3~12시간 &larr; 12시간 요건에 안전 Deep Archive : 최대 48시간 &larr; 12시간 요건 위반 가능</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>신규 데이터 저장</th>
+<th>SQL 분석</th>
+<th>12시간 복구</th>
+<th>비용 효율</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A ⭐</b></td>
+<td>S3 IA</td>
+<td class="ok-text">✅ Athena</td>
+<td class="ok-text">✅ Glacier Flexible</td>
+<td class="ok-text">✅ 최적</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>B</b></td>
+<td>Intelligent-Tiering</td>
+<td class="ok-text">✅ Athena</td>
+<td class="bad-text">❌ Deep Archive 초과</td>
+<td class="warn-text">⚠️ 패턴 알려짐</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>C</b></td>
+<td>Redshift</td>
+<td class="ok-text">✅ Redshift SQL</td>
+<td class="bad-text">❌ Deep Archive 초과</td>
+<td class="bad-text">❌ 상시 비용</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>D</b></td>
+<td>RDS</td>
+<td class="ok-text">✅ RDS SQL</td>
+<td class="warn-text">Flexible 사용</td>
+<td class="bad-text">❌ 상시 비용 + Glacier 이전 불가</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#S3수명주기</span> <span class="seo-tag">#S3_InfrequentAccess</span> <span class="seo-tag">#GlacierFlexibleRetrieval</span> <span class="seo-tag">#GlacierDeepArchive</span> <span class="seo-tag">#S3_IntelligentTiering</span> <span class="seo-tag">#AmazonAthena</span> <span class="seo-tag">#데이터보존정책</span> <span class="seo-tag">#규정준수</span> <span class="seo-tag">#비용최적화</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

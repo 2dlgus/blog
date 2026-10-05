@@ -1,0 +1,356 @@
+<!--
+id: 76
+제목: AWS DEA-C01 공식 샘플 문제 — SQS 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, AWS, DEA, 대기열, SQS, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, DeleteMessage API
+날짜: 2026-03-14 22:33
+수정: 2026-03-24 22:25
+형식: html
+썸네일: /img/t/dJMcadnG9me.webp
+-->
+<style>
+.pb-76 *, .pb-76, .pb-76 *::before, .pb-76 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-76{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-76{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-76 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-76 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-76 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-76 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-76 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-76 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-76 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-76 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-76 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-76 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-76 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-76 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-76 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-76 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-76 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-76 .question-box p:last-child{margin-bottom:0}
+.pb-76 .hl-blue{color:var(--blue);font-weight:700}
+.pb-76 .hl-bold{font-weight:900}
+.pb-76 .hl-red{color:var(--red);font-weight:700}
+.pb-76 .lifecycle-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+@media (max-width: 560px){.pb-76 .lifecycle-grid{grid-template-columns:1fr}}
+.pb-76 .lc-card{border-radius:12px;padding:13px;border:1.5px solid}
+.pb-76 .lc-card.remove{background:var(--red-light);border-color:var(--red-border)}
+.pb-76 .lc-card.stay{background:var(--green-light);border-color:var(--green-border)}
+.pb-76 .lc-header{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.pb-76 .lc-icon{font-size:18px}
+.pb-76 .lc-name{font-weight:800;font-size:12px;line-height:1.3}
+.pb-76 .lc-card.remove .lc-name{color:var(--red)}
+.pb-76 .lc-card.stay   .lc-name{color:var(--green)}
+.pb-76 .lc-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:7px}
+.pb-76 .lc-verdict{padding:4px 9px;border-radius:6px;font-size:11px;font-weight:700;text-align:center}
+.pb-76 .lc-card.remove .lc-verdict{background:var(--r5);color:var(--red)}
+.pb-76 .lc-card.stay   .lc-verdict{background:var(--s10);color:var(--green)}
+.pb-76 .flow-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.pb-76 .flow-box{padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid;white-space:nowrap}
+.pb-76 .flow-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-76 .flow-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-76 .flow-box.orange{background:var(--y5);color:var(--orange);border-color:var(--y50)}
+.pb-76 .flow-box.red{background:var(--red-light);color:var(--red);border-color:var(--red-border)}
+.pb-76 .flow-box.purple{background:var(--g5);color:var(--purple);border-color:var(--p10)}
+.pb-76 .flow-box.gray{background:var(--p5);color:var(--muted);border-color:var(--border)}
+.pb-76 .flow-arrow{font-size:16px;color:var(--muted);flex-shrink:0}
+.pb-76 .flow-note{font-size:11px;color:var(--muted);padding:4px 8px;background:var(--g0);border-radius:6px;border:1px solid var(--border)}
+.pb-76 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-76 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-76 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-76 .alert-red{background:var(--red-light);border-color:var(--red);color:var(--r60)}
+.pb-76 .alert-green{background:var(--green-light);border-color:var(--green);color:var(--s60)}
+.pb-76 .multi-badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:var(--p5);color:var(--blue);border:1px solid var(--p10);margin-bottom:12px}
+.pb-76 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-76 .option:hover{border-color:var(--p50)}
+.pb-76 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-76 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-76 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-76 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-76 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-76 .opt-body{flex:1;min-width:0}
+.pb-76 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-76 .opt-main.correct{color:var(--green)}
+.pb-76 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-76 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-76 .opt-why.show{display:block}
+.pb-76 .opt-why.ok-why{background:var(--s10)}
+.pb-76 .opt-why.bad-why{background:var(--r5)}
+.pb-76 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-76 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-76 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-76 .answer-body{display:none;margin-top:14px}
+.pb-76 .answer-body.show{display:block}
+.pb-76 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-76 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-76 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-76 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-76 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-76 .summary-table tr:last-child td{border-bottom:none}
+.pb-76 .summary-table tr:hover td{background:var(--g0)}
+.pb-76 .ok-text{color:var(--green);font-weight:700}
+.pb-76 .bad-text{color:var(--red);font-weight:700}
+.pb-76 .warn-text{color:var(--yellow);font-weight:700}
+.pb-76 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-76 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-76 .wrap{padding:20px 14px 50px}
+.pb-76 h1.post-title{font-size:19px}
+.pb-76 .question-box p{font-size:14px}
+.pb-76 .opt-main{font-size:13px}
+.pb-76 .code-block{font-size:11px}}
+.pb-76 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-76 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-76 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-76 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-76 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-76 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-76 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-76 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-76 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-76 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-76 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-76 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-76 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-76 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-76 .ans-label::before{content:'🎯 '}
+.pb-76 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-76 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-76 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-76 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-76 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-76 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-76">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-orange">Amazon SQS</span> <span class="badge badge-teal">메시지 지속성</span> <span class="badge badge-purple">DeleteMessage &middot; DLQ</span></div>
+<h1 class="post-title">SQS 대기열에서 메시지를 제거하는 이벤트 3가지 &mdash; DeleteMessage &middot; maxReceiveCount &middot; 대기열 삭제</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 SQS 메시지 지속성 문제입니다. SQS에서 메시지를 <b>영구 제거</b>하는 이벤트는 <b>DeleteMessage API 호출</b>, <b>maxReceiveCount 도달(DLQ 이동)</b>, <b>대기열 자체 삭제</b> 세 가지입니다. ReceiveMessage 호출과 가시성 시간 제한 만료가 메시지를 삭제하지 않는 이유를 함께 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">한 데이터 엔지니어가 변환할 데이터를 <span class="hl-blue">Amazon SQS 대기열에 추가하는 애플리케이션</span>을 설계 중이다. 마이크로서비스는 대기열에서 메시지를 수신한다. 데이터 엔지니어는 <span class="hl-bold">메시지 지속성이 유지되기를 바란다.</span></p>
+<p data-ke-size="size16">다음 중 <span class="hl-red">SQS 대기열에서 메시지를 제거할 수 있는 이벤트</span>는 무엇인가? <span class="hl-bold">(3개 선택)</span></p>
+</div>
+<!-- 핵심 개념 -->
+<h2 class="section-title" data-ke-size="size26">🔑 핵심 개념 &mdash; SQS 메시지 상태 3가지</h2>
+<div class="card">
+<p style="font-size:12px;color:var(--muted);margin-bottom:14px" data-ke-size="size16">SQS 메시지는 항상 아래 세 가지 상태 중 하나입니다. <b>영구 삭제</b>는 특정 이벤트에서만 발생합니다.</p>
+<div class="flow-row">
+<div class="flow-box blue">대기 중 (Active)<br />소비자가 읽기 가능</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box orange">비가시 (Invisible)<br />ReceiveMessage 후<br />가시성 시간 제한 동안</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box green">처리 완료<br />DeleteMessage 호출 시<br />영구 삭제</div>
+</div>
+<div class="flow-row" style="margin-top:8px">
+<div class="flow-box orange">비가시 (Invisible)</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box blue">대기 중 (Active) 복귀</div>
+<div class="flow-note">가시성 시간 제한 만료 시 &mdash; 삭제 아님!</div>
+</div>
+<div class="alert alert-orange" style="margin-top:14px">⚠️ <b>핵심 원칙:</b> SQS는 <b>명시적으로 삭제 요청이 있어야만</b> 메시지를 제거합니다. ReceiveMessage(읽기)나 가시성 시간 제한 만료는 메시지를 삭제하지 않습니다. 이것이 메시지 지속성(Durability)의 핵심입니다.</div>
+</div>
+<!-- 메시지 제거 이벤트 3가지 -->
+<h2 class="section-title" data-ke-size="size26">✅ 메시지를 제거하는 이벤트 vs 유지하는 이벤트</h2>
+<div class="card">
+<div class="lifecycle-grid">
+<div class="lc-card remove">
+<div class="lc-header"><span class="lc-icon">🗑️</span>
+<div class="lc-name">A. DeleteMessage API</div>
+</div>
+<div class="lc-desc">소비자가 처리 완료 후 DeleteMessage를 명시적으로 호출 &rarr; 즉시 영구 삭제</div>
+<div class="lc-verdict">❌ 메시지 제거</div>
+</div>
+<div class="lc-card remove">
+<div class="lc-header"><span class="lc-icon">🔁</span>
+<div class="lc-name">B. maxReceiveCount 도달</div>
+</div>
+<div class="lc-desc">처리 실패 횟수가 한도 초과 &rarr; DLQ로 이동 (원본 대기열에서 제거)</div>
+<div class="lc-verdict">❌ 원본 대기열에서 제거</div>
+</div>
+<div class="lc-card remove">
+<div class="lc-header"><span class="lc-icon">💥</span>
+<div class="lc-name">C. 대기열 삭제</div>
+</div>
+<div class="lc-desc">대기열 자체를 삭제하면 내부 모든 메시지 함께 영구 삭제</div>
+<div class="lc-verdict">❌ 모든 메시지 제거</div>
+</div>
+<div class="lc-card stay">
+<div class="lc-header"><span class="lc-icon">👁️</span>
+<div class="lc-name">D. ReceiveMessage API</div>
+</div>
+<div class="lc-desc">메시지를 읽어 처리 중 상태로 전환 (비가시). 처리 완료 후 Delete 필요</div>
+<div class="lc-verdict">✅ 메시지 유지 (읽기만)</div>
+</div>
+<div class="lc-card stay">
+<div class="lc-header"><span class="lc-icon">⏰</span>
+<div class="lc-name">E. 가시성 시간 제한 만료</div>
+</div>
+<div class="lc-desc">시간 초과 시 메시지가 다시 Active 상태로 복귀. 다른 소비자가 재처리 가능</div>
+<div class="lc-verdict">✅ 메시지 유지 (복귀)</div>
+</div>
+<div class="lc-card stay">
+<div class="lc-header"><span class="lc-icon">⚙️</span>
+<div class="lc-name">F. 대기열 구성 편집</div>
+</div>
+<div class="lc-desc">유지 기간&middot;가시성 설정 등 변경. 기존 메시지 내용&middot;존재에는 영향 없음</div>
+<div class="lc-verdict">✅ 메시지 유지</div>
+</div>
+</div>
+<!-- maxReceiveCount → DLQ 흐름 -->
+<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">🔁 maxReceiveCount 도달 &rarr; DLQ 이동 상세 흐름</p>
+<div class="flow-row">
+<div class="flow-box blue">메시지 수신 시도 1회</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box orange">처리 실패 &middot; 미삭제</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box blue">대기 복귀 (재시도)</div>
+</div>
+<div class="flow-row">
+<div class="flow-note" style="width:100%">위 사이클이 maxReceiveCount 횟수만큼 반복된 후</div>
+</div>
+<div class="flow-row">
+<div class="flow-box red">maxReceiveCount 초과</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box purple">DLQ로 이동</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box red">원본 대기열에서 제거 💀</div>
+</div>
+<div class="alert alert-blue" style="margin-top:10px">💡 <b>DLQ 미설정 시:</b> maxReceiveCount 초과 후 메시지가 DLQ 없이 그냥 삭제됩니다. 메시지 지속성을 위해 DLQ를 항상 설정하는 것을 권장합니다.</div>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<div class="multi-badge">✅ 복수 정답 (3개 선택)</div>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">A</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 애플리케이션이 Amazon SQS에 DeleteMessage API를 호출한다</div>
+<div class="opt-sub">명시적 삭제 요청 &mdash; 처리 완료 후 소비자가 직접 호출해야만 영구 삭제</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> SQS에서 메시지를 영구적으로 제거하는 가장 정상적인 방법입니다. 소비자가 ReceiveMessage로 메시지를 가져와 처리를 완료한 후, <b>DeleteMessage API를 명시적으로 호출</b>해야 메시지가 대기열에서 영구 삭제됩니다. 이 단계를 거치지 않으면 가시성 시간 제한이 만료된 후 메시지가 다시 대기열에 나타나 다른 소비자가 재처리합니다. 이것이 SQS의 At-Least-Once 전달 보장 메커니즘입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">B</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 메시지가 maxReceiveCount에 도달한다</div>
+<div class="opt-sub">처리 실패 한도 초과 &rarr; 원본 대기열에서 DLQ로 이동 (원본에서 제거)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> DLQ(Dead Letter Queue)가 연결된 경우, 메시지가 maxReceiveCount(최대 수신 횟수)에 도달하면 <b>원본 대기열에서 메시지가 제거되고 DLQ로 이동</b>됩니다. DLQ가 없다면 해당 메시지는 단순히 삭제됩니다. 어느 쪽이든 <b>원본 SQS 대기열에서는 메시지가 제거</b>됩니다. 이 기능은 독성 메시지(처리 불가능한 메시지)가 대기열을 계속 점유하지 않도록 보호합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">C</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 대기열이 제거된다</div>
+<div class="opt-sub">대기열 삭제 시 내부 모든 메시지 함께 영구 삭제 &mdash; 복구 불가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Amazon SQS 대기열을 삭제하면 <b>해당 대기열 내의 모든 메시지가 함께 영구적으로 삭제</b>됩니다. 처리 중인 메시지(비가시 상태), 대기 중인 메시지 모두 복구 불가능하게 제거됩니다. 대기열 삭제는 취소할 수 없으며, 같은 이름으로 대기열을 다시 생성해도 기존 메시지는 복원되지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ 애플리케이션이 Amazon SQS에 ReceiveMessage API를 호출한다</div>
+<div class="opt-sub">메시지를 읽는 것뿐 &mdash; 가시성 시간 제한 동안 숨겨지지만 삭제되지 않음</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 ReceiveMessage는 대기열에서 메시지를 <b>읽어오는</b> API이지 삭제하는 API가 아닙니다. ReceiveMessage를 호출하면 메시지는 가시성 시간 제한(Visibility Timeout) 동안 다른 소비자에게 보이지 않는 상태(Invisible)가 됩니다. 이 시간 내에 처리를 완료하고 DeleteMessage를 호출하지 않으면 <b>가시성 시간 제한이 만료되어 메시지가 다시 대기열에 나타납니다.</b> ReceiveMessage 자체는 메시지를 절대 삭제하지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-5" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">E</div>
+<div class="opt-body">
+<div class="opt-main">❌ 메시지에서 가시성 시간 제한이 만료된다</div>
+<div class="opt-sub">비가시 상태 &rarr; Active 상태로 복귀 &mdash; 삭제가 아니라 재처리 가능 상태로 돌아옴</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 가시성 시간 제한(Visibility Timeout)이 만료되면 메시지가 삭제되는 것이 아니라 <b>다시 Active(대기 중) 상태로 복귀</b>합니다. 이는 SQS의 핵심 메시지 지속성 메커니즘입니다. 소비자가 처리에 실패하거나 다운되더라도 메시지가 사라지지 않고 다른 소비자가 다시 처리할 수 있도록 대기열에 남아 있게 됩니다. 메시지를 실제로 제거하려면 반드시 DeleteMessage API를 호출해야 합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-6" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">F</div>
+<div class="opt-body">
+<div class="opt-main">❌ 대기열의 구성이 편집된다</div>
+<div class="opt-sub">유지 기간&middot;가시성 설정 등 변경 &mdash; 기존 메시지 내용&middot;존재에 영향 없음</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 대기열 구성(Configuration) 편집은 대기열의 속성(유지 기간, 가시성 시간 제한, 최대 메시지 크기 등)을 변경하는 것입니다. 이러한 설정 변경은 <b>현재 대기열 내의 기존 메시지에 영향을 주지 않습니다.</b> 메시지는 그대로 대기열에 남아 있습니다. 예를 들어 유지 기간을 4일에서 1일로 줄여도 이미 들어온 메시지가 즉시 삭제되지 않습니다. (단, 변경 후 유지 기간이 지난 메시지는 만료되어 삭제될 수 있습니다.)</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: A + B + C</b></p>
+<p data-ke-size="size16">SQS 메시지 지속성의 핵심은 <b>"명시적 삭제 요청 없이는 메시지가 제거되지 않는다"</b>입니다. ReceiveMessage(D)는 읽기만, 가시성 만료(E)는 복귀, 구성 편집(F)은 메시지 무관. 메시지가 제거되는 상황은 명시적 삭제(A), 처리 실패 한도 초과(B), 대기열 자체 삭제(C) 세 가지입니다.</p>
+<div class="code-block"># SQS 메시지 생명주기 &mdash; 제거 여부 정리 이벤트 메시지 상태 제거? ───────────────────────────────────────────────────── A. DeleteMessage API 호출 &rarr; 영구 삭제 ✅ 제거 B. maxReceiveCount 도달 &rarr; DLQ 이동 ✅ 원본에서 제거 C. 대기열 삭제 &rarr; 모든 메시지 삭제 ✅ 제거 D. ReceiveMessage API 호출 &rarr; Invisible 상태 ❌ 유지 (숨겨짐만) E. 가시성 시간 제한 만료 &rarr; Active 상태 복귀 ❌ 유지 (재처리 가능) F. 대기열 구성 편집 &rarr; 변화 없음 ❌ 유지 # 메시지 지속성 보장 흐름 Producer &rarr; SQS 대기열 (Active) &darr; ReceiveMessage 소비자가 처리 중 (Invisible, 가시성 시간 제한 내) &darr; 처리 완료 DeleteMessage 호출 &rarr; 영구 삭제 ✅ &darr; 처리 실패 / 시간 초과 가시성 시간 제한 만료 &rarr; Active 복귀 &rarr; 재처리</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>이벤트</th>
+<th>메시지 상태 변화</th>
+<th>메시지 제거?</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A ⭐</b></td>
+<td>DeleteMessage API</td>
+<td>Active &rarr; 영구 삭제</td>
+<td class="ok-text">✅ 제거</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>B ⭐</b></td>
+<td>maxReceiveCount 도달</td>
+<td>원본 &rarr; DLQ 이동</td>
+<td class="ok-text">✅ 원본에서 제거</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>C ⭐</b></td>
+<td>대기열 삭제</td>
+<td>모든 메시지 삭제</td>
+<td class="ok-text">✅ 전부 제거</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>D</b></td>
+<td>ReceiveMessage API</td>
+<td>Active &rarr; Invisible</td>
+<td class="bad-text">❌ 유지 (숨겨짐)</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>E</b></td>
+<td>가시성 시간 제한 만료</td>
+<td>Invisible &rarr; Active 복귀</td>
+<td class="bad-text">❌ 유지 (복귀)</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>F</b></td>
+<td>대기열 구성 편집</td>
+<td>변화 없음</td>
+<td class="bad-text">❌ 유지</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AmazonSQS</span> <span class="seo-tag">#SQS_DeleteMessage</span> <span class="seo-tag">#SQS_ReceiveMessage</span> <span class="seo-tag">#maxReceiveCount</span> <span class="seo-tag">#가시성시간제한</span> <span class="seo-tag">#VisibilityTimeout</span> <span class="seo-tag">#SQS메시지지속성</span> <span class="seo-tag">#DeadLetterQueue</span> <span class="seo-tag">#메시지제거이벤트</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

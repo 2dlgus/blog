@@ -1,0 +1,764 @@
+<!--
+id: 88
+제목: AWS DEA-C01 시험 범위 한눈에 정리 — AWS 처음인데 합격할 수 있을까?
+카테고리: Stack/AWS
+태그: 자격증, 개념, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, 실생활 비유
+날짜: 2026-03-18 00:37
+수정: 2026-03-21 22:51
+형식: html
+썸네일: /img/t/dJMcaiiiujQ.webp
+-->
+<style>
+.pb-88 .dea-wrap{background-color:var(--y5) !important;color:var(--g90) !important;line-height:1.7 !important;padding:0 !important;margin:0 !important;box-sizing:border-box !important}
+.pb-88 .dea-wrap *, .pb-88 .dea-wrap *::before, .pb-88 .dea-wrap *::after{box-sizing:border-box !important}
+.pb-88 .dea-hero{background:var(--p70) !important;padding:56px 24px 48px !important;text-align:center !important;position:relative !important;overflow:hidden !important}
+.pb-88 .dea-hero::before{content:'' !important;position:absolute !important;inset:0 !important;background:repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 28px,
+        color-mix(in srgb, var(--g0) 2%, transparent) 28px,
+        color-mix(in srgb, var(--g0) 2%, transparent) 56px
+      ) !important;pointer-events:none !important}
+.pb-88 .dea-hero-badge{display:inline-block !important;background:var(--r50) !important;color:#fff !important;font-family:'JetBrains Mono', monospace !important;font-size:0.75rem !important;font-weight:700 !important;letter-spacing:2px !important;padding:5px 16px !important;border-radius:20px !important;margin-bottom:20px !important;position:relative !important}
+.pb-88 .dea-hero h1{font-size:clamp(1.4rem, 4vw, 2.2rem) !important;font-weight:900 !important;color:#fff !important;line-height:1.3 !important;margin:0 0 12px !important;position:relative !important;letter-spacing:-0.5px !important}
+.pb-88 .dea-hero-sub{color:var(--g40) !important;font-size:0.95rem !important;position:relative !important;margin:0 !important}
+.pb-88 .dea-overview{max-width:860px !important;margin:32px auto !important;padding:0 20px !important}
+.pb-88 .dea-overview-grid{display:grid !important;grid-template-columns:repeat(4, 1fr) !important;gap:12px !important;margin-bottom:24px !important}
+@media (max-width: 640px){.pb-88 .dea-overview-grid{grid-template-columns:repeat(2, 1fr) !important}}
+.pb-88 .dea-stat-card{background:var(--g0) !important;border:1px solid var(--y10) !important;border-radius:10px !important;padding:16px 12px !important;text-align:center !important}
+.pb-88 .dea-stat-card .dea-stat-num{font-family:'JetBrains Mono', monospace !important;font-size:1.5rem !important;font-weight:700 !important;color:var(--r60) !important;display:block !important}
+.pb-88 .dea-stat-card .dea-stat-label{font-size:0.78rem !important;color:var(--g50) !important;margin-top:4px !important;display:block !important}
+.pb-88 .dea-nav{background:var(--g0) !important;border-bottom:2px solid var(--y10) !important;padding:12px 20px !important;display:flex !important;flex-wrap:wrap !important;gap:8px !important;position:sticky !important;top:0 !important;z-index:200 !important;box-shadow:0 2px 12px rgba(0,0,0,0.07) !important}
+.pb-88 .dea-nav-btn{padding:7px 16px !important;border-radius:20px !important;border:none !important;cursor:pointer !important;font-size:0.8rem !important;font-weight:600 !important;transition:all 0.18s ease !important;background:var(--y10) !important;color:var(--g70) !important;outline:none !important}
+.pb-88 .dea-nav-btn:hover, .pb-88 .dea-nav-btn.dea-active{color:#fff !important}
+.pb-88 .dea-nav-btn[data-d="0"]:hover, .pb-88 .dea-nav-btn[data-d="0"].dea-active{background:var(--p70) !important}
+.pb-88 .dea-nav-btn[data-d="1"]:hover, .pb-88 .dea-nav-btn[data-d="1"].dea-active{background:var(--r50) !important}
+.pb-88 .dea-nav-btn[data-d="2"]:hover, .pb-88 .dea-nav-btn[data-d="2"].dea-active{background:var(--p50) !important}
+.pb-88 .dea-nav-btn[data-d="3"]:hover, .pb-88 .dea-nav-btn[data-d="3"].dea-active{background:var(--s60) !important}
+.pb-88 .dea-nav-btn[data-d="4"]:hover, .pb-88 .dea-nav-btn[data-d="4"].dea-active{background:var(--p50) !important}
+.pb-88 .dea-container{max-width:860px !important;margin:0 auto !important;padding:32px 20px 60px !important}
+.pb-88 .dea-domain{margin-bottom:56px !important}
+.pb-88 .dea-domain-header{display:flex !important;align-items:center !important;gap:16px !important;padding:22px 26px !important;border-radius:14px !important;margin-bottom:20px !important}
+.pb-88 .dea-domain-header.dea-d1{background:var(--r50) !important}
+.pb-88 .dea-domain-header.dea-d2{background:var(--p50) !important}
+.pb-88 .dea-domain-header.dea-d3{background:var(--s60) !important}
+.pb-88 .dea-domain-header.dea-d4{background:var(--p50) !important}
+.pb-88 .dea-domain-num{font-family:'JetBrains Mono', monospace !important;font-size:2.2rem !important;font-weight:700 !important;color:color-mix(in srgb, #fff 30%, transparent) !important;flex-shrink:0 !important;line-height:1 !important}
+.pb-88 .dea-domain-info{flex:1 !important}
+.pb-88 .dea-domain-info h2{font-size:clamp(1rem, 3vw, 1.25rem) !important;font-weight:800 !important;color:#fff !important;margin:0 0 4px !important;line-height:1.3 !important}
+.pb-88 .dea-domain-info p{font-size:0.82rem !important;color:color-mix(in srgb, #fff 75%, transparent) !important;margin:0 !important}
+.pb-88 .dea-domain-pct{font-family:'JetBrains Mono', monospace !important;font-size:1.6rem !important;font-weight:700 !important;color:color-mix(in srgb, #fff 90%, transparent) !important;flex-shrink:0 !important}
+.pb-88 .dea-big-analogy{background:var(--g5) !important;border:2px dashed var(--y50) !important;border-radius:12px !important;padding:18px 22px !important;margin-bottom:22px !important}
+.pb-88 .dea-big-analogy .dea-ba-label{font-size:0.72rem !important;font-weight:700 !important;color:var(--y60) !important;letter-spacing:1.5px !important;text-transform:uppercase !important;margin-bottom:8px !important;display:block !important}
+.pb-88 .dea-big-analogy .dea-ba-text{font-size:0.95rem !important;color:var(--y60) !important;font-weight:500 !important;line-height:1.7 !important;margin:0 !important}
+.pb-88 .dea-section-label{font-size:0.72rem !important;font-weight:700 !important;letter-spacing:2px !important;text-transform:uppercase !important;color:var(--g40) !important;padding:0 0 0 10px !important;margin:28px 0 14px !important;display:block !important}
+.pb-88 .dea-cards{display:grid !important;grid-template-columns:1fr 1fr !important;gap:14px !important}
+@media (max-width: 580px){.pb-88 .dea-cards{grid-template-columns:1fr !important}}
+.pb-88 .dea-card{background:var(--g0) !important;border:1px solid var(--y10) !important;border-radius:12px !important;padding:18px !important;transition:box-shadow 0.2s, transform 0.2s !important}
+.pb-88 .dea-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.09) !important;transform:translateY(-2px) !important}
+.pb-88 .dea-card.dea-wide{grid-column:span 2 !important}
+@media (max-width: 580px){.pb-88 .dea-card.dea-wide{grid-column:span 1 !important}}
+.pb-88 .dea-card-top{display:flex !important;align-items:flex-start !important;gap:12px !important;margin-bottom:12px !important}
+.pb-88 .dea-emoji{font-size:1.7rem !important;line-height:1 !important;flex-shrink:0 !important;margin-top:2px !important}
+.pb-88 .dea-service-badge{display:inline-block !important;font-family:'JetBrains Mono', monospace !important;font-size:0.68rem !important;font-weight:700 !important;padding:3px 9px !important;border-radius:5px !important;margin-bottom:5px !important;color:#fff !important}
+.pb-88 .dea-d1 .dea-service-badge{background:var(--r50) !important}
+.pb-88 .dea-d2 .dea-service-badge{background:var(--p50) !important}
+.pb-88 .dea-d3 .dea-service-badge{background:var(--s60) !important}
+.pb-88 .dea-d4 .dea-service-badge{background:var(--p50) !important}
+.pb-88 .dea-card-title{font-size:0.97rem !important;font-weight:700 !important;color:var(--g90) !important;margin:0 !important;line-height:1.3 !important}
+.pb-88 .dea-analogy-box{background:var(--y5) !important;border-radius:0 8px 8px 0 !important;padding:10px 14px !important;font-size:0.85rem !important;color:var(--y60) !important;font-weight:500 !important;margin-bottom:10px !important;line-height:1.6 !important}
+.pb-88 .dea-desc{font-size:0.82rem !important;color:var(--g50) !important;line-height:1.65 !important;margin:0 !important}
+.pb-88 .dea-onprem-tag{display:inline-flex !important;align-items:center !important;background:var(--p5) !important;color:var(--p50) !important;font-size:0.72rem !important;font-weight:600 !important;padding:3px 9px !important;border-radius:5px !important;margin-top:10px !important}
+.pb-88 .dea-map-section{background:var(--p70) !important;border-radius:16px !important;padding:30px 26px !important;margin-top:16px !important}
+.pb-88 .dea-map-title{font-family:'JetBrains Mono', monospace !important;font-size:0.72rem !important;letter-spacing:2.5px !important;color:var(--g50) !important;text-transform:uppercase !important;margin:0 0 18px !important;display:block !important}
+.pb-88 .dea-map-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important}
+@media (max-width: 500px){.pb-88 .dea-map-grid{grid-template-columns:1fr !important}}
+.pb-88 .dea-map-item{background:var(--p70) !important;border-radius:10px !important;padding:14px 16px !important;font-size:0.83rem !important;color:var(--g20) !important;line-height:1.8 !important}
+.pb-88 .dea-map-item .dea-map-cat{font-weight:700 !important;font-size:0.8rem !important;margin-bottom:8px !important;display:block !important}
+.pb-88 .dea-map-item.dea-mc1 .dea-map-cat{color:var(--y60) !important}
+.pb-88 .dea-map-item.dea-mc2 .dea-map-cat{color:var(--p50) !important}
+.pb-88 .dea-map-item.dea-mc3 .dea-map-cat{color:var(--s60) !important}
+.pb-88 .dea-map-item.dea-mc4 .dea-map-cat{color:var(--p50) !important}
+.pb-88 .dea-map-item .dea-aws{color:var(--y60) !important;font-weight:600 !important}
+.pb-88 .dea-tip-box{background:var(--p5) !important;border:1px solid var(--p10) !important;border-radius:10px !important;padding:16px 20px !important;font-size:0.87rem !important;color:var(--p60) !important;margin:16px 0 !important;line-height:1.7 !important}
+.pb-88 .dea-tip-box strong{color:var(--p50) !important}
+.pb-88 .dea-hidden{display:none !important}
+.pb-88 .dea-divider{border:none !important;margin:40px 0 !important}
+.pb-88 .dea-pct-bar-wrap{background:var(--g0) !important;border:1px solid var(--y10) !important;border-radius:12px !important;padding:22px 24px !important;margin-bottom:28px !important}
+.pb-88 .dea-pct-bar-wrap h3{font-size:0.85rem !important;font-weight:700 !important;color:var(--p70) !important;margin:0 0 16px !important}
+.pb-88 .dea-pct-row{display:flex !important;align-items:center !important;gap:12px !important;margin-bottom:12px !important}
+.pb-88 .dea-pct-row:last-child{margin-bottom:0 !important}
+.pb-88 .dea-pct-label{font-size:0.78rem !important;font-weight:600 !important;color:var(--p70) !important;width:140px !important;flex-shrink:0 !important}
+@media (max-width: 480px){.pb-88 .dea-pct-label{width:100px !important;font-size:0.72rem !important}}
+.pb-88 .dea-pct-track{flex:1 !important;background:var(--y10) !important;border-radius:99px !important;height:10px !important;overflow:hidden !important}
+.pb-88 .dea-pct-fill{height:100% !important;border-radius:99px !important;transition:width 0.6s ease !important}
+.pb-88 .dea-fill-d1{background:var(--r50) !important;width:34% !important}
+.pb-88 .dea-fill-d2{background:var(--p50) !important;width:26% !important}
+.pb-88 .dea-fill-d3{background:var(--s60) !important;width:22% !important}
+.pb-88 .dea-fill-d4{background:var(--p50) !important;width:18% !important}
+.pb-88 .dea-pct-num{font-family:'JetBrains Mono', monospace !important;font-size:0.8rem !important;font-weight:700 !important;width:36px !important;text-align:right !important;flex-shrink:0 !important}
+.pb-88 .dea-num-d1{color:var(--r60) !important}
+.pb-88 .dea-num-d2{color:var(--p50) !important}
+.pb-88 .dea-num-d3{color:var(--s60) !important}
+.pb-88 .dea-num-d4{color:var(--p50) !important}
+.pb-88 .dea-footer{text-align:center !important;font-size:0.8rem !important;color:var(--g40) !important;padding:24px 0 8px !important;border-top:1px solid var(--y10) !important;margin-top:40px !important}
+</style>
+<div class="pb pb-88">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- ===== SEO ===== -->
+<p></p>
+<!-- ===== Open Graph ===== -->
+<p></p>
+<!-- ===== Twitter Card ===== -->
+<p></p>
+<!-- ===== Structured Data (Article) ===== -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AWS DEA-C01 시험 범위 완벽 정리 | 실생활 비유로 쉽게 이해하기",
+    "description": "AWS DEA-C01 데이터 엔지니어 어소시에이트 시험 전 범위를 도메인별로 실생활 비유와 함께 정리한 가이드",
+    "author": {
+      "@type": "Person",
+      "name": "hyeonlee",
+      "url": "https://hyeonlee.net"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "hyeonlee.net"
+    },
+    "datePublished": "2026-03-17",
+    "inLanguage": "ko"
+  }
+  </script>
+<!-- ===== Google Fonts ===== -->
+<p> </p>
+<div>
+
+</div>
+<!-- =============================================
+     Tistory HTML 모드에 붙여넣을 때는
+     <article class="dea-wrap"> 내부부터 사용
+============================================= -->
+<article class="dea-wrap"><!-- ===== 히어로 ===== --><header class="dea-hero"><span class="dea-hero-badge">AWS DEA-C01</span>
+<h1>데이터 엔지니어 어소시에이트<br />시험 범위 완벽 정리</h1>
+<p class="dea-hero-sub" data-ke-size="size16">처음 보는 사람도 이해할 수 있게 &mdash; 실생활 비유로 전체 그림 잡기</p>
+</header><!-- ===== 시험 개요 ===== -->
+<section class="dea-overview" aria-label="시험 개요">
+<div class="dea-overview-grid">
+<div class="dea-stat-card"><span class="dea-stat-num">4</span> <span class="dea-stat-label">시험 도메인</span></div>
+<div class="dea-stat-card"><span class="dea-stat-num">65문</span> <span class="dea-stat-label">총 문항 수</span></div>
+<div class="dea-stat-card"><span class="dea-stat-num">170분</span> <span class="dea-stat-label">시험 시간</span></div>
+<div class="dea-stat-card"><span class="dea-stat-num">720점</span> <span class="dea-stat-label">합격 기준 (1000점 만점)</span></div>
+</div>
+<!-- 도메인 비율 바 -->
+<div class="dea-pct-bar-wrap">
+<h3 data-ke-size="size23">📊 도메인별 출제 비율</h3>
+<div class="dea-pct-row"><span class="dea-pct-label">🚚 Domain 1 수집&middot;변환</span>
+<div class="dea-pct-track">
+<div class="dea-pct-fill dea-fill-d1">&nbsp;</div>
+</div>
+<span class="dea-pct-num dea-num-d1">34%</span></div>
+<div class="dea-pct-row"><span class="dea-pct-label">🏪 Domain 2 저장소</span>
+<div class="dea-pct-track">
+<div class="dea-pct-fill dea-fill-d2">&nbsp;</div>
+</div>
+<span class="dea-pct-num dea-num-d2">26%</span></div>
+<div class="dea-pct-row"><span class="dea-pct-label">🔧 Domain 3 운영&middot;지원</span>
+<div class="dea-pct-track">
+<div class="dea-pct-fill dea-fill-d3">&nbsp;</div>
+</div>
+<span class="dea-pct-num dea-num-d3">22%</span></div>
+<div class="dea-pct-row"><span class="dea-pct-label">🔒 Domain 4 보안&middot;거버넌스</span>
+<div class="dea-pct-track">
+<div class="dea-pct-fill dea-fill-d4">&nbsp;</div>
+</div>
+<span class="dea-pct-num dea-num-d4">18%</span></div>
+</div>
+<div class="dea-tip-box">💡 <b>이 글 사용법</b> &mdash; 먼저 비유로 전체 그림을 잡고, 각 서비스의 이름(주황색 태그)을 기억하세요. 아래 탭으로 도메인별로 필터해서 볼 수 있습니다.</div>
+</section>
+<!-- ===== 탭 네비게이션 ===== --><nav class="dea-nav" aria-label="도메인 필터"><button class="dea-nav-btn dea-active" data-d="0">전체 보기</button> <button class="dea-nav-btn" data-d="1">🚚 Domain 1 &middot; 수집/변환</button> <button class="dea-nav-btn" data-d="2">🏪 Domain 2 &middot; 저장소</button> <button class="dea-nav-btn" data-d="3">🔧 Domain 3 &middot; 운영</button> <button class="dea-nav-btn" data-d="4">🔒 Domain 4 &middot; 보안</button></nav>
+<div class="dea-container"><!-- ===================================================
+         DOMAIN 1 — 데이터 수집 · 변환 · 파이프라인 (34%)
+    =================================================== -->
+<section id="dea-domain-1" class="dea-domain dea-d1" aria-label="Domain 1 수집 변환 파이프라인">
+<div class="dea-domain-header dea-d1"><span class="dea-domain-num" aria-hidden="true">01</span>
+<div class="dea-domain-info">
+<h2 data-ke-size="size26">데이터 수집 &middot; 변환 &middot; 파이프라인</h2>
+<p data-ke-size="size16">Data Ingestion, Transformation &amp; Orchestration</p>
+</div>
+<span class="dea-domain-pct">34%</span></div>
+<div class="dea-big-analogy"><span class="dea-ba-label">🏭 Domain 1 전체 비유</span>
+<p class="dea-ba-text" data-ke-size="size16">📦 <b>물류 공장 전체 라인</b> &mdash; 원자재(원본 데이터)를 받아서, 가공하고, 완제품 창고로 보내는 전 과정입니다. 어떻게 받아오고(수집), 어떻게 가공하고(변환), 어떤 순서로 일을 시킬지(오케스트레이션)를 다룹니다. 시험 비중이 34%로 가장 높습니다.</p>
+</div>
+<!-- 수집 --> <span class="dea-section-label">📥 Task 1.1 &middot; 데이터 수집 &mdash; 외부에서 데이터 가져오기</span>
+<div class="dea-cards">
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🌊</span>
+<div><span class="dea-service-badge">Amazon Kinesis Data Streams</span>
+<p class="dea-card-title" data-ke-size="size16">실시간 컨베이어 벨트</p>
+</div>
+</div>
+<div class="dea-analogy-box">공장 컨베이어 벨트. 클릭&middot;센서&middot;로그 데이터가 초당 수천 개씩 실시간으로 올라옵니다. 빨리 처리 안 하면 벨트 위에서 떨어집니다 (보존 기간 기본 24시간).</div>
+<p class="dea-desc" data-ke-size="size16">실시간 스트리밍 데이터를 밀리초 단위로 수집. 소비자(Consumer)가 직접 가져가는 pull 방식. 샤드(Shard) 단위로 처리량 확장.</p>
+<span class="dea-onprem-tag">&asymp; Apache Kafka</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🚚</span>
+<div><span class="dea-service-badge">Amazon Kinesis Data Firehose</span>
+<p class="dea-card-title" data-ke-size="size16">자동 배송 트럭</p>
+</div>
+</div>
+<div class="dea-analogy-box">컨베이어 벨트(Streams)에서 짐을 자동으로 받아서 목적지(S3, Redshift 등)까지 배달해주는 택배 트럭. 운전(관리)은 내가 안 해도 됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">완전 서버리스 스트리밍 전송 서비스. 변환&middot;압축&middot;암호화 후 S3/Redshift/OpenSearch에 자동 적재. Streams와 달리 목적지까지 자동 전달.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📬</span>
+<div><span class="dea-service-badge">Amazon MSK (Managed Streaming for Kafka)</span>
+<p class="dea-card-title" data-ke-size="size16">대형 우체국</p>
+</div>
+</div>
+<div class="dea-analogy-box">수백 개 부서가 서로 편지(메시지)를 주고받는 대형 우체국. 누가 보냈는지, 누가 받는지 독립적으로 운영됩니다. 기존 Kafka 코드 그대로 사용 가능.</div>
+<p class="dea-desc" data-ke-size="size16">완전 관리형 Apache Kafka. 수백만 이벤트/초 처리. 오프셋 기반 메시지 보존. Kinesis와 달리 오픈소스 호환이 핵심.</p>
+<span class="dea-onprem-tag">&asymp; 온프렘 Kafka 그대로</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📡</span>
+<div><span class="dea-service-badge">AWS IoT Core</span>
+<p class="dea-card-title" data-ke-size="size16">스마트홈 허브</p>
+</div>
+</div>
+<div class="dea-analogy-box">집 안 수십 개 센서(온도계, 전등, 냉장고)가 보내는 신호를 한곳에서 받아주는 허브. 기기 등록&middot;인증도 담당합니다.</div>
+<p class="dea-desc" data-ke-size="size16">수십억 IoT 디바이스 연결 관리. MQTT 프로토콜 지원. 규칙 엔진(Rule Engine)으로 Kinesis/Lambda/S3 자동 연동.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔄</span>
+<div><span class="dea-service-badge">AWS DMS (Database Migration Service)</span>
+<p class="dea-card-title" data-ke-size="size16">이사 전문 업체</p>
+</div>
+</div>
+<div class="dea-analogy-box">오라클 집에서 살던 짐을 Aurora 새집으로 이사시켜 주는 전문 업체. 이사 중에도 원래 집에서 정상 생활이 가능합니다 (무중단 마이그레이션).</div>
+<p class="dea-desc" data-ke-size="size16">이기종 DB 간 마이그레이션. CDC(Change Data Capture)로 실시간 복제 지원. 온프렘 Oracle &rarr; RDS/Aurora 이전에 필수.</p>
+<span class="dea-onprem-tag">온프렘 Oracle &rarr; RDS/Aurora</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🤝</span>
+<div><span class="dea-service-badge">Amazon AppFlow</span>
+<p class="dea-card-title" data-ke-size="size16">SaaS 앱 자동 동기화 파이프</p>
+</div>
+</div>
+<div class="dea-analogy-box">Salesforce, Slack, Google Analytics 같은 외부 서비스에서 데이터를 S3나 Redshift로 자동으로 퍼와주는 전용 파이프입니다.</div>
+<p class="dea-desc" data-ke-size="size16">코드 없이 SaaS &harr; AWS 데이터 이동. 일정 기반/이벤트 기반 트리거 지원. 데이터 필터링&middot;변환 기능 내장.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🚛</span>
+<div><span class="dea-service-badge">AWS DataSync</span>
+<p class="dea-card-title" data-ke-size="size16">창고 간 자동 동기화 트럭</p>
+</div>
+</div>
+<div class="dea-analogy-box">온프렘 NAS 창고 &harr; S3 클라우드 창고 사이를 정기적으로 오가며 내용을 똑같이 맞춰주는 자동 트럭입니다.</div>
+<p class="dea-desc" data-ke-size="size16">온프렘 &harr; S3/EFS/FSx 간 대용량 파일 마이그레이션 및 동기화. 전송 암호화&middot;무결성 검증 포함. AppFlow와 달리 파일 시스템 중심.</p>
+<span class="dea-onprem-tag">온프렘 NFS/SMB &rarr; S3</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📮</span>
+<div><span class="dea-service-badge">AWS Transfer Family</span>
+<p class="dea-card-title" data-ke-size="size16">구식 우편 배달부</p>
+</div>
+</div>
+<div class="dea-analogy-box">FTP, SFTP, FTPS로 파일을 받는 전통 방식. 옛날 파트너사가 FTP밖에 모를 때 그 방식 그대로 받아서 S3에 저장해줍니다.</div>
+<p class="dea-desc" data-ke-size="size16">FTP/SFTP/FTPS/AS2 서버를 완전 관리형으로 제공. 백엔드 스토리지는 S3 또는 EFS. 기존 워크플로 변경 없이 클라우드 이전 가능.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📩</span>
+<div><span class="dea-service-badge">Amazon SQS (Simple Queue Service)</span>
+<p class="dea-card-title" data-ke-size="size16">대기표 번호 뽑는 기계</p>
+</div>
+</div>
+<div class="dea-analogy-box">은행 대기표처럼 메시지를 순서대로 줄 세워 놓고, 처리 시스템이 준비되면 하나씩 꺼내 처리합니다. 메시지는 꺼내야 사라집니다.</div>
+<p class="dea-desc" data-ke-size="size16">메시지 큐 서비스. 시스템 간 디커플링. Standard(순서 보장 안 됨) vs FIFO(순서 보장). Lambda 트리거로 자주 연동.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📢</span>
+<div><span class="dea-service-badge">Amazon SNS (Simple Notification Service)</span>
+<p class="dea-card-title" data-ke-size="size16">방송 스피커 시스템</p>
+</div>
+</div>
+<div class="dea-analogy-box">학교 방송처럼 메시지를 한 번 보내면 구독한 모든 수신자(이메일, Lambda, SQS 등)에게 동시에 전달합니다. 일대다 발송.</div>
+<p class="dea-desc" data-ke-size="size16">Pub/Sub 알림 서비스. 토픽(Topic)에 발행하면 모든 구독자에 전달. 이메일/SMS/Lambda/SQS/HTTP 엔드포인트 지원.</p>
+</div>
+</div>
+<!-- 변환 --> <span class="dea-section-label">⚙️ Task 1.2 &middot; 데이터 변환 &mdash; 원석을 가공하기</span>
+<div class="dea-cards">
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🏭</span>
+<div><span class="dea-service-badge">AWS Glue (ETL)</span>
+<p class="dea-card-title" data-ke-size="size16">자동 번역 &middot; 분류 공장</p>
+</div>
+</div>
+<div class="dea-analogy-box">영어&middot;중국어&middot;일본어로 뒤섞인 서류를 받아서 한국어로 번역하고 양식에 맞게 정리해주는 자동 공장. 코드로 짤 수도 있고 GUI로도 됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">완전 서버리스 ETL. PySpark 기반 Job 실행. Glue Studio(드래그앤드롭 GUI), Glue DataBrew(노코드 데이터 정제) 포함. S3/RDS/Redshift/DynamoDB 연동.</p>
+<span class="dea-onprem-tag">&asymp; Apache Spark ETL</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🤖</span>
+<div><span class="dea-service-badge">AWS Glue Crawler</span>
+<p class="dea-card-title" data-ke-size="size16">창고 탐색 자동 로봇</p>
+</div>
+</div>
+<div class="dea-analogy-box">창고(S3)를 혼자 돌아다니며 "여기에 CSV 파일이 있고, 컬럼은 이름&middot;나이&middot;주소네" 하고 자동으로 목록(카탈로그)을 만들어주는 로봇입니다.</div>
+<p class="dea-desc" data-ke-size="size16">S3/RDS/DynamoDB 스캔 후 스키마 자동 추론 &rarr; Glue Data Catalog에 테이블 메타데이터 자동 등록. 파티션 자동 감지.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">⚡</span>
+<div><span class="dea-service-badge">Amazon EMR (Elastic MapReduce)</span>
+<p class="dea-card-title" data-ke-size="size16">대규모 공장 단지</p>
+</div>
+</div>
+<div class="dea-analogy-box">수십 명 공장 직원(EC2 인스턴스 클러스터)이 동시에 작업하는 대형 공장. Spark&middot;Hive&middot;Hadoop을 원하는 대로 설치해서 씁니다. 유연하지만 관리가 필요합니다.</div>
+<p class="dea-desc" data-ke-size="size16">Hadoop/Spark/Hive/Flink 완전 관리형 클러스터. Spot Instance 조합으로 비용 절감 가능. Glue는 서버리스, EMR은 EC2 기반(더 많은 제어권).</p>
+<span class="dea-onprem-tag">&asymp; 온프렘 Spark 클러스터</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔭</span>
+<div><span class="dea-service-badge">Amazon Kinesis Data Analytics (Managed Flink)</span>
+<p class="dea-card-title" data-ke-size="size16">실시간 불량품 검사원</p>
+</div>
+</div>
+<div class="dea-analogy-box">컨베이어 벨트(Kinesis Streams) 위에서 제품이 지나가는 순간 SQL로 실시간 검사하고 이상이 있으면 바로 경보를 울립니다.</div>
+<p class="dea-desc" data-ke-size="size16">Kinesis Streams 또는 MSK 위에서 SQL 또는 Apache Flink로 실시간 스트림 분석. 집계&middot;윈도우 함수&middot;이상 탐지 지원.</p>
+<span class="dea-onprem-tag">&asymp; Apache Flink</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">⚡</span>
+<div><span class="dea-service-badge">AWS Lambda</span>
+<p class="dea-card-title" data-ke-size="size16">호출형 단기 알바생</p>
+</div>
+</div>
+<div class="dea-analogy-box">평소엔 없다가 "파일 업로드됐어!" 같은 이벤트가 생기면 즉시 나타나 짧은 일을 처리하고 사라집니다. 서버 없이 코드만 등록하면 됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">이벤트 기반 서버리스 함수. 최대 15분 실행. S3/Kinesis/DynamoDB/SNS 트리거 연동. 간단한 데이터 변환&middot;라우팅에 적합.</p>
+</div>
+</div>
+<!-- 오케스트레이션 --> <span class="dea-section-label">🎼 Task 1.3 &middot; 오케스트레이션 &mdash; 일의 순서 관리하기</span>
+<div class="dea-cards">
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📋</span>
+<div><span class="dea-service-badge">AWS Step Functions</span>
+<p class="dea-card-title" data-ke-size="size16">요리 레시피 관리자</p>
+</div>
+</div>
+<div class="dea-analogy-box">①재료 씻기 &rarr; ②볶기 &rarr; ③간 맞추기 &rarr; ④담기, 각 단계가 실패하면 다음 단계로 넘어가지 않고 에러를 처리합니다. 전체 흐름을 시각적으로 관리.</div>
+<p class="dea-desc" data-ke-size="size16">Lambda&middot;EMR&middot;Glue&middot;ECS 등을 상태 머신(State Machine)으로 연결. 재시도&middot;타임아웃&middot;병렬실행&middot;에러처리 내장. 시각적 워크플로 편집기 제공.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📅</span>
+<div><span class="dea-service-badge">Amazon MWAA (Managed Workflows for Apache Airflow)</span>
+<p class="dea-card-title" data-ke-size="size16">공사 현장 일정 관리자</p>
+</div>
+</div>
+<div class="dea-analogy-box">수백 개 공사 작업의 의존성&middot;순서&middot;재시도를 Python DAG로 관리하는 현장 소장. 매일 아침 8시에 특정 작업이 자동으로 실행됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">완전 관리형 Apache Airflow. DAG Python 코드는 S3에 저장. 스케줄 기반 + 의존성 기반 워크플로. Airflow 생태계(Operator, Hook) 그대로 활용.</p>
+<span class="dea-onprem-tag">&asymp; 온프렘 Airflow 그대로</span></div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔔</span>
+<div><span class="dea-service-badge">Amazon EventBridge</span>
+<p class="dea-card-title" data-ke-size="size16">자동 반응 알람 시스템</p>
+</div>
+</div>
+<div class="dea-analogy-box">"S3에 파일 올라오면 &rarr; Lambda 실행" 같은 규칙을 설정하는 알람 시스템. AWS 서비스&middot;외부 SaaS 앱 이벤트에 자동으로 반응합니다.</div>
+<p class="dea-desc" data-ke-size="size16">이벤트 버스(Event Bus). AWS 서비스 이벤트, 커스텀 이벤트, cron 스케줄 트리거. 100+ 서비스 직접 연동. Step Functions&middot;Lambda 자동 실행 트리거로 많이 사용.</p>
+</div>
+<div class="dea-card dea-d1">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🏗️</span>
+<div><span class="dea-service-badge">AWS Batch</span>
+<p class="dea-card-title" data-ke-size="size16">대규모 야간 공장 라인</p>
+</div>
+</div>
+<div class="dea-analogy-box">매일 밤 대량의 배치 작업(예: 하루치 로그 처리)을 자동으로 실행하는 야간 생산 라인. Lambda보다 긴 실행시간&middot;대용량 처리에 적합.</div>
+<p class="dea-desc" data-ke-size="size16">완전 관리형 배치 컴퓨팅. EC2/Spot/Fargate 위에서 컨테이너 작업 실행. 작업 큐&middot;우선순위&middot;의존성 관리. 수시간 이상 걸리는 대규모 처리에 사용.</p>
+</div>
+</div>
+</section>
+<hr class="dea-divider" data-ke-style="style1" /><!-- ===================================================
+         DOMAIN 2 — 데이터 저장소 관리 (26%)
+    =================================================== -->
+<section id="dea-domain-2" class="dea-domain dea-d2" aria-label="Domain 2 데이터 저장소 관리">
+<div class="dea-domain-header dea-d2"><span class="dea-domain-num" aria-hidden="true">02</span>
+<div class="dea-domain-info">
+<h2 data-ke-size="size26">데이터 저장소 관리</h2>
+<p data-ke-size="size16">Data Store Management</p>
+</div>
+<span class="dea-domain-pct">26%</span></div>
+<div class="dea-big-analogy"><span class="dea-ba-label">🏪 Domain 2 전체 비유</span>
+<p class="dea-ba-text" data-ke-size="size16">🏙️ <b>데이터 도시의 건물들</b> &mdash; 어떤 종류의 정보를 어느 건물에 보관할지 결정하는 일입니다. 냉장고(빠른 접근), 창고(저렴한 보관), 도서관(검색 최적화), 금고(장기 보존)처럼 용도에 맞는 저장소를 선택해야 합니다.</p>
+</div>
+<!-- S3 --> <span class="dea-section-label">💾 Task 2.1 &middot; 객체 저장소 &mdash; 무한 창고</span>
+<div class="dea-cards">
+<div class="dea-card dea-d2 dea-wide">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🏢</span>
+<div><span class="dea-service-badge">Amazon S3 (Simple Storage Service)</span>
+<p class="dea-card-title" data-ke-size="size16">용도별 등급이 있는 무한 창고</p>
+</div>
+</div>
+<div class="dea-analogy-box">📦 <b>S3 스토리지 클래스 비유</b><br />🥩 <b>Standard</b> = 냉장고 (자주 꺼냄, 빠르고 비쌈)<br />📦 <b>Standard-IA</b> = 일반 창고 (가끔 꺼냄, 조금 저렴)<br />🔁 <b>Intelligent-Tiering</b> = 자동 분류 로봇 (접근 패턴 분석해서 자동으로 등급 조정)<br />❄️ <b>Glacier Instant Retrieval</b> = 지하 창고 (분 단위 복원, 저렴)<br />🧊 <b>Glacier Flexible Retrieval</b> = 외딴 창고 (시간 단위 복원)<br />🏔️ <b>Glacier Deep Archive</b> = 북극 창고 (12시간 복원, 가장 저렴)</div>
+<p class="dea-desc" data-ke-size="size16">데이터 레이크의 핵심 스토리지. 버킷 정책&middot;수명주기 정책&middot;버전관리&middot;멀티파트 업로드&middot;이벤트 알림&middot;Cross-Region Replication 필수 개념. 파티셔닝(연/월/일) 구조로 쿼리 비용 절감.</p>
+<span class="dea-onprem-tag">&asymp; HDFS / Qumulo NAS</span></div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📖</span>
+<div><span class="dea-service-badge">AWS Glue Data Catalog</span>
+<p class="dea-card-title" data-ke-size="size16">창고 전체 목록 장부</p>
+</div>
+</div>
+<div class="dea-analogy-box">창고 안에 뭐가 있는지 기록한 장부. "3층 B구역에 2024년 매출 Parquet 파일 있음, 컬럼은 날짜&middot;금액&middot;고객ID" 처럼 메타데이터를 중앙 관리합니다.</div>
+<p class="dea-desc" data-ke-size="size16">중앙 메타데이터 저장소. Athena&middot;EMR&middot;Redshift Spectrum이 모두 참조. Apache Hive Metastore 호환. Crawler가 자동으로 채워줌.</p>
+<span class="dea-onprem-tag">&asymp; Apache Hive Metastore</span></div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🏞️</span>
+<div><span class="dea-service-badge">Apache Iceberg on S3</span>
+<p class="dea-card-title" data-ke-size="size16">버전 기록이 있는 스마트 창고</p>
+</div>
+</div>
+<div class="dea-analogy-box">일반 창고(S3)에 "변경 이력 장부"를 붙인 것. 파일을 수정해도 이전 버전으로 돌아갈 수 있고, 특정 시점의 데이터를 조회하는 Time Travel이 가능합니다.</div>
+<p class="dea-desc" data-ke-size="size16">S3 위의 오픈 테이블 포맷. ACID 트랜잭션&middot;스키마 진화&middot;Time Travel&middot;파티션 진화 지원. Glue/EMR/Athena에서 Iceberg 테이블 직접 지원.</p>
+<span class="dea-onprem-tag">&asymp; 온프렘 Iceberg 그대로</span></div>
+</div>
+<!-- RDBMS --> <span class="dea-section-label">🗃️ Task 2.2 &middot; 관계형 DB &mdash; 정리된 장부</span>
+<div class="dea-cards">
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📊</span>
+<div><span class="dea-service-badge">Amazon RDS</span>
+<p class="dea-card-title" data-ke-size="size16">관리형 사무실 파일 캐비닛</p>
+</div>
+</div>
+<div class="dea-analogy-box">MySQL&middot;PostgreSQL 같은 전통 DB를 AWS가 대신 관리해주는 서비스. 패치&middot;백업&middot;복제는 알아서 해줍니다. 그냥 쓰기만 하면 됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">관리형 RDBMS. MySQL/PostgreSQL/Oracle/SQL Server/MariaDB 지원. Multi-AZ로 고가용성. Read Replica로 읽기 부하 분산. 수동 스케일링.</p>
+</div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🚀</span>
+<div><span class="dea-service-badge">Amazon Aurora</span>
+<p class="dea-card-title" data-ke-size="size16">고성능 터보 캐비닛</p>
+</div>
+</div>
+<div class="dea-analogy-box">RDS보다 MySQL 기준 5배, PostgreSQL 기준 3배 빠른 AWS 자체 개발 DB. MySQL/PostgreSQL 문법은 그대로. Serverless v2는 트래픽에 따라 자동 확장.</div>
+<p class="dea-desc" data-ke-size="size16">클라우드 네이티브 RDBMS. 스토리지 자동 확장(최대 128TB). Aurora Global Database로 멀티 리전 복제. Serverless v2는 초 단위 자동 스케일.</p>
+</div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">⚡</span>
+<div><span class="dea-service-badge">Amazon DynamoDB</span>
+<p class="dea-card-title" data-ke-size="size16">초고속 인덱스 카드함</p>
+</div>
+</div>
+<div class="dea-analogy-box">도서관 카드 목록처럼 Key로 즉시 꺼내는 초고속 카드함. 테이블 설계가 없고 스키마도 없습니다. "사용자ID &rarr; 정보" 처럼 단순한 조회에 최적.</div>
+<p class="dea-desc" data-ke-size="size16">완전 관리형 NoSQL Key-Value/Document DB. 1ms 미만 응답. 자동 스케일. DynamoDB Streams로 변경 사항 캡처(CDC). Global Tables로 멀티 리전 복제.</p>
+</div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🧠</span>
+<div><span class="dea-service-badge">Amazon ElastiCache</span>
+<p class="dea-card-title" data-ke-size="size16">책상 위 메모지</p>
+</div>
+</div>
+<div class="dea-analogy-box">자주 찾는 정보를 매번 창고까지 가서 꺼내지 않고 책상 위에 미리 꺼내두는 것. 매우 빠르지만 정전(재시작)되면 사라질 수 있습니다.</div>
+<p class="dea-desc" data-ke-size="size16">Redis/Memcached 완전 관리형 인메모리 캐시. DB 부하 분산&middot;세션 관리&middot;실시간 리더보드에 활용. Redis는 영속성&middot;복제&middot;클러스터 지원.</p>
+</div>
+</div>
+<!-- 분석 저장소 --> <span class="dea-section-label">📊 Task 2.3 &middot; 분석용 저장소 &mdash; 빅데이터 분석소</span>
+<div class="dea-cards">
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔬</span>
+<div><span class="dea-service-badge">Amazon Redshift</span>
+<p class="dea-card-title" data-ke-size="size16">대형 분석 연구소 (데이터 웨어하우스)</p>
+</div>
+</div>
+<div class="dea-analogy-box">수십억 행의 데이터를 세로(컬럼)로 압축해서 저장하는 분석 특화 DB. "지난 3년간 전체 매출 합계" 처럼 집계 쿼리가 엄청 빠릅니다.</div>
+<p class="dea-desc" data-ke-size="size16">컬럼 기반 데이터 웨어하우스. Redshift Spectrum으로 S3 데이터 직접 조회. RA3 노드는 스토리지&middot;컴퓨팅 분리. Serverless 버전도 지원. COPY 명령으로 S3 대량 적재.</p>
+<span class="dea-onprem-tag">&asymp; Apache Doris / ClickHouse</span></div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔎</span>
+<div><span class="dea-service-badge">Amazon OpenSearch Service</span>
+<p class="dea-card-title" data-ke-size="size16">구글 같은 전문 검색 엔진</p>
+</div>
+</div>
+<div class="dea-analogy-box">창고 안 수백만 개 문서에서 "주소에 강남이 포함된 것" 같은 텍스트 검색을 초고속으로 해주는 검색 특화 DB. 로그 분석에도 많이 씁니다.</div>
+<p class="dea-desc" data-ke-size="size16">Elasticsearch 포크. 전문(Full-Text) 검색&middot;로그 분석&middot;이상 탐지. OpenSearch Dashboards(구 Kibana) 내장. Kinesis Firehose와 연동해 실시간 로그 수집에 많이 사용.</p>
+<span class="dea-onprem-tag">&asymp; Elasticsearch + Kibana</span></div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">⏰</span>
+<div><span class="dea-service-badge">Amazon Timestream</span>
+<p class="dea-card-title" data-ke-size="size16">시간대별 기상 관측 기록지</p>
+</div>
+</div>
+<div class="dea-analogy-box">기상청이 매분 온도&middot;습도를 기록하는 것처럼 시간 순서로 쌓이는 데이터에 최적화된 DB. "최근 1시간 평균 온도" 같은 시계열 쿼리가 엄청 빠릅니다.</div>
+<p class="dea-desc" data-ke-size="size16">완전 관리형 시계열 DB. IoT 센서&middot;서버 메트릭&middot;애플리케이션 모니터링에 특화. 자동 데이터 티어링(최신/오래된 데이터 자동 분리).</p>
+</div>
+<div class="dea-card dea-d2">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📝</span>
+<div><span class="dea-service-badge">Amazon DocumentDB</span>
+<p class="dea-card-title" data-ke-size="size16">유연한 JSON 서류 캐비닛</p>
+</div>
+</div>
+<div class="dea-analogy-box">각 서류가 제각각 다른 항목을 가질 수 있는 유연한 서류 캐비닛. MongoDB처럼 JSON 문서를 저장하고 쿼리합니다.</div>
+<p class="dea-desc" data-ke-size="size16">MongoDB 호환 완전 관리형 문서 DB. 유연한 스키마로 반정형 데이터 저장. 콘텐츠 관리&middot;사용자 프로필&middot;카탈로그 데이터에 적합.</p>
+</div>
+</div>
+<!-- 레이크 거버넌스 --> <span class="dea-section-label">🏞️ Task 2.4 &middot; 데이터 레이크 거버넌스</span>
+<div class="dea-cards">
+<div class="dea-card dea-d2 dea-wide">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🏛️</span>
+<div><span class="dea-service-badge">AWS Lake Formation</span>
+<p class="dea-card-title" data-ke-size="size16">데이터 레이크 종합 관리 본부</p>
+</div>
+</div>
+<div class="dea-analogy-box">S3 창고는 기본적으로 누구나 들어올 수 있지만, Lake Formation은 "영업팀은 A구역만, 개발팀은 B구역만, 데이터 과학자는 C~D구역 읽기만" 처럼 매우 세밀하게 출입증을 발급하고 관리하는 본부입니다. 특정 열(컬럼)이나 특정 행(행 필터)만 볼 수 있도록 마스킹도 가능합니다.</div>
+<p class="dea-desc" data-ke-size="size16">데이터 레이크 구축&middot;보안&middot;거버넌스 통합 관리 서비스. 열(Column) 수준&middot;행(Row) 수준 접근제어. Glue Data Catalog 위에서 동작. Blueprint로 데이터 레이크 자동 구성. LF-Tags 기반 속성 기반 접근제어(ABAC).</p>
+<span class="dea-onprem-tag">&asymp; Apache Ranger + 권한 관리</span></div>
+</div>
+</section>
+<hr class="dea-divider" data-ke-style="style1" /><!-- ===================================================
+         DOMAIN 3 — 데이터 운영 및 지원 (22%)
+    =================================================== -->
+<section id="dea-domain-3" class="dea-domain dea-d3" aria-label="Domain 3 데이터 운영 및 지원">
+<div class="dea-domain-header dea-d3"><span class="dea-domain-num" aria-hidden="true">03</span>
+<div class="dea-domain-info">
+<h2 data-ke-size="size26">데이터 운영 및 지원</h2>
+<p data-ke-size="size16">Data Operations &amp; Support</p>
+</div>
+<span class="dea-domain-pct">22%</span></div>
+<div class="dea-big-analogy"><span class="dea-ba-label">🔧 Domain 3 전체 비유</span>
+<p class="dea-ba-text" data-ke-size="size16">🏥 <b>병원 운영팀</b> &mdash; 의사(분석가)가 진료에 집중할 수 있도록 CCTV(모니터링), 청소(데이터 품질), 행정(자동화), 연구실(머신러닝)을 관리하는 팀입니다. 데이터가 잘 흐르고 있는지 감시하고 문제가 생기면 즉시 대응합니다.</p>
+</div>
+<!-- 분석 --> <span class="dea-section-label">🔍 Task 3.1 &middot; 데이터 분석 &mdash; SQL로 바로 조회</span>
+<div class="dea-cards">
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🕵️</span>
+<div><span class="dea-service-badge">Amazon Athena</span>
+<p class="dea-card-title" data-ke-size="size16">창고에서 바로 재고 조회</p>
+</div>
+</div>
+<div class="dea-analogy-box">별도 DB로 옮기지 않고 S3 창고에 있는 파일(CSV, Parquet, ORC 등)에 SQL을 바로 날릴 수 있습니다. 조회한 데이터 스캔량만큼만 과금. 서버가 없습니다.</div>
+<p class="dea-desc" data-ke-size="size16">서버리스 SQL 쿼리 엔진. S3 데이터 직접 쿼리. 스캔량 기준 과금(TB당). Glue Catalog 연동. Parquet/ORC 포맷 + 파티셔닝으로 비용&middot;성능 최적화 필수.</p>
+<span class="dea-onprem-tag">&asymp; Trino / Presto</span></div>
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📈</span>
+<div><span class="dea-service-badge">Amazon QuickSight</span>
+<p class="dea-card-title" data-ke-size="size16">자동 보고서 그래프 생성기</p>
+</div>
+</div>
+<div class="dea-analogy-box">Redshift&middot;Athena&middot;S3 데이터를 연결하면 자동으로 그래프&middot;대시보드를 만들어주는 서비스. 임원에게 보여줄 그래프를 코딩 없이 만들 수 있습니다.</div>
+<p class="dea-desc" data-ke-size="size16">서버리스 BI 도구. ML 기반 이상치 탐지&middot;자연어 질의(Q&amp;A). SPICE 인메모리 엔진으로 빠른 대시보드. 사용자당 과금(Reader/Author).</p>
+<span class="dea-onprem-tag">&asymp; Grafana / Superset / Tableau</span></div>
+</div>
+<!-- ML --> <span class="dea-section-label">🤖 Task 3.2 &middot; 머신러닝 플랫폼</span>
+<div class="dea-cards">
+<div class="dea-card dea-d3 dea-wide">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🧪</span>
+<div><span class="dea-service-badge">Amazon SageMaker</span>
+<p class="dea-card-title" data-ke-size="size16">ML 실험 연구소 + 대량 생산 공장</p>
+</div>
+</div>
+<div class="dea-analogy-box">데이터 과학자가 ①실험(노트북) &rarr; ②학습(트레이닝 잡) &rarr; ③검증(평가) &rarr; ④배포(API 엔드포인트)까지 한 플랫폼에서 할 수 있습니다.<br />🧑&zwj;💻 <b>SageMaker Studio</b> = 연구실 IDE<br />🏋️ <b>Training Jobs</b> = 모델 훈련소<br />🏪 <b>Feature Store</b> = 피처 재료 창고<br />🚀 <b>Endpoints</b> = 모델 배포 서버<br />🔄 <b>Pipelines</b> = MLOps 자동화 라인<br />🕵️ <b>Model Monitor</b> = 모델 품질 감시원</div>
+<p class="dea-desc" data-ke-size="size16">ML 전 생명주기 플랫폼. SageMaker Processing(데이터 전처리), Ground Truth(레이블링), Clarify(편향 탐지), Canvas(노코드 ML) 포함. 데이터 엔지니어 시험에서는 Feature Store&middot;Processing&middot;Pipelines 중심 출제.</p>
+<span class="dea-onprem-tag">&asymp; MLflow + JupyterHub + Kserve + Triton</span></div>
+</div>
+<!-- 모니터링 --> <span class="dea-section-label">📊 Task 3.3 &middot; 모니터링 &mdash; 이상 징후 감시</span>
+<div class="dea-cards">
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📹</span>
+<div><span class="dea-service-badge">Amazon CloudWatch</span>
+<p class="dea-card-title" data-ke-size="size16">건물 CCTV + 화재 경보기</p>
+</div>
+</div>
+<div class="dea-analogy-box">AWS 모든 서비스의 지표(CPU&middot;메모리&middot;에러 수)를 실시간으로 모니터링하는 CCTV. 특정 기준을 넘으면 경보(Alarm)가 울리고 자동으로 조치합니다.</div>
+<p class="dea-desc" data-ke-size="size16">메트릭&middot;로그&middot;알람&middot;대시보드 통합. CloudWatch Logs Insights로 로그에 SQL 쿼리 가능. Composite Alarm으로 복합 조건 경보. 커스텀 메트릭 발행 가능.</p>
+<span class="dea-onprem-tag">&asymp; Prometheus + Grafana</span></div>
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📝</span>
+<div><span class="dea-service-badge">AWS CloudTrail</span>
+<p class="dea-card-title" data-ke-size="size16">회사 전체 출입 블랙박스</p>
+</div>
+</div>
+<div class="dea-analogy-box">"누가 언제 어떤 AWS 작업을 했는지" 모두 기록하는 블랙박스. "3월 17일 오후 2시에 김철수가 S3 버킷을 삭제함" 같은 감사 로그가 생성됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">모든 API 호출 이력 기록. 보안 감사&middot;규정 준수에 필수. S3 또는 CloudWatch Logs에 적재. Athena로 분석 가능. 시험 팁: "누가 삭제했나?" &rarr; CloudTrail</p>
+</div>
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">✅</span>
+<div><span class="dea-service-badge">AWS Glue DataBrew</span>
+<p class="dea-card-title" data-ke-size="size16">노코드 데이터 품질 검사원</p>
+</div>
+</div>
+<div class="dea-analogy-box">SQL&middot;코드 없이도 데이터 품질을 체크하고 정제할 수 있는 GUI 도구. 결측치&middot;중복&middot;형식 오류를 시각적으로 탐지하고 수정 레시피를 작성합니다.</div>
+<p class="dea-desc" data-ke-size="size16">노코드 데이터 프로파일링&middot;정제. 250+ 내장 변환 함수. 수정 레시피를 Glue ETL Job으로 배포 가능. 데이터 품질 규칙(DQ Rules) 정의&middot;평가 지원.</p>
+</div>
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔍</span>
+<div><span class="dea-service-badge">AWS Config</span>
+<p class="dea-card-title" data-ke-size="size16">AWS 자산 규정 준수 감사관</p>
+</div>
+</div>
+<div class="dea-analogy-box">"S3 버킷이 퍼블릭으로 열려 있으면 안 된다" 같은 규칙을 계속 모니터링합니다. 규칙 위반이 생기면 즉시 알려주고 기록합니다.</div>
+<p class="dea-desc" data-ke-size="size16">AWS 리소스 구성 변경 이력&middot;규정 준수 지속 모니터링. AWS Managed Rules 제공. 자동 교정(Remediation) 가능. 시험 팁: "버킷이 퍼블릭?" &rarr; Config</p>
+</div>
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔗</span>
+<div><span class="dea-service-badge">AWS Glue Data Quality</span>
+<p class="dea-card-title" data-ke-size="size16">데이터 규격 자동 검수 라인</p>
+</div>
+</div>
+<div class="dea-analogy-box">공장 출하 전 제품이 규격에 맞는지 자동으로 검수하는 라인. "null 비율 5% 이하", "값 범위 0~100" 같은 데이터 품질 규칙을 자동으로 검증합니다.</div>
+<p class="dea-desc" data-ke-size="size16">Glue ETL 파이프라인 내 데이터 품질 규칙 정의&middot;실행&middot;모니터링. DQDL(Data Quality Definition Language) 사용. 품질 실패 시 파이프라인 중단 또는 경고 설정.</p>
+</div>
+<div class="dea-card dea-d3">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🗺️</span>
+<div><span class="dea-service-badge">Amazon DataZone</span>
+<p class="dea-card-title" data-ke-size="size16">데이터 마켓플레이스 + 포털</p>
+</div>
+</div>
+<div class="dea-analogy-box">사내 데이터 자산을 검색하고, 필요한 데이터에 접근 신청을 할 수 있는 사내 데이터 마켓플레이스. 데이터 생산자와 소비자를 연결합니다.</div>
+<p class="dea-desc" data-ke-size="size16">데이터 거버넌스&middot;카탈로그&middot;공유 플랫폼. 비즈니스 사용자가 데이터를 검색&middot;요청. 데이터 생산자는 퍼블리시&middot;승인 관리. Lake Formation과 통합.</p>
+</div>
+</div>
+</section>
+<hr class="dea-divider" data-ke-style="style1" /><!-- ===================================================
+         DOMAIN 4 — 데이터 보안 및 거버넌스 (18%)
+    =================================================== -->
+<section id="dea-domain-4" class="dea-domain dea-d4" aria-label="Domain 4 데이터 보안 및 거버넌스">
+<div class="dea-domain-header dea-d4"><span class="dea-domain-num" aria-hidden="true">04</span>
+<div class="dea-domain-info">
+<h2 data-ke-size="size26">데이터 보안 및 거버넌스</h2>
+<p data-ke-size="size16">Data Security &amp; Governance</p>
+</div>
+<span class="dea-domain-pct">18%</span></div>
+<div class="dea-big-analogy"><span class="dea-ba-label">🔒 Domain 4 전체 비유</span>
+<p class="dea-ba-text" data-ke-size="size16">🏦 <b>은행 보안 시스템 전체</b> &mdash; 누가 들어올 수 있고(인증), 어디까지 볼 수 있고(권한), 데이터를 잠그고(암호화), 모든 행동을 기록(감사)하는 전체 보안 체계입니다. 비중은 18%로 가장 낮지만, 다른 도메인 문제에도 보안 요소가 포함됩니다.</p>
+</div>
+<!-- 인증 권한 --> <span class="dea-section-label">🎫 Task 4.1 &middot; 인증 &middot; 권한 &mdash; 출입증 시스템</span>
+<div class="dea-cards">
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🪪</span>
+<div><span class="dea-service-badge">AWS IAM (Identity and Access Management)</span>
+<p class="dea-card-title" data-ke-size="size16">사원증 + 출입 권한 시스템</p>
+</div>
+</div>
+<div class="dea-analogy-box">누가(사람&middot;서비스) AWS의 무엇을 할 수 있는지 정하는 시스템. User(정직원), Role(임시 사원증), Policy(출입 규정서). "ETL Job은 S3만 읽기 가능" 같은 규칙.</div>
+<p class="dea-desc" data-ke-size="size16">AWS 인증&middot;인가의 핵심. IAM Role은 임시 자격증명(STS). 최소권한(Least Privilege) 원칙. Policy = JSON 문서. 리소스 기반 정책 vs 자격증명 기반 정책 구분 필수.</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔑</span>
+<div><span class="dea-service-badge">AWS KMS (Key Management Service)</span>
+<p class="dea-card-title" data-ke-size="size16">열쇠 전문 보관소</p>
+</div>
+</div>
+<div class="dea-analogy-box">데이터를 잠그는 열쇠(암호화 키)를 전문적으로 보관&middot;관리하는 금고. S3&middot;RDS&middot;Redshift&middot;Kinesis의 데이터를 이 열쇠로 암호화합니다. 키 사용 이력도 기록됩니다.</div>
+<p class="dea-desc" data-ke-size="size16">암호화 키 관리. CMK(고객 관리 키) vs AWS 관리 키 vs AWS 소유 키. 봉투 암호화(Envelope Encryption) 중요. 키 교체&middot;감사&middot;삭제 관리. KMS로 S3 SSE-KMS 암호화.</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🗄️</span>
+<div><span class="dea-service-badge">AWS Secrets Manager</span>
+<p class="dea-card-title" data-ke-size="size16">비밀번호 전용 금고</p>
+</div>
+</div>
+<div class="dea-analogy-box">DB 비밀번호, API 키를 코드에 직접 쓰지 않고 이 금고에 보관하고 필요할 때만 꺼냅니다. 자동 교체(Rotation)까지 해줍니다.</div>
+<p class="dea-desc" data-ke-size="size16">시크릿 저장&middot;자동 교체&middot;접근제어. DB 자격증명 자동 교체(Lambda 기반). Parameter Store(단순 설정값)와 차이: Secrets Manager는 자동 교체 + 더 높은 보안.</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🌐</span>
+<div><span class="dea-service-badge">Amazon VPC (Virtual Private Cloud)</span>
+<p class="dea-card-title" data-ke-size="size16">회사 내부 전용 격리 네트워크</p>
+</div>
+</div>
+<div class="dea-analogy-box">인터넷과 분리된 회사 내부망. Public Subnet(로비, 인터넷 연결 가능)과 Private Subnet(내부 사무실, 외부 접근 불가)으로 구분합니다.</div>
+<p class="dea-desc" data-ke-size="size16">논리적 네트워크 격리. Security Group(인스턴스 방화벽) vs NACL(서브넷 방화벽). NAT Gateway(내부&rarr;인터넷). VPN/Direct Connect(온프렘 연결). VPC Peering(VPC 간 연결).</p>
+</div>
+</div>
+<!-- 데이터 보호 --> <span class="dea-section-label">🕵️ Task 4.2 &middot; 데이터 보호 &middot; 프라이버시</span>
+<div class="dea-cards">
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🤖</span>
+<div><span class="dea-service-badge">Amazon Macie</span>
+<p class="dea-card-title" data-ke-size="size16">개인정보 자동 탐지 로봇</p>
+</div>
+</div>
+<div class="dea-analogy-box">S3 창고 안을 돌아다니며 주민등록번호&middot;신용카드&middot;이름&middot;이메일 같은 민감 정보가 있는지 자동으로 찾아내는 탐지 로봇. GDPR&middot;개인정보보호법 준수용.</div>
+<p class="dea-desc" data-ke-size="size16">ML 기반 민감 데이터 자동 탐지&middot;분류. S3 객체 전체 스캔. 커스텀 정규식 패턴 추가 가능. 탐지 결과를 EventBridge&middot;Security Hub에 전달 가능.</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🕶️</span>
+<div><span class="dea-service-badge">데이터 마스킹 (Glue / Lake Formation)</span>
+<p class="dea-card-title" data-ke-size="size16">개인정보 모자이크 처리</p>
+</div>
+</div>
+<div class="dea-analogy-box">010-1234-5678을 010-****-5678로 바꾸거나 주민번호 뒷자리를 가리는 것. 분석에는 써도 되지만 원본 정보는 노출되지 않게 합니다.</div>
+<p class="dea-desc" data-ke-size="size16">Glue ETL 변환 또는 Lake Formation의 열(Column) 수준&middot;행 필터(Row Filter) 마스킹으로 구현. 동적 데이터 마스킹(DDM)으로 사용자별 다른 뷰 제공.</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🛤️</span>
+<div><span class="dea-service-badge">AWS PrivateLink (VPC Endpoint)</span>
+<p class="dea-card-title" data-ke-size="size16">전용 지하 통로</p>
+</div>
+</div>
+<div class="dea-analogy-box">A 건물에서 B 건물로 갈 때 외부 도로(인터넷)를 거치지 않고 내부 지하 전용 통로로만 이동합니다. 외부에 트래픽이 전혀 노출되지 않습니다.</div>
+<p class="dea-desc" data-ke-size="size16">VPC 내부에서 S3&middot;Kinesis&middot;Glue 등 AWS 서비스를 인터넷 없이 프라이빗하게 접근. Interface Endpoint(ENI 기반) vs Gateway Endpoint(S3/DynamoDB 전용).</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🛡️</span>
+<div><span class="dea-service-badge">Amazon GuardDuty</span>
+<p class="dea-card-title" data-ke-size="size16">AI 보안 위협 탐지 경비원</p>
+</div>
+</div>
+<div class="dea-analogy-box">이상한 접근 패턴(새벽 3시 외국 IP에서 DB 접근, 비정상 API 대량 호출)을 자동으로 탐지하고 알려주는 AI 경비원입니다.</div>
+<p class="dea-desc" data-ke-size="size16">ML 기반 위협 탐지. CloudTrail&middot;VPC Flow Logs&middot;DNS 로그 분석. 즉시 활성화 가능(에이전트 불필요). 탐지 결과를 EventBridge로 자동 대응 가능.</p>
+</div>
+<div class="dea-card dea-d4">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">🔐</span>
+<div><span class="dea-service-badge">AWS WAF (Web Application Firewall)</span>
+<p class="dea-card-title" data-ke-size="size16">입구 보안 검색대</p>
+</div>
+</div>
+<div class="dea-analogy-box">공항 입구 보안 검색대처럼 악의적인 웹 트래픽(SQL 인젝션, XSS 공격 등)을 입구에서 차단합니다. API Gateway&middot;CloudFront 앞단에 배치.</div>
+<p class="dea-desc" data-ke-size="size16">웹 애플리케이션 방화벽. SQL 인젝션&middot;XSS&middot;봇 차단. 규칙 기반 트래픽 필터. ALB/API Gateway/CloudFront/AppSync에 연결. Managed Rules(AWS/Marketplace 제공) 활용.</p>
+</div>
+</div>
+<!-- 감사 --> <span class="dea-section-label">📋 Task 4.3 &middot; 감사 &middot; 규정 준수 3종 세트</span>
+<div class="dea-cards">
+<div class="dea-card dea-d4 dea-wide">
+<div class="dea-card-top"><span class="dea-emoji" aria-hidden="true">📜</span>
+<div><span class="dea-service-badge">CloudTrail + CloudWatch + Config &mdash; 감사 3종 세트</span>
+<p class="dea-card-title" data-ke-size="size16">시험에서 가장 헷갈리는 구분!</p>
+</div>
+</div>
+<div class="dea-analogy-box">① <b>CloudTrail</b> = 🚪 출입 일지 &mdash; "누가, 언제, 무엇을 했나?" (API 호출 기록)<br />② <b>CloudWatch</b> = 📹 CCTV + 알람 &mdash; "지금 어떤 상태인가, 이상하면 경보" (메트릭&middot;로그 모니터링)<br />③ <b>Config</b> = 📋 규정 준수 감사관 &mdash; "현재 설정이 우리 규칙에 맞나?" (리소스 구성 변경 추적)</div>
+<p class="dea-desc" data-ke-size="size16"><b>시험 답 가이드:</b><br />"누가 S3 버킷을 삭제했나?" &rarr; <b>CloudTrail</b><br />"Lambda 에러율이 갑자기 높아졌나?" &rarr; <b>CloudWatch</b><br />"S3 버킷이 퍼블릭 접근 허용 상태인가?" &rarr; <b>Config</b><br />"지난 30일간 보안 그룹이 몇 번 변경됐나?" &rarr; <b>Config</b></p>
+</div>
+</div>
+</section>
+<hr class="dea-divider" data-ke-style="style1" /><!-- ===== 온프렘 vs AWS 매핑 테이블 ===== -->
+<section aria-label="온프렘 스택 AWS 매핑">
+<div class="dea-map-section"><span class="dea-map-title">🗺️ Quick Map &mdash; 온프렘 오픈소스 스택 vs AWS 매핑</span>
+<div class="dea-map-grid">
+<div class="dea-map-item dea-mc1"><span class="dea-map-cat">🚚 수집 / 스트리밍</span> Apache Kafka &rarr; <span class="dea-aws">Amazon MSK</span><br />Apache Kafka &rarr; <span class="dea-aws">Kinesis Data Streams</span><br />NiFi / Fluentd &rarr; <span class="dea-aws">Kinesis Firehose</span><br />MQTT Broker &rarr; <span class="dea-aws">AWS IoT Core</span></div>
+<div class="dea-map-item dea-mc2"><span class="dea-map-cat">🏪 저장 / 레이크하우스</span> HDFS / Qumulo NAS &rarr; <span class="dea-aws">Amazon S3</span><br />Hive Metastore &rarr; <span class="dea-aws">Glue Data Catalog</span><br />Iceberg on HDFS &rarr; <span class="dea-aws">Iceberg on S3</span><br />Apache Doris &rarr; <span class="dea-aws">Amazon Redshift</span></div>
+<div class="dea-map-item dea-mc3"><span class="dea-map-cat">⚙️ 처리 / 오케스트레이션</span> Apache Spark (클러스터) &rarr; <span class="dea-aws">Amazon EMR</span><br />Apache Spark (서버리스) &rarr; <span class="dea-aws">AWS Glue ETL</span><br />Apache Airflow &rarr; <span class="dea-aws">Amazon MWAA</span><br />Trino / Presto &rarr; <span class="dea-aws">Amazon Athena</span><br />Apache Flink &rarr; <span class="dea-aws">Kinesis Data Analytics</span></div>
+<div class="dea-map-item dea-mc4"><span class="dea-map-cat">🔒 보안 / 거버넌스</span> Apache Ranger &rarr; <span class="dea-aws">AWS Lake Formation</span><br />HashiCorp Vault &rarr; <span class="dea-aws">AWS Secrets Manager</span><br />Keycloak &rarr; <span class="dea-aws">AWS IAM + Cognito</span><br />MLflow + Kserve &rarr; <span class="dea-aws">Amazon SageMaker</span><br />Elasticsearch + Kibana &rarr; <span class="dea-aws">OpenSearch Service</span></div>
+</div>
+</div>
+</section>
+<!-- ===== 마무리 팁 ===== -->
+<div class="dea-tip-box" style="margin-top:32px">🎯 <b>시험 준비 마무리 팁</b><br />① <b>Domain 1이 34%</b>이므로 Kinesis&middot;Glue&middot;MWAA&middot;Step Functions를 중점적으로.<br />② 온프렘 스택을 써봤다면 <b>매핑 표</b>에서 1:1 대응 서비스부터 시작하세요.<br />③ "어떤 서비스를 써야 하나?" 시나리오 문제는 <b>서버리스 vs 관리형 vs 자체 관리</b> 키워드로 접근.<br />④ 보안 문제는 CloudTrail(감사) / CloudWatch(모니터링) / Config(규정준수) 3종 구분만 명확히 해도 상당수 해결.</div>
+<footer class="dea-footer">
+<p data-ke-size="size16">📝 AWS DEA-C01 비유 가이드 &middot; <a style="color:var(--r60);text-decoration:none" href="https://hyeonlee.net">hyeonlee.net</a></p>
+<p style="margin-top:6px" data-ke-size="size16">공부에 도움이 됐다면 댓글로 알려주세요 😊</p>
+</footer></div>
+<!-- /dea-container --></article>
+<!-- /dea-wrap -->
+<script>
+  function deaFilter(d) {
+    var btns = document.querySelectorAll('.dea-nav-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.remove('dea-active');
+    }
+    document.querySelector('.dea-nav-btn[data-d="' + d + '"]').classList.add('dea-active');
+
+    for (var n = 1; n <= 4; n++) {
+      var el = document.getElementById('dea-domain-' + n);
+      if (!el) continue;
+      if (d === 0 || d === n) {
+        el.classList.remove('dea-hidden');
+      } else {
+        el.classList.add('dea-hidden');
+      }
+    }
+  }
+</script>
+</div>

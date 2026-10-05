@@ -1,0 +1,376 @@
+<!--
+id: 55
+제목: AWS DEA-C01 공식 샘플 문제 — Firehose + Lambda 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: LAMBDA, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, firehose
+날짜: 2026-03-10 20:31
+수정: 2026-03-24 22:26
+형식: html
+썸네일: /img/t/dJMcafFNNYT.webp
+-->
+<style>
+.pb-55 *, .pb-55, .pb-55 *::before, .pb-55 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-55{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--cyan:var(--i60);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-55{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-55 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-55 .post-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-55 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-55 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-55 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-55 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-55 .badge-cyan{background:var(--i5);color:var(--cyan);border:1px solid var(--i50)}
+.pb-55 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-55 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;color:var(--text);margin-bottom:10px}
+.pb-55 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-55 h2.section-title{font-size:16px;font-weight:700;color:var(--text);margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-55 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-55 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-55 .question-box{background:linear-gradient(135deg, var(--p5), var(--i5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-55 .question-box p{font-size:15px;line-height:1.85}
+.pb-55 .hl-blue{color:var(--blue);font-weight:700}
+.pb-55 .hl-orange{color:var(--orange);font-weight:700}
+.pb-55 .hl-purple{color:var(--purple);font-weight:700}
+.pb-55 .hl-green{color:var(--green);font-weight:700}
+.pb-55 .hl-cyan{color:var(--cyan);font-weight:700}
+.pb-55 .hl-bold{font-weight:900}
+.pb-55 .req-list{list-style:none;padding:0}
+.pb-55 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-55 .req-list li:last-child{border-bottom:none}
+.pb-55 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-55 .arch-wrap{margin-bottom:20px}
+.pb-55 .arch-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-bottom:8px}
+.pb-55 .pipeline{display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow);background:var(--g0);margin-bottom:10px}
+.pb-55 .pipeline.ok-pipe{border-color:var(--green-border)}
+.pb-55 .pipe-seg{flex:1;min-width:0;padding:14px 8px;text-align:center;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pb-55 .pipe-seg:last-child{border-right:none}
+.pb-55 .pipe-seg.hi{background:var(--green-light)}
+.pb-55 .pipe-seg.src{background:var(--g0)}
+.pb-55 .pipe-seg .ps-icon{font-size:22px;margin-bottom:5px}
+.pb-55 .pipe-seg .ps-name{font-size:11px;font-weight:700;color:var(--text);line-height:1.3}
+.pb-55 .pipe-seg.hi .ps-name{color:var(--green)}
+.pb-55 .pipe-seg .ps-sub{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.3}
+.pb-55 .pipe-arrow{flex-shrink:0;width:22px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);background:var(--g0);border-right:1px solid var(--border)}
+@media (max-width: 520px){.pb-55 .pipeline{flex-direction:column}
+.pb-55 .pipe-seg{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;gap:10px;text-align:left;padding:10px 14px}
+.pb-55 .pipe-seg:last-child{border-bottom:none}
+.pb-55 .pipe-arrow{width:100%;height:20px;border-right:none;border-bottom:1px solid var(--border);font-size:12px;transform:rotate(90deg)}}
+.pb-55 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+@media (max-width: 480px){.pb-55 .compare-grid{grid-template-columns:1fr}}
+.pb-55 .compare-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pb-55 .compare-name{width:140px;flex-shrink:0;font-size:12px;font-weight:700}
+.pb-55 .bar-wrap{flex:1;background:var(--p5);border-radius:99px;height:20px;overflow:hidden}
+.pb-55 .bar{height:100%;border-radius:99px;display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:700;color:#fff}
+.pb-55 .bar-val{flex-shrink:0;font-size:11px;font-weight:700;width:52px;text-align:right}
+@media (max-width: 480px){.pb-55 .compare-name{width:100px;font-size:11px}}
+.pb-55 .options-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.pb-55 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-55 .option:hover{border-color:var(--p50)}
+.pb-55 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-55 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-55 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-55 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-55 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-55 .opt-body{flex:1;min-width:0}
+.pb-55 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-55 .opt-main.correct{color:var(--green)}
+.pb-55 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-55 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75;color:var(--text)}
+.pb-55 .opt-why.show{display:block}
+.pb-55 .opt-why.ok-why{background:var(--s10)}
+.pb-55 .opt-why.bad-why{background:var(--r5)}
+.pb-55 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-55 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-55 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-55 .answer-body{display:none;margin-top:14px}
+.pb-55 .answer-body.show{display:block}
+.pb-55 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-55 .answer-body strong{color:var(--orange)}
+.pb-55 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-55 .summary-table{width:100%;border-collapse:collapse;font-size:13px}
+.pb-55 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-55 .summary-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:12px}
+.pb-55 .summary-table tr:last-child td{border-bottom:none}
+.pb-55 .summary-table tr:hover td{background:var(--g0)}
+.pb-55 .ok-text{color:var(--green);font-weight:700}
+.pb-55 .bad-text{color:var(--red);font-weight:700}
+.pb-55 .warn-text{color:var(--yellow);font-weight:700}
+.pb-55 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-55 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-55 .wrap{padding:20px 14px 50px}
+.pb-55 h1.post-title{font-size:19px}
+.pb-55 .question-box p{font-size:14px}
+.pb-55 .opt-main{font-size:13px}
+.pb-55 .code-block{font-size:11px}}
+.pb-55 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-55 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-55 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-55 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-55 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-55 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-55 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-55 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-55 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-55 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-55 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-55 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-55 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-55 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-55 .ans-label::before{content:'🎯 '}
+.pb-55 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-55 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-55 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-55 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-55 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-55 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-55">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">데이터 엔지니어</span> <span class="badge badge-cyan">스트리밍 &middot; Firehose</span> <span class="badge badge-orange">Parquet 변환</span> <span class="badge badge-purple">최소 운영 오버헤드</span></div>
+<h1 class="post-title">실시간 로그 수집 &rarr; Parquet 변환 &rarr; S3 &mdash; Firehose + Lambda가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 스트리밍 ETL 문제입니다. <b>여러 애플리케이션의 로그를 중앙 집중식으로 수집</b>하면서 <b>Apache Parquet으로 변환해 S3에 거의 실시간 전달</b>해야 할 때, Firehose / Kinesis Data Streams / Glue ETL / EMR Hive 중 최소 운영 오버헤드로 요구사항을 충족하는 솔루션을 도식과 함께 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">전자 상거래 회사가 <span class="hl-blue">AWS에서 여러 애플리케이션</span>을 실행한다. 이 회사는 <span class="hl-bold">중앙 집중식 스트리밍 로그 수집 솔루션</span>을 설계하려고 한다. 솔루션은 로그 데이터를 <span class="hl-orange">Apache Parquet 형식으로 변환</span>한 다음 <span class="hl-green">Amazon S3에 로그 파일을 저장</span>할 수 있어야 한다. 생성되는 로그 파일의 수는 <span class="hl-bold">하루 중에 계속 달라지며</span>, 데이터 엔지니어는 로그 파일을 <span class="hl-cyan">거의 실시간으로 전달</span>하도록 지원하는 솔루션을 구성해야 한다. <br /><br />다음 중 <span class="hl-bold">최소한의 운영 오버헤드</span>로 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 체크</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🔄</span>
+<div><b>중앙 집중식 스트리밍 로그 수집</b><br /><span style="font-size:13px;color:var(--muted)">여러 앱에서 발생하는 로그를 하나의 파이프라인으로 통합 &rarr; 스트리밍 수집 서비스 필요</span></div>
+</li>
+<li><span class="req-icon">📦</span>
+<div><b>Apache Parquet 형식으로 변환</b><br /><span style="font-size:13px;color:var(--muted)">원본 로그(JSON&middot;텍스트)를 열 기반 Parquet으로 변환 &rarr; 데이터 레이크 분석 최적화</span></div>
+</li>
+<li><span class="req-icon">⚡</span>
+<div><b>거의 실시간 전달 (Near Real-time)</b><br /><span style="font-size:13px;color:var(--muted)">로그 순환 주기에 의존하지 않고 수집 즉시 처리 &middot; 전달 &rarr; 배치가 아닌 스트리밍 방식</span></div>
+</li>
+<li><span class="req-icon">🪶</span>
+<div><b>최소 운영 오버헤드</b><br /><span style="font-size:13px;color:var(--muted)">서버 프로비저닝&middot;관리 없이 자동 스케일링 &rarr; 완전관리형(Fully Managed) 서비스 선호</span></div>
+</li>
+</ul>
+</div>
+<!-- 아키텍처 도식 -->
+<h2 class="section-title" data-ke-size="size26">📐 아키텍처 비교</h2>
+<div class="card"><!-- 정답 파이프라인 -->
+<div class="arch-wrap">
+<div class="arch-label">✅ 정답 &mdash; Firehose + Lambda</div>
+<div class="pipeline ok-pipe">
+<div class="pipe-seg src">
+<div class="ps-icon">🖥️</div>
+<div class="ps-name">애플리케이션들</div>
+<div class="ps-sub">로그 스트림 전송</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg hi">
+<div class="ps-icon">🚒</div>
+<div class="ps-name">Data Firehose</div>
+<div class="ps-sub">수집 &middot; 버퍼링<br />자동 스케일링</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg hi">
+<div class="ps-icon">&lambda;</div>
+<div class="ps-name">Lambda</div>
+<div class="ps-sub">Parquet 변환<br />(인라인 처리)</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg src">
+<div class="ps-icon">🪣</div>
+<div class="ps-name">Amazon S3</div>
+<div class="ps-sub">Parquet 저장</div>
+</div>
+</div>
+</div>
+<!-- 오답 파이프라인들 -->
+<div class="arch-wrap">
+<div class="arch-label" style="color:var(--red)">❌ 오답 A &mdash; S3 &rarr; EventBridge &rarr; Glue ETL</div>
+<div class="pipeline">
+<div class="pipe-seg src">
+<div class="ps-icon">🖥️</div>
+<div class="ps-name">애플리케이션</div>
+<div class="ps-sub">로그 파일 저장</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg" style="background:var(--y10)">
+<div class="ps-icon">🪣</div>
+<div class="ps-name">입력 S3 버킷</div>
+<div class="ps-sub">로그 순환 의존</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg" style="background:var(--y10)">
+<div class="ps-icon">📅</div>
+<div class="ps-name">EventBridge</div>
+<div class="ps-sub">이벤트 트리거</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg" style="background:var(--g5)">
+<div class="ps-icon">⚙️</div>
+<div class="ps-name">Glue ETL</div>
+<div class="ps-sub">배치 처리<br />실시간 ❌</div>
+</div>
+</div>
+</div>
+<div class="arch-wrap">
+<div class="arch-label" style="color:var(--red)">❌ 오답 C &mdash; Kinesis Data Streams + EC2 KCL</div>
+<div class="pipeline">
+<div class="pipe-seg src">
+<div class="ps-icon">🖥️</div>
+<div class="ps-name">애플리케이션</div>
+<div class="ps-sub">스트림 전송</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg" style="background:var(--y10)">
+<div class="ps-icon">🌊</div>
+<div class="ps-name">Kinesis<br />Data Streams</div>
+<div class="ps-sub">수집 스트림</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg" style="background:var(--g5)">
+<div class="ps-icon">💻</div>
+<div class="ps-name">EC2 + KCL</div>
+<div class="ps-sub">직접 관리<br />오버헤드 &uarr;</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg src">
+<div class="ps-icon">🪣</div>
+<div class="ps-name">Amazon S3</div>
+<div class="ps-sub">Parquet 저장</div>
+</div>
+</div>
+</div>
+<!-- 운영 오버헤드 비교 바 -->
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:14px" data-ke-size="size16">🪶 솔루션별 운영 오버헤드 (낮을수록 좋음)</p>
+<div class="compare-row">
+<div class="compare-name">Firehose + Lambda ⭐</div>
+<div class="bar-wrap">
+<div class="bar" style="width:12%;background:var(--s60)">최저</div>
+</div>
+<div class="bar-val ok-text">완전관리형</div>
+</div>
+<div class="compare-row">
+<div class="compare-name">S3 + Glue ETL</div>
+<div class="bar-wrap">
+<div class="bar" style="width:40%;background:var(--y50)">보통</div>
+</div>
+<div class="bar-val warn-text">실시간 ❌</div>
+</div>
+<div class="compare-row">
+<div class="compare-name">Kinesis + EC2</div>
+<div class="bar-wrap">
+<div class="bar" style="width:75%;background:var(--r50)">높음</div>
+</div>
+<div class="bar-val bad-text">서버 관리</div>
+</div>
+<div class="compare-row">
+<div class="compare-name">EMR + Hive</div>
+<div class="bar-wrap">
+<div class="bar" style="width:92%;background:var(--r50)">매우 높음</div>
+</div>
+<div class="bar-val bad-text">클러스터 관리</div>
+</div>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ 입력 S3 버킷 &rarr; EventBridge &rarr; AWS Glue ETL &rarr; 출력 S3 버킷</div>
+<div class="opt-sub">배치 기반 ETL &mdash; 로그 순환 주기에 의존</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Parquet 변환 자체는 가능하지만, S3에 파일이 업로드되어야 EventBridge가 트리거됩니다. 이는 <b>애플리케이션의 로그 순환 예약(ex. 1시간 단위 파일 생성)에 완전히 종속</b>됩니다. 로그가 파일로 묶여야 처리가 시작되므로 <b>거의 실시간 전달을 보장할 수 없습니다.</b> 스트리밍이 아닌 배치 방식입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">B</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Amazon Data Firehose &rarr; Lambda(Parquet 변환) &rarr; 출력 S3 버킷</div>
+<div class="opt-sub">완전관리형 스트리밍 전달 + Lambda 인라인 변환</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Firehose는 <b>완전관리형 스트리밍 전달 서비스</b>로 자동 스케일링을 지원합니다. 로그 트래픽이 하루 중 변동하더라도 별도 설정 없이 자동 대응합니다. Lambda 변환 함수를 Firehose에 연결하면 수집된 레코드를 <b>S3에 저장하기 전 인라인으로 Parquet 변환</b>합니다. 서버 관리 없이 거의 실시간 전달과 포맷 변환을 동시에 달성합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon Kinesis Data Streams &rarr; EC2 + KCL &rarr; Amazon S3</div>
+<div class="opt-sub">사용자 정의 소비자 + EC2 인스턴스 그룹 직접 관리</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 실시간 스트리밍과 Parquet 변환은 가능하지만, <b>KCL 소비자 애플리케이션을 직접 개발</b>해야 하고 <b>EC2 인스턴스 그룹의 프로비저닝&middot;패치&middot;스케일링을 직접 관리</b>해야 합니다. 로그 트래픽 변동에 따라 수동 혹은 Auto Scaling 설정도 필요합니다. 최소 운영 오버헤드 조건에 맞지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon EMR(Hive) &rarr; 정규식 테이블 생성 &rarr; HiveQL UNLOAD &rarr; S3 외부 테이블</div>
+<div class="opt-sub">EMR 클러스터 + 사용자 정의 HiveQL 스크립트</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 기술적으로 변환&middot;저장은 가능하지만 <b>EMR 클러스터 자체를 구성&middot;관리</b>해야 하고, <b>HiveQL 스크립트를 직접 개발&middot;유지보수</b>해야 합니다. 선택지 중 운영 오버헤드가 가장 높으며, HiveQL UNLOAD를 예약하는 방식은 실시간이 아닌 배치에 가깝습니다.</div>
+</div>
+<!-- 정답 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: B &mdash; Amazon Data Firehose + Lambda</b></p>
+<p data-ke-size="size16">Firehose는 <b>완전관리형 스트리밍 파이프라인</b>으로, 수집 &rarr; 변환 &rarr; 전달을 서버 없이 처리합니다. Lambda 변환 함수를 연결하면 Parquet 변환까지 인라인으로 처리되어 별도 ETL 인프라가 필요 없습니다. 트래픽 변동도 자동 스케일링으로 대응합니다.</p>
+<div class="code-block"># 정답 흐름 요약 여러 애플리케이션 (로그 스트리밍) └─ Amazon Data Firehose ├─ 자동 스케일링 (트래픽 변동 대응) ├─ Lambda 함수 호출 (인라인 변환) │ └─ 원본 로그 (JSON) &rarr; Apache Parquet 변환 └─ 출력 S3 버킷 저장 (거의 실시간) ✅ 운영 오버헤드: 서버 없음 / 자동 스케일링 / 코드만 관리</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>수집 방식</th>
+<th>Parquet 변환</th>
+<th>실시간 전달</th>
+<th>운영 오버헤드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A. S3 + Glue ETL</b></td>
+<td>파일 업로드</td>
+<td class="ok-text">✅ 가능</td>
+<td class="bad-text">❌ 로그 순환 의존</td>
+<td class="warn-text">보통</td>
+</tr>
+<tr>
+<td><b>B. Firehose + Lambda ⭐</b></td>
+<td>스트리밍</td>
+<td class="ok-text">✅ Lambda 인라인</td>
+<td class="ok-text">✅ 거의 실시간</td>
+<td class="ok-text">최저 (완전관리형)</td>
+</tr>
+<tr>
+<td><b>C. Kinesis + EC2</b></td>
+<td>스트리밍</td>
+<td class="ok-text">✅ KCL 앱 개발</td>
+<td class="ok-text">✅ 실시간</td>
+<td class="bad-text">높음 (EC2 관리)</td>
+</tr>
+<tr>
+<td><b>D. EMR + Hive</b></td>
+<td>배치</td>
+<td class="ok-text">✅ HiveQL 개발</td>
+<td class="bad-text">❌ 예약 배치</td>
+<td class="bad-text">가장 높음 (클러스터)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWS데이터엔지니어</span> <span class="seo-tag">#AmazonFirehose</span> <span class="seo-tag">#DataFirehose</span> <span class="seo-tag">#Parquet변환</span> <span class="seo-tag">#스트리밍ETL</span> <span class="seo-tag">#LambdaETL</span> <span class="seo-tag">#KinesisDataStreams</span> <span class="seo-tag">#AWSGlue</span> <span class="seo-tag">#EMRHive</span> <span class="seo-tag">#실시간로그수집</span> <span class="seo-tag">#S3데이터레이크</span> <span class="seo-tag">#최소운영오버헤드</span> <span class="seo-tag">#AWS자격증</span></div>
+</article>
+</div>

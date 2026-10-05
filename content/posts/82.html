@@ -1,0 +1,305 @@
+<!--
+id: 82
+제목: AWS DEA-C01 데이터 엔지니어 기초 — 수명주기·ETL·파이프라인 완전 정리
+카테고리: Stack/AWS
+태그: 자격증, AWS, Fundamentals, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, 데이터 엔지니어링 개념
+날짜: 2026-03-15 13:01
+수정: 2026-03-21 23:00
+형식: html
+썸네일: /img/t/dJMcabpWFC8.webp
+-->
+<style>
+.pb-82{--ink:var(--p70);--paper:var(--y5);--card:var(--g0);--accent:var(--r50);--accent2:var(--p50);--accent3:var(--y50);--accent4:var(--s60);--muted:var(--g50);--border:var(--y10);--shadow:0 2px 12px color-mix(in srgb, var(--g90) 8%, transparent)}
+.pb-82 *, .pb-82{box-sizing:border-box;margin:0;padding:0}
+.pb-82{background:var(--paper);color:var(--ink);line-height:1.6}
+.pb-82 .hero{background:var(--ink);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.pb-82 .hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:var(--accent2);opacity:0.12}
+.pb-82 .hero::after{content:'';position:absolute;bottom:-40px;left:30%;width:180px;height:180px;border-radius:50%;background:var(--accent);opacity:0.1}
+.pb-82 .hero-label{font-family:'JetBrains Mono', monospace;font-size:11px;letter-spacing:2px;color:var(--accent3);text-transform:uppercase;margin-bottom:10px}
+.pb-82 .hero h1{font-size:clamp(26px, 5vw, 42px);font-weight:800;line-height:1.1;margin-bottom:10px}
+.pb-82 .hero h1 span{color:var(--accent)}
+.pb-82 .hero-sub{font-size:14px;color:var(--g40);max-width:480px}
+.pb-82 .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pb-82 .hero-tag{padding:3px 12px;border:1px solid color-mix(in srgb, var(--g0) 15%, transparent);border-radius:99px;font-size:11px;color:color-mix(in srgb, #fff 70%, transparent);font-family:'JetBrains Mono', monospace}
+.pb-82 .page{max-width:900px;margin:0 auto;padding:32px 24px 60px}
+.pb-82 .sec-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.pb-82 .sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-82 .def-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+@media (max-width: 600px){.pb-82 .def-grid{grid-template-columns:1fr}}
+.pb-82 .def-card{background:var(--card);border-radius:16px;padding:20px 22px;border:1.5px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.pb-82 .def-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
+.pb-82 .def-card.c1::before{background:var(--accent)}
+.pb-82 .def-card.c2::before{background:var(--accent2)}
+.pb-82 .def-icon{font-size:24px;margin-bottom:8px}
+.pb-82 .def-label{font-family:'JetBrains Mono', monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.pb-82 .def-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.pb-82 .def-card.c1 .def-title{color:var(--accent)}
+.pb-82 .def-card.c2 .def-title{color:var(--accent2)}
+.pb-82 .def-body{font-size:13px;color:var(--muted);line-height:1.7}
+.pb-82 .def-body strong{color:var(--ink)}
+.pb-82 .lifecycle-wrap{background:var(--card);border-radius:16px;padding:24px;border:1.5px solid var(--border);box-shadow:var(--shadow);margin-bottom:28px}
+.pb-82 .lifecycle-title{font-size:15px;font-weight:700;margin-bottom:20px;color:var(--ink)}
+.pb-82 .lifecycle-row{display:flex;align-items:stretch;gap:0;margin-bottom:12px}
+.pb-82 .lc-step{flex:1;min-width:0;text-align:center;padding:14px 6px 12px;border-radius:10px;position:relative}
+.pb-82 .lc-step + .lc-step::before{content:'→';position:absolute;left:-10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted);font-weight:700}
+.pb-82 .lc-num{font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;letter-spacing:1px;margin-bottom:4px;opacity:0.7}
+.pb-82 .lc-icon{font-size:18px;margin-bottom:4px}
+.pb-82 .lc-name{font-size:11px;font-weight:700;line-height:1.3}
+.pb-82 .lc-desc{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.4;display:none}
+.pb-82 .lc-step.s1{background:var(--y10)}
+.pb-82 .lc-step.s1 .lc-name{color:var(--y60)}
+.pb-82 .lc-step.s2{background:var(--p10)}
+.pb-82 .lc-step.s2 .lc-name{color:var(--p60)}
+.pb-82 .lc-step.s3{background:var(--p5)}
+.pb-82 .lc-step.s3 .lc-name{color:var(--p60)}
+.pb-82 .lc-step.s4{background:var(--s10)}
+.pb-82 .lc-step.s4 .lc-name{color:var(--s60)}
+.pb-82 .lc-step.s5{background:var(--r5)}
+.pb-82 .lc-step.s5 .lc-name{color:var(--r60)}
+@media (max-width: 560px){.pb-82 .lifecycle-row{flex-direction:column;gap:6px}
+.pb-82 .lc-step + .lc-step::before{display:none}}
+.pb-82 .lc-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+@media (max-width: 500px){.pb-82 .lc-compare{grid-template-columns:1fr}}
+.pb-82 .lc-compare-box{border-radius:10px;padding:12px 14px}
+.pb-82 .lc-compare-box.full{background:var(--s5);border:1.5px solid var(--s10)}
+.pb-82 .lc-compare-box.sub{background:var(--p5);border:1.5px solid var(--p10)}
+.pb-82 .lc-compare-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.pb-82 .lc-compare-box.full .lc-compare-label{color:var(--s60)}
+.pb-82 .lc-compare-box.sub  .lc-compare-label{color:var(--p50)}
+.pb-82 .lc-compare-items{font-size:11px;color:var(--p70);line-height:1.7}
+.pb-82 .resp-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:28px}
+@media (max-width: 600px){.pb-82 .resp-grid{grid-template-columns:1fr 1fr}}
+@media (max-width: 380px){.pb-82 .resp-grid{grid-template-columns:1fr}}
+.pb-82 .resp-card{background:var(--card);border-radius:12px;padding:14px 13px;border:1.5px solid var(--border);text-align:center;transition:transform 0.15s}
+.pb-82 .resp-card:hover{transform:translateY(-2px)}
+.pb-82 .resp-icon{font-size:20px;margin-bottom:6px}
+.pb-82 .resp-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.pb-82 .resp-desc{font-size:10px;color:var(--muted);line-height:1.5}
+.pb-82 .methods-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:28px}
+@media (max-width: 580px){.pb-82 .methods-grid{grid-template-columns:1fr 1fr}}
+.pb-82 .method-card{border-radius:12px;padding:14px 12px;text-align:center;border:1.5px solid}
+.pb-82 .method-card.m1{background:var(--y5);border-color:var(--y50)}
+.pb-82 .method-card.m2{background:var(--p5);border-color:var(--p10)}
+.pb-82 .method-card.m3{background:var(--g5);border-color:var(--p10)}
+.pb-82 .method-card.m4{background:var(--s5);border-color:var(--s10)}
+.pb-82 .method-icon{font-size:22px;margin-bottom:6px}
+.pb-82 .method-name{font-size:12px;font-weight:700;margin-bottom:4px}
+.pb-82 .method-card.m1 .method-name{color:var(--y60)}
+.pb-82 .method-card.m2 .method-name{color:var(--p60)}
+.pb-82 .method-card.m3 .method-name{color:var(--p60)}
+.pb-82 .method-card.m4 .method-name{color:var(--s60)}
+.pb-82 .method-desc{font-size:10px;color:var(--muted);line-height:1.5}
+.pb-82 .toolkit-wrap{background:var(--ink);border-radius:16px;padding:24px;margin-bottom:28px;color:#fff}
+.pb-82 .toolkit-title{font-size:15px;font-weight:700;color:var(--accent3);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.pb-82 .toolkit-grid{display:grid;grid-template-columns:repeat(5, 1fr);gap:8px}
+@media (max-width: 580px){.pb-82 .toolkit-grid{grid-template-columns:repeat(3, 1fr)}}
+@media (max-width: 380px){.pb-82 .toolkit-grid{grid-template-columns:1fr 1fr}}
+.pb-82 .tool-chip{background:color-mix(in srgb, var(--g0) 7%, transparent);border:1px solid color-mix(in srgb, var(--g0) 12%, transparent);border-radius:8px;padding:8px 6px;text-align:center;font-family:'JetBrains Mono', monospace;font-size:10px;color:color-mix(in srgb, #fff 80%, transparent);line-height:1.4}
+.pb-82 .tool-chip .t-icon{font-size:16px;margin-bottom:4px;display:block}
+.pb-82 .principles-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+@media (max-width: 540px){.pb-82 .principles-wrap{grid-template-columns:1fr}}
+.pb-82 .principle-card{background:var(--card);border-radius:14px;padding:18px 18px;border:1.5px solid var(--border);box-shadow:var(--shadow)}
+.pb-82 .pc-num{font-size:32px;font-weight:800;line-height:1;margin-bottom:6px;opacity:0.12}
+.pb-82 .pc-title{font-size:13px;font-weight:700;margin-bottom:6px}
+.pb-82 .pc-body{font-size:12px;color:var(--muted);line-height:1.7}
+.pb-82 .goal-banner{background:linear-gradient(135deg, var(--p60) 0%, var(--p50) 100%);border-radius:16px;padding:22px 24px;color:#fff;margin-bottom:28px;display:flex;align-items:center;gap:16px}
+.pb-82 .goal-icon{font-size:32px;flex-shrink:0}
+.pb-82 .goal-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.pb-82 .goal-body{font-size:12px;color:color-mix(in srgb, #fff 80%, transparent);line-height:1.6}
+.pb-82 .skills-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.pb-82 .skill-tag{padding:5px 13px;border-radius:99px;font-size:11px;font-weight:600;border:1.5px solid}
+.pb-82 .skill-tag.tech{background:var(--y5);color:var(--y60);border-color:var(--y50)}
+.pb-82 .skill-tag.lang{background:var(--s5);color:var(--s60);border-color:var(--s10)}
+.pb-82 .skill-tag.concept{background:var(--p5);color:var(--p60);border-color:var(--p10)}
+.pb-82 .footer-note{text-align:center;font-size:11px;color:var(--muted);padding-top:20px;border-top:1px solid var(--border);font-family:'JetBrains Mono', monospace}
+</style>
+<div class="pb pb-82">
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<!-- HERO -->
+<div class="hero">
+<div class="hero-label">AWS Skill Builder &middot; DEA-C01 기초</div>
+<h1>Data Engineering<br /><span>Fundamentals</span></h1>
+<p class="hero-sub" data-ke-size="size16">데이터 엔지니어의 정의, 수명 주기, 책임 영역, 방법론, AWS 도구 키트를 한 장으로 정리</p>
+<div class="hero-tags"><span class="hero-tag">Data Lifecycle</span> <span class="hero-tag">ETL / ELT</span> <span class="hero-tag">Data Pipeline</span> <span class="hero-tag">AWS Toolkit</span> <span class="hero-tag">DEA-C01 기초</span></div>
+</div>
+<div class="page"><!-- 01. DEFINITIONS -->
+<div class="sec-title">01 &middot; 핵심 정의</div>
+<div class="def-grid">
+<div class="def-card c1">
+<div class="def-icon">👷</div>
+<div class="def-label">Data Engineer</div>
+<div class="def-title">데이터 엔지니어</div>
+<div class="def-body">데이터를 <b>획득(Acquire)</b>하고, <b>저장(Store)</b>하고, 데이터 과학자&middot;분석가 등이 <b>사용할 수 있도록 준비(Prepare)</b>하는 사람</div>
+</div>
+<div class="def-card c2">
+<div class="def-icon">⚙️</div>
+<div class="def-label">Data Engineering</div>
+<div class="def-title">데이터 엔지니어링</div>
+<div class="def-body">원시 데이터를 수집하여 <b>분석&middot;ML에 사용할 고품질의 일관된 데이터</b>를 생성하는 프로세스 및 시스템을 <b>개발&middot;구현&middot;유지 관리</b>하는 것</div>
+</div>
+</div>
+<!-- 02. GOAL -->
+<div class="sec-title">02 &middot; 목표</div>
+<div class="goal-banner">
+<div class="goal-icon">🎯</div>
+<div>
+<div class="goal-title">신뢰할 수 있는 데이터셋 구축</div>
+<div class="goal-body">원시 데이터를 가져와 <b>여러 데이터셋 및 도메인에서의 작업과 통합을 간편하고 신뢰할 수 있게</b> 만드는 것. 파이프라인을 지속적으로 검토하여 <b>비용 &middot; 확장성 &middot; 민첩성 &middot; 재사용</b>을 최적화해야 한다.</div>
+</div>
+</div>
+<!-- 03. LIFECYCLE -->
+<div class="sec-title">03 &middot; 데이터 엔지니어링 수명 주기</div>
+<div class="lifecycle-wrap">
+<div class="lifecycle-title">📌 5단계 수명 주기 (Data Engineer가 제어하는 단계)</div>
+<div class="lifecycle-row">
+<div class="lc-step s1">
+<div class="lc-num">01</div>
+<div class="lc-icon">🌱</div>
+<div class="lc-name">생성<br />Generation</div>
+</div>
+<div class="lc-step s2">
+<div class="lc-num">02</div>
+<div class="lc-icon">🗄️</div>
+<div class="lc-name">저장<br />Storage</div>
+</div>
+<div class="lc-step s3">
+<div class="lc-num">03</div>
+<div class="lc-icon">📥</div>
+<div class="lc-name">수집<br />Ingestion</div>
+</div>
+<div class="lc-step s4">
+<div class="lc-num">04</div>
+<div class="lc-icon">🔄</div>
+<div class="lc-name">변형<br />Transformation</div>
+</div>
+<div class="lc-step s5">
+<div class="lc-num">05</div>
+<div class="lc-icon">🚀</div>
+<div class="lc-name">제공<br />Serving</div>
+</div>
+</div>
+<div class="lc-compare">
+<div class="lc-compare-box full">
+<div class="lc-compare-label">🌐 전체 데이터 수명 주기</div>
+<div class="lc-compare-items">5단계 수명 주기 전체<br />+ <b>보안(Security)</b><br />+ <b>오케스트레이션(Orchestration)</b><br />+ <b>데이터 아키텍처</b><br />+ <b>소프트웨어 엔지니어링</b><br />+ <b>운영(Operations)</b></div>
+</div>
+<div class="lc-compare-box sub">
+<div class="lc-compare-label">🔵 데이터 엔지니어링 수명 주기</div>
+<div class="lc-compare-items">전체 수명 주기의 <b>하위 집합</b><br />데이터 엔지니어가 <b>직접 제어하는 단계에 집중</b><br /><br />생성 &rarr; 저장 &rarr; 수집<br />&rarr; 변형 &rarr; 제공</div>
+</div>
+</div>
+</div>
+<!-- 04. RESPONSIBILITIES -->
+<div class="sec-title">04 &middot; 데이터 엔지니어의 책임 영역</div>
+<div class="resp-grid">
+<div class="resp-card">
+<div class="resp-icon">🔐</div>
+<div class="resp-name">보안</div>
+<div class="resp-desc">Security<br />데이터 접근 제어&middot;암호화</div>
+</div>
+<div class="resp-card">
+<div class="resp-icon">📋</div>
+<div class="resp-name">데이터 관리</div>
+<div class="resp-desc">Data Management<br />품질&middot;거버넌스&middot;카탈로그</div>
+</div>
+<div class="resp-card">
+<div class="resp-icon">🎼</div>
+<div class="resp-name">오케스트레이션</div>
+<div class="resp-desc">Orchestration<br />파이프라인 스케줄링&middot;조율</div>
+</div>
+<div class="resp-card">
+<div class="resp-icon">🏛️</div>
+<div class="resp-name">데이터 아키텍처</div>
+<div class="resp-desc">Data Architecture<br />레이크&middot;웨어하우스 설계</div>
+</div>
+<div class="resp-card">
+<div class="resp-icon">💻</div>
+<div class="resp-name">소프트웨어 엔지니어링</div>
+<div class="resp-desc">Software Engineering<br />코드&middot;프레임워크 개발</div>
+</div>
+<div class="resp-card">
+<div class="resp-icon">⚙️</div>
+<div class="resp-name">운영</div>
+<div class="resp-desc">Operations<br />모니터링&middot;유지관리&middot;최적화</div>
+</div>
+</div>
+<!-- 05. METHODS & TOOLS -->
+<div class="sec-title">05 &middot; 주요 방법론 &amp; 도구</div>
+<div class="methods-grid">
+<div class="method-card m1">
+<div class="method-icon">🌊</div>
+<div class="method-name">스트리밍</div>
+<div class="method-desc">Streaming<br />실시간 데이터 처리<br />Kinesis &middot; Kafka</div>
+</div>
+<div class="method-card m2">
+<div class="method-icon">🔁</div>
+<div class="method-name">ETL / ELT</div>
+<div class="method-desc">추출&middot;변환&middot;로드<br />Glue &middot; dbt<br />배치 처리</div>
+</div>
+<div class="method-card m3">
+<div class="method-icon">🏢</div>
+<div class="method-name">데이터 웨어하우스</div>
+<div class="method-desc">Data Warehouse<br />Redshift<br />정형 분석</div>
+</div>
+<div class="method-card m4">
+<div class="method-icon">🏞️</div>
+<div class="method-name">데이터 레이크</div>
+<div class="method-desc">Data Lake<br />S3 + Glue<br />원시&middot;비정형 저장</div>
+</div>
+</div>
+<!-- 06. AWS TOOLKIT -->
+<div class="sec-title">06 &middot; AWS 데이터 엔지니어링 도구 키트</div>
+<div class="toolkit-wrap">
+<div class="toolkit-title">☁️ AWS Services Overview</div>
+<div class="toolkit-grid">
+<div class="tool-chip"><span class="t-icon">🗄️</span>Amazon S3</div>
+<div class="tool-chip"><span class="t-icon">🔄</span>AWS Glue</div>
+<div class="tool-chip"><span class="t-icon">🏢</span>Redshift</div>
+<div class="tool-chip"><span class="t-icon">🌊</span>Kinesis</div>
+<div class="tool-chip"><span class="t-icon">⚡</span>Lambda</div>
+<div class="tool-chip"><span class="t-icon">📊</span>Athena</div>
+<div class="tool-chip"><span class="t-icon">🎼</span>MWAA</div>
+<div class="tool-chip"><span class="t-icon">🏞️</span>Lake Formation</div>
+<div class="tool-chip"><span class="t-icon">🔍</span>OpenSearch</div>
+<div class="tool-chip"><span class="t-icon">🗃️</span>DynamoDB</div>
+<div class="tool-chip"><span class="t-icon">📨</span>SQS / SNS</div>
+<div class="tool-chip"><span class="t-icon">🔌</span>AppFlow</div>
+<div class="tool-chip"><span class="t-icon">⚡</span>EventBridge</div>
+<div class="tool-chip"><span class="t-icon">📈</span>QuickSight</div>
+<div class="tool-chip"><span class="t-icon">🛡️</span>Macie &middot; IAM</div>
+</div>
+</div>
+<!-- 07. REQUIRED SKILLS -->
+<div class="sec-title">07 &middot; 데이터 엔지니어에게 필요한 기술</div>
+<div class="skills-wrap"><span class="skill-tag tech">Apache Hadoop</span> <span class="skill-tag tech">Apache Spark</span> <span class="skill-tag tech">Apache Hive</span> <span class="skill-tag tech">Teradata</span> <span class="skill-tag lang">Python</span> <span class="skill-tag lang">SQL</span> <span class="skill-tag lang">Java / Scala</span> <span class="skill-tag concept">분산 컴퓨팅</span> <span class="skill-tag concept">네트워킹</span> <span class="skill-tag concept">스토리지 시스템</span> <span class="skill-tag concept">소프트웨어 엔지니어링</span></div>
+<!-- 08. KEY PRINCIPLES -->
+<div class="sec-title">08 &middot; 핵심 원칙</div>
+<div class="principles-wrap">
+<div class="principle-card">
+<div class="pc-num">01</div>
+<div class="pc-title">🛠️ 적합한 도구 선택 능력</div>
+<div class="pc-body">도구를 <i>사용하는 방법</i>을 아는 것만큼 <b>작업에 적합한 도구를 선택하는 능력</b>이 중요하다. 요구 사항에 가장 적합한 서비스를 선택할 수 있는 지식을 갖춰야 한다.</div>
+</div>
+<div class="principle-card">
+<div class="pc-num">02</div>
+<div class="pc-title">💡 개념과 원리 이해</div>
+<div class="pc-body">서비스 및 도구 이면의 <b>개념과 원리를 이해</b>하는 것이 효과적인 데이터 엔지니어링의 핵심이다. 단순 사용법보다 깊은 이해가 문제 해결력을 높인다.</div>
+</div>
+<div class="principle-card">
+<div class="pc-num">03</div>
+<div class="pc-title">🔄 지속적 최적화</div>
+<div class="pc-body">파이프라인을 <b>지속적으로 검토&middot;개선</b>하여 <i>비용 &middot; 확장성 &middot; 민첩성 &middot; 재사용</i>이 최적화되도록 관리해야 한다.</div>
+</div>
+<div class="principle-card">
+<div class="pc-num">04</div>
+<div class="pc-title">🔗 데이터 파이프라인 구축</div>
+<div class="pc-body">데이터 파이프라인 = <b>데이터를 소스에서 대상으로 이동</b>하는 방법. 이동 중 <b>변환 및 최적화</b>하여 대상에서 사용 가능한 형태로 전달한다.</div>
+</div>
+</div>
+<div class="footer-note">AWS Skill Builder &middot; Data Engineering Fundamentals &middot; DEA-C01 복습 자료</div>
+</div>
+</div>

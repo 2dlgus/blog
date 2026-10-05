@@ -1,0 +1,139 @@
+<!--
+id: 46
+제목: AWS DEA-C01 핵심 파이프라인 및 AWS 서비스 용어 매핑
+카테고리: Stack/AWS
+태그: Gemini, AWS, DEA, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, Data Engineer Associate
+날짜: 2026-03-07 22:44
+수정: 2026-03-21 23:45
+형식: html
+썸네일: /img/t/dJMcagLsz6K.webp
+-->
+<style>
+.pb-46 #aws-dea-complete-post .aws-diagram-box *{box-sizing:border-box;margin:0;padding:0}
+.pb-46 #aws-dea-complete-post .aws-diagram-box{background-color:var(--p5);padding:30px 20px;border-radius:12px;margin-top:40px}
+.pb-46 #aws-dea-complete-post .aws-diagram-title{text-align:center;color:var(--p70);font-size:1.6rem;margin-bottom:30px;font-weight:bold}
+.pb-46 #aws-dea-complete-post .aws-pipeline-grid{display:flex;flex-direction:column;gap:20px}
+@media (min-width: 768px){.pb-46 #aws-dea-complete-post .aws-pipeline-grid{flex-direction:row;flex-wrap:wrap}
+.pb-46 #aws-dea-complete-post .aws-stage-card{flex:1 1 calc(50% - 10px);min-width:300px}}
+.pb-46 #aws-dea-complete-post .aws-stage-card{background:var(--g0);border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.06);padding:20px}
+.pb-46 #aws-dea-complete-post .aws-stage-card h4{font-size:1.2rem;color:var(--p70);border-bottom:2px solid var(--p5);padding-bottom:12px;margin-bottom:15px;font-weight:bold}
+.pb-46 #aws-dea-complete-post .aws-item-box{background:var(--g5);padding:15px;margin-bottom:15px;border-radius:6px}
+.pb-46 #aws-dea-complete-post .aws-item-box:last-child{margin-bottom:0}
+.pb-46 #aws-dea-complete-post .aws-general-term{font-weight:600;color:var(--g70);font-size:0.95rem;margin-bottom:6px}
+.pb-46 #aws-dea-complete-post .aws-specific-term{font-size:1.15rem;color:var(--r60);font-weight:bold;margin-bottom:10px;display:inline-block;background:var(--r5);padding:4px 10px;border-radius:4px}
+.pb-46 #aws-dea-complete-post .aws-item-desc{font-size:0.9rem;color:var(--g50);word-break:keep-all;line-height:1.5}
+.pb-46 #aws-dea-complete-post .aws-gov-box{width:100%;background:var(--s5);padding:25px;border-radius:8px;margin-top:20px}
+.pb-46 #aws-dea-complete-post .aws-gov-box h4{color:var(--s60);font-size:1.2rem;margin-bottom:20px;font-weight:bold}
+.pb-46 #aws-dea-complete-post .aws-gov-grid{display:flex;flex-direction:column;gap:15px}
+@media (min-width: 768px){.pb-46 #aws-dea-complete-post .aws-gov-grid{flex-direction:row}}
+.pb-46 #aws-dea-complete-post .aws-gov-item{flex:1;background:var(--g0);padding:20px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+</style>
+<div class="pb pb-46">
+<div id="aws-dea-complete-post" style="max-width:1000px;margin:0 auto;color:var(--g90);line-height:1.8">
+<div class="seo-text-section" style="margin-bottom:50px">
+<h2 style="font-size:1.8rem;margin-bottom:20px;color:var(--p70);border-bottom:2px solid var(--g10);padding-bottom:10px" data-ke-size="size26">[AWS DEA] 데이터 엔지니어링 핵심 파이프라인 및 AWS 서비스 용어 매핑</h2>
+<p data-ke-size="size16">데이터 엔지니어링의 기본 개념은 익숙하지만, AWS 환경에 처음 입문하거나 <b>AWS Data Engineering Associate (DEA-C01)</b> 자격증을 준비하면서 특유의 서비스 이름들 때문에 헷갈리셨던 경험이 있으신가요?</p>
+<p data-ke-size="size16">데이터 파이프라인의 4단계 흐름(수집, 저장, 처리, 분석)과 오케스트레이션 영역에서 일반적인 데이터 엔지니어링 용어가 AWS의 어떤 서비스와 1:1로 매칭되는지 직관적으로 정리해 보았습니다.</p>
+<h3 style="font-size:1.4rem;color:var(--i60);margin-top:30px;margin-bottom:15px" data-ke-size="size23">1. 데이터 수집 (Data Ingestion)</h3>
+<ul style="margin-left:20px;margin-bottom:20px" data-ke-list-type="disc">
+<li style="margin-bottom:10px"><b>실시간 스트리밍 데이터 수집 👉 Amazon Kinesis:</b> 오픈소스인 Apache Kafka와 유사한 역할을 하는 AWS의 대표적인 스트리밍 서비스입니다. 데이터 보관 및 전달을 담당하는 Kinesis Data Streams와 S3 등으로 데이터 포맷을 변환하여 즉시 전송해 주는 Kinesis Data Firehose의 차이를 아는 것이 중요합니다.</li>
+<li><b>DB 마이그레이션 및 실시간 데이터 캡처(CDC) 👉 AWS DMS:</b> 온프레미스 데이터베이스를 AWS 클라우드로 안전하게 옮기거나, 소스 DB에서 발생하는 변경 사항을 실시간으로 타겟 데이터스토어에 복제(CDC)할 때 필수적으로 사용되는 서비스입니다.</li>
+</ul>
+<h3 style="font-size:1.4rem;color:var(--i60);margin-top:30px;margin-bottom:15px" data-ke-size="size23">2. 데이터 저장 (Data Storage)</h3>
+<ul style="margin-left:20px;margin-bottom:20px" data-ke-list-type="disc">
+<li style="margin-bottom:10px"><b>데이터 레이크 및 무제한 객체 저장소 👉 Amazon S3:</b> AWS 데이터 파이프라인의 중심이자 가장 핵심이 되는 스토리지입니다. 정형, 반정형, 비정형 데이터를 모두 담을 수 있으며, 시험에서는 접근 빈도에 따른 스토리지 계층(Storage Class) 비용 최적화가 자주 출제됩니다.</li>
+<li><b>클라우드 데이터 웨어하우스(OLAP) 👉 Amazon Redshift:</b> 대규모 정형 데이터 분석에 특화된 서비스로, 페타바이트급 데이터에 대해 엄청나게 빠른 병렬 쿼리(MPP) 처리 성능을 제공합니다.</li>
+</ul>
+<h3 style="font-size:1.4rem;color:var(--i60);margin-top:30px;margin-bottom:15px" data-ke-size="size23">3. 데이터 처리 및 변환 (Data Processing)</h3>
+<ul style="margin-left:20px;margin-bottom:20px" data-ke-list-type="disc">
+<li style="margin-bottom:10px"><b>서버리스 ETL 및 메타데이터 관리 👉 AWS Glue:</b> 인프라 관리 없이 Apache Spark 환경을 기반으로 데이터 추출, 변환, 적재(ETL) 작업을 실행할 수 있는 완벽한 서버리스 서비스입니다. 특히 Glue Data Catalog는 S3에 저장된 데이터의 스키마와 위치를 기록하는 메타데이터 저장소로서 아키텍처의 핵심 지도 역할을 합니다.</li>
+<li><b>빅데이터 분산 처리 클러스터 👉 Amazon EMR:</b> Hadoop, Spark, Presto 등 방대한 오픈소스 빅데이터 프레임워크를 EC2 인스턴스 위에서 직접 실행하고, 클러스터 자원을 세밀하게 튜닝해야 하는 워크로드에 적합합니다.</li>
+</ul>
+<h3 style="font-size:1.4rem;color:var(--i60);margin-top:30px;margin-bottom:15px" data-ke-size="size23">4. 데이터 분석 및 시각화 (Data Analysis)</h3>
+<ul style="margin-left:20px;margin-bottom:20px" data-ke-list-type="disc">
+<li style="margin-bottom:10px"><b>S3 데이터 직접 쿼리 (서버리스 분석) 👉 Amazon Athena:</b> 데이터를 별도의 DB나 데이터 웨어하우스로 적재할 필요 없이, S3에 저장된 파일(Parquet, CSV, JSON 등)을 표준 SQL로 즉시 조회할 수 있는 대화형 쿼리 서비스입니다.</li>
+<li><b>BI 대시보드 및 시각화 👉 Amazon QuickSight:</b> Tableau나 Power BI를 대체할 수 있는 AWS의 클라우드 네이티브 비즈니스 인텔리전스(BI) 도구로, 분석된 데이터를 시각화하고 인사이트를 도출하는 데 사용됩니다.</li>
+</ul>
+<h3 style="font-size:1.4rem;color:var(--s60);margin-top:30px;margin-bottom:15px" data-ke-size="size23">⚙️ 파이프라인 오케스트레이션 및 거버넌스</h3>
+<p data-ke-size="size16">데이터가 흐르는 전체 과정을 제어하고 안전하게 지키기 위한 관리 영역입니다.</p>
+<ul style="margin-left:20px;margin-bottom:30px" data-ke-list-type="disc">
+<li style="margin-bottom:10px"><b>워크플로우 스케줄링 및 자동화 👉 AWS Step Functions / Amazon MWAA:</b> AWS 환경에 특화된 시각적 상태 머신인 Step Functions, 그리고 완전 관리형 Apache Airflow인 MWAA를 통해 파이프라인을 자동화합니다.</li>
+<li><b>권한 제어 및 강력한 보안 👉 IAM / KMS / AWS Lake Formation:</b> 세밀한 접근 권한 제어(IAM), 데이터 암호화 키 관리(KMS), 그리고 데이터 레이크 환경의 정밀한 접근 권한을 중앙 집중식으로 관리하는 Lake Formation이 사용됩니다.</li>
+</ul>
+<p style="background-color:var(--g5);padding:15px;border-radius:8px" data-ke-size="size16">💡 AWS 데이터 엔지니어링 자격증을 준비하시거나, 실무에서 AWS 기반 모던 데이터 플랫폼을 구축하시는 분들께 아래의 시각화 매핑 가이드가 직관적인 도움이 되길 바랍니다!</p>
+</div>
+
+<div class="aws-diagram-box">
+<div class="aws-diagram-title">☁️ AWS Data Engineering 흐름도 및 용어 매핑</div>
+<div class="aws-pipeline-grid">
+<div class="aws-stage-card">
+<h4 data-ke-size="size20">1. 수집 (Ingestion)</h4>
+<div class="aws-item-box">
+<div class="aws-general-term">실시간 스트리밍 데이터 수집</div>
+<div class="aws-specific-term">Amazon Kinesis</div>
+<div class="aws-item-desc">Kafka와 유사. Data Streams(보관 및 전달)와 Firehose(포맷 변환 후 전송)로 나뉨.</div>
+</div>
+<div class="aws-item-box">
+<div class="aws-general-term">DB 마이그레이션 / CDC</div>
+<div class="aws-specific-term">AWS DMS</div>
+<div class="aws-item-desc">온프레미스 DB를 클라우드로 옮기거나, 실시간 변경 데이터 캡처(CDC) 수행.</div>
+</div>
+</div>
+<div class="aws-stage-card">
+<h4 data-ke-size="size20">2. 저장 (Storage)</h4>
+<div class="aws-item-box">
+<div class="aws-general-term">데이터 레이크 (객체 저장소)</div>
+<div class="aws-specific-term">Amazon S3</div>
+<div class="aws-item-desc">모든 정형/비정형 데이터를 담는 무제한 스토리지. 계층에 따른 비용 최적화가 핵심.</div>
+</div>
+<div class="aws-item-box">
+<div class="aws-general-term">데이터 웨어하우스 (OLAP)</div>
+<div class="aws-specific-term">Amazon Redshift</div>
+<div class="aws-item-desc">대규모 정형 데이터 분석에 특화. 초고속 병렬 쿼리(MPP) 처리 제공.</div>
+</div>
+</div>
+<div class="aws-stage-card">
+<h4 data-ke-size="size20">3. 처리 (Processing)</h4>
+<div class="aws-item-box">
+<div class="aws-general-term">서버리스 ETL 및 메타데이터 관리</div>
+<div class="aws-specific-term">AWS Glue</div>
+<div class="aws-item-desc">인프라 관리 없는 Spark 기반 ETL. Data Catalog는 S3 데이터의 핵심 지도 역할.</div>
+</div>
+<div class="aws-item-box">
+<div class="aws-general-term">빅데이터 분산 처리 클러스터</div>
+<div class="aws-specific-term">Amazon EMR</div>
+<div class="aws-item-desc">Hadoop, Spark 등을 직접 EC2 서버 위에서 돌리고 세밀하게 튜닝할 때 사용.</div>
+</div>
+</div>
+<div class="aws-stage-card">
+<h4 data-ke-size="size20">4. 분석 (Analysis)</h4>
+<div class="aws-item-box">
+<div class="aws-general-term">S3 데이터 직접 쿼리 (서버리스)</div>
+<div class="aws-specific-term">Amazon Athena</div>
+<div class="aws-item-desc">DB 적재 없이, S3에 있는 파일(Parquet, CSV 등)을 그대로 SQL로 즉시 조회.</div>
+</div>
+<div class="aws-item-box">
+<div class="aws-general-term">BI 대시보드 및 시각화</div>
+<div class="aws-specific-term">Amazon QuickSight</div>
+<div class="aws-item-desc">AWS 클라우드 네이티브 BI 도구. 데이터 시각화 및 인사이트 도출.</div>
+</div>
+</div>
+</div>
+<div class="aws-gov-box">
+<h4 data-ke-size="size20">⚙️ 오케스트레이션 &amp; 거버넌스 (파이프라인 전반)</h4>
+<div class="aws-gov-grid">
+<div class="aws-gov-item">
+<div class="aws-general-term">워크플로우 스케줄링 (Airflow 등)</div>
+<div class="aws-specific-term" style="color:var(--s60);background:var(--s10)">Step Functions / MWAA</div>
+<div class="aws-item-desc">시각적 상태 머신(Step Functions)과 완전 관리형 Apache Airflow 환경(MWAA).</div>
+</div>
+<div class="aws-gov-item">
+<div class="aws-general-term">권한 제어 및 보안</div>
+<div class="aws-specific-term" style="color:var(--s60);background:var(--s10)">IAM / KMS / Lake Formation</div>
+<div class="aws-item-desc">접근 권한(IAM), 암호화 키(KMS), 데이터 레이크의 세밀한 중앙 권한 제어(Lake Formation).</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

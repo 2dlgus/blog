@@ -1,0 +1,410 @@
+<!--
+id: 74
+제목: AWS DEA-C01 공식 샘플 문제 — IteratorAgeMilliseconds 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, AWS, DEA, 샤드, kinesis, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, IteratorAgeMilliseconds
+날짜: 2026-03-14 22:30
+수정: 2026-03-24 22:26
+형식: html
+썸네일: /img/t/dJMcahKr6Ad.webp
+-->
+<style>
+.pb-74 *, .pb-74, .pb-74 *::before, .pb-74 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-74{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-74{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-74 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-74 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-74 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-74 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-74 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-74 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-74 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-74 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-74 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-74 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-74 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-74 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-74 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-74 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-74 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-74 .question-box p:last-child{margin-bottom:0}
+.pb-74 .hl-blue{color:var(--blue);font-weight:700}
+.pb-74 .hl-orange{color:var(--orange);font-weight:700}
+.pb-74 .hl-red{color:var(--red);font-weight:700}
+.pb-74 .hl-bold{font-weight:900}
+.pb-74 .req-list{list-style:none;padding:0}
+.pb-74 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-74 .req-list li:last-child{border-bottom:none}
+.pb-74 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-74 .arch{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pb-74 .arch-box{padding:10px 13px;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid;text-align:center;line-height:1.4}
+.pb-74 .arch-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-74 .arch-box.orange{background:var(--y5);color:var(--orange);border-color:var(--y50)}
+.pb-74 .arch-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-74 .arch-box.purple{background:var(--g5);color:var(--purple);border-color:var(--p10)}
+.pb-74 .arch-box.red{background:var(--red-light);color:var(--red);border-color:var(--red-border)}
+.pb-74 .arch-arrow{font-size:16px;color:var(--muted);flex-shrink:0}
+.pb-74 .metric-box{background:linear-gradient(135deg, var(--y10), var(--y5));border:1.5px solid var(--y50);border-radius:12px;padding:16px;margin-bottom:14px}
+.pb-74 .metric-title{font-size:13px;font-weight:800;color:var(--orange);margin-bottom:8px}
+.pb-74 .metric-rows{display:flex;flex-direction:column;gap:6px}
+.pb-74 .metric-row{display:flex;align-items:flex-start;gap:8px;font-size:13px}
+.pb-74 .metric-label{font-weight:700;color:var(--muted);width:80px;flex-shrink:0}
+.pb-74 .sol-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width: 560px){.pb-74 .sol-grid{grid-template-columns:1fr}}
+.pb-74 .sol-card{border-radius:12px;padding:13px;border:1.5px solid var(--green-border);background:var(--green-light)}
+.pb-74 .sol-header{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.pb-74 .sol-icon{font-size:18px}
+.pb-74 .sol-name{font-weight:800;font-size:12px;color:var(--green);line-height:1.3}
+.pb-74 .sol-items{list-style:none;padding:0}
+.pb-74 .sol-items li{font-size:11px;padding:2px 0;border-bottom:1px solid color-mix(in srgb, var(--g90) 6%, transparent);line-height:1.5}
+.pb-74 .sol-items li:last-child{border-bottom:none}
+.pb-74 .sol-items li::before{content:'• ';color:var(--green)}
+.pb-74 .sol-result{margin-top:8px;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700;text-align:center;background:var(--s10);color:var(--green)}
+.pb-74 .tput-compare{display:flex;flex-direction:column;gap:8px}
+.pb-74 .tput-row{display:flex;align-items:center;gap:10px}
+.pb-74 .tput-label{font-size:11px;font-weight:700;width:140px;flex-shrink:0}
+.pb-74 .tput-bar-wrap{flex:1;background:var(--p5);border-radius:99px;height:22px;overflow:hidden}
+.pb-74 .tput-bar{height:100%;border-radius:99px;display:flex;align-items:center;padding-left:10px;font-size:10px;font-weight:700;color:#fff;white-space:nowrap}
+.pb-74 .tb-1{width:20%;background:var(--muted)}
+.pb-74 .tb-2{width:50%;background:var(--blue)}
+.pb-74 .tb-3{width:75%;background:var(--orange)}
+.pb-74 .tb-4{width:100%;background:var(--green)}
+.pb-74 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-74 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-74 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-74 .alert-red{background:var(--red-light);border-color:var(--red);color:var(--r60)}
+.pb-74 .multi-badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:var(--p5);color:var(--blue);border:1px solid var(--p10);margin-bottom:12px}
+.pb-74 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-74 .option:hover{border-color:var(--p50)}
+.pb-74 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-74 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-74 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-74 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-74 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-74 .opt-body{flex:1;min-width:0}
+.pb-74 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-74 .opt-main.correct{color:var(--green)}
+.pb-74 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-74 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-74 .opt-why.show{display:block}
+.pb-74 .opt-why.ok-why{background:var(--s10)}
+.pb-74 .opt-why.bad-why{background:var(--r5)}
+.pb-74 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-74 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-74 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-74 .answer-body{display:none;margin-top:14px}
+.pb-74 .answer-body.show{display:block}
+.pb-74 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-74 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-74 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-74 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-74 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-74 .summary-table tr:last-child td{border-bottom:none}
+.pb-74 .summary-table tr:hover td{background:var(--g0)}
+.pb-74 .ok-text{color:var(--green);font-weight:700}
+.pb-74 .bad-text{color:var(--red);font-weight:700}
+.pb-74 .warn-text{color:var(--yellow);font-weight:700}
+.pb-74 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-74 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-74 .wrap{padding:20px 14px 50px}
+.pb-74 h1.post-title{font-size:19px}
+.pb-74 .question-box p{font-size:14px}
+.pb-74 .opt-main{font-size:13px}
+.pb-74 .code-block{font-size:11px}}
+.pb-74 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-74 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-74 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-74 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-74 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-74 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-74 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-74 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-74 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-74 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-74 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-74 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-74 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-74 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-74 .ans-label::before{content:'🎯 '}
+.pb-74 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-74 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-74 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-74 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-74 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-74 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-74">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-orange">Kinesis Data Streams</span> <span class="badge badge-teal">AWS Lambda</span> <span class="badge badge-green">스트리밍 성능 최적화</span> <span class="badge badge-purple">IteratorAge</span></div>
+<h1 class="post-title">Kinesis + Lambda IteratorAgeMilliseconds 높음 &mdash; 샤드 증가 &middot; 병렬화 인자 &middot; Enhanced Fan-Out으로 해결</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 Kinesis + Lambda 스트리밍 성능 문제입니다. <b>IteratorAgeMilliseconds</b>가 피크 시간대에 높아지는 원인을 진단하고, 샤드 수 증가 &middot; 병렬화 인자(Parallelization Factor) 튜닝 &middot; Enhanced Fan-Out 등록으로 해결하는 방법을 예약 동시성&middot;프로비저닝 동시성과 비교하여 도식으로 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사가 <span class="hl-blue">Amazon S3 데이터 레이크</span>를 운영하며 <span class="hl-blue">Amazon Kinesis Data Streams</span>로 데이터를 수집하고 <span class="hl-blue">AWS Lambda</span>로 스트림 데이터를 읽어 처리한다. 수집 데이터 볼륨이 <span class="hl-orange">매우 가변적이어서 예측할 수 없다.</span></p>
+<p data-ke-size="size16">피크 시간대에 <span class="hl-red">IteratorAgeMilliseconds 지표가 높게 나타난다.</span> 데이터 엔지니어는 <span class="hl-bold">Lambda로 Kinesis Data Streams를 읽을 때 성능을 높이는 솔루션</span>을 설계해야 한다.</p>
+<p data-ke-size="size16">다음 중 요구 사항을 충족하는 솔루션은 무엇인가? <span class="hl-bold">(3개 선택)</span></p>
+</div>
+<!-- 핵심 개념 — IteratorAge -->
+<h2 class="section-title" data-ke-size="size26">🔍 핵심 개념 &mdash; IteratorAgeMilliseconds란?</h2>
+<div class="card">
+<div class="metric-box">
+<div class="metric-title">📊 IteratorAgeMilliseconds 지표</div>
+<div class="metric-rows">
+<div class="metric-row"><span class="metric-label">의미</span> <span>Lambda가 Kinesis 레코드를 처리할 때, 해당 레코드가 스트림에 기록된 시간과 Lambda가 실제로 읽은 시간의 차이 (밀리초)</span></div>
+<div class="metric-row"><span class="metric-label">높을 때</span> <span>Lambda가 Kinesis 스트림 데이터를 따라잡지 못하고 <b>처리 지연(Lag)</b>이 발생 중</span></div>
+<div class="metric-row"><span class="metric-label">이상적 값</span> <span>0에 가까울수록 좋음 &mdash; 실시간에 가깝게 처리 중</span></div>
+<div class="metric-row"><span class="metric-label">원인</span> <span>데이터 볼륨 &gt; Lambda 처리 용량 &rarr; 읽기 처리량 병목</span></div>
+</div>
+</div>
+<!-- 현재 아키텍처 -->
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">🏗️ 현재 아키텍처 &mdash; 병목 지점</p>
+<div class="arch">
+<div class="arch-box orange">데이터 생산자<br />(볼륨 가변적)</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box blue">Kinesis<br />Data Streams</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box red">Lambda<br />폴링 처리<br />⚠️ 지연 발생</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box green">S3<br />데이터 레이크</div>
+</div>
+<div class="alert alert-orange">⚠️ <b>기본 구성:</b> Lambda는 샤드당 1개의 동시 실행 인스턴스로 폴링합니다. 피크 시 데이터가 몰리면 처리 처리량이 부족해 IteratorAge가 증가합니다. 해결 방향은 <b>처리 병렬성(Parallelism) 증가</b>입니다.</div>
+</div>
+<!-- 3가지 정답 솔루션 -->
+<h2 class="section-title" data-ke-size="size26">✅ 정답 3가지 &mdash; 처리 병렬성 증가 전략</h2>
+<div class="card">
+<div class="sol-grid">
+<div class="sol-card">
+<div class="sol-header"><span class="sol-icon">📦</span>
+<div class="sol-name">A. 샤드 수 증가</div>
+</div>
+<ul class="sol-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>샤드 = Lambda 동시 실행 단위</li>
+<li>샤드 1개 &rarr; Lambda 인스턴스 1개</li>
+<li>샤드 10개 &rarr; 최대 10개 병렬</li>
+<li>쓰기 1MB/s, 읽기 2MB/s per shard</li>
+<li>비용 증가하나 처리량 직접 확장</li>
+</ul>
+<div class="sol-result">📈 처리 병렬성 직접 확장</div>
+</div>
+<div class="sol-card">
+<div class="sol-header"><span class="sol-icon">⚙️</span>
+<div class="sol-name">B. 병렬화 인자 튜닝</div>
+</div>
+<ul class="sol-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>샤드당 Lambda 1~10개 동시 실행</li>
+<li>기본값: 1 (샤드당 1개)</li>
+<li>최대: 10 (샤드당 10개 병렬)</li>
+<li>샤드 추가 없이 처리량 최대 10배&uarr;</li>
+<li>최적값은 테스트로 확인 필요</li>
+</ul>
+<div class="sol-result">⚡ 비용 효율적 처리량 증가</div>
+</div>
+<div class="sol-card">
+<div class="sol-header"><span class="sol-icon">📡</span>
+<div class="sol-name">D. Enhanced Fan-Out</div>
+</div>
+<ul class="sol-items" style="list-style-type:disc" data-ke-list-type="disc">
+<li>전용 2MB/s 읽기 처리량 per shard</li>
+<li>기본 공유 읽기: 2MB/s 전체 공유</li>
+<li>Push 방식 (HTTP/2)</li>
+<li>폴링 지연 없이 즉시 전달</li>
+<li>다수 Lambda 소비자에 적합</li>
+</ul>
+<div class="sol-result">🚀 전용 읽기 처리량 확보</div>
+</div>
+</div>
+<!-- 처리량 비교 -->
+<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">📊 솔루션별 Lambda 처리 처리량 비교 (샤드 5개 기준)</p>
+<div class="tput-compare">
+<div class="tput-row">
+<div class="tput-label">기본 (샤드 5, PF=1)</div>
+<div class="tput-bar-wrap">
+<div class="tput-bar tb-1">5개 Lambda 인스턴스</div>
+</div>
+</div>
+<div class="tput-row">
+<div class="tput-label">A. 샤드 10개로 증가</div>
+<div class="tput-bar-wrap">
+<div class="tput-bar tb-2">10개 Lambda 인스턴스</div>
+</div>
+</div>
+<div class="tput-row">
+<div class="tput-label">B. 병렬화 인자 PF=10</div>
+<div class="tput-bar-wrap">
+<div class="tput-bar tb-3">최대 50개 Lambda 인스턴스</div>
+</div>
+</div>
+<div class="tput-row">
+<div class="tput-label">D. Enhanced Fan-Out</div>
+<div class="tput-bar-wrap">
+<div class="tput-bar tb-4">전용 2MB/s &times; 5샤드 + Push 방식</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 기본 vs Enhanced Fan-Out -->
+<div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">📡 기본 폴링 vs Enhanced Fan-Out 비교</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="padding:12px;background:var(--g5);border-radius:10px;border:1.5px solid var(--red-border)">
+<p style="font-size:11px;font-weight:800;color:var(--red);margin-bottom:8px" data-ke-size="size16">기본 폴링 방식</p>
+<p style="font-size:11px;line-height:1.6;color:var(--muted)" data-ke-size="size16">&bull; 공유 읽기 2MB/s (샤드당 전체 공유)<br />&bull; 소비자가 많을수록 처리량 분산<br />&bull; Pull 방식: Lambda가 주기적으로 폴링<br />&bull; IteratorAge 증가 가능성 높음</p>
+</div>
+<div style="padding:12px;background:var(--green-light);border-radius:10px;border:1.5px solid var(--green-border)">
+<p style="font-size:11px;font-weight:800;color:var(--green);margin-bottom:8px" data-ke-size="size16">Enhanced Fan-Out ⭐</p>
+<p style="font-size:11px;line-height:1.6;color:var(--muted)" data-ke-size="size16">&bull; 전용 2MB/s per shard per consumer<br />&bull; 소비자 수 증가해도 처리량 유지<br />&bull; Push 방식: HTTP/2로 즉시 전달<br />&bull; 지연 최소화 (IteratorAge&darr;)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 오답 이유 -->
+<h2 class="section-title" data-ke-size="size26">❌ 오답 &mdash; Lambda 동시성 설정이 IteratorAge를 해결 못하는 이유</h2>
+<div class="card">
+<div class="alert alert-red">🔑 <b>핵심 구분:</b> IteratorAge는 <b>Kinesis 읽기 처리량 병목</b> 문제입니다. Lambda 동시성 설정(E, F)은 Lambda 실행 환경을 제어하지만, Kinesis 스트림에서 데이터를 읽는 속도 자체를 늘리지는 못합니다.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="padding:12px;background:var(--red-light);border-radius:10px;border:1.5px solid var(--red-border)">
+<p style="font-size:12px;font-weight:800;color:var(--red);margin-bottom:8px" data-ke-size="size16">E. 예약 동시성 (Reserved Concurrency)</p>
+<p style="font-size:11px;line-height:1.7;color:var(--muted)" data-ke-size="size16"><b>목적:</b> Lambda 함수에 최대 동시 실행 수를 예약&middot;제한하는 기능<br /><b>문제:</b> IteratorAge는 읽기 처리량 부족이 원인인데, 예약 동시성은 다른 함수가 이 동시성을 사용하지 못하게 막는 것일 뿐 Kinesis 읽기 속도를 높이지 못함<br /><b>오히려:</b> 동시성을 제한하면 성능이 악화될 수도 있음</p>
+</div>
+<div style="padding:12px;background:var(--red-light);border-radius:10px;border:1.5px solid var(--red-border)">
+<p style="font-size:12px;font-weight:800;color:var(--red);margin-bottom:8px" data-ke-size="size16">F. 프로비저닝 동시성 (Provisioned Concurrency)</p>
+<p style="font-size:11px;line-height:1.7;color:var(--muted)" data-ke-size="size16"><b>목적:</b> Lambda 인스턴스를 미리 워밍업하여 콜드 스타트 지연 제거<br /><b>문제:</b> IteratorAge는 콜드 스타트가 원인이 아니라 Kinesis 스트림 읽기 처리량 부족이 원인<br /><b>결론:</b> 콜드 스타트 없애도 처리 병렬성 자체가 늘지 않아 IteratorAge 미해결</p>
+</div>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<div class="multi-badge">✅ 복수 정답 (3개 선택)</div>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">A</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Kinesis 데이터 스트림의 샤드 수를 늘린다</div>
+<div class="opt-sub">샤드 = Lambda 병렬 실행 단위 &mdash; 샤드 증가 &rarr; Lambda 동시 처리 수 증가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Kinesis Data Streams에서 Lambda는 <b>샤드당 하나의 동시 실행 인스턴스</b>로 데이터를 처리합니다. 샤드 수를 늘리면 Lambda 동시 실행 수가 함께 늘어나 처리 처리량이 증가합니다. 샤드 1개당 쓰기 1MB/s, 읽기 2MB/s를 제공하므로 피크 볼륨에 맞게 샤드를 스케일 아웃하면 IteratorAge를 낮출 수 있습니다. 다만 비용이 증가하는 점을 고려해야 합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">B</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 최적의 성능을 찾고자 다양한 병렬화 인자 설정을 테스트한다</div>
+<div class="opt-sub">병렬화 인자(PF): 샤드당 Lambda 1~10개 동시 실행 &mdash; 샤드 추가 없이 처리량 최대 10배 증가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Lambda의 <b>병렬화 인자(Parallelization Factor)</b>를 사용하면 하나의 샤드에서 최대 10개의 Lambda 함수를 동시에 실행할 수 있습니다. 기본값은 1이며, 최대 10까지 설정 가능합니다. 샤드가 5개이고 PF=10이면 최대 50개의 Lambda가 병렬로 실행됩니다. 단, 최적값은 메시지 크기&middot;처리 시간&middot;오류율 등에 따라 달라지므로 다양한 값을 테스트하여 최적 설정을 찾는 것이 올바른 접근입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ 프로비저닝된 용량 모드로 Kinesis 데이터 스트림을 구성한다</div>
+<div class="opt-sub">On-Demand &rarr; Provisioned 전환 &mdash; 용량 모드 변경은 IteratorAge 직접 해결 아님</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Kinesis Data Streams는 On-Demand 모드와 Provisioned(프로비저닝) 모드를 지원합니다. Provisioned 모드로 전환한다고 해서 Lambda 처리 처리량이 자동으로 늘어나지는 않습니다. 이미 On-Demand 모드라면 자동으로 스케일 업되므로 Provisioned 전환의 이점이 없고, 오히려 수동 샤드 관리 부담이 생깁니다. IteratorAge 문제 해결에는 <b>병렬성 증가</b>가 핵심이며, 용량 모드 변경은 이를 직접 해결하지 못합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">D</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 향상된 팬아웃(Enhanced Fan-Out)으로 Lambda 함수를 소비자로 등록한다</div>
+<div class="opt-sub">샤드당 전용 2MB/s 읽기 처리량 + HTTP/2 Push 방식 &mdash; 공유 읽기 처리량 병목 완전 해소</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Enhanced Fan-Out을 사용하면 Lambda 함수가 <b>샤드당 전용 2MB/s 읽기 처리량</b>을 할당받습니다. 기본 폴링 방식에서는 해당 스트림의 모든 소비자가 2MB/s를 공유하지만, Enhanced Fan-Out 등록 소비자는 각자 전용 2MB/s를 갖습니다. 또한 Pull 방식이 아닌 <b>HTTP/2 Push 방식</b>으로 레코드가 즉시 전달되어 폴링 지연이 사라지고 IteratorAge가 크게 낮아집니다. 데이터 볼륨이 가변적인 이 시나리오에 매우 적합합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-5" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">E</div>
+<div class="opt-body">
+<div class="opt-main">❌ Lambda 함수에 예약 동시성을 늘린다</div>
+<div class="opt-sub">다른 함수로부터 동시성 예약&middot;보호 &mdash; Kinesis 읽기 처리량과 무관</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 예약 동시성(Reserved Concurrency)은 Lambda 함수가 사용할 수 있는 동시 실행 수를 계정 전체 한도에서 예약(독점)하는 기능입니다. 다른 함수가 이 동시성을 사용하지 못하도록 보호하는 목적입니다. IteratorAge는 Kinesis 스트림에서 Lambda가 데이터를 <b>읽는 속도</b>의 문제이며, 예약 동시성을 설정해도 샤드당 Lambda 실행 수는 늘어나지 않습니다. 오히려 동시성을 낮게 예약하면 성능이 저하될 수 있습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-6" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">F</div>
+<div class="opt-body">
+<div class="opt-main">❌ Lambda 함수에 프로비저닝된 동시성을 사용한다</div>
+<div class="opt-sub">콜드 스타트 제거 목적 &mdash; IteratorAge 원인인 처리 처리량 병목과 무관</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 프로비저닝 동시성(Provisioned Concurrency)은 Lambda 인스턴스를 미리 초기화하여 콜드 스타트(Cold Start) 지연을 제거하는 기능입니다. 그러나 IteratorAgeMilliseconds가 높은 원인은 콜드 스타트가 아니라 <b>피크 시 데이터 볼륨이 Lambda 처리 처리량을 초과하는 병목</b>입니다. 프로비저닝 동시성으로 초기화 지연을 없애도 Kinesis 읽기 병렬성 자체가 늘어나지 않아 IteratorAge 문제가 해결되지 않습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: A + B + D</b></p>
+<p data-ke-size="size16"><b>IteratorAge가 높다 = Kinesis 읽기 처리량 병목</b>이 핵심 진단입니다. 해결 방향은 <b>처리 병렬성 증가</b>입니다. A는 샤드 자체를 늘려 Lambda 인스턴스를 추가하고, B는 샤드당 Lambda를 10배까지 늘리며, D는 전용 읽기 처리량을 확보하고 Push로 지연을 제거합니다. E&middot;F(동시성 설정)는 Lambda 실행 환경 최적화이지 Kinesis 읽기 처리량과 무관합니다.</p>
+<div class="code-block"># IteratorAgeMilliseconds 높음 &rarr; 처리 병렬성 증가로 해결 문제 원인: 데이터 볼륨 &gt; Lambda 처리 처리량 (Kinesis 읽기 병목) 해결책 A. 샤드 수 증가 - 샤드 1개 = Lambda 동시 실행 1개 - 샤드 10개 = Lambda 동시 실행 10개 - 처리량: 샤드당 읽기 2MB/s 해결책 B. 병렬화 인자(Parallelization Factor) 튜닝 - 기본값: 1 (샤드당 Lambda 1개) - 최대값: 10 (샤드당 Lambda 10개) - 샤드 5개 + PF=10 &rarr; 최대 50개 Lambda 병렬 해결책 D. Enhanced Fan-Out 등록 - 전용 2MB/s per shard (공유 아님) - HTTP/2 Push &rarr; 폴링 지연 없음 - 소비자 늘어도 처리량 보장 오답 E. 예약 동시성 &rarr; Kinesis 읽기 속도와 무관 오답 F. 프로비저닝 동시성 &rarr; 콜드 스타트 제거 목적, IteratorAge 해결 불가</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>조치</th>
+<th>처리 병렬성 증가</th>
+<th>IteratorAge 해결</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A ⭐</b></td>
+<td>샤드 수 증가</td>
+<td class="ok-text">✅ 샤드당 Lambda 1개씩 추가</td>
+<td class="ok-text">✅ 직접 해결</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>B ⭐</b></td>
+<td>병렬화 인자 튜닝</td>
+<td class="ok-text">✅ 샤드당 최대 10개</td>
+<td class="ok-text">✅ 직접 해결</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>C</b></td>
+<td>프로비저닝 용량 모드</td>
+<td class="bad-text">❌ 처리량 변화 없음</td>
+<td class="bad-text">❌ 미해결</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>D ⭐</b></td>
+<td>Enhanced Fan-Out</td>
+<td class="ok-text">✅ 전용 2MB/s + Push</td>
+<td class="ok-text">✅ 직접 해결</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>E</b></td>
+<td>예약 동시성</td>
+<td class="bad-text">❌ 읽기 속도 무관</td>
+<td class="bad-text">❌ 미해결</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>F</b></td>
+<td>프로비저닝 동시성</td>
+<td class="bad-text">❌ 콜드 스타트만 해결</td>
+<td class="bad-text">❌ 미해결</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#KinesisDataStreams</span> <span class="seo-tag">#AWSLambda</span> <span class="seo-tag">#IteratorAgeMilliseconds</span> <span class="seo-tag">#EnhancedFanOut</span> <span class="seo-tag">#병렬화인자</span> <span class="seo-tag">#ParallelizationFactor</span> <span class="seo-tag">#샤드수증가</span> <span class="seo-tag">#Lambda동시성</span> <span class="seo-tag">#스트리밍성능최적화</span> <span class="seo-tag">#데이터레이크</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

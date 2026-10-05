@@ -1,0 +1,367 @@
+<!--
+id: 137
+제목: Mendix Datagrid2 대신 HTMLSnippet과 JS로 목록 화면 만들기
+카테고리: Stack/Lowcode
+태그: javascript, mendix, 로우코드, HTMLSnippet, JavaAction, Datagrid2
+날짜: 2026-10-04 12:18
+수정: 2026-10-05 12:58
+형식: html
+-->
+<style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700');
+article.mxb-wrap:not(#mxb-x){--p50:#256ef4;--p60:#0b50d0;--p70:#083891;--p10:#d8e5fd;--p5:#ecf2fe;--g0:#fff;--g5:#f4f5f6;--g10:#e6e8ea;--g20:#cdd1d5;--g30:#b1b8be;--g40:#8a949e;--g50:#6d7882;--g70:#464c53;--g90:#1e2124;
+font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:var(--g90);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;max-width:100%;margin:0 auto;padding:0;text-align:left;-webkit-text-size-adjust:100%}
+article.mxb-wrap:not(#mxb-x) *{box-sizing:border-box}
+article.mxb-wrap:not(#mxb-x) p{margin:0 0 16px;font-size:17px;line-height:1.75;color:var(--g90)}
+article.mxb-wrap:not(#mxb-x) a{color:var(--p60);text-decoration:underline}
+article.mxb-wrap:not(#mxb-x) a:hover{color:var(--p70)}
+article.mxb-wrap:not(#mxb-x) strong{font-weight:700}
+article.mxb-wrap:not(#mxb-x) h2{font-family:inherit;font-size:24px;font-weight:700;line-height:1.5;margin:64px 0 16px;padding:0;border:0;background:none;color:var(--g90);letter-spacing:0}
+article.mxb-wrap:not(#mxb-x) h3{font-family:inherit;font-size:19px;font-weight:700;line-height:1.5;margin:40px 0 12px;padding:0;border:0;background:none;color:var(--g90)}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list,article.mxb-wrap:not(#mxb-x) ol.mxb-list{margin:0 0 16px;padding-left:24px}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list li,article.mxb-wrap:not(#mxb-x) ol.mxb-list li{margin:0 0 8px;font-size:17px;line-height:1.75}
+article.mxb-wrap:not(#mxb-x) code{font-family:'D2Coding',Consolas,Menlo,monospace;font-size:.88em;background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:1px 6px;color:var(--g90)}
+article.mxb-wrap:not(#mxb-x) ul.mxb-meta,article.mxb-wrap:not(#mxb-x) ul.mxb-tags,article.mxb-wrap:not(#mxb-x) ul.mxb-legend,article.mxb-wrap:not(#mxb-x) ul.mxb-bars,article.mxb-wrap:not(#mxb-x) ul.mxb-check,article.mxb-wrap:not(#mxb-x) ol.mxb-tl{list-style:none !important}
+article.mxb-wrap:not(#mxb-x) ul.mxb-meta li,article.mxb-wrap:not(#mxb-x) ul.mxb-tags li,article.mxb-wrap:not(#mxb-x) ul.mxb-legend li,article.mxb-wrap:not(#mxb-x) ul.mxb-bars li,article.mxb-wrap:not(#mxb-x) ul.mxb-check li,article.mxb-wrap:not(#mxb-x) ol.mxb-tl li{list-style:none !important;background-image:none}
+article.mxb-wrap:not(#mxb-x) ul.mxb-meta li:before,article.mxb-wrap:not(#mxb-x) ul.mxb-tags li:before,article.mxb-wrap:not(#mxb-x) ul.mxb-legend li:before,article.mxb-wrap:not(#mxb-x) ul.mxb-bars li:before,article.mxb-wrap:not(#mxb-x) ol.mxb-tl li:before{content:none !important;display:none !important}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list{list-style:disc}
+article.mxb-wrap:not(#mxb-x) ol.mxb-list{list-style:decimal}
+:not(#mxb-x) .mxb-meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;padding:0;list-style:none}
+:not(#mxb-x) .mxb-meta li{font-size:13px;line-height:1.5;color:var(--g70);background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:4px 10px;margin:0}
+article.mxb-wrap:not(#mxb-x) p.mxb-lead{font-size:19px;line-height:1.7;margin:0 0 32px}
+:not(#mxb-x) .mxb-sum{background:var(--g5);border:1px solid var(--g10);border-radius:10px;padding:8px 24px;margin:32px 0}
+:not(#mxb-x) .mxb-sum-row{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:start;padding:16px 0;border-top:1px solid var(--g10)}
+:not(#mxb-x) .mxb-sum-row:first-child{border-top:0}
+:not(#mxb-x) .mxb-sum-row p{margin:0 !important}
+:not(#mxb-x) .mxb-badge{display:inline-block;font-size:13px;font-weight:700;line-height:1.5;padding:2px 8px;border-radius:4px;background:var(--g0);border:1px solid var(--g20);color:var(--g70);text-align:center;white-space:nowrap}
+:not(#mxb-x) .mxb-badge-p{background:var(--p5);border-color:var(--p10);color:var(--p60)}
+:not(#mxb-x) .mxb-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin:24px 0}
+:not(#mxb-x) .mxb-kpi{border:1px solid var(--g20);border-radius:8px;padding:16px 20px;background:var(--g0)}
+:not(#mxb-x) .mxb-kpi-v{display:block;font-size:28px;font-weight:700;line-height:1.4;color:var(--g90)}
+:not(#mxb-x) .mxb-kpi-l{display:block;font-size:15px;line-height:1.5;color:var(--g70)}
+:not(#mxb-x) .mxb-fig{margin:32px 0;border:1px solid var(--g20);border-radius:10px;padding:24px;background:var(--g0)}
+:not(#mxb-x) .mxb-fig-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+:not(#mxb-x) .mxb-fig-scroll svg{display:block;width:100%;height:auto;min-width:600px;font-family:inherit}
+:not(#mxb-x) .mxb-fig figcaption{font-size:15px;line-height:1.5;color:var(--g70);margin:16px 0 0;text-align:left}
+:not(#mxb-x) .mxb-fig .s-box{fill:var(--g0);stroke:var(--g30);stroke-width:1}
+:not(#mxb-x) .mxb-fig .s-area{fill:var(--g5);stroke:var(--g20);stroke-width:1}
+:not(#mxb-x) .mxb-fig .s-pbox{fill:var(--p5);stroke:var(--p50);stroke-width:1.5}
+:not(#mxb-x) .mxb-fig .s-line{stroke:var(--g50);stroke-width:1.5;fill:none}
+:not(#mxb-x) .mxb-fig .s-pline{stroke:var(--p50);stroke-width:1.5;fill:none}
+:not(#mxb-x) .mxb-fig .s-dash{stroke-dasharray:5 4}
+:not(#mxb-x) .mxb-fig .s-head{fill:var(--g50)}
+:not(#mxb-x) .mxb-fig .s-phead{fill:var(--p50)}
+:not(#mxb-x) .mxb-fig .t{font-size:15px;font-weight:700;fill:var(--g90)}
+:not(#mxb-x) .mxb-fig .ts{font-size:13px;fill:var(--g70)}
+:not(#mxb-x) .mxb-fig .tp{font-size:13px;font-weight:700;fill:var(--p60)}
+:not(#mxb-x) .mxb-fig .ta{font-size:13px;font-weight:700;fill:var(--g70)}
+:not(#mxb-x) .mxb-code{margin:24px 0;border-radius:8px;background:var(--g90);overflow:hidden}
+:not(#mxb-x) .mxb-code-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--g70);font-size:13px;line-height:1.5;color:var(--g30)}
+:not(#mxb-x) .mxb-copy{display:none;font-family:inherit;font-size:13px;line-height:1.5;color:var(--g5);background:transparent;border:1px solid var(--g50);border-radius:6px;padding:4px 10px;cursor:pointer}
+:not(#mxb-x) .mxb-copy:hover{background:var(--g70)}
+:not(#mxb-x) .mxb-copy:active{background:var(--g50)}
+:not(#mxb-x) .mxb-copy:focus-visible{outline:2px solid #b1cefb;outline-offset:2px}
+:not(#mxb-x) .mxb-js .mxb-copy{display:inline-block}
+article.mxb-wrap:not(#mxb-x) .mxb-code pre{margin:0;padding:16px;overflow-x:auto;background:transparent;border:0;border-radius:0;box-shadow:none;font-family:'D2Coding',Consolas,Menlo,monospace;font-size:14px;line-height:1.6;color:var(--g5);white-space:pre;word-break:normal;overflow-wrap:normal;tab-size:2}
+article.mxb-wrap:not(#mxb-x) .mxb-code pre code{background:none;border:0;padding:0;font-size:inherit;color:inherit}
+:not(#mxb-x) .mxb-code .c{color:var(--g40)}
+:not(#mxb-x) .mxb-code .s{color:#b1cefb}
+:not(#mxb-x) .mxb-note{display:grid;grid-template-columns:20px 1fr;gap:12px;border:1px solid;border-radius:8px;padding:16px 20px;margin:24px 0}
+:not(#mxb-x) .mxb-note svg{display:block;width:20px;height:20px;margin-top:3px}
+:not(#mxb-x) .mxb-note-t{display:block;font-size:15px;font-weight:700;line-height:1.6;margin:0 0 4px}
+:not(#mxb-x) .mxb-note-b{display:block;font-size:15px;line-height:1.7;color:var(--g90)}
+:not(#mxb-x) .mxb-note-info{background:#e7f4fe;border-color:#d3ebfd}
+:not(#mxb-x) .mxb-note-info svg{fill:#0b78cb}
+:not(#mxb-x) .mxb-note-info .mxb-note-t{color:#096ab3}
+:not(#mxb-x) .mxb-note-warn{background:#fff3db;border-color:#ffe0a3}
+:not(#mxb-x) .mxb-note-warn svg{fill:#9e6a00}
+:not(#mxb-x) .mxb-note-warn .mxb-note-t{color:#8a5c00}
+:not(#mxb-x) .mxb-table-wrap{overflow-x:auto;margin:24px 0;-webkit-overflow-scrolling:touch}
+article.mxb-wrap:not(#mxb-x) table.mxb-table{width:100%;min-width:520px;border-collapse:collapse;font-size:15px;line-height:1.6;margin:0}
+article.mxb-wrap:not(#mxb-x) table.mxb-table th,article.mxb-wrap:not(#mxb-x) table.mxb-table td{border:1px solid var(--g20);padding:10px 12px;text-align:left;vertical-align:top;color:var(--g90);background:var(--g0)}
+article.mxb-wrap:not(#mxb-x) table.mxb-table th{background:var(--g5);font-weight:700}
+:not(#mxb-x) ul.mxb-check{list-style:none;margin:0 0 16px;padding:0}
+:not(#mxb-x) ul.mxb-check li{position:relative;padding-left:28px;margin:0 0 8px;font-size:17px;line-height:1.75}
+:not(#mxb-x) ul.mxb-check li:before{content:'';position:absolute;left:4px;top:.5em;width:12px;height:7px;border-left:2px solid var(--p50);border-bottom:2px solid var(--p50);transform:rotate(-45deg)}
+:not(#mxb-x) ol.mxb-tl{list-style:none;margin:24px 0;padding:0;border-bottom:1px solid var(--g10)}
+:not(#mxb-x) ol.mxb-tl li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--g10);margin:0}
+:not(#mxb-x) .mxb-tl-when{font-size:15px;font-weight:700;line-height:1.7;color:var(--g70)}
+:not(#mxb-x) .mxb-tl-what{display:block;font-size:17px;font-weight:700;line-height:1.6}
+:not(#mxb-x) .mxb-tl-desc{display:block;font-size:15px;line-height:1.6;color:var(--g70);margin-top:4px}
+:not(#mxb-x) ol.mxb-tl li.mxb-tl-next .mxb-tl-what{color:var(--g70)}
+:not(#mxb-x) .mxb-bars{margin:24px 0;padding:0;list-style:none}
+:not(#mxb-x) .mxb-bars li{display:grid;grid-template-columns:96px 1fr 56px;gap:12px;align-items:center;margin:0 0 12px}
+:not(#mxb-x) .mxb-bars-l{font-size:15px;line-height:1.5;color:var(--g90)}
+:not(#mxb-x) .mxb-bars-t{display:block;height:12px;border-radius:6px;background:var(--g10);overflow:hidden}
+:not(#mxb-x) .mxb-bars-f{display:block;height:12px;border-radius:6px;background:var(--p50)}
+:not(#mxb-x) .mxb-bars-f.mxb-muted{background:var(--g40)}
+:not(#mxb-x) .mxb-bars-v{font-size:15px;font-weight:700;line-height:1.5;text-align:right}
+:not(#mxb-x) .mxb-legend{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0 24px;padding:0;list-style:none;font-size:13px;color:var(--g70)}
+:not(#mxb-x) .mxb-legend li{display:flex;align-items:center;gap:6px;margin:0}
+:not(#mxb-x) .mxb-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--p50)}
+:not(#mxb-x) .mxb-legend i.mxb-muted{background:var(--g40)}
+:not(#mxb-x) .mxb-mods{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+:not(#mxb-x) .mxb-mod{border:1px solid var(--g20);border-radius:8px;padding:16px 20px;background:var(--g0)}
+:not(#mxb-x) .mxb-mod-n{display:block;font-size:17px;font-weight:700;line-height:1.6}
+:not(#mxb-x) .mxb-mod-d{display:block;font-size:15px;line-height:1.6;color:var(--g70);margin-top:4px}
+:not(#mxb-x) .mxb-common{margin-top:16px;background:var(--g5);border-radius:8px;padding:12px 20px;font-size:15px;line-height:1.7;color:var(--g70)}
+:not(#mxb-x) .mxb-common b{color:var(--g90);margin-right:8px}
+:not(#mxb-x) .mxb-arch{display:grid;grid-template-columns:1fr 112px 1fr;gap:12px;align-items:center}
+:not(#mxb-x) .mxb-grp{background:var(--g5);border:1px solid var(--g20);border-radius:8px;padding:16px}
+:not(#mxb-x) .mxb-grp-t{display:block;font-size:13px;font-weight:700;line-height:1.5;color:var(--g70);margin:0 0 12px}
+:not(#mxb-x) .mxb-node{display:block;background:var(--g0);border:1px solid var(--g30);border-radius:6px;padding:12px 16px;margin:0 0 8px}
+:not(#mxb-x) .mxb-node:last-child{margin-bottom:0}
+:not(#mxb-x) .mxb-node b{display:block;font-size:15px;font-weight:700;line-height:1.5;color:var(--g90)}
+:not(#mxb-x) .mxb-node span{display:block;font-size:13px;line-height:1.6;color:var(--g70)}
+:not(#mxb-x) .mxb-node-p{background:var(--p5);border-color:var(--p50)}
+:not(#mxb-x) .mxb-node-db{background:var(--g10);border-color:var(--g20)}
+:not(#mxb-x) .mxb-down{display:block;text-align:center;margin:0 0 8px;line-height:0}
+:not(#mxb-x) .mxb-down svg{width:12px;height:20px;fill:var(--g50)}
+:not(#mxb-x) .mxb-links{display:flex;flex-direction:column;gap:24px;align-items:stretch}
+:not(#mxb-x) .mxb-link{display:block;text-align:center;font-size:13px;font-weight:700;line-height:1.5;color:var(--g70)}
+:not(#mxb-x) .mxb-link svg{display:block;width:100%;height:12px;margin-top:4px;overflow:visible}
+:not(#mxb-x) .mxb-link path{stroke:var(--g50);stroke-width:1.5;fill:none}
+:not(#mxb-x) .mxb-link polygon{fill:var(--g50)}
+:not(#mxb-x) .mxb-link-p{color:var(--p60)}
+:not(#mxb-x) .mxb-link-p path{stroke:var(--p50)}
+:not(#mxb-x) .mxb-link-p polygon{fill:var(--p50)}
+:not(#mxb-x) ol.mxb-steps{list-style:none !important;counter-reset:mxbstep;margin:24px 0;padding:0}
+:not(#mxb-x) ol.mxb-steps>li{list-style:none !important;counter-increment:mxbstep;position:relative;padding:0 0 24px 48px;margin:0}
+:not(#mxb-x) ol.mxb-steps>li:before{content:counter(mxbstep);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:16px;background:var(--p5);border:1px solid var(--p10);color:var(--p60);font-size:15px;font-weight:700;line-height:30px;text-align:center}
+:not(#mxb-x) ol.mxb-steps>li:after{content:'';position:absolute;left:16px;top:40px;bottom:8px;width:1px;background:var(--g20)}
+:not(#mxb-x) ol.mxb-steps>li:last-child{padding-bottom:0}
+:not(#mxb-x) ol.mxb-steps>li:last-child:after{display:none}
+:not(#mxb-x) .mxb-step-t{display:block;font-size:17px;font-weight:700;line-height:1.9}
+:not(#mxb-x) .mxb-step-d{display:block;font-size:15px;line-height:1.7;color:var(--g70);margin-top:4px}
+:not(#mxb-x) .mxb-wire{border:1px solid var(--g20);border-radius:8px;overflow:hidden;background:var(--g10);font-size:13px;line-height:1.5}
+:not(#mxb-x) .mxb-wire-top{display:flex;gap:16px;align-items:center;background:var(--g0);border-bottom:1px solid var(--g20);padding:10px 16px}
+:not(#mxb-x) .mxb-wire-tab{color:var(--g70);padding:2px 0}
+:not(#mxb-x) .mxb-wire-tab.on{color:var(--p60);font-weight:700;border-bottom:2px solid var(--p50)}
+:not(#mxb-x) .mxb-wire-body{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:16px}
+:not(#mxb-x) .mxb-wire-toc{display:flex;flex-direction:column;gap:6px;color:var(--g70)}
+:not(#mxb-x) .mxb-wire-toc b{color:var(--p60)}
+:not(#mxb-x) .mxb-wire-main{display:flex;flex-direction:column;gap:12px}
+:not(#mxb-x) .mxb-wire-h{font-size:15px;font-weight:700;color:var(--g90)}
+:not(#mxb-x) .mxb-wire-box{background:var(--g0);border:1px solid var(--g20);border-radius:8px;padding:12px 16px}
+:not(#mxb-x) .mxb-wire-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;border-top:1px solid var(--g10);color:var(--g90)}
+:not(#mxb-x) .mxb-wire-row:first-child{border-top:0}
+:not(#mxb-x) .mxb-wire-chip{display:inline-block;font-size:12px;font-weight:700;border-radius:4px;padding:0 6px;border:1px solid}
+:not(#mxb-x) .mxb-wire-chip.d{color:#bd2c0f;background:#fdefec;border-color:#fcdfd9}
+:not(#mxb-x) .mxb-wire-chip.w{color:#8a5c00;background:#fff3db;border-color:#ffe0a3}
+:not(#mxb-x) .mxb-wire-more{color:var(--p60);text-decoration:underline;font-size:13px}
+:not(#mxb-x) .mxb-rel{margin:8px 0 0;font-size:15px;line-height:1.6;color:var(--g70)}
+:not(#mxb-x) details.mxb-series{margin:64px 0 0;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+:not(#mxb-x) details.mxb-series summary{cursor:pointer;padding:16px 20px;font-size:17px;font-weight:700;line-height:1.6;color:var(--g90)}
+:not(#mxb-x) details.mxb-series summary:focus-visible{outline:2px solid var(--p50);outline-offset:2px;border-radius:10px}
+:not(#mxb-x) details.mxb-series ol{margin:0;padding:0 20px 20px 44px}
+:not(#mxb-x) details.mxb-series li{font-size:15px;line-height:1.6;color:var(--g70);margin:0 0 6px}
+:not(#mxb-x) details.mxb-series li.mxb-now{color:var(--p60);font-weight:700}
+:not(#mxb-x) .mxb-tags{display:flex;flex-wrap:wrap;gap:8px;margin:32px 0 0;padding:0;list-style:none}
+:not(#mxb-x) .mxb-tags li{font-size:13px;line-height:1.5;color:var(--g70);background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:4px 10px;margin:0}
+@media (max-width:767px){
+article.mxb-wrap:not(#mxb-x) h2{font-size:22px;margin-top:48px}
+article.mxb-wrap:not(#mxb-x) p.mxb-lead{font-size:17px}
+:not(#mxb-x) .mxb-sum{padding:4px 16px}
+:not(#mxb-x) .mxb-sum-row{grid-template-columns:1fr;gap:6px}
+:not(#mxb-x) .mxb-sum-row .mxb-badge{justify-self:start}
+:not(#mxb-x) .mxb-fig{padding:16px}
+:not(#mxb-x) .mxb-mods{grid-template-columns:1fr}
+:not(#mxb-x) ol.mxb-tl li{grid-template-columns:1fr;gap:4px}
+:not(#mxb-x) .mxb-bars li{grid-template-columns:80px 1fr 48px;gap:8px}
+:not(#mxb-x) .mxb-kpi-v{font-size:24px}
+:not(#mxb-x) .mxb-wire-body{grid-template-columns:1fr}
+:not(#mxb-x) .mxb-wire-toc{flex-direction:row;flex-wrap:wrap;gap:12px}
+:not(#mxb-x) .mxb-arch{grid-template-columns:1fr;gap:16px}
+:not(#mxb-x) .mxb-links{flex-direction:row;justify-content:center;gap:32px}
+:not(#mxb-x) .mxb-link svg{width:12px;height:32px;margin:4px auto 0}
+:not(#mxb-x) .mxb-link svg.mxb-h{display:none}
+}
+:not(#mxb-x) .mxb-link svg.mxb-v{display:none}
+@media (max-width:767px){:not(#mxb-x) .mxb-link svg.mxb-v{display:block}}article.mxb-wrap:not(#mxb-x) p{word-break:keep-all}
+article.mxb-wrap:not(#mxb-x) table{table-layout:auto}
+article.mxb-wrap:not(#mxb-x) ul.mxb-list>li{list-style:disc}
+article.mxb-wrap:not(#mxb-x) ol.mxb-list>li{list-style:decimal}
+</style>
+<article class="mxb-wrap">
+<ul class="mxb-meta"><li>시리즈 2/16</li><li>개발</li><li>Mendix 10</li><li>HTMLSnippet</li></ul>
+<p class="mxb-lead">점검 유형 4종의 목록 화면을 Datagrid2 대신 HTMLSnippet 3개와 JS로 다시 만들었다. 조회는 JSON 한 번으로 받고, 필터와 정렬은 브라우저에서 처리하며, 저장과 삭제는 Microflow를 호출한다.</p>
+
+<div class="mxb-sum"><div class="mxb-sum-row"><span class="mxb-badge">문제</span><p>같은 목록을 점검 유형별로 조금씩 다르게 보여줘야 하고, 상세 검색, 행 펼치기, 편집 팝업, 엑셀 다운로드까지 필요했음</p></div><div class="mxb-sum-row"><span class="mxb-badge">원인</span><p>Datagrid2로는 페이지마다 컬럼과 필터를 따로 구성해야 해서, 요청 하나에 페이지 4개를 고쳐야 했음</p></div><div class="mxb-sum-row"><span class="mxb-badge mxb-badge-p">해결</span><p>위젯을 한 벌만 만들고 페이지마다 설정 스니펫만 다르게 둠</p></div></div>
+
+<h2>구조</h2>
+<figure class="mxb-fig"><div class="mxb-arch"><div class="mxb-grp"><span class="mxb-grp-t">Mendix 페이지</span><div class="mxb-node"><b>① 설정 스니펫</b><span>페이지마다 다른 값만 담음</span></div><div class="mxb-node"><b>② HTML, CSS 스니펫</b><span>화면 틀과 스타일, 모든 페이지 공통</span></div><div class="mxb-node mxb-node-p"><b>③ JS 스니펫</b><span>조회, 필터, 정렬, 팝업, 엑셀, 이벤트 처리</span></div></div><div class="mxb-links"><div class="mxb-link mxb-link-p">조회 1회<svg class="mxb-h" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6H90"/><polygon points="100,6 90,1 90,11"/></svg><svg class="mxb-v" viewBox="0 0 12 32" aria-hidden="true"><path d="M6 0V24"/><polygon points="6,32 1,22 11,22"/></svg></div><div class="mxb-link">저장, 삭제<svg class="mxb-h" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6H90"/><polygon points="100,6 90,1 90,11"/></svg><svg class="mxb-v" viewBox="0 0 12 32" aria-hidden="true"><path d="M6 0V24"/><polygon points="6,32 1,22 11,22"/></svg></div></div><div class="mxb-grp"><span class="mxb-grp-t">Mendix 런타임</span><div class="mxb-node"><b>Java Action</b><span>목록 전체를 JSON 문자열로 반환</span></div><div class="mxb-node"><b>Microflow</b><span>저장, 삭제</span></div><span class="mxb-down" aria-hidden="true"><svg viewBox="0 0 12 20"><rect x="5" y="0" width="2" height="12"/><polygon points="6,20 0,11 12,11"/></svg></span><div class="mxb-node mxb-node-db"><b>DB</b></div></div></div><figcaption>페이지 하나에 스니펫 3개, 서버 호출은 Java Action과 Microflow로만</figcaption></figure>
+
+<ul class="mxb-list">
+  <li>①은 페이지마다 다르고, ②와 ③은 모든 페이지에 같은 내용을 붙임</li>
+  <li>스니펫 순서는 ① → ② → ③. ③이 실행될 때 ①의 설정값이 있어야 함</li>
+  <li>HTMLSnippet의 Content type은 ①과 ③은 JavaScript, ②는 HTML</li>
+</ul>
+
+<h2>설정 스니펫</h2>
+<p>페이지마다 다른 값만 전역 객체 하나에 담는다. 위젯 코드는 이 값을 읽어서 화면을 그린다.</p>
+<div class="mxb-code"><div class="mxb-code-h"><span>① 설정 스니펫 (JavaScript)</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">window.LIST_PAGE_CONFIG = {
+  pageType: <span class="s">'typeA'</span>,           <span class="c"> // 서버 조회 조건에 쓰는 구분값</span>
+  title: <span class="s">'외부 점검'</span>,
+  columns: [<span class="s">'detectDate'</span>, <span class="s">'site'</span>, <span class="s">'title'</span>, <span class="s">'team'</span>, <span class="s">'dueDate'</span>, <span class="s">'status'</span>],
+  canEdit: true
+};</code></pre></div>
+
+<h2>목록 조회는 JSON 한 번</h2>
+<p>Java Action이 목록 전체를 JSON 문자열로 돌려주고, 이를 Microflow로 감싸서 JS에서 호출한다. 화면에 필요한 컬럼만 담는다.</p>
+<div class="mxb-code"><div class="mxb-code-h"><span>Java Action: JA_GetIssueList_JSON (반환 String)</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">IContext ctx = Core.createSystemContext();  <span class="c"> // 사용자 세션 캐시에 쌓이지 않게</span>
+JSONArray arr = new JSONArray();
+int batch = 300, offset = 0, max = 10000;
+
+while (offset &lt; max) {
+  List&lt;IMendixObject&gt; list = Core.createXPathQuery(<span class="s">"//Issue.InspectionIssue"</span>)
+      .addSort(<span class="s">"DetectDate"</span>, false)
+      .setAmount(batch)
+      .setOffset(offset)
+      .execute(ctx);
+  if (list.isEmpty()) break;
+
+  for (IMendixObject o : list) {
+    JSONObject j = new JSONObject();
+    j.put(<span class="s">"guid"</span>, String.valueOf(o.getId().toLong()));
+    j.put(<span class="s">"title"</span>, o.getValue(ctx, <span class="s">"Title"</span>));
+    j.put(<span class="s">"team"</span>, o.getValue(ctx, <span class="s">"Team"</span>));
+<span class="c">    // 날짜는 epoch(ms)로 넘기고 화면에서 변환</span>
+    Date due = o.getValue(ctx, <span class="s">"DueDate"</span>);
+    j.put(<span class="s">"dueDate"</span>, due == null ? JSONObject.NULL : due.getTime());
+    Date clear = o.getValue(ctx, <span class="s">"ClearDate"</span>);
+    j.put(<span class="s">"clearDate"</span>, clear == null ? JSONObject.NULL : clear.getTime());
+    arr.put(j);
+  }
+  offset += batch;
+}
+return arr.toString();</code></pre></div><div class="mxb-note mxb-note-warn" role="note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8 0.8 18h18.4L10 1.8Zm1 13.2H9v-2h2v2Zm0-3.5H9V7h2v4.5Z"/></svg><div><strong class="mxb-note-t">시스템 컨텍스트는 권한을 확인하지 않는다</strong><span class="mxb-note-b">createSystemContext로 조회하면 엔티티 접근 규칙이 적용되지 않는다. 사용자별로 보여줄 범위가 다르면 XPath 조건에 직접 넣어야 한다.</span></div></div>
+
+<div class="mxb-code"><div class="mxb-code-h"><span>③ JS 스니펫: 목록 불러오기</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">function loadList(onDone) {
+  mx.data.action({
+    params: { actionname: <span class="s">'Issue.ACT_GetIssueList_JSON'</span> },
+    callback: function (json) {
+      var rows = [];
+      try { rows = JSON.parse(json || <span class="s">'[]'</span>); } catch (e) { console.error(e); }
+      onDone(rows);
+    },
+    error: function (err) {
+      showMessage(<span class="s">'목록을 불러오지 못했습니다. 새로고침 후 다시 시도하세요.'</span>);
+      console.error(err);
+    }
+  });
+}</code></pre></div>
+
+<h2>필터, 정렬, 페이지는 브라우저에서</h2>
+<p>받은 배열을 상태 객체에 두고, 조건이 바뀔 때마다 걸러서 다시 그린다. 상태 값처럼 계산이 필요한 항목은 받아 온 직후 한 번만 만든다.</p>
+<div class="mxb-code"><div class="mxb-code-h"><span>③ JS 스니펫: 상태 계산과 필터</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">var state = { rows: [], keyword: <span class="s">''</span>, status: <span class="s">''</span>, page: 1, size: 20 };
+
+function withStatus(r) {
+  var today = new Date().setHours(0, 0, 0, 0);
+  if (r.clearDate) r.status = <span class="s">'조치완료'</span>;
+  else if (r.dueDate &amp;&amp; r.dueDate &lt; today) r.status = <span class="s">'지연'</span>;
+  else r.status = <span class="s">'조치예정'</span>;
+  return r;
+}
+
+function filtered() {
+  var kw = state.keyword.toLowerCase();
+  return state.rows.filter(function (r) {
+    if (state.status &amp;&amp; r.status !== state.status) return false;
+    return !kw || (r.title || <span class="s">''</span>).toLowerCase().indexOf(kw) &gt; -1;
+  });
+}
+
+function pageRows(list) {
+  var start = (state.page - 1) * state.size;
+  return list.slice(start, start + state.size);
+}
+
+loadList(function (rows) {
+  state.rows = rows.map(withStatus);
+  render();  <span class="c"> // filtered() → pageRows() 결과로 표를 그림</span>
+});</code></pre></div>
+
+<h2>저장과 삭제는 Microflow로</h2>
+<p>JS에서 객체를 직접 커밋하지 않고 Microflow를 호출한다. 목록 JSON에 담아 둔 guid를 넘긴다.</p>
+<div class="mxb-code"><div class="mxb-code-h"><span>③ JS 스니펫: 삭제</span><button type="button" class="mxb-copy">복사</button></div><pre><code class="nohighlight">function removeIssue(guid, onDone) {
+  mx.data.action({
+    params: {
+      actionname: <span class="s">'Issue.ACT_DeleteIssue'</span>,
+      applyto: <span class="s">'selection'</span>,
+      guids: [guid]
+    },
+    callback: function () { onDone(); },
+    error: function (err) {
+      showMessage(<span class="s">'삭제하지 못했습니다.'</span>);
+      console.error(err);
+    }
+  });
+}</code></pre></div>
+<p class="mxb-rel">관련 글: 4편 Mendix mx.data.commit이 조용히 실패할 때</p>
+
+<div class="mxb-note mxb-note-info" role="note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm1 13h-2v-6h2v6Zm0-8h-2v-2h2v2Z"/></svg><div><strong class="mxb-note-t">페이지를 이동하면 JS 스니펫이 다시 실행된다</strong><span class="mxb-note-b">Mendix는 페이지를 이동해도 브라우저 문서를 새로 읽지 않는다. document에 건 이벤트가 이동할 때마다 쌓이므로 정리 코드가 필요하다. 3편에서 다룬다.</span></div></div>
+
+<h2>이 방식이 맞는 경우</h2>
+<div class="mxb-table-wrap"><table class="mxb-table">
+  <thead><tr><th>상황</th><th>Datagrid2 유지</th><th>JS 위젯 전환</th></tr></thead>
+  <tbody>
+    <tr><td>컬럼과 필터</td><td>단순하고 페이지마다 같음</td><td>페이지마다 조금씩 다름</td></tr>
+    <tr><td>상호작용</td><td>정렬, 검색 정도</td><td>행 펼치기, 커스텀 팝업, 일괄 처리</td></tr>
+    <tr><td>데이터 양</td><td>많음, 서버 페이징 필요</td><td>수천 건 이하 또는 사전 집계 가능</td></tr>
+    <tr><td>유지보수</td><td>Studio Pro만 다룰 수 있음</td><td>JS를 고칠 사람이 있음</td></tr>
+  </tbody>
+</table></div>
+
+<p>전체를 한 번에 받는 구조라서 데이터가 1만 건을 넘기면서 서버 메모리 문제가 생겼다. 조회 컬럼을 줄이고, 결과를 미리 만들어 두는 방식으로 바꿨다.</p>
+<p class="mxb-rel">관련 글: 5편 Java heap OOM 추적기, 7편 Mendix 첫 접속 지연 줄이기</p>
+
+<h2>전환 전 확인할 것</h2>
+<ul class="mxb-check">
+  <li>목록 JSON에 이미지나 긴 본문 같은 큰 컬럼을 넣지 않았는가</li>
+  <li>시스템 컨텍스트로 조회한다면 사용자별 조회 범위를 직접 걸었는가</li>
+  <li>저장과 삭제를 Microflow로 처리하는가</li>
+  <li>페이지 이동 시 이벤트를 정리하는 코드가 있는가</li>
+  <li>예상 데이터 양이 브라우저에서 처리할 수 있는 수준인가</li>
+</ul>
+<details class="mxb-series"><summary>시리즈 목차 16편</summary><ol><li>PI 담당자가 로우코드로 사내 시스템을 직접 만들고 운영한 기록</li><li class="mxb-now">Mendix Datagrid2 대신 HTMLSnippet과 JS로 목록 화면 만들기 (현재 글)</li><li>Mendix SPA에서 HTMLSnippet JS가 꼬이는 이유: 이벤트 중복과 DOM 공존</li><li>Mendix mx.data.commit이 조용히 실패할 때</li><li>Mendix Java heap OOM 추적기: base64 이미지 컬럼</li><li>Mendix 커밋 롤백, 용량 문제가 아니었다: FileDocument 전환기</li><li>Mendix 첫 접속 지연 줄이기: 워밍업과 캐시</li><li>Mendix SAML SSO 자동 로그인과 딥링크 유지</li><li>Mendix Studio Pro에서 안 바뀌는 스타일 main.scss로 바꾸기</li><li>Mendix MPK 파일 열어서 마이크로플로우 구조 보기</li><li>SSO 로그 테이블로 MAU와 재방문율 구하는 SQL</li><li>Mendix DateTime이 BI 도구에서 하루 빠르게 보이는 이유</li><li>대시보드 숫자가 틀렸을 때 확인하는 순서</li><li>보기 좋은 대시보드에서 할 일을 알려주는 대시보드로</li><li>여러 점검 시스템을 하나로 합치는 데이터 모델</li><li>데이터 비전공자에게 분석 결과 보고하기</li></ol></details>
+<ul class="mxb-tags"><li>#Mendix</li><li>#HTMLSnippet</li><li>#Datagrid2</li><li>#JavaScript</li><li>#JavaAction</li><li>#로우코드</li></ul>
+</article>
+<script>(function () {
+  function copyText(t, done) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = t;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(true); } catch (e) { done(false); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(t).then(function () { done(true); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+  function bindCopy(btn) {
+    btn.addEventListener('click', function () {
+      var box = btn.parentNode.parentNode;
+      var pre = box.querySelector('pre');
+      if (!pre) { return; }
+      copyText(pre.textContent, function (ok) {
+        btn.textContent = ok ? '복사됨' : '복사 실패';
+        setTimeout(function () { btn.textContent = '복사'; }, 1500);
+      });
+    });
+  }
+  function setup(w) {
+    if (w.getAttribute('data-mxb-ready')) { return; }
+    w.setAttribute('data-mxb-ready', '1');
+    w.className += ' mxb-js';
+    var btns = w.querySelectorAll('.mxb-copy');
+    for (var i = 0; i !== btns.length; i++) { bindCopy(btns[i]); }
+  }
+  var wraps = document.querySelectorAll('article.mxb-wrap');
+  for (var j = 0; j !== wraps.length; j++) { setup(wraps[j]); }
+})();</script>

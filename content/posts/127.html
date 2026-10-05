@@ -1,0 +1,428 @@
+<!--
+id: 127
+제목: 폐쇄망에서 사내 LLM API 붙이기: openai 패키지 없이 urllib 하나로
+카테고리: Stack/PythonFramework
+태그: python, flask, llm, urllib, API연동, 폐쇄망, OpenAI호환API, 사내LLM
+날짜: 2026-10-04 12:02
+수정: 2026-10-04 12:02
+형식: html
+-->
+<article class="hl-post hl-p07">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+article.hl-post:not(#hl-x){--p50:#256ef4;--p60:#0b50d0;--p70:#083891;--p10:#d8e5fd;--p5:#ecf2fe;--g0:#ffffff;--g5:#f4f5f6;--g10:#e6e8ea;--g20:#cdd1d5;--g30:#b1b8be;--g40:#8a949e;--g50:#6d7882;--g70:#464c53;--g90:#1e2124;display:block;max-width:760px;margin:0 auto;padding:0 0 48px;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;font-weight:400;line-height:1.75;color:var(--g90);text-align:left;word-break:keep-all;overflow-wrap:break-word;-webkit-text-size-adjust:100%;letter-spacing:0}
+article.hl-post:not(#hl-x) *{box-sizing:border-box}
+article.hl-post:not(#hl-x) p{margin:0 0 16px;padding:0;font-size:17px;line-height:1.75;color:var(--g90)}
+article.hl-post:not(#hl-x) h2{margin:64px 0 16px;padding:0;border:0;background:none;font-size:24px;line-height:1.5;font-weight:700;color:var(--g90);letter-spacing:-0.01em;text-align:left}
+article.hl-post:not(#hl-x) h3{margin:40px 0 12px;padding:0;border:0;background:none;font-size:19px;line-height:1.5;font-weight:700;color:var(--g90);text-align:left}
+article.hl-post:not(#hl-x) h2::before,article.hl-post:not(#hl-x) h2::after,article.hl-post:not(#hl-x) h3::before,article.hl-post:not(#hl-x) h3::after{content:none;display:none}
+article.hl-post:not(#hl-x) ul,article.hl-post:not(#hl-x) ol{margin:0 0 16px;padding:0 0 0 24px}
+article.hl-post:not(#hl-x) ul > li{list-style:disc}
+article.hl-post:not(#hl-x) ol > li{list-style:decimal}
+article.hl-post:not(#hl-x) li{margin:0 0 8px;font-size:17px;line-height:1.75;color:var(--g90)}
+article.hl-post:not(#hl-x) a{color:var(--p60);text-decoration:underline;text-underline-offset:3px}
+article.hl-post:not(#hl-x) a:hover{color:var(--p70)}
+article.hl-post:not(#hl-x) strong,article.hl-post:not(#hl-x) b{font-weight:700;color:inherit}
+article.hl-post:not(#hl-x) small{font-size:inherit}
+article.hl-post:not(#hl-x) code{font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:.88em;background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:1px 6px;color:var(--g90)}
+article.hl-post:not(#hl-x) button{font-family:inherit}
+article.hl-post:not(#hl-x) button:focus-visible{outline:2px solid var(--p50);outline-offset:2px}
+
+/* 시리즈 머리 */
+article.hl-post:not(#hl-x) .hl-series{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px;font-size:15px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-series-bar{display:flex;gap:4px;flex:0 0 auto}
+article.hl-post:not(#hl-x) .hl-series-bar i{display:block;width:12px;height:4px;border-radius:2px;background:var(--g20)}
+article.hl-post:not(#hl-x) .hl-series-bar i.on{background:var(--p50)}
+article.hl-post:not(#hl-x) p.hl-lead{margin:0 0 32px;font-size:19px;line-height:1.7;color:var(--g90)}
+
+/* 목차 */
+article.hl-post:not(#hl-x) .hl-toc{margin:0 0 40px;padding:24px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-toc p.hl-toc-t{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-toc ol{margin:0;padding:0 0 0 20px}
+article.hl-post:not(#hl-x) .hl-toc li{margin:0 0 4px;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-toc-a{appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;background:none;font-size:15px;line-height:1.6;color:var(--g90);text-align:left;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-toc-a:hover{color:var(--p60);text-decoration:underline;text-underline-offset:3px}
+
+/* 그림 */
+article.hl-post:not(#hl-x) .hl-fig{margin:32px 0;padding:24px;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-fig > *:last-child{margin-bottom:0}
+article.hl-post:not(#hl-x) p.hl-cap{margin:16px 0 0;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-figt{margin:0 0 16px;font-size:17px;font-weight:700;color:var(--g90)}
+
+/* 흐름도 */
+article.hl-post:not(#hl-x) .hl-flow{display:flex;align-items:stretch;gap:8px}
+article.hl-post:not(#hl-x) .hl-node{flex:1 1 0;min-width:0;padding:16px 12px;background:var(--g5);border:1px solid var(--g10);border-radius:8px;text-align:center}
+article.hl-post:not(#hl-x) .hl-node b{display:block;font-size:15px;line-height:1.5;font-weight:700;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-node span{display:block;margin-top:4px;font-size:13px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-node.pri{background:var(--p5);border-color:var(--p10)}
+article.hl-post:not(#hl-x) .hl-node.pri b{color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-node.dim{background:var(--g0);border:1px dashed var(--g30)}
+article.hl-post:not(#hl-x) .hl-node.dim b{color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-node.risk{background:#fdefec;border-color:#fcdfd9}
+article.hl-post:not(#hl-x) .hl-node.risk b{color:#bd2c0f}
+article.hl-post:not(#hl-x) .hl-node.ok{background:#eaf6ec;border-color:#d8eedd}
+article.hl-post:not(#hl-x) .hl-node.ok b{color:#267337}
+article.hl-post:not(#hl-x) .hl-arr{flex:0 0 16px;display:flex;align-items:center;justify-content:center;color:var(--g40)}
+article.hl-post:not(#hl-x) .hl-arr svg{display:block;width:16px;height:16px}
+article.hl-post:not(#hl-x) .hl-stack{display:flex;flex-direction:column;gap:8px}
+article.hl-post:not(#hl-x) .hl-stack .hl-arr{transform:rotate(90deg);height:16px}
+
+/* 비교 열 */
+article.hl-post:not(#hl-x) .hl-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+article.hl-post:not(#hl-x) .hl-col{padding:20px;border:1px solid var(--g20);border-radius:8px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-col.soft{background:var(--g5);border-color:var(--g10)}
+article.hl-post:not(#hl-x) .hl-col.pri{background:var(--p5);border-color:var(--p10)}
+article.hl-post:not(#hl-x) p.hl-col-t{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-col.pri p.hl-col-t{color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-col ul{margin:0;padding-left:20px}
+article.hl-post:not(#hl-x) .hl-col li{font-size:15px;line-height:1.6;margin:0 0 4px}
+article.hl-post:not(#hl-x) .hl-col p{font-size:15px;line-height:1.6}
+
+/* 알림 상자 */
+article.hl-post:not(#hl-x) .hl-note{display:flex;gap:12px;align-items:flex-start;margin:24px 0;padding:16px 20px;border:1px solid;border-radius:8px}
+article.hl-post:not(#hl-x) .hl-note .hl-ic{flex:0 0 20px;width:20px;height:20px;margin-top:4px}
+article.hl-post:not(#hl-x) .hl-note > div{flex:1 1 auto;min-width:0}
+article.hl-post:not(#hl-x) .hl-note p{margin:0 0 8px}
+article.hl-post:not(#hl-x) .hl-note p:last-child{margin:0}
+article.hl-post:not(#hl-x) .hl-note.info{background:#e7f4fe;border-color:#d3ebfd}
+article.hl-post:not(#hl-x) .hl-note.info b.lbl{color:#096ab3}
+article.hl-post:not(#hl-x) .hl-note.warn{background:#fff3db;border-color:#ffe0a3}
+article.hl-post:not(#hl-x) .hl-note.warn b.lbl{color:#8a5c00}
+article.hl-post:not(#hl-x) .hl-note.ok{background:#eaf6ec;border-color:#d8eedd}
+article.hl-post:not(#hl-x) .hl-note.ok b.lbl{color:#267337}
+article.hl-post:not(#hl-x) .hl-note.risk{background:#fdefec;border-color:#fcdfd9}
+article.hl-post:not(#hl-x) .hl-note.risk b.lbl{color:#bd2c0f}
+article.hl-post:not(#hl-x) b.lbl{margin-right:8px}
+
+/* 코드 */
+article.hl-post:not(#hl-x) .hl-code{margin:24px 0;border-radius:8px;background:#1e2124;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-code-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 16px;background:#131416;font-size:13px;line-height:1.5;color:#cdd1d5}
+article.hl-post:not(#hl-x) .hl-copy{appearance:none;-webkit-appearance:none;margin:0;padding:4px 12px;border:1px solid #464c53;border-radius:6px;background:transparent;font-size:13px;line-height:1.5;color:#f4f5f6;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-copy:hover{background:#464c53}
+article.hl-post:not(#hl-x) .hl-code pre{margin:0;padding:16px;border:0;border-radius:0;background:none;overflow-x:auto;font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:15px;line-height:1.6;color:#f4f5f6;white-space:pre;word-break:normal;overflow-wrap:normal;tab-size:4}
+article.hl-post:not(#hl-x) .hl-code pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit}
+
+/* 표 */
+article.hl-post:not(#hl-x) .hl-tw{margin:24px 0;overflow-x:auto;border:1px solid var(--g20);border-radius:8px;background:var(--g0)}
+article.hl-post:not(#hl-x) table.hl-t{width:100%;margin:0;border:0;border-collapse:collapse;border-spacing:0;font-size:15px;line-height:1.6;background:var(--g0)}
+article.hl-post:not(#hl-x) table.hl-t th{padding:12px 16px;border:0;border-bottom:1px solid var(--g20);background:var(--g5);font-size:15px;font-weight:700;text-align:left;color:var(--g90);white-space:nowrap;vertical-align:bottom}
+article.hl-post:not(#hl-x) table.hl-t td{padding:12px 16px;border:0;border-bottom:1px solid var(--g10);font-size:15px;color:var(--g90);vertical-align:top;text-align:left}
+article.hl-post:not(#hl-x) table.hl-t tr:last-child td{border-bottom:0}
+article.hl-post:not(#hl-x) table.hl-t td.num,article.hl-post:not(#hl-x) table.hl-t th.num{text-align:right;white-space:nowrap}
+article.hl-post:not(#hl-x) table.hl-t td.sub{color:var(--g70)}
+article.hl-post:not(#hl-x) table.hl-t tr.hide{display:none}
+
+/* 탭, 칩, 버튼 */
+article.hl-post:not(#hl-x) .hl-tabs{margin:0}
+article.hl-post:not(#hl-x) .hl-seg{display:inline-flex;flex-wrap:wrap;gap:4px;margin:0 0 16px;padding:4px;background:var(--g5);border:1px solid var(--g10);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-seg button{appearance:none;-webkit-appearance:none;margin:0;padding:6px 16px;border:0;border-radius:6px;background:transparent;font-size:15px;line-height:1.5;font-weight:400;color:var(--g70);cursor:pointer}
+article.hl-post:not(#hl-x) .hl-seg button:hover{background:var(--g10);color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-seg button.on{background:var(--g0);color:var(--g90);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+article.hl-post:not(#hl-x) .hl-pane{display:none}
+article.hl-post:not(#hl-x) .hl-pane.on{display:block}
+article.hl-post:not(#hl-x) .hl-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+article.hl-post:not(#hl-x) .hl-chip{appearance:none;-webkit-appearance:none;margin:0;padding:6px 14px;border:1px solid var(--g30);border-radius:6px;background:var(--g0);font-size:15px;line-height:1.5;color:var(--g90);cursor:pointer;text-align:left}
+article.hl-post:not(#hl-x) .hl-chip:hover{border-color:var(--g50);background:var(--g5)}
+article.hl-post:not(#hl-x) .hl-chip.on{background:var(--p5);border-color:var(--p50);color:var(--p60);font-weight:700}
+article.hl-post:not(#hl-x) .hl-btn{appearance:none;-webkit-appearance:none;margin:0;padding:8px 16px;border:1px solid var(--p50);border-radius:6px;background:var(--p50);font-size:15px;line-height:1.5;font-weight:700;color:#fff;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-btn:hover{background:var(--p60);border-color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-btn:active{background:var(--p70);border-color:var(--p70)}
+article.hl-post:not(#hl-x) .hl-btn.line{background:var(--g0);color:var(--g90);border-color:var(--g30);font-weight:400}
+article.hl-post:not(#hl-x) .hl-btn.line:hover{background:var(--g5);border-color:var(--g50)}
+article.hl-post:not(#hl-x) .hl-out{margin:16px 0 0;padding:16px 20px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-out p{margin:0 0 4px}
+article.hl-post:not(#hl-x) .hl-out p:last-child{margin:0}
+article.hl-post:not(#hl-x) .hl-muted{color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-s{font-size:15px;line-height:1.6}
+
+/* 배지, 범례 */
+article.hl-post:not(#hl-x) .hl-badge{display:inline-block;padding:2px 8px;border-radius:4px;border:1px solid;font-size:13px;line-height:1.5;font-weight:700;vertical-align:middle;white-space:nowrap}
+article.hl-post:not(#hl-x) .hl-badge.info{background:#e7f4fe;border-color:#d3ebfd;color:#096ab3}
+article.hl-post:not(#hl-x) .hl-badge.warn{background:#fff3db;border-color:#ffe0a3;color:#8a5c00}
+article.hl-post:not(#hl-x) .hl-badge.ok{background:#eaf6ec;border-color:#d8eedd;color:#267337}
+article.hl-post:not(#hl-x) .hl-badge.risk{background:#fdefec;border-color:#fcdfd9;color:#bd2c0f}
+article.hl-post:not(#hl-x) .hl-badge.gray{background:var(--g5);border-color:var(--g10);color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-badge.pri{background:var(--p5);border-color:var(--p10);color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-legend{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-legend span{display:inline-flex;align-items:center;gap:6px}
+article.hl-post:not(#hl-x) .hl-legend i{display:inline-block;width:12px;height:12px;border-radius:2px}
+
+/* 막대 */
+article.hl-post:not(#hl-x) .hl-bars{margin:0}
+article.hl-post:not(#hl-x) .hl-brow{display:grid;grid-template-columns:140px 1fr 64px;gap:12px;align-items:center;margin:0 0 8px;font-size:15px;line-height:1.5}
+article.hl-post:not(#hl-x) .hl-bar{height:12px;background:var(--g10);border-radius:6px;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-bar i{display:block;height:100%;background:var(--p50);border-radius:6px}
+article.hl-post:not(#hl-x) .hl-brow .v{text-align:right;font-weight:700}
+
+/* 핵심 숫자 */
+article.hl-post:not(#hl-x) .hl-kv{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 40px}
+article.hl-post:not(#hl-x) .hl-kv > div{padding:16px 20px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-kv b{display:block;font-size:24px;line-height:1.4;font-weight:700;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-kv span{display:block;font-size:15px;line-height:1.5;color:var(--g70)}
+
+/* 체크리스트 */
+article.hl-post:not(#hl-x) .hl-checkwrap{margin:24px 0;padding:8px 24px 16px;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-prog{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--g20);font-size:15px;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-prog-b{flex:1 1 auto;height:8px;background:var(--g10);border-radius:4px;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-prog-b i{display:block;height:100%;width:0;background:var(--p50);border-radius:4px;transition:width .2s}
+article.hl-post:not(#hl-x) ul.hl-checks{list-style:none;margin:0;padding:0}
+article.hl-post:not(#hl-x) ul.hl-checks li{margin:0;padding:0;border-bottom:1px solid var(--g10);list-style:none}
+article.hl-post:not(#hl-x) ul.hl-checks li:last-child{border-bottom:0}
+article.hl-post:not(#hl-x) .hl-chk{appearance:none;-webkit-appearance:none;display:flex;gap:12px;align-items:flex-start;width:100%;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-box{flex:0 0 20px;width:20px;height:20px;margin-top:4px;border:1px solid var(--g50);border-radius:4px;background:var(--g0);display:flex;align-items:center;justify-content:center}
+article.hl-post:not(#hl-x) .hl-box svg{display:none;width:14px;height:14px}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-box{background:var(--p50);border-color:var(--p50)}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-box svg{display:block}
+article.hl-post:not(#hl-x) .hl-ct{display:block;font-size:17px;line-height:1.6}
+article.hl-post:not(#hl-x) .hl-ct small{display:block;margin-top:2px;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-ct{color:var(--g70)}
+
+/* 끝 */
+article.hl-post:not(#hl-x) .hl-end{margin:64px 0 0;padding:24px 0 0;border-top:1px solid var(--g20)}
+article.hl-post:not(#hl-x) .hl-nav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px}
+article.hl-post:not(#hl-x) .hl-nav > div{padding:16px;border:1px solid var(--g20);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-nav > div.r{text-align:right}
+article.hl-post:not(#hl-x) .hl-nav > div.none{visibility:hidden}
+article.hl-post:not(#hl-x) .hl-nav small{display:block;font-size:13px;line-height:1.5;color:var(--g50)}
+article.hl-post:not(#hl-x) .hl-nav span{display:block;margin-top:4px;font-size:15px;line-height:1.5;font-weight:500;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-tags{display:flex;flex-wrap:wrap;gap:8px}
+article.hl-post:not(#hl-x) .hl-tags span{padding:4px 8px;border-radius:4px;background:var(--g5);font-size:13px;line-height:1.5;color:var(--g70)}
+
+@media (max-width:600px){
+  article.hl-post:not(#hl-x) .hl-node{padding:12px}
+  article.hl-post:not(#hl-x) h2{margin:48px 0 16px;font-size:22px}
+  article.hl-post:not(#hl-x) p.hl-lead{font-size:17px}
+  article.hl-post:not(#hl-x) .hl-series-bar i{width:8px}
+  article.hl-post:not(#hl-x) .hl-fig{padding:16px}
+  article.hl-post:not(#hl-x) .hl-toc{padding:16px}
+  article.hl-post:not(#hl-x) .hl-flow{flex-direction:column}
+  article.hl-post:not(#hl-x) .hl-flow .hl-arr{transform:rotate(90deg);height:16px}
+  article.hl-post:not(#hl-x) .hl-cols{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-kv{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-kv b{font-size:22px}
+  article.hl-post:not(#hl-x) .hl-brow{grid-template-columns:96px 1fr 52px;gap:8px}
+  article.hl-post:not(#hl-x) .hl-code pre{font-size:13px}
+  article.hl-post:not(#hl-x) .hl-nav{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-nav > div.none{display:none}
+  article.hl-post:not(#hl-x) .hl-checkwrap{padding:8px 16px 12px}
+  article.hl-post:not(#hl-x) .hl-note{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){article.hl-post:not(#hl-x) *{transition:none !important;scroll-behavior:auto !important}}
+article.hl-post:not(#hl-x) p{word-break:keep-all}
+article.hl-post:not(#hl-x) table{table-layout:auto}
+</style>
+<div class="hl-series"><span>현장 데이터 서비스 구축기 7편</span><span class="hl-series-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+<p class="hl-lead">사내 LLM 게이트웨이(OpenAI 호환 API)를 Flask 서비스에 연동하면서 openai 패키지 없이 Python 표준 라이브러리 urllib만 썼다. 사내 필수 헤더, 호출별 ID, 환경변수로 공급자를 바꾸는 구조, API 승인 전 mock으로 먼저 개발하는 방법을 코드와 함께 정리했다.</p>
+<div class="hl-toc"><p class="hl-toc-t">이 글의 순서</p><ol></ol></div>
+<h2>상황: 사내 LLM 게이트웨이와 폐쇄망</h2>
+<p>이슈 사례 분석 기능에 LLM을 붙이기로 했다. 외부 API는 쓸 수 없고, 사내에서 운영하는 LLM 게이트웨이를 써야 했다. 다행히 인터페이스는 OpenAI 호환(chat/completions)이었다. 대신 사내 규칙에 따라 인증 티켓과 호출 시스템명, 사용자 ID, 호출별 고유 ID 같은 헤더를 매번 붙여야 했다.</p>
+<div class="hl-fig">
+  <p class="hl-figt">호출 구조</p>
+  <div class="hl-flow">
+    <div class="hl-node"><b>사용자</b><span>SSO 로그인</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node pri"><b>Flask 서비스</b><span>llm_client.py</span><span>사용자 ID 자동 주입</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node dim"><b>사내 LLM 게이트웨이</b><span>OpenAI 호환 API</span><span>헤더 검증·감사 로그</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node dim"><b>LLM</b></div>
+  </div>
+</div>
+
+<h2>openai 패키지를 쓰지 않은 이유</h2>
+<p>OpenAI 호환이니 openai 파이썬 패키지에 base_url만 바꿔 쓰면 될 것 같았다. 그래도 표준 라이브러리 urllib으로 직접 호출하기로 했다.</p>
+<ul>
+  <li>폐쇄망에서는 패키지 하나를 들이는 것도 일이다. 반입 절차와 버전 관리가 따라온다. 의존성이 하나 줄면 컨테이너 이미지와 보안 점검 대상도 하나 준다.</li>
+  <li>사내 필수 헤더가 많아서 결국 클라이언트를 감싸야 한다. 감쌀 거라면 처음부터 요청을 직접 만드는 쪽이 투명하다.</li>
+  <li>실제로 쓰는 호출은 chat/completions 하나다. 이 정도면 표준 라이브러리로 충분하다.</li>
+</ul>
+<div class="hl-note info"><svg class="hl-ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#0b78cb"/><rect x="9" y="8.5" width="2" height="6.5" rx="1" fill="#fff"/><circle cx="10" cy="5.8" r="1.25" fill="#fff"/></svg><div><p><b class="lbl">트레이드오프</b>스트리밍 응답, 재시도, 타입 정의는 직접 만들어야 한다. 호출 종류가 늘어나거나 스트리밍이 필요해지면 그때 패키지 도입을 다시 검토하면 된다.</p></div></div>
+
+<h2>헤더 정리</h2>
+<p>아래 헤더 이름은 예시로 바꿨다. 게이트웨이마다 이름은 다르지만 요구하는 정보는 대체로 비슷하다.</p>
+<div class="hl-tw"><table class="hl-t">
+  <thead><tr><th>헤더 (예시)</th><th>값</th><th>용도</th></tr></thead>
+  <tbody>
+    <tr><td><code>X-Api-Ticket</code></td><td>발급받은 인증 티켓</td><td>호출 인증</td></tr>
+    <tr><td><code>X-System-Name</code></td><td>서비스 이름</td><td>어느 시스템이 불렀는지</td></tr>
+    <tr><td><code>X-User-Id</code></td><td>로그인한 사용자 ID</td><td>누가 물었는지 (감사 추적)</td></tr>
+    <tr><td><code>X-User-Type</code></td><td>사용자 ID 종류</td><td>ID 체계 구분</td></tr>
+    <tr><td><code>X-Prompt-Msg-Id</code></td><td>호출마다 새 UUID</td><td>질문 단위 추적</td></tr>
+    <tr><td><code>X-Completion-Msg-Id</code></td><td>호출마다 새 UUID</td><td>응답 단위 추적</td></tr>
+  </tbody>
+</table></div>
+<p>사용자 ID는 화면에서 받지 않고 SSO 세션에서 꺼내 자동으로 넣는다. 사용자가 입력할 수 있게 두면 다른 사람 이름으로 호출할 수 있다.</p>
+
+<h2>클라이언트 코드</h2>
+<div class="hl-code"><div class="hl-code-h"><span>llm_client.py</span><button type="button" class="hl-copy">복사</button></div><pre>import json
+import os
+import uuid
+import urllib.error
+import urllib.request
+
+PROVIDER = os.environ.get("LLM_PROVIDER", "mock")   # gateway | mock
+BASE = os.environ.get("LLM_BASE", "")
+KEY = os.environ.get("LLM_KEY", "")
+MODEL = os.environ.get("LLM_MODEL", "")
+SYSTEM = os.environ.get("LLM_SYSTEM_NAME", "my-service")
+
+# 사내망 프록시 환경변수를 타지 않게 빈 프록시로 연다 (환경에 따라 선택)
+_opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+
+def chat(messages, user_id, temperature=0.2, timeout=60):
+    if PROVIDER == "mock":
+        return _mock(messages)
+
+    body = json.dumps({
+        "model": MODEL,
+        "messages": messages,
+        "temperature": temperature,
+    }).encode("utf-8")
+
+    req = urllib.request.Request(BASE.rstrip("/") + "/chat/completions",
+                                 data=body, method="POST")
+    req.add_header("Content-Type", "application/json")
+    req.add_header("X-Api-Ticket", KEY)
+    req.add_header("X-System-Name", SYSTEM)
+    req.add_header("X-User-Id", user_id)
+    req.add_header("X-User-Type", "AD_ID")
+    req.add_header("X-Prompt-Msg-Id", str(uuid.uuid4()))
+    req.add_header("X-Completion-Msg-Id", str(uuid.uuid4()))
+
+    try:
+        with _opener.open(req, timeout=timeout) as res:
+            data = json.loads(res.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "replace")[:500]
+        raise RuntimeError(f"LLM HTTP {e.code}: {detail}") from e
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"LLM 연결 실패: {e.reason}") from e
+
+    return data["choices"][0]["message"]["content"]
+
+
+def _mock(messages):
+    q = messages[-1]["content"]
+    return f"[mock] '{q[:30]}' 질문에 대한 응답 자리"</pre></div>
+<p>HTTPError를 잡을 때 응답 본문을 꼭 읽어서 남긴다. 게이트웨이는 헤더가 빠졌거나 티켓이 만료됐을 때 본문에 이유를 적어 주는데, 상태 코드만 보면 401인지 403인지밖에 모른다.</p>
+<div class="hl-code"><div class="hl-code-h"><span>app.py (호출하는 쪽)</span><button type="button" class="hl-copy">복사</button></div><pre>from flask import session, jsonify, request
+from llm_client import chat
+
+@app.post("/api/case-ai")
+@login_required
+def case_ai():
+    question = request.json.get("q", "").strip()
+    messages = [
+        {"role": "system", "content": "이슈 데이터에 근거해서만 답한다. 근거가 없으면 모른다고 답한다."},
+        {"role": "user", "content": question},
+    ]
+    answer = chat(messages, user_id=session["user_id"])
+    return jsonify({"answer": answer})</pre></div>
+
+<h2>승인 전에는 mock으로 먼저 만든다</h2>
+<p>사내 LLM API는 사용 신청과 승인에 시간이 걸린다. 그 사이 화면과 흐름을 먼저 만들 수 있도록 공급자를 환경변수 하나로 바꾸게 했다. 로컬과 개발 중에는 <code>LLM_PROVIDER=mock</code>, 승인 후 운영 환경에서만 <code>gateway</code>로 바꾼다.</p>
+<div class="hl-fig">
+  <div class="hl-tabs">
+    <div class="hl-seg"><button type="button" class="on">승인 전</button><button type="button">승인 후</button></div>
+    <div class="hl-pane on">
+      <div class="hl-flow">
+        <div class="hl-node"><b>화면·라우트</b><span>완성</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node pri"><b>chat()</b><span>LLM_PROVIDER=mock</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>고정 응답</b><span>흐름 검증용</span></div>
+      </div>
+    </div>
+    <div class="hl-pane">
+      <div class="hl-flow">
+        <div class="hl-node"><b>화면·라우트</b><span>그대로</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node pri"><b>chat()</b><span>LLM_PROVIDER=gateway</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node ok"><b>사내 LLM</b><span>코드 수정 없음</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="hl-cap">바뀌는 것은 환경변수뿐이다.</p>
+</div>
+<p>키와 티켓은 코드나 저장소에 두지 않고 배포 환경의 Secret이나 환경변수로 넣는다. 모델이 바뀔 때도 <code>LLM_MODEL</code>만 바꾸면 된다.</p>
+
+<h2>정리</h2>
+<ul>
+  <li>OpenAI 호환 API 한 종류만 부른다면 urllib으로 충분하다. 폐쇄망에서는 의존성 하나가 곧 절차 하나다.</li>
+  <li>사용자 ID는 세션에서 자동으로 넣고, 호출마다 UUID를 붙여 추적 가능하게 한다.</li>
+  <li>HTTPError 본문을 남겨야 원인을 알 수 있다.</li>
+  <li>공급자를 환경변수로 바꾸게 하면 API 승인을 기다리는 동안 mock으로 개발을 끝낼 수 있다.</li>
+</ul>
+<div class="hl-end"><div class="hl-nav"><div class="l"><small>이전 편</small><span>6편. 비전문가에게 AI 성능을 보여주는 법: 점수 대신 &#x27;10건 중 약 6건&#x27;</span></div><div class="r"><small>다음 편</small><span>8편. 이슈 1건에 리포트 1장: AI 이슈 사례분석 화면 설계</span></div></div><div class="hl-tags"><span>#LLM</span><span>#Python</span><span>#urllib</span><span>#Flask</span><span>#폐쇄망</span><span>#OpenAI호환API</span><span>#사내LLM</span><span>#API연동</span></div></div>
+<script>
+(function(){
+  function each(list,fn){for(var i=0;i<list.length;i++){fn(list[i],i);}}
+  function fallbackCopy(txt){
+    var ta=document.createElement('textarea');
+    ta.value=txt;ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.top='0';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+  }
+  function init(root){
+    if(root.getAttribute('data-hl-ready')==='1'){return;}
+    root.setAttribute('data-hl-ready','1');
+
+    var toc=root.querySelector('.hl-toc ol');
+    if(toc){
+      var hs=root.querySelectorAll('h2');
+      if(hs.length<3){root.querySelector('.hl-toc').style.display='none';}
+      each(hs,function(h){
+        var li=document.createElement('li');
+        var b=document.createElement('button');
+        b.type='button';b.className='hl-toc-a';b.textContent=h.textContent;
+        b.addEventListener('click',function(){
+          var y=h.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop)-24;
+          try{window.scrollTo({top:y,behavior:'smooth'});}catch(e){window.scrollTo(0,y);}
+        });
+        li.appendChild(b);toc.appendChild(li);
+      });
+    }
+
+    each(root.querySelectorAll('.hl-tabs'),function(t){
+      var btns=t.querySelectorAll('.hl-seg button');
+      var panes=t.querySelectorAll('.hl-pane');
+      each(btns,function(b,i){
+        b.setAttribute('aria-pressed',b.className.indexOf('on')>-1?'true':'false');
+        b.addEventListener('click',function(){
+          each(btns,function(x,j){x.className=(j===i)?'on':'';x.setAttribute('aria-pressed',(j===i)?'true':'false');});
+          each(panes,function(p,j){if(j===i){p.classList.add('on');}else{p.classList.remove('on');}});
+        });
+      });
+    });
+
+    each(root.querySelectorAll('.hl-code'),function(c){
+      var btn=c.querySelector('.hl-copy');var pre=c.querySelector('pre');
+      if(!btn||!pre){return;}
+      btn.addEventListener('click',function(){
+        var txt=pre.textContent;
+        var done=function(){btn.textContent='복사됨';setTimeout(function(){btn.textContent='복사';},1500);};
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(txt).then(done,function(){fallbackCopy(txt);done();});
+        }else{fallbackCopy(txt);done();}
+      });
+    });
+
+    each(root.querySelectorAll('.hl-checkwrap'),function(w){
+      var items=w.querySelectorAll('.hl-chk');
+      var t=w.querySelector('.hl-prog-t');var bar=w.querySelector('.hl-prog-b i');
+      function upd(){
+        var n=w.querySelectorAll('.hl-chk.on').length;
+        if(t){t.textContent=items.length+'개 중 '+n+'개 확인';}
+        if(bar){bar.style.width=(items.length?Math.round(n/items.length*100):0)+'%';}
+      }
+      each(items,function(it){
+        it.setAttribute('aria-pressed','false');
+        it.addEventListener('click',function(){
+          var on=it.classList.toggle('on');
+          it.setAttribute('aria-pressed',on?'true':'false');upd();
+        });
+      });
+      upd();
+    });
+  }
+  each(document.querySelectorAll('article.hl-post'),init);
+})();
+</script>
+</article>

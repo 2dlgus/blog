@@ -1,0 +1,321 @@
+<!--
+id: 77
+제목: AWS DEA-C01 공식 샘플 문제 — IAM 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, IAM, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, 역할부여
+날짜: 2026-03-15 12:53
+수정: 2026-03-24 22:25
+형식: html
+썸네일: /img/t/dJMcabDsOsJ.webp
+-->
+<style>
+.pb-77 *, .pb-77, .pb-77 *::before, .pb-77 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-77{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-77{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-77 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-77 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-77 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-77 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-77 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-77 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-77 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-77 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-77 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-77 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-77 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-77 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-77 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-77 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-77 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-77 .question-box p:last-child{margin-bottom:0}
+.pb-77 .hl-blue{color:var(--blue);font-weight:700}
+.pb-77 .hl-orange{color:var(--orange);font-weight:700}
+.pb-77 .hl-bold{font-weight:900}
+.pb-77 .req-list{list-style:none;padding:0}
+.pb-77 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-77 .req-list li:last-child{border-bottom:none}
+.pb-77 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-77 .iam-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media (max-width: 520px){.pb-77 .iam-grid{grid-template-columns:1fr}}
+.pb-77 .iam-card{border-radius:12px;padding:14px;border:1.5px solid}
+.pb-77 .iam-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-77 .iam-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-77 .iam-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-77 .iam-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pb-77 .iam-icon{font-size:20px}
+.pb-77 .iam-name{font-weight:800;font-size:12px;line-height:1.3}
+.pb-77 .iam-card.ok   .iam-name{color:var(--green)}
+.pb-77 .iam-card.bad  .iam-name{color:var(--red)}
+.pb-77 .iam-card.warn .iam-name{color:var(--yellow)}
+.pb-77 .iam-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.pb-77 .iam-row{display:flex;align-items:flex-start;gap:6px;font-size:11px}
+.pb-77 .iam-row .iam-label{color:var(--muted);width:66px;flex-shrink:0;padding-top:1px}
+.pb-77 .chip{padding:2px 7px;border-radius:99px;font-size:10px;font-weight:700}
+.pb-77 .chip-ok{background:var(--s10);color:var(--green)}
+.pb-77 .chip-bad{background:var(--r5);color:var(--red)}
+.pb-77 .chip-warn{background:var(--y10);color:var(--yellow)}
+.pb-77 .chip-na{background:var(--p5);color:var(--muted)}
+.pb-77 .iam-verdict{padding:5px 9px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}
+.pb-77 .iam-card.ok   .iam-verdict{background:var(--s10);color:var(--green)}
+.pb-77 .iam-card.bad  .iam-verdict{background:var(--r5);color:var(--red)}
+.pb-77 .iam-card.warn .iam-verdict{background:var(--y10);color:var(--yellow)}
+.pb-77 .arch-flow{display:flex;flex-direction:column;gap:8px}
+.pb-77 .arch-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pb-77 .arch-box{padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700;border:1.5px solid;text-align:center;line-height:1.4}
+.pb-77 .arch-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-77 .arch-box.orange{background:var(--y5);color:var(--orange);border-color:var(--y50)}
+.pb-77 .arch-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-77 .arch-box.purple{background:var(--g5);color:var(--purple);border-color:var(--p10)}
+.pb-77 .arch-box.red{background:var(--red-light);color:var(--red);border-color:var(--red-border)}
+.pb-77 .arch-box.gray{background:var(--p5);color:var(--muted);border-color:var(--border)}
+.pb-77 .arch-arrow{font-size:16px;color:var(--muted);flex-shrink:0}
+.pb-77 .arch-note{font-size:11px;color:var(--muted);padding:4px 8px;background:var(--g0);border-radius:6px;border:1px solid var(--border)}
+.pb-77 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-77 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-77 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-77 .alert-red{background:var(--red-light);border-color:var(--red);color:var(--r60)}
+.pb-77 .alert-green{background:var(--green-light);border-color:var(--green);color:var(--s60)}
+.pb-77 .entity-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width: 560px){.pb-77 .entity-grid{grid-template-columns:1fr}}
+.pb-77 .entity-card{border-radius:10px;padding:12px;border:1.5px solid var(--border);text-align:center}
+.pb-77 .entity-card.role{background:var(--green-light);border-color:var(--green-border)}
+.pb-77 .entity-card.user{background:var(--y5);border-color:var(--y50)}
+.pb-77 .entity-card.res{background:var(--blue-light);border-color:var(--p10)}
+.pb-77 .entity-card .e-icon{font-size:22px;margin-bottom:5px}
+.pb-77 .entity-card .e-name{font-size:12px;font-weight:800;margin-bottom:4px}
+.pb-77 .entity-card.role .e-name{color:var(--green)}
+.pb-77 .entity-card.user .e-name{color:var(--yellow)}
+.pb-77 .entity-card.res  .e-name{color:var(--blue)}
+.pb-77 .entity-card .e-for{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;display:inline-block;margin-bottom:6px}
+.pb-77 .entity-card.role .e-for{background:var(--s10);color:var(--green)}
+.pb-77 .entity-card.user .e-for{background:var(--y10);color:var(--yellow)}
+.pb-77 .entity-card.res  .e-for{background:var(--p10);color:var(--blue)}
+.pb-77 .entity-card .e-desc{font-size:10px;color:var(--muted);line-height:1.5}
+.pb-77 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-77 .option:hover{border-color:var(--p50)}
+.pb-77 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-77 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-77 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-77 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-77 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-77 .opt-body{flex:1;min-width:0}
+.pb-77 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-77 .opt-main.correct{color:var(--green)}
+.pb-77 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-77 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-77 .opt-why.show{display:block}
+.pb-77 .opt-why.ok-why{background:var(--s10)}
+.pb-77 .opt-why.bad-why{background:var(--r5)}
+.pb-77 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-77 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-77 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-77 .answer-body{display:none;margin-top:14px}
+.pb-77 .answer-body.show{display:block}
+.pb-77 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-77 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-77 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-77 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-77 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-77 .summary-table tr:last-child td{border-bottom:none}
+.pb-77 .summary-table tr:hover td{background:var(--g0)}
+.pb-77 .ok-text{color:var(--green);font-weight:700}
+.pb-77 .bad-text{color:var(--red);font-weight:700}
+.pb-77 .warn-text{color:var(--yellow);font-weight:700}
+.pb-77 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-77 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-77 .wrap{padding:20px 14px 50px}
+.pb-77 h1.post-title{font-size:19px}
+.pb-77 .question-box p{font-size:14px}
+.pb-77 .opt-main{font-size:13px}
+.pb-77 .code-block{font-size:11px}}
+.pb-77 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-77 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-77 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-77 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-77 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-77 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-77 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-77 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-77 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-77 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-77 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-77 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-77 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-77 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-77 .ans-label::before{content:'🎯 '}
+.pb-77 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-77 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-77 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-77 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-77 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-77 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-77">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-teal">AWS Glue</span> <span class="badge badge-orange">IAM 서비스 역할</span> <span class="badge badge-purple">IAM 정책</span> <span class="badge badge-green">ETL 파이프라인</span></div>
+<h1 class="post-title">AWS Glue ETL에 S3 권한 부여 &mdash; IAM 서비스 역할(Role)이 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 IAM 권한 부여 패턴 문제입니다. AWS 서비스(Glue)에 다른 AWS 리소스(S3) 접근 권한을 부여할 때는 <b>IAM 사용자&middot;액세스 키가 아닌 IAM 서비스 역할(Service Role)</b>을 사용해야 합니다. 리소스 정책과 IAM 역할의 차이, 정책을 직접 연결할 수 없는 이유도 함께 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">데이터 엔지니어가 <span class="hl-blue">AWS Glue ETL 파이프라인</span>을 새 계정에 배포하고 있다. 파이프라인은 <span class="hl-orange">소스 S3 버킷에서 원시 데이터를 읽고</span> <span class="hl-orange">대상 S3 버킷에 변환된 데이터를 저장</span>한다.</p>
+<p data-ke-size="size16">데이터 엔지니어는 두 S3 버킷에 대한 접근 권한이 포함된 <span class="hl-bold">IAM 정책을 이미 작성</span>했다. 이제 이 정책의 권한을 <span class="hl-bold">AWS Glue에 부여</span>해야 한다.</p>
+<p data-ke-size="size16">다음 중 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 개념 — IAM 엔티티 유형 -->
+<h2 class="section-title" data-ke-size="size26">🔑 핵심 개념 &mdash; IAM 엔티티 유형과 용도</h2>
+<div class="card">
+<div class="entity-grid">
+<div class="entity-card role">
+<div class="e-icon">🎭</div>
+<div class="e-name">IAM Role (역할)</div>
+<div class="e-for">AWS 서비스용 ⭐</div>
+<div class="e-desc">AWS 서비스(Glue, Lambda 등)가 다른 AWS 리소스에 접근할 때 사용. 신뢰 정책으로 서비스에 위임</div>
+</div>
+<div class="entity-card user">
+<div class="e-icon">👤</div>
+<div class="e-name">IAM User (사용자)</div>
+<div class="e-for">사람&middot;애플리케이션용</div>
+<div class="e-desc">사람이나 외부 애플리케이션에 장기 자격 증명 발급. AWS 서비스에 직접 부여 불가</div>
+</div>
+<div class="entity-card res">
+<div class="e-icon">🪣</div>
+<div class="e-name">리소스 정책</div>
+<div class="e-for">리소스 자체에 부착</div>
+<div class="e-desc">S3 버킷 정책처럼 리소스에 직접 연결. 누가 이 리소스에 접근할 수 있는지 정의</div>
+</div>
+</div>
+<div class="alert alert-green" style="margin-top:4px">✅ <b>핵심 원칙:</b> AWS 서비스가 다른 AWS 리소스에 접근해야 할 때는 항상 <b>IAM 역할(Role)</b>을 생성하고, 해당 서비스를 신뢰 정책의 주체(Principal)로 설정합니다. IAM 정책은 역할 또는 사용자에만 연결할 수 있으며, AWS Glue 서비스 자체에 직접 연결할 수 없습니다.</div>
+</div>
+<!-- 정답 아키텍처 -->
+<h2 class="section-title" data-ke-size="size26">🏗️ 정답 아키텍처 &mdash; IAM 서비스 역할 연결 흐름</h2>
+<div class="card">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">✅ 올바른 방법 &mdash; IAM 역할 생성 &rarr; 정책 연결 &rarr; Glue에 역할 지정</p>
+<div class="arch-flow">
+<div class="arch-row">
+<div class="arch-box blue">IAM 정책<br />(S3 소스&middot;대상 접근)</div>
+<div class="arch-arrow">&darr; 연결</div>
+<div class="arch-box orange">IAM 서비스 역할<br />(신뢰: glue.amazonaws.com)</div>
+<div class="arch-arrow">&darr; 지정</div>
+<div class="arch-box green">AWS Glue 작업</div>
+</div>
+<div class="arch-row" style="margin-top:6px">
+<div class="arch-box green">AWS Glue 작업</div>
+<div class="arch-arrow">&rarr; AssumeRole</div>
+<div class="arch-box orange">역할 임시 자격 증명</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box blue">S3 버킷 접근 ✅</div>
+</div>
+</div>
+<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">📋 IAM 역할 신뢰 정책 예시</p>
+<div style="background:var(--p70);border-radius:10px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre">{ "Version": "2012-10-17", "Statement": [{ "Effect": "Allow", "Principal": { "Service": "glue.amazonaws.com" }, "Action": "sts:AssumeRole" }] }</div>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ IAM 사용자 + 액세스 키 생성 &rarr; 정책 연결 &rarr; Glue 작업에 액세스 키 제공</div>
+<div class="opt-sub">장기 자격 증명을 코드/설정에 하드코딩 &mdash; 보안 위험 + AWS 비권장 방식</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 이유로 잘못된 방식입니다. 첫째, <b>IAM 사용자와 액세스 키는 사람이나 외부 애플리케이션을 위한 것</b>이며, AWS 서비스(Glue)에 권한을 부여하는 목적으로 설계된 것이 아닙니다. 둘째, 액세스 키를 Glue 작업 구성에 직접 포함하면 <b>장기 자격 증명이 코드나 설정 파일에 노출</b>될 위험이 있습니다. AWS는 서비스 간 권한 부여에 IAM 역할을 사용하도록 강력히 권장합니다. IAM 역할은 임시 자격 증명을 자동 순환하여 보안이 훨씬 뛰어납니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ 소스&middot;대상 S3용 IAM 정책 2개 생성 &rarr; Glue 작업 구성 시 정책을 직접 연결</div>
+<div class="opt-sub">IAM 정책은 역할&middot;사용자에 연결하는 것 &mdash; Glue 서비스 자체에 직접 연결 불가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 <b>IAM 정책은 IAM 자격 증명(역할, 사용자, 그룹)에 연결</b>하는 것이며, AWS Glue 서비스 자체에 직접 연결할 수 없습니다. Glue 작업을 구성할 때 정책을 직접 지정하는 옵션도 존재하지 않습니다. 또한 하나의 역할에 두 정책을 모두 연결하면 되므로 정책을 굳이 2개로 분리할 필요도 없습니다. 올바른 방법은 IAM 역할을 만들고 그 역할에 정책을 연결한 후 Glue에 역할을 지정하는 것입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">C</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ AWS Glue에 새 IAM 서비스 역할 생성 &rarr; 정책 연결 &rarr; 역할을 사용하도록 Glue 구성</div>
+<div class="opt-sub">AWS 서비스 간 권한 부여의 표준 방식 &mdash; 임시 자격 증명 자동 순환, 최소 보안 위험</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> AWS 서비스가 다른 AWS 리소스에 접근할 때의 표준 패턴입니다. ① <b>신뢰 정책에 glue.amazonaws.com을 Principal로 설정</b>한 IAM 서비스 역할을 생성합니다. ② 기존에 작성한 S3 접근 IAM 정책을 이 역할에 연결합니다. ③ Glue 작업을 구성할 때 이 역할을 지정합니다. Glue가 실행될 때 STS(Security Token Service)를 통해 역할을 수임(AssumeRole)하고 임시 자격 증명을 자동으로 받아 S3에 접근합니다. 액세스 키를 코드에 노출할 필요가 없으며, 임시 자격 증명은 자동으로 갱신됩니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ 소스&middot;대상 S3용 리소스 정책 2개 생성 &rarr; 각 S3 버킷에 연결</div>
+<div class="opt-sub">리소스 정책은 "누가 이 버킷에 접근할 수 있는가" 정의 &mdash; Glue에 권한 부여 목적이 아님</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 리소스 정책(버킷 정책)은 <b>S3 버킷 자체에 연결되어, 어떤 주체(Principal)가 해당 버킷에 접근할 수 있는지</b>를 정의합니다. 이 방식은 S3 버킷에 정책을 연결하는 것이지, AWS Glue에 권한을 부여하는 것이 아닙니다. 또한 버킷 정책만으로는 Glue가 S3에 접근하도록 <b>Glue 자체에 권한을 부여하는 메커니즘이 부재</b>합니다. 리소스 정책은 IAM 역할 기반 접근 제어를 보완하는 용도로 사용하며, 단독으로 서비스 권한 부여에 사용하지 않습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: C &mdash; IAM 서비스 역할 생성 + 정책 연결 + Glue에 역할 지정</b></p>
+<p data-ke-size="size16"><b>"AWS 서비스에 권한 부여 = IAM Role"</b>은 AWS 보안 모범 사례의 핵심입니다. IAM 사용자&middot;액세스 키(A)는 사람/외부 앱용이고, IAM 정책은 서비스에 직접 연결(B) 불가하며, 리소스 정책(D)은 리소스 접근 제어용입니다.</p>
+<div class="code-block"># AWS 서비스 간 권한 부여 표준 패턴 [잘못된 방법 A] IAM 사용자 &rarr; 액세스 키 &rarr; Glue 코드에 하드코딩 ❌ (보안 위험, 장기 자격 증명 노출) [잘못된 방법 B] IAM 정책 &rarr; Glue 서비스에 직접 연결 ❌ (정책은 역할/사용자에만 연결 가능) [잘못된 방법 D] 리소스 정책 &rarr; S3 버킷에 연결 ❌ (Glue에 권한 부여가 아닌 버킷 접근 제어) [올바른 방법 C] ✅ 1. IAM 역할 생성 - 신뢰 정책: Principal = glue.amazonaws.com 2. IAM 정책(S3 소스&middot;대상 접근)을 역할에 연결 3. Glue 작업에 이 역할 지정 &rarr; Glue가 STS로 역할 수임 &rarr; 임시 자격 증명으로 S3 접근 # 핵심 암기 사람/외부앱 &rarr; IAM User + Access Key AWS 서비스 &rarr; IAM Role (서비스 역할) ⭐</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>방식</th>
+<th>Glue에 권한 부여</th>
+<th>보안 수준</th>
+<th>가능 여부</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A</b></td>
+<td>IAM 사용자 + 액세스 키</td>
+<td class="warn-text">⚠️ 가능하나 부적절</td>
+<td class="bad-text">❌ 낮음 (장기 키 노출)</td>
+<td class="warn-text">기술적 가능</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>B</b></td>
+<td>IAM 정책 직접 연결</td>
+<td class="bad-text">❌ 불가</td>
+<td class="bad-text">❌ 해당 없음</td>
+<td class="bad-text">불가</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>C ⭐</b></td>
+<td>IAM 서비스 역할</td>
+<td class="ok-text">✅ 표준 방식</td>
+<td class="ok-text">✅ 높음 (임시 자격)</td>
+<td class="ok-text">✅ 가능</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>D</b></td>
+<td>S3 리소스 정책</td>
+<td class="bad-text">❌ Glue 권한 부여 아님</td>
+<td class="bad-text">❌ 불완전</td>
+<td class="bad-text">불완전</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWSGlue</span> <span class="seo-tag">#IAM서비스역할</span> <span class="seo-tag">#IAMRole</span> <span class="seo-tag">#IAM정책</span> <span class="seo-tag">#ETL파이프라인</span> <span class="seo-tag">#S3접근권한</span> <span class="seo-tag">#IAM사용자액세스키</span> <span class="seo-tag">#리소스정책</span> <span class="seo-tag">#AWS권한부여패턴</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

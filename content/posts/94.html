@@ -1,0 +1,545 @@
+<!--
+id: 94
+제목: AWS DEA-C01 각색 문제 Day 01 — VPC·Lake Formation·Lambda 5문제
+카테고리: Stack/AWS
+태그: 자격증, AWS, DEA, Data Engineering, 데이터 엔지니어링, Lake formation, 데이터 메시, VPC 네트워킹, Data Exchange, Lambda Layer
+날짜: 2026-03-20 22:24
+수정: 2026-03-25 16:27
+형식: html
+썸네일: /img/t/dJMcaaq6bfi.webp
+-->
+<style>
+.pb-94 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-94 .dea-wrap *{box-sizing:border-box}
+.pb-94 .dea-post-header{margin-bottom:32px}
+.pb-94 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-94 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-94 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-94 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-94 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-94 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-94 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-94 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-94 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-94 .dea-q-block{margin-bottom:48px}
+.pb-94 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-94 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-94 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-94 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-94 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-94 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-94 .dea-badge.multi{background:var(--r5);color:var(--r60)}
+.pb-94 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-94 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-94 .dea-seo-lead strong{color:var(--p50)}
+.pb-94 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-94 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-94 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-94 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-94 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-94 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-94 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-94 .dea-opt.ok{border-color:var(--s60)}
+.pb-94 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-94 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-94 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-94 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-94 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-94 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-94 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-94 .dea-term{font-weight:700;color:var(--p50)}
+.pb-94 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-94 .dea-btn:hover{background:var(--p60)}
+.pb-94 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-94 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-94 .dea-exp.on{display:flex}
+.pb-94 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-94 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-94 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-94 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-94 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-94 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-94 .dea-table th, .pb-94 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-94 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-94 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-94 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-94 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-94 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-94 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-94 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-94 .dea-pill.gw{background:var(--s5);color:var(--s60)}
+.pb-94 .dea-pill.if{background:var(--y5);color:var(--y60)}
+.pb-94 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-94 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-94 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-94 .dea-hl{color:var(--p50);font-weight:700}
+.pb-94 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-94 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-94 .dea-wrap{padding:14px 6px 52px}
+.pb-94 .dea-post-title{font-size:18px}
+.pb-94 .dea-qcard p{font-size:14px}
+.pb-94 .dea-opt-row{font-size:13px}
+.pb-94 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-94 .dea-table{font-size:11.5px}
+.pb-94 .dea-table th, .pb-94 .dea-table td{padding:8px 9px}
+.pb-94 .dea-ans-main{font-size:14.5px}
+.pb-94 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-94">
+<article class="dea-wrap">
+<div>
+
+</div>
+<div class="dea-post-header">
+<h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 &mdash; Day 01</h1>
+<p class="dea-post-desc" data-ke-size="size16">VPC 네트워킹, Lake Formation 거버넌스, Data Exchange, 데이터 메시, Lambda Layer까지 &mdash; 5문제로 Domain 1 핵심 개념을 한 번에 정리합니다.</p>
+<div class="dea-post-meta"><span class="dea-badge exam">AWS DEA-C01</span> <span class="dea-badge topic">Domain 1 &middot; 데이터 수집&middot;변환</span> <span class="dea-badge diff">5문제</span></div>
+</div>
+<nav class="dea-toc">
+<div class="dea-toc-title">📋 목차</div>
+<ul class="dea-toc-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><a href="#dea-q1"><span class="dea-toc-num">Q1</span> AWS Glue ETL 작업의 S3 VPC Endpoint 연결 오류 해결</a></li>
+<li><a href="#dea-q2"><span class="dea-toc-num">Q2</span> 지역별 고객 데이터 접근 제한 &mdash; 운영 부담 최소화</a></li>
+<li><a href="#dea-q3"><span class="dea-toc-num">Q3</span> 추천 시스템 고도화를 위한 외부 데이터 통합</a></li>
+<li><a href="#dea-q4"><span class="dea-toc-num">Q4</span> 분산 데이터 아키텍처(Data Mesh) 구현 서비스 조합</a></li>
+<li><a href="#dea-q5"><span class="dea-toc-num">Q5</span> 여러 Lambda 함수에서 공유 코드 일괄 관리</a></li>
+</ul>
+</nav><!-- Q1 -->
+<div id="dea-q1" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q1</span> <span class="dea-badge topic">VPC &middot; Networking &middot; Glue</span> <span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS Glue</b>를 VPC 환경에서 실행할 때 S3 연결 오류가 나는 원인 중 하나가 <b>VPC Gateway Endpoint 라우팅 테이블 미설정</b>입니다. 네트워크 경로 vs 권한 문제를 구분하는 것이 핵심이며, DEA-C01에서 Glue + VPC 트러블슈팅 유형으로 자주 출제됩니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">데이터 팀이 VPC 내에서 실행되는 AWS Glue ETL 작업을 통해 Amazon S3의 데이터를 처리하고 있습니다. Glue 연결 설정과 IAM 권한은 이미 구성되어 있지만, 작업 실행 시 S3 VPC 게이트웨이 엔드포인트와 관련된 오류가 발생합니다. 이 연결 문제를 해결하려면 어떻게 해야 할까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q1-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>S3 VPC 게이트웨이 엔드포인트로부터의 트래픽을 허용하도록 Glue 작업에 연결된 보안 그룹의 인바운드 규칙을 수정합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">보안 그룹(Security Group)</span> &mdash; 출입구 경비원. Gateway Endpoint에는 경비원이 없음. 보안 그룹은 <b>Interface Endpoint(전용 직통 전화선)</b>에만 붙는 개념. Gateway는 라우팅 테이블이 담당.</div>
+</li>
+<li id="q1-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 작업이 대상 S3 버킷에 접근할 수 있도록 버킷 리소스 기반 정책에 명시적 허용 구문을 추가합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">S3 버킷 정책(Bucket Policy)</span> &mdash; 창고 출입 명단. IAM 권한은 이미 설정됐다고 전제되어 있음. 권한 문제가 아닌 <b>네트워크 경로 문제</b>. 명단 수정해봤자 길이 없으면 못 감.</div>
+</li>
+<li id="q1-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Glue 연결 설정에서 S3 엔드포인트의 전체 도메인 이름(FQDN)이 올바르게 지정되어 있는지 확인합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">FQDN(Fully Qualified Domain Name)</span> &mdash; 완전 정규화 도메인 이름 (예: s3.ap-northeast-2.amazonaws.com). Gateway Endpoint는 도메인이 아닌 <b>Prefix List(IP 대역 묶음)</b> 기반으로 라우팅. FQDN 수정은 이 오류와 무관.</div>
+</li>
+<li id="q1-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Glue 작업이 실행되는 서브넷의 라우팅 테이블에 S3 VPC 게이트웨이 엔드포인트를 향하는 경로가 등록되어 있는지 확인합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">라우팅 테이블(Routing Table)</span> &mdash; 내비게이션 경로표. S3 Gateway Endpoint를 만들어도 <b>VPC 서브넷의 라우팅 테이블에 "S3 &rarr; 엔드포인트" 경로가 등록</b>되어야 트래픽이 흐름. 경로 없으면 차가 고속도로 무시하고 일반 인터넷으로 나가려다 차단 &rarr; 정확히 이 오류.</div>
+</li>
+</ul>
+<button id="btn-q1" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q1" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">D &mdash; VPC 라우팅 테이블에 Gateway Endpoint 경로 추가</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Gateway Endpoint vs Interface Endpoint</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>구분</th>
+<th>Gateway Endpoint</th>
+<th>Interface Endpoint (PrivateLink)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>지원 서비스</td>
+<td><span class="dea-pill gw">S3</span> &nbsp;<span class="dea-pill gw">DynamoDB</span></td>
+<td>그 외 대부분의 AWS 서비스</td>
+</tr>
+<tr>
+<td>실생활 비유</td>
+<td>🛣️ <b>전용 고속도로</b><br /><small>내비게이션(라우팅 테이블)에 경로 등록 필수</small></td>
+<td>📞 <b>전용 직통 전화선(ENI)</b><br /><small>경비원(보안 그룹)이 통제</small></td>
+</tr>
+<tr>
+<td>트래픽 제어</td>
+<td><b>라우팅 테이블</b></td>
+<td><b>보안 그룹(Security Group)</b></td>
+</tr>
+<tr>
+<td>비용</td>
+<td>무료 🎉</td>
+<td>시간당 요금 💸</td>
+</tr>
+<tr>
+<td>흔한 오류 원인</td>
+<td><b>라우팅 테이블 경로 누락</b></td>
+<td><b>보안 그룹 인바운드 차단</b></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>Gateway Endpoint  (S3 &middot; DynamoDB)  &rarr;  <span class="dea-hl">라우팅 테이블</span>  (내비게이션 경로)<br />Interface Endpoint (그 외 서비스)   &rarr;  <span class="dea-hl">보안 그룹</span>     (출입구 경비원)<br /><br />"VPC 게이트웨이 엔드포인트 오류" = 라우팅 테이블 먼저 확인!</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q2 -->
+<div id="dea-q2" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q2</span> <span class="dea-badge topic">Lake Formation &middot; 거버넌스 &middot; 보안</span> <span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS Lake Formation</b>의 행 수준 보안(Row-Level Security)은 데이터 레이크에서 국가&middot;부서별 접근 제어를 운영 부담 없이 구현하는 핵심 기능입니다. 테이블을 나누거나 리전을 분리하지 않고도 <b>단일 데이터셋에서 정책 기반으로 접근을 제한</b>할 수 있어 DEA-C01 거버넌스&middot;보안 도메인에서 자주 출제됩니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">한 이커머스 기업이 여러 국가의 고객 데이터를 Amazon S3에 통합 저장하여 분석에 활용하고 있습니다. 데이터 거버넌스 팀은 각 국가 담당 분석가가 자신이 담당하는 국가의 고객 데이터에만 접근하도록 제한해야 하며, 국가가 추가되어도 관리 작업을 최소화할 수 있는 솔루션이 필요합니다. 가장 적합한 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q2-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>국가별로 별도의 테이블을 생성하고, 각 분석가에게 담당 국가의 테이블에 대한 접근 권한만 개별 부여합니다.</span></div>
+<div class="dea-inline-exp">❌ 🗂️ 국가별 서류함 따로 만들기. 국가가 늘어날 때마다 <b>테이블 생성 &rarr; 권한 부여</b> 작업이 반복됨. 운영 최소화와 반대 방향.</div>
+</li>
+<li id="q2-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>S3 버킷을 AWS Lake Formation의 데이터 레이크 위치로 등록하고, Lake Formation의 행 수준 보안(Row-Level Security) 기능으로 접근 정책을 적용합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS Lake Formation</span> &mdash; 데이터 레이크 중앙 거버넌스 서비스. <span class="dea-term">행 수준 보안(Row-Level Security, RLS)</span> &mdash; 도서관 사서가 "이 직원은 한국 섹션만 열람 가능"이라고 출입증에 등록해두면 어느 책장을 열어도 자동 필터링되는 것. 데이터를 나누지 않고 <b>정책 하나로 모든 접근을 제어</b>. 국가 추가 시 조건값만 추가하면 끝.</div>
+</li>
+<li id="q2-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>고객 데이터를 해당 국가와 가장 가까운 AWS 리전으로 이동하고, 각 분석가에게 해당 리전 데이터에 대한 접근 권한을 부여합니다.</span></div>
+<div class="dea-inline-exp">❌ 🌏 국가마다 창고 따로 짓기. <span class="dea-term">리전(Region)</span> &mdash; AWS 물리 데이터센터 지역 단위. 리전별 데이터 이동 시 <b>복제 비용 + 동기화 운영</b> 발생. 접근 제어 문제를 인프라 분리로 해결하는 과도한 방법.</div>
+</li>
+<li id="q2-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>데이터를 Amazon Redshift로 이관하고, 국가별 뷰(View)를 생성한 뒤 국가마다 IAM 역할을 만들어 분석가에게 할당합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon Redshift</span> &mdash; 완전 관리형 클라우드 데이터 웨어하우스. 기술적으로 작동하지만 국가 추가 시마다 <b>뷰 생성 &rarr; IAM(Identity and Access Management) 역할 생성 &rarr; 역할 매핑</b> 3단계 반복. 운영 최소화 기준 미달.</div>
+</li>
+</ul>
+<button id="btn-q2" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q2" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; Lake Formation 행 수준 보안으로 정책 일괄 적용</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; 각 선택지 운영 부담 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>실생활 비유</th>
+<th>국가 추가 시</th>
+<th>운영 부담</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A. 국가별 테이블 분리</td>
+<td>🗂️ 국가별 서류함 따로</td>
+<td>테이블 + 권한 매번 신규 생성</td>
+<td><span class="dea-pill bad">높음</span></td>
+</tr>
+<tr>
+<td><b>B. Lake Formation RLS</b></td>
+<td>🏢 <b>출입증에 층별 권한 내장</b></td>
+<td>정책 조건값만 추가</td>
+<td><span class="dea-pill good">낮음 ✓</span></td>
+</tr>
+<tr>
+<td>C. 리전별 데이터 이동</td>
+<td>🌏 국가마다 창고 따로 짓기</td>
+<td>리전 인프라 전체 복제</td>
+<td><span class="dea-pill bad">매우 높음</span></td>
+</tr>
+<tr>
+<td>D. Redshift 뷰 + IAM 역할</td>
+<td>📋 열람신청서 + 직원증 따로 발급</td>
+<td>뷰 + IAM 역할 + 매핑 반복</td>
+<td><span class="dea-pill mid">중간~높음</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"국가&middot;부서별 행 단위 접근 제어 + 운영 최소화"  &rarr;  <span class="dea-hl">Lake Formation RLS</span><br /><br />데이터를 쪼개지 말고, <span class="dea-hl">정책으로 필터</span>링하자.<br />테이블 / 리전 / IAM 역할을 국가별로 늘리면 = 운영 부담 증가 = 오답</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q3 -->
+<div id="dea-q3" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q3</span> <span class="dea-badge topic">Data Exchange &middot; 데이터 수집</span> <span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS Data Exchange</b>는 타사(3rd-party) 데이터셋을 AWS 환경에 직접 구독&middot;통합할 수 있는 데이터 마켓플레이스입니다. 별도 파이프라인 구축 없이 <b>구독 즉시 S3로 전달</b>되기 때문에 운영 오버헤드가 가장 낮으며, DEA-C01에서 "타사 데이터 + 운영 최소화" 조합으로 자주 출제됩니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">한 스트리밍 플랫폼 회사가 콘텐츠 추천 엔진의 정확도를 높이기 위해 외부 데이터 제공업체의 사용자 행동 인사이트를 기존 분석 플랫폼에 추가로 통합하려 합니다. 통합에 필요한 엔지니어링 작업과 시간을 최소화할 수 있는 솔루션은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q3-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Data Exchange를 통해 외부 데이터 제공업체의 데이터셋을 구독하고, API 호출로 분석 플랫폼에 통합합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS Data Exchange</span> &mdash; 타사 데이터 마켓플레이스. 마트에서 완제품을 사는 것처럼, 수백 개 데이터 공급자의 데이터셋을 <b>구독 즉시 S3로 자동 전달</b>받는 서비스. 파이프라인 구축&middot;계약 협상&middot;전송 인프라 관리 불필요. 타사 데이터 통합에 특화된 유일한 AWS 서비스.</div>
+</li>
+<li id="q3-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>AWS DataSync를 사용하여 외부 제공업체 데이터를 API로 가져와 분석 플랫폼과 연동합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">AWS DataSync</span> &mdash; 온프레미스 &harr; AWS 스토리지 간 대용량 파일 자동 동기화 트럭. NAS&middot;NFS&middot;SMB 같은 <b>내부 파일 시스템을 S3/EFS로 이전&middot;동기화</b>하는 서비스. 외부 타사 데이터 마켓플레이스 접근 기능 없음.</div>
+</li>
+<li id="q3-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon Kinesis Data Streams를 활용해 AWS CodeCommit 저장소에 있는 외부 데이터셋을 실시간으로 수집합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">AWS CodeCommit</span> &mdash; 소스 코드 저장소(Git 서버). <span class="dea-term">Amazon Kinesis Data Streams</span> &mdash; 실시간 스트리밍 데이터 컨베이어 벨트. 코드 저장소에 타사 데이터셋이 있을 이유가 없고, Kinesis는 실시간 이벤트 스트림 전용. 둘 다 이 시나리오와 무관.</div>
+</li>
+<li id="q3-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon Kinesis Data Streams와 Amazon ECR을 연동하여 외부 데이터를 수집하고 분석 플랫폼에 통합합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon ECR(Elastic Container Registry)</span> &mdash; 도커 컨테이너 이미지 창고. 컨테이너 이미지(앱 실행 패키지)를 저장하는 곳이지 데이터셋 저장소가 아님. 타사 데이터 통합과 전혀 관련 없음.</div>
+</li>
+</ul>
+<button id="btn-q3" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q3" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">A &mdash; AWS Data Exchange로 타사 데이터 구독&middot;통합</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; 헷갈리는 데이터 이동 서비스 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>실생활 비유</th>
+<th>주 용도</th>
+<th>타사 데이터?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>AWS Data Exchange</b></td>
+<td>🛒 외부 데이터 마트</td>
+<td>타사 데이터셋 구독 &rarr; S3 자동 전달</td>
+<td><span class="dea-pill good">✓ 전용</span></td>
+</tr>
+<tr>
+<td>AWS DataSync</td>
+<td>🚛 사내 창고 이사 트럭</td>
+<td>온프레미스 파일시스템 &rarr; S3/EFS 동기화</td>
+<td><span class="dea-pill bad">✗ 무관</span></td>
+</tr>
+<tr>
+<td>Amazon AppFlow</td>
+<td>🤝 SaaS 앱 자동 동기화 파이프</td>
+<td>Salesforce&middot;Slack 등 SaaS &harr; S3 연동</td>
+<td><span class="dea-pill bad">✗ SaaS 전용</span></td>
+</tr>
+<tr>
+<td>Kinesis Data Streams</td>
+<td>🏭 실시간 컨베이어 벨트</td>
+<td>클릭&middot;로그&middot;센서 실시간 스트림 수집</td>
+<td><span class="dea-pill bad">✗ 무관</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"타사(3rd-party) 데이터셋 + 운영 최소화"  &rarr;  <span class="dea-hl">AWS Data Exchange</span><br /><br />DataSync  = 사내 파일 이사 트럭  (온프레미스 &rarr; AWS)<br />AppFlow   = SaaS 앱 동기화      (Salesforce, Slack 등)<br />Kinesis   = 실시간 이벤트 스트림 (클릭, 로그, 센서)</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q4 -->
+<div id="dea-q4" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q4</span> <span class="dea-badge topic">Data Mesh &middot; Lake Formation &middot; 거버넌스</span> <span class="dea-badge multi">✌️ 복수 정답</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>데이터 메시(Data Mesh)</b>는 도메인별로 데이터를 분산 소유하면서 중앙에서 거버넌스를 통제하는 아키텍처입니다. AWS에서 구현할 때는 <b>S3 + Athena(분산 저장&middot;쿼리)</b>와 <b>Lake Formation(중앙 거버넌스&middot;접근 제어)</b> 조합이 핵심입니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question &mdash; 두 가지를 선택하세요</div>
+<p data-ke-size="size16">한 금융 기관이 각 사업 부서가 자체 데이터를 독립적으로 소유하면서도 전사적으로 통합된 거버넌스와 접근 제어를 유지하는 분산 데이터 아키텍처를 도입하려 합니다. 데이터 카탈로그와 ETL 처리에는 AWS Glue를 이미 활용하기로 결정했습니다. 이 아키텍처를 완성하기 위해 함께 사용해야 할 두 가지 서비스는 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q4-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>데이터 저장에는 Amazon Aurora를, 분석에는 Amazon Redshift 프로비저닝 클러스터를 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon Aurora</span> &mdash; 완전 관리형 관계형 DB(트랜잭션 처리용). <span class="dea-term">Redshift 프로비저닝 클러스터</span> &mdash; 중앙 집중식 데이터 웨어하우스. 둘 다 <b>중앙 집중식 구조</b>라 데이터 메시의 "도메인별 분산 소유" 철학과 맞지 않음.</div>
+</li>
+<li id="q4-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>데이터 저장에는 Amazon S3를, 분석에는 Amazon Athena를 사용합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Amazon S3(Simple Storage Service)</span> &mdash; 무한 확장 객체 저장소. 각 도메인팀이 자기 버킷을 독립 소유 가능. <span class="dea-term">Amazon Athena</span> &mdash; S3 위에서 SQL을 바로 실행하는 서버리스 쿼리 엔진. Glue Data Catalog와 네이티브 연동. 데이터를 옮기지 않고 제자리에서 분석 &rarr; <b>데이터 메시의 분산 소유 + 중앙 쿼리</b> 구조에 최적.</div>
+</li>
+<li id="q4-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>중앙 집중식 데이터 관리와 접근 제어에 AWS Glue DataBrew를 활용합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">AWS Glue DataBrew</span> &mdash; 노코드(No-Code) 시각적 데이터 정제 도구. 요리사가 레시피 보며 재료 손질하는 것. 데이터 프로파일링&middot;클렌징&middot;변환을 GUI로 하는 도구이지, <b>거버넌스&middot;접근 제어 서비스가 아님</b>. 이름에 Glue가 들어가서 헷갈리기 쉬운 함정 보기.</div>
+</li>
+<li id="q4-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>데이터 저장에는 Amazon RDS를, 대규모 처리에는 Amazon EMR을 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon RDS(Relational Database Service)</span> &mdash; 관계형 DB 관리 서비스. <span class="dea-term">Amazon EMR(Elastic MapReduce)</span> &mdash; EC2 기반 Spark/Hadoop 클러스터. RDS는 트랜잭션 DB라 데이터 메시 스토리지에 부적합. EMR은 클러스터 관리 부담이 크고 Glue Catalog와의 통합이 Athena보다 복잡.</div>
+</li>
+<li id="q4-E" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">E</span><span>중앙 집중식 데이터 거버넌스와 접근 제어에 AWS Lake Formation을 활용합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS Lake Formation</span> &mdash; 데이터 레이크 중앙 거버넌스 서비스. 건물 전체 출입 관리 시스템. Glue Data Catalog 위에서 <b>테이블&middot;컬럼&middot;행 단위 접근 제어</b>를 한곳에서 관리. 각 도메인팀은 데이터를 분산 소유하면서 거버넌스는 Lake Formation이 중앙 통제 &rarr; 데이터 메시 핵심 요건 충족.</div>
+</li>
+</ul>
+<button id="btn-q4" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q4" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B + E &mdash; S3/Athena(분산 저장&middot;분석) + Lake Formation(중앙 거버넌스)</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; 데이터 메시 AWS 아키텍처</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>역할</th>
+<th>서비스</th>
+<th>비유</th>
+<th>데이터 메시 적합?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>분산 저장</td>
+<td><b>Amazon S3</b></td>
+<td>🗄️ 도메인별 독립 창고</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+</tr>
+<tr>
+<td>서버리스 분석</td>
+<td><b>Amazon Athena</b></td>
+<td>🔍 창고에서 직접 검색</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+</tr>
+<tr>
+<td>중앙 거버넌스</td>
+<td><b>AWS Lake Formation</b></td>
+<td>🏢 건물 출입 관리 시스템</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+</tr>
+<tr>
+<td>중앙 웨어하우스</td>
+<td>Redshift</td>
+<td>🏛️ 단일 대형 도서관</td>
+<td><span class="dea-pill bad">✗ 중앙집중식</span></td>
+</tr>
+<tr>
+<td>데이터 정제 GUI</td>
+<td>Glue DataBrew</td>
+<td>🧑&zwj;🍳 노코드 재료 손질 도구</td>
+<td><span class="dea-pill bad">✗ 거버넌스 아님</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>데이터 메시 = <span class="dea-hl">분산 소유</span> + <span class="dea-hl">중앙 거버넌스</span><br /><br />저장&middot;분석  &rarr;  <span class="dea-hl">S3 + Athena</span>        (분산, 서버리스, Glue Catalog 연동)<br />거버넌스   &rarr;  <span class="dea-hl">Lake Formation</span>     (중앙 접근 제어, 행&middot;컬럼 단위 보안)<br /><br />Glue DataBrew &ne; 거버넌스  (노코드 데이터 정제 도구일 뿐)</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q5 -->
+<div id="dea-q5" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q5</span> <span class="dea-badge topic">Lambda &middot; 코드 관리</span> <span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS Lambda 레이어(Layer)</b>는 여러 Lambda 함수가 공유하는 코드&middot;라이브러리를 한 곳에서 관리하는 기능입니다. 공통 스크립트를 레이어로 패키징하면 <b>레이어 한 번 수정으로 연결된 모든 함수에 즉시 반영</b>되어, DEA-C01에서 Lambda 코드 중복 제거 및 유지보수 효율화 문제로 자주 출제됩니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">데이터 엔지니어링 팀은 데이터 포맷 변환 기능을 담당하는 Python 유틸리티 코드를 여러 AWS Lambda 함수에 각각 복사하여 사용하고 있습니다. 이 코드가 변경될 때마다 모든 Lambda 함수를 일일이 수정해야 하는 문제가 있습니다. 하나의 변경으로 모든 함수에 즉시 반영할 수 있는 가장 효율적인 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q5-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>Python 스크립트의 S3 경로를 각 Lambda 함수의 실행 컨텍스트 객체에 포인터로 저장합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">실행 컨텍스트(Execution Context)</span> &mdash; Lambda 함수가 실행될 때 생성되는 임시 런타임 환경. 호출 간 재사용될 수 있지만 <b>영구 저장소가 아님</b>. 함수마다 컨텍스트가 분리되어 공유가 안 됨.</div>
+</li>
+<li id="q5-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Python 유틸리티 코드를 Lambda 레이어로 패키징하여 각 Lambda 함수에 연결합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Lambda 레이어(Lambda Layer)</span> &mdash; 여러 Lambda 함수가 공유하는 공통 코드 패키지. 건물 공용 화장실처럼 한 번 설치하면 모든 층(함수)이 사용. Python 스크립트를 레이어로 올리고 각 함수에 연결하면 <b>레이어만 새 버전으로 업데이트하면 끝</b>. 함수 코드는 손댈 필요 없음.</div>
+</li>
+<li id="q5-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>공유 S3 버킷에 저장된 Python 스크립트 경로를 각 Lambda 함수의 환경 변수로 설정합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">환경 변수(Environment Variable)</span> &mdash; Lambda 함수 설정에 key-value로 저장하는 구성값. 환경 변수는 <b>각 Lambda 함수에 개별 설정</b>되는 값. 스크립트 경로를 변수로 저장해도 함수마다 일일이 수정해야 해서 문제가 그대로.</div>
+</li>
+<li id="q5-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>모든 Lambda 함수에 동일한 별칭(Alias)을 부여하고, 별칭을 통해 함수를 호출합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Lambda 별칭(Alias)</span> &mdash; 특정 함수 버전을 가리키는 포인터 이름표. "prod", "dev" 같은 별칭으로 버전 전환에 사용. <b>배포 버전 관리&middot;트래픽 분산</b>용 기능이지, 공통 코드를 여러 함수에 공유하는 기능이 아님.</div>
+</li>
+</ul>
+<button id="btn-q5" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q5" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; Python 스크립트를 Lambda 레이어로 패키징</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Lambda 관련 기능 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>기능</th>
+<th>실생활 비유</th>
+<th>주 용도</th>
+<th>코드 공유?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Lambda Layer</b></td>
+<td>🏢 건물 공용 시설</td>
+<td>공통 코드&middot;라이브러리 여러 함수에 공유</td>
+<td><span class="dea-pill good">✓ 전용</span></td>
+</tr>
+<tr>
+<td>Lambda Alias</td>
+<td>🏷️ 버전 이름표</td>
+<td>prod/dev 버전 전환, 트래픽 분산</td>
+<td><span class="dea-pill bad">✗ 무관</span></td>
+</tr>
+<tr>
+<td>환경 변수</td>
+<td>📝 함수별 메모장</td>
+<td>함수별 설정값(API 키, 경로 등) 저장</td>
+<td><span class="dea-pill bad">✗ 함수별 개별</span></td>
+</tr>
+<tr>
+<td>실행 컨텍스트</td>
+<td>⚡ 임시 작업 공간</td>
+<td>호출 간 DB 연결 등 재사용 최적화</td>
+<td><span class="dea-pill bad">✗ 임시&middot;함수별</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"여러 Lambda 함수에서 공통 코드 공유"  &rarr;  <span class="dea-hl">Lambda Layer</span><br /><br />Layer  = 건물 공용 시설  (한 번 설치, 모든 함수 사용)<br />Alias  = 버전 이름표     (prod &harr; dev 전환용)<br />환경변수 = 함수별 메모장 (공유 안 됨, 각자 설정)<br /><br />레이어 업데이트 &rarr; 연결된 함수 전체에 즉시 반영!</code></div>
+</div>
+</div>
+<div class="dea-tags"><span class="dea-tag">AWS DEA-C01</span> <span class="dea-tag">VPC Gateway Endpoint</span> <span class="dea-tag">Lake Formation</span> <span class="dea-tag">AWS Data Exchange</span> <span class="dea-tag">Data Mesh</span> <span class="dea-tag">Lambda Layer</span> <span class="dea-tag">데이터 엔지니어 자격증</span> <span class="dea-tag">AWS 자격증</span></div>
+<script>
+(function(){
+  var questions=[
+    {id:'q1',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — 라우팅 테이블 확인'},
+    {id:'q2',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Lake Formation 행 수준 보안'},
+    {id:'q3',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — AWS Data Exchange'},
+    {id:'q4',ans:{'B':true,'E':true},keys:['A','B','C','D','E'],label:'✅ 정답: B + E'},
+    {id:'q5',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Lambda Layer'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

@@ -1,0 +1,331 @@
+<!--
+id: 81
+제목: AWS DEA-C01 공식 샘플 문제 —  AppFlow 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, SaaS, AWS, DEA, Redshift, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, AppFlow
+날짜: 2026-03-15 12:59
+수정: 2026-03-24 22:24
+형식: html
+썸네일: /img/t/dJMcach4flr.webp
+-->
+<style>
+.pb-81 *, .pb-81, .pb-81 *::before, .pb-81 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-81{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-81{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-81 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-81 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-81 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.pb-81 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-81 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-81 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-81 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-81 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-81 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-81 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-81 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-81 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-81 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-81 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-81 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-81 .question-box p:last-child{margin-bottom:0}
+.pb-81 .hl-blue{color:var(--blue);font-weight:700}
+.pb-81 .hl-orange{color:var(--orange);font-weight:700}
+.pb-81 .hl-bold{font-weight:900}
+.pb-81 .arch-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pb-81 .arch-box{padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700;border:1.5px solid;text-align:center;line-height:1.4}
+.pb-81 .arch-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-81 .arch-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-81 .arch-box.orange{background:var(--y5);color:var(--orange);border-color:var(--y50)}
+.pb-81 .arch-box.purple{background:var(--g5);color:var(--purple);border-color:var(--p10)}
+.pb-81 .arch-box.teal{background:var(--i5);color:var(--teal);border-color:var(--i50)}
+.pb-81 .arch-box.gray{background:var(--p5);color:var(--muted);border-color:var(--border)}
+.pb-81 .arch-box.red{background:var(--red-light);color:var(--red);border-color:var(--red-border)}
+.pb-81 .arch-arrow{font-size:16px;color:var(--muted);flex-shrink:0}
+.pb-81 .arch-note{font-size:11px;color:var(--muted);padding:4px 8px;background:var(--g0);border-radius:6px;border:1px solid var(--border)}
+.pb-81 .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width: 520px){.pb-81 .svc-grid{grid-template-columns:1fr}}
+.pb-81 .svc-card{border-radius:12px;padding:13px;border:1.5px solid}
+.pb-81 .svc-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-81 .svc-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-81 .svc-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-81 .svc-header{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.pb-81 .svc-icon{font-size:18px}
+.pb-81 .svc-name{font-weight:800;font-size:12px;line-height:1.3}
+.pb-81 .svc-card.ok  .svc-name{color:var(--green)}
+.pb-81 .svc-card.bad .svc-name{color:var(--red)}
+.pb-81 .svc-card.warn .svc-name{color:var(--yellow)}
+.pb-81 .svc-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.pb-81 .svc-row{display:flex;align-items:flex-start;gap:6px;font-size:11px}
+.pb-81 .svc-row .sl-label{color:var(--muted);width:70px;flex-shrink:0;padding-top:1px}
+.pb-81 .chip{padding:2px 7px;border-radius:99px;font-size:10px;font-weight:700}
+.pb-81 .chip-ok{background:var(--s10);color:var(--green)}
+.pb-81 .chip-bad{background:var(--r5);color:var(--red)}
+.pb-81 .chip-na{background:var(--p5);color:var(--muted)}
+.pb-81 .chip-warn{background:var(--y10);color:var(--yellow)}
+.pb-81 .svc-verdict{padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}
+.pb-81 .svc-card.ok  .svc-verdict{background:var(--s10);color:var(--green)}
+.pb-81 .svc-card.bad .svc-verdict{background:var(--r5);color:var(--red)}
+.pb-81 .svc-card.warn .svc-verdict{background:var(--y10);color:var(--yellow)}
+.pb-81 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-81 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-81 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-81 .alert-green{background:var(--green-light);border-color:var(--green);color:var(--s60)}
+.pb-81 .saas-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pb-81 .saas-item{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-81 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-81 .option:hover{border-color:var(--p50)}
+.pb-81 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-81 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-81 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-81 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-81 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-81 .opt-body{flex:1;min-width:0}
+.pb-81 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-81 .opt-main.correct{color:var(--green)}
+.pb-81 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-81 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-81 .opt-why.show{display:block}
+.pb-81 .opt-why.ok-why{background:var(--s10)}
+.pb-81 .opt-why.bad-why{background:var(--r5)}
+.pb-81 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-81 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-81 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-81 .answer-body{display:none;margin-top:14px}
+.pb-81 .answer-body.show{display:block}
+.pb-81 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-81 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-81 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-81 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-81 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-81 .summary-table tr:last-child td{border-bottom:none}
+.pb-81 .summary-table tr:hover td{background:var(--g0)}
+.pb-81 .ok-text{color:var(--green);font-weight:700}
+.pb-81 .bad-text{color:var(--red);font-weight:700}
+.pb-81 .warn-text{color:var(--yellow);font-weight:700}
+.pb-81 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-81 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-81 .wrap{padding:20px 14px 50px}
+.pb-81 h1.post-title{font-size:19px}
+.pb-81 .question-box p{font-size:14px}
+.pb-81 .opt-main{font-size:13px}
+.pb-81 .code-block{font-size:11px}}
+.pb-81 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-81 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-81 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-81 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-81 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-81 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-81 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-81 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-81 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-81 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-81 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-81 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-81 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-81 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-81 .ans-label::before{content:'🎯 '}
+.pb-81 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-81 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-81 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-81 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-81 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-81 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-81">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-orange">Amazon AppFlow</span> <span class="badge badge-teal">Amazon Redshift</span> <span class="badge badge-purple">SaaS 데이터 통합</span> <span class="badge badge-green">최소 운영 오버헤드</span></div>
+<h1 class="post-title">SaaS &rarr; Redshift 지속 데이터 전송 &mdash; Amazon AppFlow가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 SaaS 데이터 통합 문제입니다. SaaS 애플리케이션 데이터를 Amazon Redshift로 <b>코드 없이 지속적으로 전송</b>하는 솔루션으로 <b>Amazon AppFlow 플로</b>가 정답인 이유를 EventBridge(중개 서비스 필요), Lambda UDF(지속 전송 불가), MWAA(추가 관리 필요)와 비교하여 도식으로 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사가 <span class="hl-blue">Amazon Redshift 데이터 웨어하우스</span>를 운영하며, 최근 여러 AWS 서비스를 지원하는 <span class="hl-orange">SaaS 영업 애플리케이션</span> 사용을 시작했다. 보고 목적으로 SaaS 애플리케이션의 일부 데이터를 Amazon Redshift로 전송하고자 한다.</p>
+<p data-ke-size="size16">데이터 엔지니어는 SaaS 애플리케이션에서 Amazon Redshift로 <span class="hl-bold">데이터를 지속적으로 전송</span>할 수 있는 솔루션을 구성해야 한다. 요구 사항: <span class="hl-bold">최소한의 운영 오버헤드</span></p>
+<p data-ke-size="size16">다음 중 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- Amazon AppFlow 개념 -->
+<h2 class="section-title" data-ke-size="size26">🔌 Amazon AppFlow &mdash; SaaS 데이터 통합 전용 완전관리형 서비스</h2>
+<div class="card">
+<div class="alert alert-blue" style="margin-bottom:14px">💡 <b>Amazon AppFlow</b>는 코드 없이 SaaS 애플리케이션과 AWS 서비스 간에 데이터를 안전하게 전송하는 완전관리형 통합 서비스입니다. 플로(Flow)를 생성하여 소스 &rarr; 대상 데이터 이동을 자동화합니다.</div>
+<!-- 정답 아키텍처 -->
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">✅ AppFlow 플로 &mdash; SaaS &rarr; Redshift 지속 전송 흐름</p>
+<div class="arch-row">
+<div class="arch-box orange">SaaS 영업 앱<br />(Salesforce 등)</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box teal">Amazon AppFlow<br />플로(Flow)</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box blue">Amazon Redshift<br />(보고용 DW)</div>
+</div>
+<div class="arch-row" style="margin-top:6px">
+<div class="arch-note">이벤트 기반 실행 &mdash; 데이터 생성 시 자동 트리거</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-note">코드 없음 &middot; 서버 없음 &middot; 자동 스케일링</div>
+</div>
+<!-- 지원 SaaS 목록 -->
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin:14px 0 8px" data-ke-size="size16">🔌 AppFlow 지원 SaaS 소스 (주요 예시)</p>
+<div class="saas-list"><span class="saas-item">Salesforce</span> <span class="saas-item">HubSpot</span> <span class="saas-item">ServiceNow</span> <span class="saas-item">Slack</span> <span class="saas-item">Zendesk</span> <span class="saas-item">SAP</span> <span class="saas-item">Marketo</span> <span class="saas-item">Google Analytics</span> <span class="saas-item">Shopify</span> <span class="saas-item">+ 60개 이상</span></div>
+<div class="alert alert-green" style="margin-top:14px">✅ <b>대상(Target)으로 Amazon Redshift 직접 지원</b> &mdash; 중간 변환&middot;코드&middot;인프라 없이 SaaS 소스에서 Redshift로 직접 전송합니다. 이벤트 트리거, 예약 실행, On-demand 실행 모두 지원합니다.</div>
+</div>
+<!-- 4가지 솔루션 비교 -->
+<h2 class="section-title" data-ke-size="size26">🔍 4가지 솔루션 비교</h2>
+<div class="card">
+<div class="svc-grid">
+<div class="svc-card ok">
+<div class="svc-header"><span class="svc-icon">🔌</span>
+<div class="svc-name">A. Amazon AppFlow ⭐</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="sl-label">SaaS 연결</span> <span class="chip chip-ok">✅ 60+ 네이티브</span></div>
+<div class="svc-row"><span class="sl-label">Redshift 직접</span> <span class="chip chip-ok">✅ 대상 지원</span></div>
+<div class="svc-row"><span class="sl-label">이벤트 트리거</span> <span class="chip chip-ok">✅ 지원</span></div>
+<div class="svc-row"><span class="sl-label">코드 필요</span> <span class="chip chip-ok">✅ 불필요</span></div>
+<div class="svc-row"><span class="sl-label">오버헤드</span> <span class="chip chip-ok">✅ 최소</span></div>
+</div>
+<div class="svc-verdict">✅ 모든 요건 충족 &mdash; 정답</div>
+</div>
+<div class="svc-card bad">
+<div class="svc-header"><span class="svc-icon">⚡</span>
+<div class="svc-name">B. EventBridge 규칙</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="sl-label">이벤트 감지</span> <span class="chip chip-ok">✅ 가능</span></div>
+<div class="svc-row"><span class="sl-label">Redshift 직접</span> <span class="chip chip-bad">❌ 불가</span></div>
+<div class="svc-row"><span class="sl-label">중개 서비스</span> <span class="chip chip-bad">❌ 별도 필요</span></div>
+<div class="svc-row"><span class="sl-label">오버헤드</span> <span class="chip chip-bad">❌ 추가 구성</span></div>
+</div>
+<div class="svc-verdict">❌ Redshift 직접 전송 불가</div>
+</div>
+<div class="svc-card bad">
+<div class="svc-header"><span class="svc-icon">&lambda;</span>
+<div class="svc-name">C. Lambda UDF</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="sl-label">목적</span> <span class="chip chip-na">SQL 내 커스텀 함수</span></div>
+<div class="svc-row"><span class="sl-label">지속 전송</span> <span class="chip chip-bad">❌ 불가</span></div>
+<div class="svc-row"><span class="sl-label">SaaS &rarr; Redshift</span> <span class="chip chip-bad">❌ 목적 다름</span></div>
+<div class="svc-row"><span class="sl-label">오버헤드</span> <span class="chip chip-bad">❌ 높음</span></div>
+</div>
+<div class="svc-verdict">❌ 데이터 전송 목적 아님</div>
+</div>
+<div class="svc-card warn">
+<div class="svc-header"><span class="svc-icon">🌬️</span>
+<div class="svc-name">D. Amazon MWAA</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="sl-label">파이프라인</span> <span class="chip chip-ok">✅ 구성 가능</span></div>
+<div class="svc-row"><span class="sl-label">JDBC 연결</span> <span class="chip chip-ok">✅ Redshift 가능</span></div>
+<div class="svc-row"><span class="sl-label">추가 관리</span> <span class="chip chip-bad">❌ 높은 오버헤드</span></div>
+<div class="svc-row"><span class="sl-label">오버헤드</span> <span class="chip chip-bad">❌ 클러스터 관리</span></div>
+</div>
+<div class="svc-verdict">⚠️ 가능하나 오버헤드 높음</div>
+</div>
+</div>
+<div class="alert alert-orange">⚠️ <b>B 핵심 함정:</b> EventBridge는 SaaS 이벤트를 감지할 수 있지만 <b>Amazon Redshift를 직접 대상(Target)으로 지정할 수 없습니다.</b> Lambda나 Kinesis 같은 중개 서비스를 추가로 구성해야 하므로 운영 오버헤드가 증가합니다.</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">A</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Amazon AppFlow 플로 생성 &rarr; 이벤트에서 실행되도록 구성</div>
+<div class="opt-sub">SaaS 네이티브 연결 + Redshift 직접 대상 + 이벤트 트리거 + 코드 없음 = 최소 오버헤드</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Amazon AppFlow는 이 시나리오의 모든 요건을 가장 적은 오버헤드로 충족합니다. ① <b>SaaS 네이티브 연결:</b> Salesforce, ServiceNow 등 60개 이상의 SaaS 커넥터를 코드 없이 연결합니다. ② <b>Redshift 직접 전송:</b> Amazon Redshift를 대상으로 직접 지정할 수 있어 중간 단계가 필요 없습니다. ③ <b>이벤트 기반 실행:</b> 데이터 생성 이벤트에 반응하여 플로가 자동 실행되므로 지속적인 전송이 가능합니다. ④ <b>완전관리형:</b> 인프라, 스케일링, 오류 처리를 AWS가 모두 관리합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ SaaS 이벤트에 반응하는 EventBridge 규칙 + 이벤트를 Redshift로 직접 전송</div>
+<div class="opt-sub">EventBridge는 Redshift를 직접 대상으로 지정 불가 &mdash; 중개 서비스 필수</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Amazon EventBridge는 이벤트 기반 아키텍처의 중심 서비스이지만, <b>Amazon Redshift를 EventBridge 규칙의 직접 대상(Target)으로 지정할 수 없습니다.</b> EventBridge의 지원 대상은 Lambda, SQS, SNS, Step Functions, Kinesis 등이며, Redshift에 데이터를 쓰려면 Lambda 함수 등 중간 서비스를 통해야 합니다. 이 추가 구성이 운영 오버헤드를 증가시키므로 "최소 운영 오버헤드" 요건에 맞지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Lambda에서 Redshift UDF(사용자 정의 함수) 생성 &rarr; SaaS &rarr; Lambda &rarr; Redshift</div>
+<div class="opt-sub">Lambda UDF는 Redshift SQL 내 커스텀 로직 목적 &mdash; 외부 SaaS 데이터 지속 수집 목적 아님</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Redshift Lambda UDF(사용자 정의 함수)는 <b>Redshift SQL 쿼리 실행 중 복잡한 변환이나 외부 API 호출을 위해</b> 사용하는 기능입니다. 이것은 Redshift 내부에서 쿼리 처리 중 호출되는 것으로, <b>SaaS 애플리케이션에서 데이터를 지속적으로 수집하는 파이프라인 목적이 아닙니다.</b> Lambda UDF는 관리형 환경에서 실행되며 외부 시스템 접근이 제한되므로 이 시나리오의 요건을 충족하지 못합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon MWAA 워크플로 배포 + JDBC 커넥터로 Redshift 연결</div>
+<div class="opt-sub">기술적으로 가능하나 MWAA 환경 구성&middot;관리 오버헤드가 높아 최소 오버헤드 요건 불충족</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Amazon MWAA(Managed Workflows for Apache Airflow)는 복잡한 데이터 파이프라인 오케스트레이션에 강력한 서비스입니다. JDBC 커넥터를 통해 Redshift와 연결하는 것도 기술적으로 가능합니다. 그러나 이 솔루션을 사용하려면 <b>Airflow 환경 설정, DAG 작성, MWAA 환경 관리, 스케일링 구성 등 상당한 운영 오버헤드가 필요</b>합니다. 단순히 SaaS &rarr; Redshift 데이터 전송을 위해 MWAA를 사용하는 것은 과도한 구성이며, AppFlow처럼 전용 커넥터가 있는 서비스에 비해 효율적이지 않습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: A &mdash; Amazon AppFlow</b></p>
+<p data-ke-size="size16"><b>"SaaS &rarr; AWS 서비스 데이터 전송 + 최소 오버헤드"</b> 조합이 나오면 AppFlow를 떠올리세요. EventBridge는 Redshift 직접 대상 불가, Lambda UDF는 목적 다름, MWAA는 오버헤드 과다.</p>
+<div class="code-block"># Amazon AppFlow 핵심 특징 목적: SaaS &harr; AWS 서비스 간 데이터 전송 자동화 코드: 불필요 (No-code/Low-code) 관리: 완전관리형 (서버리스) 지원 소스 (SaaS): Salesforce, ServiceNow, Slack, Zendesk, SAP, HubSpot, Marketo 등 60+ 지원 대상 (AWS): Amazon Redshift ⭐, S3, RDS 등 실행 트리거: - 이벤트 기반 (On-event) - 예약 실행 (Scheduled) - On-demand # 서비스 목적 비교 AppFlow &rarr; SaaS &harr; AWS 데이터 전송 전용 ⭐ EventBridge &rarr; 이벤트 라우팅 (Redshift 직접 불가) Lambda UDF &rarr; Redshift SQL 내 커스텀 로직 MWAA (Airflow) &rarr; 복잡한 파이프라인 오케스트레이션</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>서비스</th>
+<th>Redshift 직접 전송</th>
+<th>지속 전송</th>
+<th>운영 오버헤드</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A ⭐</b></td>
+<td>Amazon AppFlow</td>
+<td class="ok-text">✅ 네이티브 대상</td>
+<td class="ok-text">✅ 이벤트 트리거</td>
+<td class="ok-text">최소</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>B</b></td>
+<td>EventBridge</td>
+<td class="bad-text">❌ 중개 필요</td>
+<td class="warn-text">이벤트 감지만</td>
+<td class="bad-text">추가 구성</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>C</b></td>
+<td>Lambda UDF</td>
+<td class="bad-text">❌ 목적 다름</td>
+<td class="bad-text">❌ 지속 불가</td>
+<td class="bad-text">높음</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>D</b></td>
+<td>Amazon MWAA</td>
+<td class="warn-text">JDBC 통해 가능</td>
+<td class="ok-text">✅ DAG로 가능</td>
+<td class="bad-text">높음 (Airflow 관리)</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AmazonAppFlow</span> <span class="seo-tag">#SaaS데이터통합</span> <span class="seo-tag">#AmazonRedshift</span> <span class="seo-tag">#AmazonEventBridge</span> <span class="seo-tag">#LambdaUDF</span> <span class="seo-tag">#AmazonMWAA</span> <span class="seo-tag">#AppFlow플로</span> <span class="seo-tag">#최소운영오버헤드</span> <span class="seo-tag">#데이터전송자동화</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

@@ -1,0 +1,388 @@
+<!--
+id: 86
+제목: AWS DEA-C01 공식 샘플 문제 —  OpenSearch 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, AWS, opensearch, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, 데이터 검색, Data Engineer
+날짜: 2026-03-16 22:07
+수정: 2026-03-24 22:24
+형식: html
+썸네일: /img/t/dJMcafFSoAO.webp
+-->
+<style>
+.pb-86 *, .pb-86, .pb-86 *::before, .pb-86 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-86{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-86{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-86 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-86 .post-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-86 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-86 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-86 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-86 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-86 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-86 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-86 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;color:var(--text);margin-bottom:10px}
+.pb-86 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-86 h2.section-title{font-size:16px;font-weight:700;color:var(--text);margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-86 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-86 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-86 .question-box{background:linear-gradient(135deg, var(--p5), var(--i5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-86 .question-box p{font-size:15px;line-height:1.85;color:var(--text);margin-bottom:12px}
+.pb-86 .question-box p:last-child{margin-bottom:0}
+.pb-86 .hl-blue{color:var(--blue);font-weight:700}
+.pb-86 .hl-orange{color:var(--orange);font-weight:700}
+.pb-86 .hl-purple{color:var(--purple);font-weight:700}
+.pb-86 .hl-green{color:var(--green);font-weight:700}
+.pb-86 .hl-teal{color:var(--teal);font-weight:700}
+.pb-86 .hl-bold{font-weight:900}
+.pb-86 .req-list{list-style:none;padding:0}
+.pb-86 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-86 .req-list li:last-child{border-bottom:none}
+.pb-86 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-86 .pipeline{display:flex;align-items:stretch;gap:0;background:var(--g0);border-radius:12px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow);margin-bottom:16px}
+.pb-86 .pipe-seg{flex:1;min-width:0;padding:14px 10px;text-align:center;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pb-86 .pipe-seg:last-child{border-right:none}
+.pb-86 .pipe-seg.hi{background:var(--green-light)}
+.pb-86 .pipe-seg .ps-icon{font-size:24px;margin-bottom:5px}
+.pb-86 .pipe-seg .ps-name{font-size:12px;font-weight:700;color:var(--text)}
+.pb-86 .pipe-seg.hi .ps-name{color:var(--green)}
+.pb-86 .pipe-seg .ps-sub{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
+.pb-86 .pipe-arrow{flex-shrink:0;width:24px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);background:var(--g0);border-right:1px solid var(--border)}
+@media (max-width: 540px){.pb-86 .pipeline{flex-direction:column}
+.pb-86 .pipe-seg{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;gap:12px;text-align:left;padding:10px 14px}
+.pb-86 .pipe-seg:last-child{border-bottom:none}
+.pb-86 .pipe-arrow{width:100%;height:24px;border-right:none;border-bottom:1px solid var(--border);writing-mode:horizontal-tb;transform:rotate(90deg)}}
+.pb-86 .search-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width: 500px){.pb-86 .search-grid{grid-template-columns:1fr}}
+.pb-86 .search-card{border-radius:12px;padding:15px 14px;border:1.5px solid var(--border)}
+.pb-86 .search-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-86 .search-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-86 .search-card .sc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pb-86 .search-card .sc-icon{font-size:20px}
+.pb-86 .search-card .sc-name{font-weight:700;font-size:13px}
+.pb-86 .search-card.ok  .sc-name{color:var(--green)}
+.pb-86 .search-card.bad .sc-name{color:var(--red)}
+.pb-86 .search-card .sc-type{font-size:11px;color:var(--muted)}
+.pb-86 .sc-props{list-style:none;padding:0}
+.pb-86 .sc-props li{font-size:12px;color:var(--text);padding:3px 0;line-height:1.5;border-bottom:1px solid color-mix(in srgb, var(--g90) 5%, transparent)}
+.pb-86 .sc-props li:last-child{border-bottom:none}
+.pb-86 .sc-props li::before{content:'• ';color:var(--muted)}
+.pb-86 .sc-result{margin-top:10px;padding:6px 10px;border-radius:7px;font-size:12px;font-weight:700;text-align:center}
+.pb-86 .search-card.ok  .sc-result{background:var(--s10);color:var(--green)}
+.pb-86 .search-card.bad .sc-result{background:var(--r5);color:var(--red)}
+.pb-86 .perf-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:16px}
+.pb-86 .perf-table th{background:var(--p5);padding:8px 10px;text-align:center;border:1px solid var(--border);font-weight:700;color:var(--muted);font-size:11px}
+.pb-86 .perf-table td{padding:8px 10px;border:1px solid var(--border);text-align:center;vertical-align:middle}
+.pb-86 .perf-table tr:nth-child(even) td{background:var(--g0)}
+.pb-86 .star-ok{color:var(--green);font-size:14px}
+.pb-86 .star-warn{color:var(--yellow);font-size:14px}
+.pb-86 .star-bad{color:var(--red);font-size:14px}
+.pb-86 .options-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.pb-86 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-86 .option:hover{border-color:var(--p50)}
+.pb-86 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-86 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-86 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-86 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-86 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-86 .opt-body{flex:1;min-width:0}
+.pb-86 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-86 .opt-main.correct{color:var(--green)}
+.pb-86 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-86 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75;color:var(--text)}
+.pb-86 .opt-why.show{display:block}
+.pb-86 .opt-why.ok-why{background:var(--s10)}
+.pb-86 .opt-why.bad-why{background:var(--r5)}
+.pb-86 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-86 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-86 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-86 .answer-body{display:none;margin-top:14px}
+.pb-86 .answer-body.show{display:block}
+.pb-86 .answer-body p{font-size:14px;line-height:1.85;color:var(--text);margin-bottom:8px}
+.pb-86 .answer-body strong{color:var(--orange)}
+.pb-86 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-86 .summary-table{width:100%;border-collapse:collapse;font-size:13px}
+.pb-86 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-86 .summary-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.pb-86 .summary-table tr:last-child td{border-bottom:none}
+.pb-86 .summary-table tr:hover td{background:var(--g0)}
+.pb-86 .ok-text{color:var(--green);font-weight:700}
+.pb-86 .bad-text{color:var(--red);font-weight:700}
+.pb-86 .warn-text{color:var(--yellow);font-weight:700}
+.pb-86 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-86 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-86 .wrap{padding:20px 14px 50px}
+.pb-86 h1.post-title{font-size:19px}
+.pb-86 .question-box p{font-size:14px}
+.pb-86 .opt-main{font-size:13px}
+.pb-86 .code-block{font-size:11px}
+.pb-86 .perf-table{font-size:11px}
+.pb-86 .perf-table th, .pb-86 .perf-table td{padding:6px 6px}}
+.pb-86 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-86 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-86 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-86 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-86 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-86 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-86 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-86 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-86 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-86 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-86 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-86 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-86 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-86 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-86 .ans-label::before{content:'🎯 '}
+.pb-86 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-86 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-86 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-86 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-86 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-86 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-86">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">데이터 엔지니어</span> <span class="badge badge-teal">검색 &middot; OpenSearch</span> <span class="badge badge-orange">메타데이터 인덱싱</span></div>
+<h1 class="post-title">S3 스캔 문서 메타데이터 검색 최적화 &mdash; OpenSearch가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 검색 성능 최적화 문제입니다. <b>S3에 저장된 수십만 개의 스캔 문서</b>에서 ML로 추출한 메타데이터를 <b>지원자 이름&middot;날짜&middot;텍스트로 빠르게 검색</b>해야 할 때, OpenSearch / Athena / Redshift / EMR Presto 중 어떤 방식이 성능에 가장 최적화되어 있는지 도식과 함께 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">한 회사에서는 수십만 개의 스캔한 문서를 <span class="hl-blue">Amazon S3에 이미지로 저장</span>한다. 이 문서에는 <span class="hl-orange">타자로 입력된 입사 지원서</span>가 포함되어 있으며, 지원자 이름, 지원자 성, 지원 날짜, 지원자 위치 및 지원 텍스트가 입력되어 있다.</p>
+<p data-ke-size="size16">이 회사에서는 스캔한 문서에서 <span class="hl-teal">메타데이터 값을 추출하는 ML 알고리즘</span>을 보유하고 있다. 회사에서는 데이터 분석가가 <span class="hl-bold">지원자 이름, 지원 날짜 또는 지원 텍스트를 사용하여 지원서를 검색</span>할 수 있도록 하려고 한다.</p>
+<p data-ke-size="size16">다음 중 <span class="hl-bold">성능에 가장 최적화된 방식</span>으로 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 체크</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🔍</span>
+<div><b>이름 &middot; 날짜 &middot; 텍스트 기반 검색 (Full-Text Search)</b><br /><span style="font-size:13px;color:var(--muted)">단순 쿼리가 아닌 자유 텍스트 검색 &rarr; 전문 검색(Full-Text Search) 엔진이 유리</span></div>
+</li>
+<li><span class="req-icon">⚡</span>
+<div><b>성능 최적화 (검색 속도)</b><br /><span style="font-size:13px;color:var(--muted)">수십만 개 문서에서 빠른 응답 &rarr; 인덱스 기반 조회가 테이블 스캔보다 월등히 빠름</span></div>
+</li>
+<li><span class="req-icon">🗂️</span>
+<div><b>S3 이미지와 메타데이터 연결</b><br /><span style="font-size:13px;color:var(--muted)">ML이 추출한 메타데이터 + S3 원본 파일 위치를 함께 저장하고 검색 가능해야 함</span></div>
+</li>
+</ul>
+</div>
+<!-- 전체 파이프라인 도식 -->
+<h2 class="section-title" data-ke-size="size26">📐 전체 데이터 파이프라인</h2>
+<div class="card">
+<div class="pipeline">
+<div class="pipe-seg">
+<div class="ps-icon">📄</div>
+<div class="ps-name">스캔 문서</div>
+<div class="ps-sub">S3 이미지</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg">
+<div class="ps-icon">🤖</div>
+<div class="ps-name">ML 알고리즘</div>
+<div class="ps-sub">메타데이터 추출</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg hi">
+<div class="ps-icon">🔎</div>
+<div class="ps-name">OpenSearch</div>
+<div class="ps-sub">메타데이터 + S3 위치 인덱싱</div>
+</div>
+<div class="pipe-arrow">&rarr;</div>
+<div class="pipe-seg hi">
+<div class="ps-icon">📊</div>
+<div class="ps-name">OpenSearch Dashboards</div>
+<div class="ps-sub">분석가 검색 UI</div>
+</div>
+</div>
+<!-- 검색 방식 핵심 차이 -->
+<div style="margin-bottom:16px">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">🔑 검색 방식의 핵심 차이 &mdash; 인덱스 vs 스캔</p>
+<div class="search-grid">
+<div class="search-card ok">
+<div class="sc-header"><span class="sc-icon">🔎</span>
+<div>
+<div class="sc-name">인덱스 기반 검색 (OpenSearch)</div>
+<div class="sc-type">역색인(Inverted Index) 구조</div>
+</div>
+</div>
+<ul class="sc-props" style="list-style-type:disc" data-ke-list-type="disc">
+<li>단어 &rarr; 문서 목록 즉시 조회</li>
+<li>수십만 건도 밀리초(ms) 응답</li>
+<li>부분 일치&middot;유사 검색 기본 지원</li>
+<li>전문 검색(Full-Text) 최적화</li>
+</ul>
+<div class="sc-result">✅ 검색 성능 최고</div>
+</div>
+<div class="search-card bad">
+<div class="sc-header"><span class="sc-icon">📋</span>
+<div>
+<div class="sc-name">테이블 스캔 (Athena / Redshift)</div>
+<div class="sc-type">행&middot;열 데이터 순차 조회</div>
+</div>
+</div>
+<ul class="sc-props" style="list-style-type:disc" data-ke-list-type="disc">
+<li>조건에 맞는 행을 처음부터 스캔</li>
+<li>데이터 양 많을수록 느려짐</li>
+<li>분석 쿼리에 최적화된 구조</li>
+<li>텍스트 검색 기능 제한적</li>
+</ul>
+<div class="sc-result">❌ 텍스트 검색 성능 불리</div>
+</div>
+</div>
+</div>
+<!-- 솔루션 성능 비교표 -->
+<div style="padding-top:16px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:10px" data-ke-size="size16">📊 솔루션별 성능 비교</p>
+<div style="overflow-x:auto">
+<table class="perf-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>솔루션</th>
+<th>텍스트 검색</th>
+<th>날짜 검색</th>
+<th>이름 검색</th>
+<th>검색 응답속도</th>
+<th>관리 복잡도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>OpenSearch ⭐</b></td>
+<td><span class="star-ok">●●●</span></td>
+<td><span class="star-ok">●●●</span></td>
+<td><span class="star-ok">●●●</span></td>
+<td><span class="star-ok">최고 (ms)</span></td>
+<td><span class="star-ok">낮음</span></td>
+</tr>
+<tr>
+<td><b>Athena + Parquet</b></td>
+<td><span class="star-warn">●●○</span></td>
+<td><span class="star-ok">●●●</span></td>
+<td><span class="star-warn">●●○</span></td>
+<td><span class="star-warn">보통 (초)</span></td>
+<td><span class="star-ok">낮음</span></td>
+</tr>
+<tr>
+<td><b>Redshift</b></td>
+<td><span class="star-warn">●○○</span></td>
+<td><span class="star-ok">●●●</span></td>
+<td><span class="star-warn">●●○</span></td>
+<td><span class="star-warn">보통 (초)</span></td>
+<td><span class="star-warn">중간</span></td>
+</tr>
+<tr>
+<td><b>EMR Presto</b></td>
+<td><span class="star-bad">●○○</span></td>
+<td><span class="star-ok">●●●</span></td>
+<td><span class="star-warn">●●○</span></td>
+<td><span class="star-bad">느림 (분)</span></td>
+<td><span class="star-bad">높음</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:11px;color:var(--muted);margin-top:8px" data-ke-size="size16">● 많을수록 우수 / ○ 부족</p>
+</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ S3 객체 태그 + EMR Presto &mdash; 객체 태그로 메타데이터 추가 후 Presto로 검색</div>
+<div class="opt-sub">Amazon EMR (Presto) &mdash; 대규모 분산 쿼리 엔진</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 S3 객체 태그는 <b>태그 수(10개)와 값 길이(256자)에 제한</b>이 있어 풍부한 메타데이터 저장에 부적합합니다. EMR 클러스터는 프로비저닝&middot;관리 오버헤드가 크고, 단건 검색보다 배치 처리에 최적화되어 있습니다. 검색 응답속도도 인덱스 기반 서비스에 비해 크게 느립니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">B</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Amazon OpenSearch Service &mdash; 메타데이터와 S3 위치를 인덱싱, OpenSearch Dashboards로 검색</div>
+<div class="opt-sub">Amazon OpenSearch Service (역색인 기반 전문 검색 엔진)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> OpenSearch는 <b>역색인(Inverted Index)</b> 구조로 텍스트 검색에 특화되어 있습니다. 이름&middot;날짜&middot;긴 텍스트 모두 고성능으로 검색할 수 있으며, 부분 일치&middot;유사어 검색도 기본 지원합니다. ML이 추출한 메타데이터와 S3 파일 경로를 함께 인덱싱하면 분석가가 OpenSearch Dashboards에서 즉시 원본 문서 위치까지 확인할 수 있습니다. <b>수십만 건도 밀리초(ms) 수준으로 응답</b>합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon Redshift &mdash; 메타데이터와 S3 위치를 Redshift 테이블에 저장 후 쿼리</div>
+<div class="opt-sub">Amazon Redshift &mdash; 페타바이트급 열 기반 데이터 웨어하우스</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Redshift는 <b>대규모 집계&middot;분석 쿼리</b>에 최적화된 데이터 웨어하우스입니다. 텍스트 기반 전문 검색은 지원하지만 OpenSearch의 역색인에 비해 성능이 낮습니다. 특히 "지원 텍스트" 같은 자유 형식 텍스트 검색은 LIKE 쿼리를 사용해야 해 속도가 느립니다. 검색 전용 시나리오에는 과분한 구성입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ S3 Parquet + AWS Glue + Amazon Athena &mdash; Parquet 파일로 저장, Glue 카탈로그 정의, Athena로 쿼리</div>
+<div class="opt-sub">Amazon Athena (서버리스 S3 쿼리) + AWS Glue Data Catalog</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Athena + Parquet 조합은 <b>데이터 레이크 분석에 탁월</b>하지만, 검색 요청마다 S3 파일을 스캔하는 구조라 단건 검색 응답이 수 초~수십 초 걸립니다. 전문 검색 인덱스가 없어 텍스트 검색 성능이 OpenSearch보다 낮습니다. 대규모 집계&middot;분석에는 적합하지만 "검색 성능 최적화" 요건에는 부족합니다.</div>
+</div>
+<!-- 정답 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: B &mdash; Amazon OpenSearch Service</b></p>
+<p data-ke-size="size16">텍스트&middot;이름&middot;날짜 검색 성능이 핵심인 이 시나리오에서 <b>역색인 기반의 OpenSearch가 유일하게 밀리초 수준 응답을 보장</b>합니다. ML이 추출한 메타데이터를 인덱싱할 때 S3 파일 경로도 함께 저장하면, 분석가가 OpenSearch Dashboards에서 검색 즉시 원본 문서에 접근할 수 있습니다.</p>
+<div class="code-block"># 흐름 요약 S3 스캔 이미지 └─ ML 알고리즘 (메타데이터 추출) └─ OpenSearch 인덱스에 저장 ├─ applicant_name: "홍길동" ├─ application_date: "2024-03-15" ├─ application_text: "지원 동기 텍스트..." └─ s3_location: "s3://bucket/docs/doc001.jpg" 분석가 검색 (OpenSearch Dashboards) └─ "홍길동" 검색 &rarr; 역색인 즉시 조회 &rarr; ms 응답 ✅ └─ "열정적인" 텍스트 검색 &rarr; Full-Text Search &rarr; ms 응답 ✅</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>솔루션</th>
+<th>검색 방식</th>
+<th>텍스트 검색 성능</th>
+<th>관리 오버헤드</th>
+<th>적합 용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>OpenSearch ⭐</b></td>
+<td>역색인</td>
+<td class="ok-text">✅ 최고 (ms)</td>
+<td class="ok-text">낮음</td>
+<td>전문 검색</td>
+</tr>
+<tr>
+<td><b>Athena + Parquet</b></td>
+<td>S3 스캔</td>
+<td class="warn-text">⚠️ 보통 (초)</td>
+<td class="ok-text">낮음</td>
+<td>데이터 레이크 분석</td>
+</tr>
+<tr>
+<td><b>Redshift</b></td>
+<td>열 기반 스캔</td>
+<td class="warn-text">⚠️ 보통 (초)</td>
+<td class="warn-text">중간</td>
+<td>대규모 집계 분석</td>
+</tr>
+<tr>
+<td><b>EMR Presto</b></td>
+<td>분산 스캔</td>
+<td class="bad-text">❌ 느림 (분)</td>
+<td class="bad-text">높음</td>
+<td>대용량 배치 처리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWS데이터엔지니어</span> <span class="seo-tag">#AmazonOpenSearch</span> <span class="seo-tag">#OpenSearchDashboards</span> <span class="seo-tag">#전문검색</span> <span class="seo-tag">#메타데이터인덱싱</span> <span class="seo-tag">#역색인</span> <span class="seo-tag">#AmazonAthena</span> <span class="seo-tag">#AWSGlue</span> <span class="seo-tag">#ApacheParquet</span> <span class="seo-tag">#AmazonRedshift</span> <span class="seo-tag">#EMRPresto</span> <span class="seo-tag">#S3검색</span> <span class="seo-tag">#AWS자격증</span></div>
+</article>
+</div>

@@ -1,0 +1,289 @@
+<!--
+id: 120
+제목: AWS DEA-C01 각색 문제 Day 17 — MWAA DAG, Hive 메타스토어 Glue 카탈로그, Glue Data Quality, WAF 로그 CloudWatch Logs Insights, Airflow → MWAA 최소 리팩터링
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, MWAA DAG, Glue 데이터 카탈로그 Hive, Glue Data Quality, CloudWatch Logs Insights WAF, Airflow MWAA 마이그레이션
+날짜: 2026-04-06 23:45
+수정: 2026-04-06 23:45
+형식: html
+썸네일: /img/t/dJMcajaFRPL.webp
+-->
+<style>
+.pb-120 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-120 .dea-wrap *{box-sizing:border-box}
+.pb-120 .dea-post-header{margin-bottom:32px}
+.pb-120 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-120 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-120 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-120 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-120 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-120 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-120 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-120 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-120 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-120 .dea-q-block{margin-bottom:48px}
+.pb-120 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-120 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-120 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-120 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-120 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-120 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-120 .dea-badge.multi{background:var(--r5);color:var(--r60)}
+.pb-120 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-120 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-120 .dea-seo-lead strong{color:var(--p50)}
+.pb-120 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-120 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-120 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-120 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-120 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-120 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-120 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-120 .dea-opt.ok{border-color:var(--s60)}
+.pb-120 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-120 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-120 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-120 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-120 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-120 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-120 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-120 .dea-term{font-weight:700;color:var(--p50)}
+.pb-120 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-120 .dea-btn:hover{background:var(--p60)}
+.pb-120 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-120 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-120 .dea-exp.on{display:flex}
+.pb-120 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-120 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-120 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-120 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-120 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-120 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-120 .dea-table th, .pb-120 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-120 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-120 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-120 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-120 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-120 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-120 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-120 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-120 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-120 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-120 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-120 .dea-hl{color:var(--p50);font-weight:700}
+.pb-120 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-120 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-120 .dea-wrap{padding:14px 6px 52px}
+.pb-120 .dea-post-title{font-size:18px}
+.pb-120 .dea-qcard p{font-size:14px}
+.pb-120 .dea-opt-row{font-size:13px}
+.pb-120 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-120 .dea-table{font-size:11.5px}
+.pb-120 .dea-table th, .pb-120 .dea-table td{padding:8px 9px}
+.pb-120 .dea-ans-main{font-size:14.5px}
+.pb-120 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-120">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 17</h1>
+  <p class="dea-post-desc">MWAA DAG Glue 크롤러+EMR(복수), Hive 메타스토어 Glue 카탈로그, Glue Data Quality 규칙, WAF 로그 CloudWatch Logs Insights, Airflow → MWAA 최소 리팩터링 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1·2·4 · ETL·오케스트레이션·품질</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q81"><span class="dea-toc-num">Q81</span> MWAA DAG 일별+아카이브 데이터 변환 태스크 (복수)</a></li>
+    <li><a href="#dea-q82"><span class="dea-toc-num">Q82</span> 영구적·고가용 Hive 메타스토어 — 최소 오버헤드</a></li>
+    <li><a href="#dea-q83"><span class="dea-toc-num">Q83</span> Glue ETL 데이터 정확성·일관성 검증 규칙</a></li>
+    <li><a href="#dea-q84"><span class="dea-toc-num">Q84</span> AWS WAF 로그 가양성 식별 — 가장 효율적</a></li>
+    <li><a href="#dea-q85"><span class="dea-toc-num">Q85</span> Airflow → AWS 마이그레이션 — 최소 리팩터링</a></li>
+  </ul>
+</nav>
+
+<!-- Q81 -->
+<div class="dea-q-block" id="dea-q81">
+  <div class="dea-meta"><span class="dea-badge qnum">Q81</span><span class="dea-badge topic">MWAA DAG · Glue 크롤러 · EMR 변환</span><span class="dea-badge multi">✌️ 복수 정답</span></div>
+  <p class="dea-seo-lead"><strong>MWAA(Apache Airflow)</strong> DAG에서 일별 300GB 변환은 Glue 크롤러로 스키마 탐지 후 처리, 테라바이트 규모 일회성 아카이브 변환은 EMR이 적합합니다. 일별 소규모 데이터에는 Athena·Redshift보다 Glue 크롤러가, 대규모 일회성에는 EMR이 비용 효율적입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question — 두 가지를 선택하세요</div>
+    <p>ML을 위해 S3 데이터 레이크에서 두 가지 변환 작업을 오케스트레이션합니다. ① 매일 예약 시간에 도착하는 다양한 형식의 데이터 300GB를 변환합니다. ② S3의 테라바이트 규모 아카이브 데이터를 일회성으로 변환합니다. MWAA(Apache Airflow) DAG에 예약할 태스크 조합은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q81-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>일별 수신 데이터의 경우 AWS Glue 크롤러를 사용하여 스키마를 스캔하고 식별합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Glue 크롤러</span> — 다양한 형식의 일별 데이터를 자동 스키마 탐지 + 카탈로그 등록. 서버리스로 300GB 규모 일별 처리에 비용 효율적. MWAA의 GlueCrawlerOperator로 DAG에 통합 가능.</div></li>
+    <li class="dea-opt" id="q81-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>일별 수신 데이터의 경우 Amazon Athena를 사용하여 스키마를 스캔하고 식별합니다.</span></div><div class="dea-inline-exp">❌ Athena는 이미 카탈로그에 등록된 데이터를 SQL로 쿼리하는 서비스. 스키마 탐지·등록은 <strong>Glue 크롤러의 역할</strong>. Athena가 스키마를 스캔하는 기능은 없음.</div></li>
+    <li class="dea-opt" id="q81-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>일별 수신 데이터의 경우 Amazon Redshift를 사용하여 변환을 수행합니다.</span></div><div class="dea-inline-exp">❌ Redshift는 데이터 웨어하우스. 일별 S3 데이터 변환에 Redshift 클러스터를 상시 운영하는 것은 <strong>과도한 비용</strong>. Glue ETL 또는 크롤러가 더 비용 효율적.</div></li>
+    <li class="dea-opt" id="q81-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>일별 데이터 및 아카이브 데이터 모두에 Amazon EMR을 사용하여 데이터 변환을 수행합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon EMR</span> — 테라바이트 규모 일회성 아카이브 변환에 최적화된 분산 처리 플랫폼. 대규모 배치 처리에 Spark/Hive 등 활용 가능. MWAA의 EmrOperator로 DAG 통합. <strong>일회성 대용량 처리에 비용 효율적</strong>.</div></li>
+    <li class="dea-opt" id="q81-E"><div class="dea-opt-row"><span class="dea-k">E</span><span>아카이브 데이터의 경우 Amazon SageMaker를 사용하여 데이터 변환을 수행합니다.</span></div><div class="dea-inline-exp">❌ SageMaker는 ML 모델 구축·훈련·배포 플랫폼. 범용 데이터 변환(ETL)보다는 <strong>ML 파이프라인에 특화</strong>. 테라바이트 규모 일반 ETL에는 EMR이 더 적합.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q81">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q81">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A + D — 일별: Glue 크롤러, 아카이브: EMR</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 데이터 규모별 적합한 처리 서비스</div>
+    <table class="dea-table"><thead><tr><th>데이터 규모</th><th>빈도</th><th>적합 서비스</th></tr></thead>
+    <tbody>
+      <tr><td>수백 GB (일별)</td><td>정기적</td><td><strong>Glue ETL / 크롤러</strong></td></tr>
+      <tr><td>테라바이트+ (일회성)</td><td>일회성</td><td><strong>Amazon EMR</strong></td></tr>
+      <tr><td>SQL 분석</td><td>온디맨드</td><td>Athena (변환 아님)</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>MWAA DAG 태스크 선택:<br>일별 소규모 스키마 탐지  →  <span class="dea-hl">Glue 크롤러</span><br>대용량 일회성 변환      →  <span class="dea-hl">Amazon EMR</span><br><br>Athena = 쿼리 (스키마 탐지 아님)<br>SageMaker = ML 특화 (범용 ETL 아님)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q82 -->
+<div class="dea-q-block" id="dea-q82">
+  <div class="dea-meta"><span class="dea-badge qnum">Q82</span><span class="dea-badge topic">Hive 메타스토어 · Glue 데이터 카탈로그 · 고가용성</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Glue 데이터 카탈로그</strong>는 Hive 호환 완전관리형 메타스토어입니다. 여러 EMR 클러스터·AWS 서비스·AWS 계정에서 동시에 접근 가능하고 고가용성이 내장되어 있어 EC2·RDS 기반 메타스토어보다 운영 오버헤드가 낮습니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>영구적이고 신뢰할 수 있는 Apache Hive 메타스토어를 호스팅해야 합니다. 여러 임시 EMR 클러스터, 다양한 AWS 서비스, 여러 AWS 계정이 동시에 접근할 수 있어야 합니다. 항상 가용 상태를 유지해야 합니다. 운영 오버헤드를 최소화하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q82-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>메타스토어로 AWS Glue 데이터 카탈로그를 사용합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue 데이터 카탈로그</span> — Apache Hive 메타스토어 호환. 완전관리형으로 별도 서버 운영 없음. 여러 EMR 클러스터·Athena·Redshift Spectrum·LakeFormation이 동시 접근 가능. 멀티 계정 접근 지원. AWS가 고가용성·내구성을 보장. <strong>최소 오버헤드로 모든 요건 충족</strong>.</div></li>
+    <li class="dea-opt" id="q82-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>MySQL을 메타스토어로 실행하는 외부 Amazon EC2 인스턴스를 사용합니다.</span></div><div class="dea-inline-exp">❌ EC2 인스턴스 + MySQL 직접 관리 = <strong>패치·백업·고가용성·확장 모두 직접 구성</strong>. 운영 오버헤드가 가장 높음.</div></li>
+    <li class="dea-opt" id="q82-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon RDS for MySQL을 메타스토어로 사용합니다.</span></div><div class="dea-inline-exp">❌ RDS는 관리형이지만 여전히 DB 인스턴스 구성·유지보수·멀티 AZ 설정이 필요. Glue 카탈로그보다 <strong>설정·관리 부담이 더 높음</strong>.</div></li>
+    <li class="dea-opt" id="q82-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon S3를 메타스토어로 사용합니다.</span></div><div class="dea-inline-exp">❌ S3는 객체 스토리지. Hive 메타스토어로 직접 사용하는 표준 패턴이 아니며, 트랜잭션 지원이 없어 <strong>메타데이터 일관성·동시 접근 보장이 어려움</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q82">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q82">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — AWS Glue 데이터 카탈로그 (완전관리형 Hive 호환)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Hive 메타스토어 호스팅 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>관리형?</th><th>멀티 서비스·계정?</th><th>고가용성?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Glue 데이터 카탈로그</strong></td><td><span class="dea-pill good">완전관리형</span></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓ 내장</span></td></tr>
+      <tr><td>RDS for MySQL</td><td>관리형 DB</td><td>직접 구성</td><td>Multi-AZ 설정 필요</td></tr>
+      <tr><td>EC2 + MySQL</td><td><span class="dea-pill bad">직접 관리</span></td><td>직접 구성</td><td>직접 구성</td></tr>
+      <tr><td>Amazon S3</td><td>-</td><td>-</td><td>메타스토어 부적합</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"영구 Hive 메타스토어 + 멀티 계정·서비스 + 최소 오버헤드"<br>  →  <span class="dea-hl">AWS Glue 데이터 카탈로그</span><br><br>Hive 호환 + 완전관리형 + 멀티 EMR·Athena·Redshift 동시 접근<br>EC2/RDS = 직접 운영 필요 → 오버헤드 높음</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q83 -->
+<div class="dea-q-block" id="dea-q83">
+  <div class="dea-meta"><span class="dea-badge qnum">Q83</span><span class="dea-badge topic">Glue Data Quality · 규칙 세트 · 데이터 검증</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Glue Data Quality</strong>는 ETL 파이프라인에서 데이터 품질 검사를 자동화하는 기능입니다. <strong>사용자 정의 규칙 세트</strong>로 특정 비즈니스 요건에 맞는 검증 규칙을 구체적으로 정의할 수 있습니다. 작업 북마크는 증분 처리, 데이터 카탈로그는 메타데이터 관리 용도로 품질 검사와 다릅니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>리테일 회사가 고객 주문 데이터셋을 AWS Glue로 ETL 처리합니다. 데이터 정확성과 일관성을 보장하기 위해 <strong>구체적인 검증 규칙</strong>을 구현해야 합니다. 이 요건을 충족하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q83-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Glue 작업 북마크를 사용하여 데이터의 정확성과 일관성을 추적합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Glue 작업 북마크</span> — 이전 처리 지점을 추적해 <strong>증분 데이터만 처리</strong>하는 기능. 데이터 품질 검증(정확성·일관성 규칙)과 무관.</div></li>
+    <li class="dea-opt" id="q83-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>사용자 정의 AWS Glue Data Quality 규칙 세트를 생성하여 구체적인 데이터 품질 검사를 정의합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue Data Quality 사용자 정의 규칙 세트</span> — DQDL(Data Quality Definition Language)로 특정 컬럼 범위, 완결성, 유일성, 패턴 등 <strong>비즈니스 요건에 맞는 구체적 검증 규칙</strong>을 정의. ETL 작업과 통합해 자동 검사. 규칙 위반 시 알림·파이프라인 중단 가능.</div></li>
+    <li class="dea-opt" id="q83-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>표준 데이터 품질 검증을 위해 기본 제공 AWS Glue Data Quality 변환을 사용합니다.</span></div><div class="dea-inline-exp">❌ 기본 제공 변환은 일반적인 표준 검사. "구체적인 검증 규칙"이라는 요건에는 <strong>사용자 정의 규칙 세트(B)</strong>가 더 적합. 비즈니스 특화 규칙은 직접 정의해야 함.</div></li>
+    <li class="dea-opt" id="q83-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Glue 데이터 카탈로그를 사용하여 중앙 집중식 데이터 스키마와 메타데이터 리포지토리를 유지 관리합니다.</span></div><div class="dea-inline-exp">❌ Glue 데이터 카탈로그는 스키마·메타데이터 관리 도구. 데이터 <strong>품질 검사(정확성·일관성 규칙 실행)</strong> 기능은 없음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q83">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q83">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Glue Data Quality 사용자 정의 규칙 세트</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Glue 데이터 품질 관련 기능</div>
+    <table class="dea-table"><thead><tr><th>기능</th><th>역할</th><th>품질 검사?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Data Quality 규칙 세트</strong></td><td>DQDL로 검증 규칙 정의</td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>작업 북마크</td><td>증분 처리 추적</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>데이터 카탈로그</td><td>스키마·메타데이터 관리</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>FindMatches 변환</td><td>중복 레코드 탐지</td><td>부분적</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"ETL 데이터 정확성·일관성 구체적 검증 규칙"<br>  →  <span class="dea-hl">Glue Data Quality 사용자 정의 규칙 세트</span><br><br>작업 북마크 = 증분 처리 (품질 검사 아님)<br>카탈로그 = 메타데이터 관리 (품질 검사 아님)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q84 -->
+<div class="dea-q-block" id="dea-q84">
+  <div class="dea-meta"><span class="dea-badge qnum">Q84</span><span class="dea-badge topic">AWS WAF 로그 · CloudWatch Logs Insights · 가양성</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon CloudWatch Logs + CloudWatch Logs Insights</strong>는 AWS WAF 로그를 실시간에 가까운 속도로 수집하고 대화형 쿼리로 분석할 수 있습니다. WAF 로그는 CloudWatch Logs로 직접 전송 가능하며 추가 서비스 구성이 최소화됩니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>은행 앱 콜센터에 계정 접근 불가 신고가 잇따릅니다. 보안 팀은 AWS WAF 웹 ACL이 일부 합법적인 요청을 차단하고 있음을 확인했습니다. 데이터 엔지니어가 WAF 로그에서 가양성(합법 요청 차단)을 식별할 가장 효율적인 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q84-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Firehose로 WAF 로그를 전송하고, Amazon OpenSearch Service로 전달합니다. OpenSearch 대시보드로 가양성을 식별합니다.</span></div><div class="dea-inline-exp">❌ Firehose + OpenSearch Service 클러스터 설정·유지보수까지 추가 오버헤드. OpenSearch 클러스터는 상시 운영 비용 발생. CloudWatch Logs보다 <strong>설정이 복잡</strong>.</div></li>
+    <li class="dea-opt" id="q84-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Firehose로 WAF 로그를 전송하고, Amazon Redshift로 전달합니다. Redshift 쿼리 편집기로 가양성을 식별합니다.</span></div><div class="dea-inline-exp">❌ Firehose + Redshift 클러스터 설정·로그 스키마 정의까지 추가 단계. WAF 로그 분석 목적에 <strong>과도한 인프라</strong>. 실시간 분석에도 부적합.</div></li>
+    <li class="dea-opt" id="q84-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>WAF 로그를 Amazon CloudWatch Logs로 전송하도록 구성합니다. Amazon CloudWatch Logs Insights 쿼리 편집기로 가양성을 식별합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS WAF → CloudWatch Logs</span> — WAF 로그를 CloudWatch Logs로 직접 전송. 추가 서비스 없이 즉시 수집 시작. <span class="dea-term">CloudWatch Logs Insights</span> — 대화형 쿼리 편집기로 로그를 실시간 분석. 단일 서비스 구성으로 <strong>가장 효율적</strong>.</div></li>
+    <li class="dea-opt" id="q84-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>WAF 로그를 S3로 전송하고, Glue 크롤러로 카탈로그를 만든 뒤 Athena 쿼리 편집기로 가양성을 식별합니다.</span></div><div class="dea-inline-exp">❌ S3 + Glue 크롤러 + Athena 테이블 정의까지 <strong>여러 단계 구성</strong>. 로그 분석에 필요한 것보다 복잡. CloudWatch Logs Insights가 훨씬 직접적이고 빠름.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q84">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q84">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — CloudWatch Logs + Logs Insights (최소 설정, 즉시 분석)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — WAF 로그 분석 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>설정 복잡도</th><th>실시간 분석?</th><th>추가 비용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CloudWatch Logs + Insights</strong></td><td><span class="dea-pill good">최소</span></td><td><span class="dea-pill good">✓</span></td><td>Logs 저장 비용만</td></tr>
+      <tr><td>Firehose + OpenSearch</td><td>높음</td><td>✓</td><td>클러스터 상시 비용</td></tr>
+      <tr><td>Firehose + Redshift</td><td>높음</td><td>지연</td><td>클러스터 비용</td></tr>
+      <tr><td>S3 + Glue + Athena</td><td>중간</td><td>배치</td><td>쿼리 비용</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"WAF/CloudWatch 로그 빠른 분석 + 최소 설정"<br>  →  <span class="dea-hl">CloudWatch Logs + Logs Insights</span><br><br>Logs Insights = 대화형 쿼리 (SQL 아님, 전용 언어)<br>추가 서비스 없이 즉시 분석 가능</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q85 -->
+<div class="dea-q-block" id="dea-q85">
+  <div class="dea-meta"><span class="dea-badge qnum">Q85</span><span class="dea-badge topic">MWAA · Airflow 마이그레이션 · 최소 리팩터링</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon MWAA(Managed Workflows for Apache Airflow)</strong>는 기존 온프레미스 Airflow DAG를 코드 변경 없이 그대로 마이그레이션할 수 있습니다. SQL 데이터 품질 검사 작업도 Airflow의 SQL 오퍼레이터로 그대로 유지 가능합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>온프레미스 Apache Airflow로 데이터 파이프라인을 오케스트레이션하고 있습니다. 파이프라인에는 SQL 데이터 품질 검사 작업이 포함됩니다. 이 파이프라인을 AWS 관리형 서비스로 마이그레이션하되 <strong>리팩터링을 최소화</strong>해야 합니다. 가장 적합한 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q85-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Outposts를 설정하고 EC2 인스턴스에 서버를 마이그레이션합니다. EC2에서 온프레미스 파이프라인과 상호 작용하도록 업데이트합니다.</span></div><div class="dea-inline-exp">❌ AWS Outposts는 온프레미스에 AWS 인프라를 설치하는 하이브리드 솔루션. <strong>"AWS로 마이그레이션"</strong> 요건에 맞지 않음. EC2 직접 관리 오버헤드도 추가.</div></li>
+    <li class="dea-opt" id="q85-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Airflow 코드가 포함된 커스텀 AMI를 생성하고 EC2 인스턴스에 배포합니다.</span></div><div class="dea-inline-exp">❌ EC2에 Airflow를 직접 설치·운영하는 방식. <strong>EC2 관리·패치·확장을 직접</strong> 해야 함. MWAA처럼 Airflow 자체는 관리형이 아님. 오버헤드 높음.</div></li>
+    <li class="dea-opt" id="q85-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>기존 Airflow 오케스트레이션 구성을 Amazon MWAA로 마이그레이션합니다. 수집 중에 데이터 품질 검사를 생성하여 Airflow의 SQL 작업으로 데이터 품질을 검증합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon MWAA</span> — 기존 Airflow DAG·오퍼레이터·플러그인을 <strong>코드 거의 변경 없이</strong> 그대로 사용 가능. SQL 데이터 품질 검사도 Airflow의 SQLOperator 등으로 유지. AWS가 Airflow 인프라 관리. <strong>최소 리팩터링으로 AWS 마이그레이션 달성</strong>.</div></li>
+    <li class="dea-opt" id="q85-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>파이프라인을 AWS Step Functions로 변환하고, SQL 데이터 품질 검사를 Python 기반 Lambda 함수로 재작성합니다.</span></div><div class="dea-inline-exp">❌ Airflow DAG를 Step Functions 상태 머신으로 변환 + SQL 검사를 Python Lambda로 재작성 = <strong>전면 리팩터링</strong>. 최소 리팩터링 요건과 정반대.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q85">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q85">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — Amazon MWAA로 Airflow 그대로 마이그레이션</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Airflow AWS 마이그레이션 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>리팩터링?</th><th>Airflow 코드 재사용?</th><th>관리형?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Amazon MWAA</strong></td><td><span class="dea-pill good">최소</span></td><td><span class="dea-pill good">✓ 그대로</span></td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>EC2 + Airflow 직접 설치</td><td>최소</td><td>✓</td><td><span class="dea-pill bad">✗ 직접 관리</span></td></tr>
+      <tr><td>Step Functions + Lambda</td><td><span class="dea-pill bad">전면 리팩터링</span></td><td><span class="dea-pill bad">✗</span></td><td>✓</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"온프레미스 Airflow → AWS + 최소 리팩터링"<br>  →  <span class="dea-hl">Amazon MWAA</span> (관리형 Apache Airflow)<br><br>기존 DAG·오퍼레이터·플러그인 그대로 사용 가능<br>Step Functions = 전면 재작성 필요 (최소 리팩터링 아님)</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">MWAA DAG</span><span class="dea-tag">Glue 데이터 카탈로그 Hive</span><span class="dea-tag">Glue Data Quality</span><span class="dea-tag">CloudWatch Logs Insights WAF</span><span class="dea-tag">Airflow MWAA 마이그레이션</span><span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var q=[
+    {id:'q81',ans:{'A':true,'D':true},keys:['A','B','C','D','E'],label:'✅ 정답: A+D — Glue 크롤러 + EMR'},
+    {id:'q82',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — Glue 데이터 카탈로그'},
+    {id:'q83',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue Data Quality 규칙 세트'},
+    {id:'q84',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — CloudWatch Logs Insights'},
+    {id:'q85',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Amazon MWAA'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

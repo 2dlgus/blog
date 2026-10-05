@@ -1,0 +1,312 @@
+<!--
+id: 101
+제목: AWS DEA-C01 각색 문제 Day 05 — Secrets Manager, S3 수명주기 정책, Kinesis, Lake Formation PII, Glue 데이터 품질
+카테고리: Stack/AWS
+태그: 자격증, S3, AWS, DEA, Glue, kinesis, Data Engineering, Secrets Manager, Lake formation, PII
+날짜: 2026-03-23 23:48
+수정: 2026-03-25 16:28
+형식: html
+썸네일: /img/t/dJMcaiQa20l.webp
+-->
+<style>
+.pb-101 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-101 .dea-wrap *{box-sizing:border-box}
+.pb-101 .dea-post-header{margin-bottom:32px}
+.pb-101 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-101 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-101 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-101 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-101 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-101 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-101 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-101 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-101 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-101 .dea-q-block{margin-bottom:48px}
+.pb-101 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-101 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-101 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-101 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-101 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-101 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-101 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-101 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-101 .dea-seo-lead strong{color:var(--p50)}
+.pb-101 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-101 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-101 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-101 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-101 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-101 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-101 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-101 .dea-opt.ok{border-color:var(--s60)}
+.pb-101 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-101 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-101 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-101 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-101 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-101 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-101 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-101 .dea-term{font-weight:700;color:var(--p50)}
+.pb-101 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-101 .dea-btn:hover{background:var(--p60)}
+.pb-101 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-101 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-101 .dea-exp.on{display:flex}
+.pb-101 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-101 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-101 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-101 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-101 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-101 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-101 .dea-table th, .pb-101 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-101 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-101 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-101 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-101 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-101 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-101 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-101 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-101 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-101 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-101 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-101 .dea-hl{color:var(--p50);font-weight:700}
+.pb-101 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-101 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-101 .dea-wrap{padding:14px 6px 52px}
+.pb-101 .dea-post-title{font-size:18px}
+.pb-101 .dea-qcard p{font-size:14px}
+.pb-101 .dea-opt-row{font-size:13px}
+.pb-101 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-101 .dea-table{font-size:11.5px}
+.pb-101 .dea-table th, .pb-101 .dea-table td{padding:8px 9px}
+.pb-101 .dea-ans-main{font-size:14.5px}
+.pb-101 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-101">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 05</h1>
+  <p class="dea-post-desc">Secrets Manager 자격증명 교체, S3 수명주기 정책, Kinesis 실시간 수집, Lake Formation PII 접근 제어, Glue 데이터 품질 최신성 알림까지 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 2·4 · 보안 · 스토리지 · 거버넌스</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q21"><span class="dea-toc-num">Q21</span> 코드 수정 없이 DB 자격증명 자동 교체</a></li>
+    <li><a href="#dea-q22"><span class="dea-toc-num">Q22</span> S3 수명주기 — 고가용성 유지 + 비용 최적화</a></li>
+    <li><a href="#dea-q23"><span class="dea-toc-num">Q23</span> 수백만 이벤트 실시간 수집 — 비용 효율적 방법</a></li>
+    <li><a href="#dea-q24"><span class="dea-toc-num">Q24</span> 데이터 레이크 PII 컬럼 수준 접근 제어</a></li>
+    <li><a href="#dea-q25"><span class="dea-toc-num">Q25</span> Glue 간헐적 실패 시 데이터 최신성 알림</a></li>
+  </ul>
+</nav>
+
+<!-- Q21 -->
+<div class="dea-q-block" id="dea-q21">
+  <div class="dea-meta"><span class="dea-badge qnum">Q21</span><span class="dea-badge topic">Secrets Manager · 자격증명 교체 · 보안</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Secrets Manager</strong>는 DB 자격증명을 안전하게 저장하고 <strong>자동으로 교체(Rotation)</strong>합니다. 애플리케이션은 코드 변경 없이 API 호출로 최신 자격증명을 가져오므로 운영 부담이 최소화됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>의료 기관이 온프레미스 MySQL DB에 환자 기록을 저장하며, 접근 애플리케이션을 운영하고 있습니다. 보안 정책상 30일마다 DB 자격증명을 교체해야 하지만, 교체 때마다 애플리케이션 코드를 수정하는 것은 부담스럽습니다. 운영 오버헤드를 최소화하면서 자동으로 자격증명을 교체하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q21-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS KMS로 암호화 키를 생성하고 자동 키 교체를 설정한 뒤, 암호화된 자격증명을 DynamoDB 테이블에 저장합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS KMS(Key Management Service)</span> — 암호화 키를 생성·관리하는 서비스. KMS는 암호화 키를 교체하는 것이지 DB 자격증명(ID/PW)을 교체하는 서비스가 아님. DynamoDB에 저장해도 교체 로직을 별도로 구현해야 함.</div></li>
+    <li class="dea-opt" id="q21-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>IAM 역할에 DB 접근 권한을 부여하고, 애플리케이션이 IAM 역할로 임시 자격증명을 받아 DB에 접근하도록 구성합니다.</span></div><div class="dea-inline-exp">❌ IAM 역할 임시 자격증명은 <strong>AWS 서비스 접근용</strong>. 온프레미스 MySQL은 AWS 서비스가 아니므로 IAM 인증을 사용할 수 없음.</div></li>
+    <li class="dea-opt" id="q21-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>암호화된 S3 버킷에 자격증명을 저장하고, S3 수명주기 정책으로 매월 자격증명 객체를 교체합니다.</span></div><div class="dea-inline-exp">❌ S3 수명주기 정책은 객체를 다른 스토리지 클래스로 이동하거나 삭제하는 기능. <strong>자격증명을 새 값으로 교체하는 기능이 없음</strong>. 교체 로직 전체를 수동으로 구현해야 해 운영 부담이 큼.</div></li>
+    <li class="dea-opt" id="q21-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Secrets Manager에 자격증명을 저장하고 자동 교체 주기를 설정합니다. 애플리케이션은 API 호출로 항상 최신 자격증명을 조회합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Secrets Manager</span> — 금고 관리인이 주기적으로 열쇠를 자동 교체하고, 직원은 금고에 열쇠 달라고 요청하면 항상 최신 열쇠를 받는 시스템. 자동 교체 주기 설정(30일) + 애플리케이션은 API 호출로 항상 최신 자격증명 조회 → <strong>코드 수정 불필요</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q21">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q21">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — AWS Secrets Manager 자동 교체 + API 조회</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 자격증명 관리 서비스 비교</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>주 용도</th><th>자동 교체</th><th>코드 수정 불필요</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Secrets Manager</strong></td><td>DB 자격증명·API 키 관리</td><td><span class="dea-pill good">✓ 내장</span></td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>KMS</td><td>암호화 키 생성·관리</td><td>키 교체만</td><td>자격증명 관리 아님</td></tr>
+      <tr><td>Parameter Store</td><td>설정값·비밀 저장</td><td>수동 교체</td><td>교체 로직 별도 구현</td></tr>
+      <tr><td>S3 버킷</td><td>파일 스토리지</td><td><span class="dea-pill bad">✗</span></td><td><span class="dea-pill bad">✗</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"자격증명 자동 교체 + 코드 수정 불필요"  →  <span class="dea-hl">AWS Secrets Manager</span><br><br>KMS        = 암호화 키 관리 (자격증명 교체 아님)<br>온프레미스 DB = IAM 역할 인증 불가</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q22 -->
+<div class="dea-q-block" id="dea-q22">
+  <div class="dea-meta"><span class="dea-badge qnum">Q22</span><span class="dea-badge topic">S3 수명주기 · 스토리지 클래스 · 비용 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>S3 수명주기 정책</strong>으로 접근 빈도에 따라 스토리지 클래스를 자동 전환해 비용을 최적화합니다. <strong>고가용성</strong> 조건에서는 단일 AZ인 One Zone-IA를 제외해야 하며, 장기 보관엔 Glacier Deep Archive가 가장 저렴합니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>분석팀이 S3 Standard 클래스에 모든 데이터를 보관하고 있습니다. 분석 결과 데이터 접근 패턴은 다음과 같습니다: 생성 후 6개월은 매일 여러 번 조회되고, 6개월~2년은 월 1~2회, 2년 이후는 연 1~2회만 접근됩니다. 고가용성을 유지하면서 S3 수명주기 정책으로 비용을 최적화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q22-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>6개월 후 S3 One Zone-IA로 전환하고, 2년 후 S3 Glacier Deep Archive로 이동합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">S3 One Zone-IA</span> — 단일 가용 영역(AZ)에만 데이터 저장. <strong>고가용성 요건 위반</strong>. AZ 장애 시 데이터 손실 가능.</div></li>
+    <li class="dea-opt" id="q22-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>6개월 후 S3 One Zone-IA로 전환하고, 2년 후 S3 Glacier Flexible Retrieval로 이동합니다.</span></div><div class="dea-inline-exp">❌ One Zone-IA로 인한 <strong>고가용성 요건 위반</strong>. 추가로 Glacier Flexible Retrieval은 Deep Archive보다 비쌈.</div></li>
+    <li class="dea-opt" id="q22-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>6개월 후 S3 Standard-IA로 전환하고, 2년 후 S3 Glacier Flexible Retrieval로 이동합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">S3 Standard-IA</span> — 다중 AZ 저장으로 고가용성 충족. 하지만 2년 후 단계에서 <span class="dea-term">Glacier Flexible Retrieval</span>보다 <strong>Glacier Deep Archive가 약 4배 더 저렴</strong>. 연 1~2회 접근 패턴엔 Deep Archive가 최적.</div></li>
+    <li class="dea-opt" id="q22-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>6개월 후 S3 Standard-IA로 전환하고, 2년 후 S3 Glacier Deep Archive로 이동합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">S3 Standard-IA</span> — 다중 AZ 저장, 고가용성 유지, 월 1~2회 접근에 Standard보다 저렴. <span class="dea-term">S3 Glacier Deep Archive</span> — AWS에서 가장 저렴한 스토리지, 연 1~2회 접근 패턴에 최적. 두 조건 모두 충족.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q22">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q22">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — Standard-IA (고가용성) → Glacier Deep Archive (최저 비용)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — S3 스토리지 클래스 비교</div>
+    <table class="dea-table"><thead><tr><th>클래스</th><th>가용성</th><th>AZ 수</th><th>적합 접근 패턴</th><th>비용</th></tr></thead>
+    <tbody>
+      <tr><td>S3 Standard</td><td>99.99%</td><td>3+</td><td>매일 여러 번</td><td>높음</td></tr>
+      <tr><td><strong>S3 Standard-IA</strong></td><td>99.9%</td><td>3+</td><td>월 1~2회</td><td>중간</td></tr>
+      <tr><td>S3 One Zone-IA</td><td>99.5%</td><td><span class="dea-pill bad">1 (위험)</span></td><td>월 1~2회</td><td>중간(저)</td></tr>
+      <tr><td>Glacier Flexible</td><td>99.99%</td><td>3+</td><td>분기 1회</td><td>낮음</td></tr>
+      <tr><td><strong>Glacier Deep Archive</strong></td><td>99.99%</td><td>3+</td><td>연 1~2회</td><td><span class="dea-pill good">최저</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>고가용성 요건  →  <span class="dea-hl">One Zone-IA 제외</span>  (단일 AZ = 위험)<br><br>월 1~2회   →  <span class="dea-hl">Standard-IA</span>      (다중 AZ, 고가용성)<br>연 1~2회   →  <span class="dea-hl">Glacier Deep Archive</span> (AWS 최저 비용)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q23 -->
+<div class="dea-q-block" id="dea-q23">
+  <div class="dea-meta"><span class="dea-badge qnum">Q23</span><span class="dea-badge topic">Kinesis · 실시간 수집 · 이벤트 처리</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon Kinesis Data Streams</strong>는 수백만 이벤트를 밀리초 단위로 실시간 수집하는 완전 관리형 스트리밍 서비스입니다. MSK보다 운영 부담이 낮고 배치보다 지연이 낮아 DEA-C01 실시간 수집 + 비용 효율 조합의 정답 패턴입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>미디어 플랫폼이 웹·앱 전반에서 발생하는 사용자 활동 이벤트를 실시간으로 수집하는 파이프라인을 구축하려 합니다. 매우 낮은 지연 시간으로 초당 수백만 건의 이벤트를 처리해야 하며, 데이터 손실 없이 확장 가능하고 내구성 있는 솔루션이 필요합니다. 비용 효율적인 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q23-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon Kinesis Data Streams로 이벤트를 수집하고, Lambda로 처리한 뒤 분석 결과를 Redshift에 저장합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon Kinesis Data Streams</span> — 실시간 컨베이어 벨트. 수백만 이벤트를 밀리초 단위로 수집, 자동 샤드 확장, 24시간~365일 데이터 보존으로 내구성 보장. 완전 관리형이라 운영 부담 낮고 Lambda와 직접 연동 가능. 비용 효율적.</div></li>
+    <li class="dea-opt" id="q23-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 작업을 10분 주기로 예약하여 S3의 사용자 로그를 가져와 Redshift에 적재합니다.</span></div><div class="dea-inline-exp">❌ 10분 배치 주기는 <strong>실시간이 아님</strong>. 최소 지연 시간 요건과 정반대. 로그가 S3에 쌓이는 동안 지연 발생.</div></li>
+    <li class="dea-opt" id="q23-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon MSK 클러스터를 배포하고, 자체 관리형 컨슈머로 이벤트를 실시간 처리한 뒤 Redshift와 연동합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon MSK(Managed Streaming for Kafka)</span> — 완전 관리형 Kafka. 기술적으로 가능하지만 <strong>자체 관리형 컨슈머</strong>를 별도 구현해야 하고 Kinesis보다 운영 복잡도와 비용이 높음. 신규 구축엔 Kinesis가 더 효율적.</div></li>
+    <li class="dea-opt" id="q23-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>S3 이벤트 알림으로 새 로그 파일이 생성될 때마다 Lambda를 트리거하고, 분석 결과를 Redshift에 저장합니다.</span></div><div class="dea-inline-exp">❌ S3 이벤트 알림은 파일 단위 처리. 수백만 건의 개별 이벤트를 실시간으로 수집하는 구조가 아님. 파일이 생성된 후에야 처리 시작 → <strong>준실시간</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q23">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q23">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — Kinesis Data Streams + Lambda + Redshift</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 실시간 이벤트 수집 서비스 비교</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>지연 시간</th><th>운영 부담</th><th>비용 효율</th><th>실시간?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Kinesis Data Streams</strong></td><td>밀리초</td><td><span class="dea-pill good">낮음</span></td><td><span class="dea-pill good">✓ 높음</span></td><td>✓</td></tr>
+      <tr><td>MSK (Kafka)</td><td>밀리초</td><td><span class="dea-pill bad">높음</span></td><td>중간</td><td>✓</td></tr>
+      <tr><td>Glue 배치</td><td>분 단위</td><td>낮음</td><td>높음</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>S3 이벤트</td><td>초 단위</td><td>낮음</td><td>높음</td><td>준실시간</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"수백만 이벤트 실시간 + 비용 효율"  →  <span class="dea-hl">Kinesis Data Streams</span><br><br>MSK    = 기존 Kafka 마이그레이션 시 선택, 운영 복잡<br>Kinesis = 신규 실시간 파이프라인, 완전 관리형, 비용 효율</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q24 -->
+<div class="dea-q-block" id="dea-q24">
+  <div class="dea-meta"><span class="dea-badge qnum">Q24</span><span class="dea-badge topic">Lake Formation · PII · 열 수준 보안</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Lake Formation 데이터 필터(Data Filter)</strong>는 열(Column)·행(Row) 단위로 접근을 제어합니다. PII가 포함된 데이터 레이크에서 그룹별로 필요한 컬럼만 접근하게 하는 가장 간단한 방법으로 DEA-C01에서 자주 출제됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>기업의 S3 데이터 레이크에 일부 개인식별정보(PII)가 포함되어 있습니다. 여러 팀이 원시 데이터에 접근하며, 각 팀은 자신이 처리해야 하는 PII 컬럼에만 접근할 수 있어야 합니다. 최소한의 구현 노력으로 이 요건을 충족하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q24-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Athena 쿼리를 백그라운드에서 실행하는 커스텀 쿼리 빌더 UI를 개발하고, Amazon Cognito 사용자 그룹으로 접근 수준을 관리합니다.</span></div><div class="dea-inline-exp">❌ 사용자 지정 쿼리 빌더 UI를 개발하는 것은 <strong>개발 비용이 매우 높고</strong> 유지보수 부담도 큼. "최소한의 노력" 요건과 정반대.</div></li>
+    <li class="dea-opt" id="q24-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon QuickSight의 열 수준 보안 기능으로 팀별 PII 접근을 제한하고, QuickSight 대시보드로 데이터에 접근하게 합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon QuickSight</span> — BI 시각화 도구. 원시 데이터에 직접 접근하는 게 아니라 시각화 레이어에서만 제어. QuickSight 밖에서 Athena를 직접 쿼리하는 경우는 제어 불가.</div></li>
+    <li class="dea-opt" id="q24-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>세분화된 접근 권한을 가진 IAM 역할을 팀별로 만들고, ID 기반 정책에서 열 수준으로 접근을 제한합니다.</span></div><div class="dea-inline-exp">❌ IAM 정책으로 S3 객체 레벨 접근은 제어 가능하지만 <strong>열(Column) 수준 접근 제어는 IAM 정책으로 불가능</strong>. 열 수준 보안은 Lake Formation의 기능.</div></li>
+    <li class="dea-opt" id="q24-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Lake Formation을 설정하고 데이터 필터를 생성하여 IAM 역할별 접근 가능한 컬럼을 정의합니다. 각 팀에 해당 역할을 할당하고 Athena로 데이터를 쿼리합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Lake Formation 데이터 필터(Data Filter)</span> — 도서관 사서가 특정 회원에게 특정 챕터만 열람 가능하게 설정하는 것. 열(PII 컬럼)·행 단위로 접근 제어. Athena 쿼리 시 자동으로 필터 적용 → 코드 없이 <strong>최소 노력</strong>으로 구현.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q24">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q24">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — Lake Formation 데이터 필터 + IAM 역할 매핑</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 열 수준 접근 제어 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>열 수준 제어?</th><th>구현 노력</th><th>원시 데이터 보호</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Lake Formation 데이터 필터</strong></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">최소</span></td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>IAM 정책</td><td><span class="dea-pill bad">✗ (파일 단위)</span></td><td>중간</td><td>파일 단위만</td></tr>
+      <tr><td>QuickSight 열 보안</td><td><span class="dea-pill mid">BI 레이어만</span></td><td>중간</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>커스텀 쿼리 빌더</td><td>개발 필요</td><td><span class="dea-pill bad">매우 높음</span></td><td>조건부</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"PII 열 수준 접근 제어 + 최소 노력"  →  <span class="dea-hl">Lake Formation 데이터 필터</span><br><br>IAM 정책     = 파일/버킷 단위만 제어 (열 수준 불가)<br>Lake Formation = 열·행 단위 세밀한 접근 제어</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q25 -->
+<div class="dea-q-block" id="dea-q25">
+  <div class="dea-meta"><span class="dea-badge qnum">Q25</span><span class="dea-badge topic">Glue 데이터 품질 · EventBridge · SNS · 알림</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Glue 데이터 품질 + EventBridge + SNS</strong> 조합은 데이터 최신성 등 품질 규칙 실패 시 자동 알림을 보내는 표준 패턴입니다. 작업 실패(Job Fail)와 데이터 최신성 미달(Freshness)은 서로 다른 레이어의 문제임을 구분하는 것이 핵심입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>S3의 시계열 데이터를 Redshift 서버리스 테이블에 적재하는 일별 Glue 워크플로가 있습니다. 일부 작업이 간헐적으로 실패하는 것이 확인되었으며, 엔지니어는 Redshift 테이블에 최신 데이터가 없을 경우 즉시 알림을 받아야 합니다. 운영 효율을 최대화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q25-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Glue 작업 로그를 S3에 저장하고, 로그에 Job.State=FAILED가 포함될 때 알림을 보내도록 CloudWatch 알람을 구성합니다.</span></div><div class="dea-inline-exp">❌ 작업 실패(Job Failed)를 감지하는 것과 <strong>데이터 최신성(Freshness) 부재</strong>는 다름. 작업이 성공해도 데이터가 최신이 아닐 수 있음. 요건을 정확히 충족하지 못함.</div></li>
+    <li class="dea-opt" id="q25-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 데이터 품질 작업으로 Redshift 테이블의 데이터 최신성을 주기적으로 검사하고, 규칙 실패 시 EventBridge 규칙이 SNS 토픽으로 알림을 전송하도록 구성합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Glue 데이터 품질</span>로 <strong>최신성(Freshness) 규칙</strong>을 정의 (예: 최근 24시간 내 데이터 존재). 규칙 실패 시 <span class="dea-term">EventBridge</span> — 이벤트 자동 반응 시스템 — 가 감지해 <span class="dea-term">SNS</span> — 방송 스피커 — 로 알림 전송. <strong>데이터 최신성을 직접 검사</strong>하는 유일한 방법.</div></li>
+    <li class="dea-opt" id="q25-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>EventBridge 스케줄러로 Amazon Macie 작업을 실행하여 Redshift 테이블의 최신성을 검사하고, Glue 실패 시 Macie가 SNS로 알림을 보내도록 설정합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon Macie</span> — S3의 PII(개인정보) 자동 탐지 및 데이터 보안 서비스. 데이터 최신성 검사 기능이 없음. Macie로 Redshift 검사도 불가. 완전히 용도가 다른 서비스.</div></li>
+    <li class="dea-opt" id="q25-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>CloudWatch 대시보드에 일별 Glue 작업 실패 횟수 메트릭을 추가하고, 값이 0을 초과하면 알림을 보내도록 CloudWatch 알람을 설정합니다.</span></div><div class="dea-inline-exp">❌ A와 같은 이유. 작업 실패 횟수 = 작업 레벨 모니터링. <strong>Redshift 테이블의 데이터 최신성</strong>을 직접 검사하는 것이 아님.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q25">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q25">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Glue 데이터 품질 최신성 규칙 + EventBridge → SNS 알림</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — "작업 실패"와 "데이터 최신성"의 차이</div>
+    <table class="dea-table"><thead><tr><th>감지 방법</th><th>감지 대상</th><th>데이터 최신성 직접 검사?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Glue 데이터 품질 최신성 규칙</strong></td><td>테이블 내 데이터 최신성</td><td><span class="dea-pill good">✓ 직접</span></td></tr>
+      <tr><td>CloudWatch Glue 실패 알람</td><td>작업 실패 여부</td><td><span class="dea-pill bad">✗ 간접</span></td></tr>
+      <tr><td>Amazon Macie</td><td>S3 PII 탐지</td><td><span class="dea-pill bad">✗ 무관</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"Redshift 데이터 최신성 알림"<br>  →  <span class="dea-hl">Glue 데이터 품질(Freshness 규칙)</span> + EventBridge + SNS<br><br>작업 실패 ≠ 데이터 최신성 미달  →  다른 레이어!<br>Macie = PII 탐지 도구 (최신성과 무관)</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span>
+  <span class="dea-tag">Secrets Manager</span>
+  <span class="dea-tag">S3 수명주기</span>
+  <span class="dea-tag">Glacier Deep Archive</span>
+  <span class="dea-tag">Kinesis Data Streams</span>
+  <span class="dea-tag">Lake Formation PII</span>
+  <span class="dea-tag">Glue 데이터 품질</span>
+  <span class="dea-tag">데이터 엔지니어 자격증</span>
+  <span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var questions=[
+    {id:'q21',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — Secrets Manager'},
+    {id:'q22',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — Standard-IA → Glacier Deep Archive'},
+    {id:'q23',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — Kinesis Data Streams'},
+    {id:'q24',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — Lake Formation 데이터 필터'},
+    {id:'q25',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue 데이터 품질 + EventBridge + SNS'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

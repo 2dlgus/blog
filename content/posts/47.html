@@ -1,0 +1,960 @@
+<!--
+id: 47
+제목: AWS DEA-C01 시험 핵심 도식
+카테고리: Stack/AWS
+태그: AWS, claude, DEA, Data Engineer, Sonnet 4.6
+날짜: 2026-03-07 22:46
+수정: 2026-03-21 23:45
+형식: html
+썸네일: /img/t/dJMcadul0be.webp
+-->
+<style>
+.pb-47{--bg:var(--p5);--surface:var(--g0);--surface2:var(--p5);--border:var(--p10);--accent:var(--i60);--accent2:var(--y50);--accent3:var(--p50);--green:var(--s60);--yellow:var(--y50);--red:var(--r50);--text:var(--p70);--muted:var(--g50);--ingestion:var(--i60);--storage:var(--p50);--process:var(--y50);--orchestrate:var(--s60);--analytics:var(--r50);--security:var(--p50)}
+.pb-47 *, .pb-47{box-sizing:border-box;margin:0;padding:0}
+.pb-47{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.pb-47 .header{text-align:center;padding:40px 20px 20px;position:relative;border-bottom:1px solid var(--border)}
+.pb-47 .header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--i60) 6%, transparent) 0%, transparent 70%);pointer-events:none}
+.pb-47 .header h1{font-size:clamp(22px, 4vw, 38px);font-weight:900;letter-spacing:-1px;line-height:1.1}
+.pb-47 .header h1 span{color:var(--accent)}
+.pb-47 .header p{color:var(--muted);margin-top:8px;font-size:14px}
+.pb-47 .tabs{display:flex;justify-content:center;gap:4px;padding:16px 20px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.pb-47 .tab{padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;border:1px solid var(--border);transition:all 0.2s;background:var(--g0);color:var(--p60);user-select:none}
+.pb-47 .tab:hover{border-color:var(--accent);color:var(--accent)}
+.pb-47 .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pb-47 .panel{display:none;padding:24px 20px;max-width:1200px;margin:0 auto}
+.pb-47 .panel.active{display:block}
+.pb-47 .pipeline{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px;margin-bottom:32px}
+.pb-47 .pipe-stage{flex:1;min-width:140px;position:relative}
+.pb-47 .pipe-stage::after{content:'▶';position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;z-index:2}
+.pb-47 .pipe-stage:last-child::after{display:none}
+.pb-47 .pipe-box{background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.25s;height:100%;margin-right:24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.pb-47 .pipe-box:hover{transform:translateY(-3px)}
+.pb-47 .pipe-box .icon{font-size:28px;margin-bottom:6px}
+.pb-47 .pipe-box .label{font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+.pb-47 .pipe-box .ko{font-size:12px;color:var(--muted)}
+.pb-47 .pipe-box.ingestion{}
+.pb-47 .pipe-box.storage{}
+.pb-47 .pipe-box.process{}
+.pb-47 .pipe-box.orchestrate{}
+.pb-47 .pipe-box.analytics{}
+.pb-47 .pipe-box.security{}
+.pb-47 .section-title{font-size:16px;font-weight:900;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.pb-47 .section-title .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pb-47 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:12px;margin-bottom:32px}
+.pb-47 .card{background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.pb-47 .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.pb-47 .card.ingestion::before{background:var(--ingestion)}
+.pb-47 .card.storage::before{background:var(--storage)}
+.pb-47 .card.process::before{background:var(--process)}
+.pb-47 .card.orchestrate::before{background:var(--orchestrate)}
+.pb-47 .card.analytics::before{background:var(--analytics)}
+.pb-47 .card.security::before{background:var(--security)}
+.pb-47 .card:hover{border-color:var(--p50);transform:translateY(-2px);background:var(--g0);box-shadow:0 4px 12px rgba(0,0,0,0.07)}
+.pb-47 .card-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pb-47 .service-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pb-47 .card.ingestion .service-icon{background:color-mix(in srgb, var(--i60) 10%, transparent)}
+.pb-47 .card.storage .service-icon{background:color-mix(in srgb, var(--p50) 10%, transparent)}
+.pb-47 .card.process .service-icon{background:color-mix(in srgb, var(--y50) 10%, transparent)}
+.pb-47 .card.orchestrate .service-icon{background:color-mix(in srgb, var(--s60) 10%, transparent)}
+.pb-47 .card.analytics .service-icon{background:color-mix(in srgb, var(--r50) 10%, transparent)}
+.pb-47 .card.security .service-icon{background:color-mix(in srgb, var(--p50) 10%, transparent)}
+.pb-47 .service-name{font-family:'JetBrains Mono', monospace;font-size:13px;font-weight:700;color:var(--p70)}
+.pb-47 .service-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.pb-47 .card-desc{font-size:12.5px;line-height:1.6;color:var(--p60);margin-bottom:10px}
+.pb-47 .card-body{display:none}
+.pb-47 .card.expanded .card-body{display:block}
+.pb-47 .analogy{background:var(--p5);border:1px dashed var(--border);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--p60);margin-bottom:8px}
+.pb-47 .analogy strong{color:var(--accent);display:block;font-size:11px;margin-bottom:3px}
+.pb-47 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.pb-47 .tag{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:var(--p10);color:var(--g50)}
+.pb-47 .tag.hot{background:color-mix(in srgb, var(--r50) 10%, transparent);color:var(--r60)}
+.pb-47 .tag.key{background:color-mix(in srgb, var(--i60) 10%, transparent);color:var(--accent)}
+.pb-47 .compare-table{width:100%;border-collapse:collapse;margin-bottom:28px;font-size:13px}
+.pb-47 .compare-table th{background:var(--p5);padding:10px 14px;text-align:left;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.pb-47 .compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.pb-47 .compare-table tr:hover td{background:var(--g0)}
+.pb-47 .compare-table .svc{font-family:'JetBrains Mono', monospace;font-weight:700;color:var(--p70);white-space:nowrap}
+.pb-47 .compare-table .when{color:var(--i60);font-size:11px}
+.pb-47 .compare-table .avoid{color:var(--r60);font-size:11px}
+.pb-47 .flow-diagram{background:var(--g0);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:28px;overflow-x:auto;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.pb-47 .flow-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pb-47 .flow-node{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap}
+.pb-47 .flow-arrow{color:var(--muted);font-size:18px}
+.pb-47 .flow-source{background:color-mix(in srgb, var(--i50) 15%, transparent);border:1px solid color-mix(in srgb, var(--i50) 40%, transparent);color:var(--i60)}
+.pb-47 .flow-ingest{background:color-mix(in srgb, var(--p50) 15%, transparent);border:1px solid color-mix(in srgb, var(--p50) 40%, transparent);color:var(--p50)}
+.pb-47 .flow-store{background:color-mix(in srgb, var(--y50) 15%, transparent);border:1px solid color-mix(in srgb, var(--y50) 40%, transparent);color:var(--y60)}
+.pb-47 .flow-process{background:color-mix(in srgb, var(--s60) 15%, transparent);border:1px solid color-mix(in srgb, var(--s60) 40%, transparent);color:var(--s60)}
+.pb-47 .flow-serve{background:color-mix(in srgb, var(--r50) 15%, transparent);border:1px solid color-mix(in srgb, var(--r50) 40%, transparent);color:var(--r60)}
+.pb-47 .flow-label{font-size:11px;color:var(--muted);margin-right:4px;min-width:60px}
+.pb-47 .tips-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:14px;margin-bottom:28px}
+.pb-47 .tip-card{background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.pb-47 .tip-card h4{font-size:13px;font-weight:900;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.pb-47 .tip-card ul{list-style:none}
+.pb-47 .tip-card ul li{font-size:12.5px;padding:5px 0;border-bottom:1px solid color-mix(in srgb, var(--p10) 70%, transparent);color:var(--p60);display:flex;gap:8px}
+.pb-47 .tip-card ul li:last-child{border-bottom:none}
+.pb-47 .tip-card ul li::before{content:'→';color:var(--accent);flex-shrink:0}
+.pb-47 .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:900;margin-left:6px;vertical-align:middle}
+.pb-47 .badge-red{background:color-mix(in srgb, var(--r50) 10%, transparent);color:var(--r60)}
+.pb-47 .badge-blue{background:color-mix(in srgb, var(--i60) 10%, transparent);color:var(--accent)}
+.pb-47 .legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.pb-47 .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.pb-47 .legend-dot{width:8px;height:8px;border-radius:50%}
+.pb-47 .keyword-map{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:8px;margin-bottom:28px}
+.pb-47 .kw-item{background:var(--g0);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.pb-47 .kw-service{font-family:'JetBrains Mono', monospace;font-size:11px;font-weight:700;color:var(--accent);white-space:nowrap;flex-shrink:0;padding-top:1px;min-width:90px}
+.pb-47 .kw-desc{font-size:12px;color:var(--p60);line-height:1.5}
+.pb-47 .scroll-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;background:var(--accent);color:#fff;border-radius:8px;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 8px rgba(3,105,161,0.3)}
+.pb-47 .seo-intro{max-width:800px;margin:0 auto;padding:40px 20px 0}
+.pb-47 .seo-intro h2{font-size:20px;font-weight:900;color:var(--text);margin-bottom:16px;letter-spacing:-0.5px}
+.pb-47 .seo-intro p{font-size:14px;color:var(--muted);line-height:1.85;margin-bottom:10px}
+.pb-47 .seo-intro strong{color:var(--text);font-weight:700}
+.pb-47 .seo-intro ul{margin:12px 0 12px 4px;list-style:none;display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:4px 16px}
+.pb-47 .seo-intro ul li{font-size:13px;color:var(--muted);padding:3px 0;display:flex;gap:6px}
+.pb-47 .seo-intro ul li::before{content:'→';color:var(--accent);flex-shrink:0}
+.pb-47 .seo-intro .divider{height:1px;background:linear-gradient(to right, var(--border), transparent);margin:28px 0 0}
+</style>
+<div class="pb pb-47">
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<!-- SEO 본문 -->
+<article class="seo-intro">
+<h1>AWS DEA 시험 핵심 도식</h1>
+<p data-ke-size="size16">AWS DEA(Data Engineer Associate, DEA-C01) 시험을 준비하면서 가장 힘들었던 건 서비스 이름이 너무 많다는 것이었습니다. Kinesis Data Streams, Kinesis Firehose, Glue, EMR, Athena, Redshift, Lake Formation, Step Functions, MWAA... 처음엔 이게 다 뭐가 다른지 전혀 감이 안 잡혔습니다. 그래서 데이터 엔지니어링 개념과 1:1로 매핑해서 정리했습니다. AWS를 몰라도 ETL 파이프라인, 데이터 레이크, 오케스트레이션, DW 같은 개념을 알면 충분히 이해할 수 있습니다.</p>
+<h2 data-ke-size="size26">시험 도메인 비중 (DEA-C01)</h2>
+<p data-ke-size="size16">데이터 수집 및 변환 34%(Kinesis, Glue, DMS) / 데이터 저장 및 관리 26%(S3, Redshift, DynamoDB) / 데이터 운영 및 지원 22%(CloudWatch, Step Functions) / 데이터 보안 및 거버넌스 18%(IAM, KMS, Lake Formation) 순으로 출제됩니다.</p>
+<h2 data-ke-size="size26">자주 헷갈리는 서비스 구분</h2>
+<p data-ke-size="size16">Kinesis Data Streams vs Firehose &mdash; Streams는 소비자가 직접 처리, Firehose는 S3/Redshift로 자동 전달. AWS Glue vs EMR &mdash; Glue는 서버리스 ETL(빠른 시작), EMR은 클러스터 직접 관리(대규모 처리). Athena vs Redshift &mdash; Athena는 S3 직접 쿼리(임시 분석, 스캔량 과금), Redshift는 DW(정기 BI). Step Functions vs MWAA &mdash; Step Functions는 AWS 서비스 연결용 State Machine, MWAA는 기존 Airflow DAG 코드 재사용. Kafka 기존 코드 그대로 이전하면 Amazon MSK, AWS 네이티브 새로 구축하면 Kinesis.</p>
+<h2 data-ke-size="size26">시험 키워드 &rarr; 서비스 빠른 매핑</h2>
+<p data-ke-size="size16">실시간 수집&middot;샤드&middot;재처리 &rarr; Kinesis Data Streams. 자동 전달&middot;버퍼링&middot;S3 배치 &rarr; Kinesis Firehose. 서버리스 ETL&middot;스키마 감지&middot;크롤러 &rarr; AWS Glue. Hadoop&middot;Spark 대규모&middot;Spot 절감 &rarr; Amazon EMR. S3 직접 쿼리&middot;스캔량 과금&middot;Parquet &rarr; Amazon Athena. DW&middot;OLAP&middot;MPP&middot;페타바이트 &rarr; Amazon Redshift. Data Lake 거버넌스&middot;열 단위 권한 &rarr; Lake Formation. API 감사&middot;누가 무엇을 했는가 &rarr; CloudTrail. 운영 모니터링&middot;지표&middot;알람 &rarr; CloudWatch. PII 탐지&middot;민감 데이터&middot;S3 분류 &rarr; Amazon Macie. Airflow 그대로&middot;Python DAG &rarr; MWAA. 워크플로우&middot;State Machine&middot;에러 재시도 &rarr; Step Functions.</p>
+<p data-ke-size="size16">아래에 파이프라인 전체 흐름, 서비스별 카드, 헷갈리는 비교표, 키워드 매핑, 시험 출제 포인트를 도식으로 정리했습니다.</p>
+</article>
+<div class="seo-divider">&nbsp;</div>
+<div class="header">
+<h1>AWS <span>Data Engineer</span> Associate<br />시험 핵심 도식</h1>
+<p data-ke-size="size16">AWS 경험 없어도 OK &mdash; 데이터 엔지니어링 개념과 1:1 매핑으로 빠르게 이해하기</p>
+</div>
+<div class="tabs">
+<div class="tab active">🔄 파이프라인 전체 흐름</div>
+<div class="tab">📦 서비스 카드</div>
+<div class="tab">⚖️ 헷갈리는 비교</div>
+<div class="tab">🔑 키워드 &rarr; 서비스</div>
+<div class="tab">🎯 시험 출제 포인트</div>
+</div>
+<!-- PANEL 1: PIPELINE -->
+<div id="panel-pipeline" class="panel active">
+<div class="legend">
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--ingestion)">&nbsp;</div>
+수집(Ingestion)</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--storage)">&nbsp;</div>
+저장(Storage)</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--process)">&nbsp;</div>
+처리(Processing)</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--orchestrate)">&nbsp;</div>
+오케스트레이션</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--analytics)">&nbsp;</div>
+분석/서빙</div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--security)">&nbsp;</div>
+보안/거버넌스</div>
+</div>
+<div class="pipeline">
+<div class="pipe-stage">
+<div class="pipe-box ingestion">
+<div class="icon">📥</div>
+<div class="label" style="color:var(--ingestion)">INGESTION</div>
+<div class="ko">데이터 수집</div>
+</div>
+</div>
+<div class="pipe-stage">
+<div class="pipe-box storage">
+<div class="icon">🗄️</div>
+<div class="label" style="color:var(--storage)">STORAGE</div>
+<div class="ko">저장/레이크</div>
+</div>
+</div>
+<div class="pipe-stage">
+<div class="pipe-box process">
+<div class="icon">⚙️</div>
+<div class="label" style="color:var(--process)">PROCESS</div>
+<div class="ko">ETL/변환</div>
+</div>
+</div>
+<div class="pipe-stage">
+<div class="pipe-box orchestrate">
+<div class="icon">🎼</div>
+<div class="label" style="color:var(--orchestrate)">ORCHESTRATE</div>
+<div class="ko">워크플로우</div>
+</div>
+</div>
+<div class="pipe-stage">
+<div class="pipe-box analytics">
+<div class="icon">📊</div>
+<div class="label" style="color:var(--analytics)">ANALYTICS</div>
+<div class="ko">분석/시각화</div>
+</div>
+</div>
+<div class="pipe-stage" style="min-width:140px">
+<div class="pipe-box security" style="margin-right:0">
+<div class="icon">🔐</div>
+<div class="label" style="color:var(--security)">SECURITY</div>
+<div class="ko">보안/거버넌스</div>
+</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--y50)">&nbsp;</div>
+시나리오 A &mdash; 배치(Batch) 파이프라인 <span class="badge badge-blue">가장 많이 출제</span></div>
+<div class="flow-diagram">
+<div class="flow-row"><span class="flow-label">소스</span>
+<div class="flow-node flow-source">RDS / 온프렘 DB</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-ingest">AWS DMS<br /><small>DB 마이그레이션&middot;복제</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-store">S3<br /><small>원본 저장 (Data Lake)</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-process">AWS Glue<br /><small>ETL 변환 (Spark 기반)</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-store">S3 / Redshift<br /><small>처리된 데이터</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-serve">Athena / QuickSight<br /><small>쿼리&middot;시각화</small></div>
+</div>
+<div class="flow-row" style="margin-top:14px"><span class="flow-label">오케스트</span>
+<div class="flow-node flow-source">EventBridge (스케줄)</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-ingest">Step Functions<br /><small>전체 파이프라인 제어</small></div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--i50)">&nbsp;</div>
+시나리오 B &mdash; 스트리밍(Real-time) 파이프라인</div>
+<div class="flow-diagram">
+<div class="flow-row"><span class="flow-label">소스</span>
+<div class="flow-node flow-source">IoT / 앱 이벤트 / 클릭스트림</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-ingest">Kinesis Data Streams<br /><small>실시간 스트림 수집</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-process">Kinesis Data Firehose<br /><small>S3&middot;Redshift로 자동 전달</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-store">S3 / Redshift</div>
+</div>
+<div class="flow-row" style="margin-top:10px"><span class="flow-label">실시간처리</span>
+<div class="flow-node flow-source">Kinesis Data Streams</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-process">Managed Flink (KDA)<br /><small>실시간 SQL 분석</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-serve">OpenSearch / DynamoDB<br /><small>실시간 대시보드&middot;조회</small></div>
+</div>
+<div class="flow-row" style="margin-top:10px"><span class="flow-label">대용량 MQ</span>
+<div class="flow-node flow-source">Amazon MSK (Kafka)</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-process">Lambda / Glue Streaming</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-store">S3 / Redshift</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--p50)">&nbsp;</div>
+시나리오 C &mdash; Data Lakehouse 아키텍처</div>
+<div class="flow-diagram">
+<div class="flow-row"><span class="flow-label">수집</span>
+<div class="flow-node flow-ingest">다양한 소스</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-store">S3 (Raw Zone)<br /><small>원천 데이터 그대로</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-process">Glue ETL</div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-store">S3 (Curated Zone)<br /><small>Parquet/ORC 형식</small></div>
+</div>
+<div class="flow-row" style="margin-top:10px"><span class="flow-label">거버넌스</span>
+<div class="flow-node flow-serve">AWS Lake Formation<br /><small>권한&middot;카탈로그&middot;보안 통합 관리</small></div>
+<span class="flow-arrow">&rarr;</span>
+<div class="flow-node flow-serve">Glue Data Catalog<br /><small>메타데이터 중앙 저장소</small></div>
+</div>
+<div class="flow-row" style="margin-top:10px"><span class="flow-label">분석</span>
+<div class="flow-node flow-source">Athena (S3 직접 쿼리)</div>
+<span class="flow-arrow">+</span>
+<div class="flow-node flow-source">Redshift Spectrum<br /><small>S3&rarr;Redshift 연합쿼리</small></div>
+<span class="flow-arrow">+</span>
+<div class="flow-node flow-source">EMR (대규모 Spark)</div>
+</div>
+</div>
+</div>
+<!-- PANEL 2: SERVICE CARDS -->
+<div id="panel-services" class="panel">
+<div class="section-title">
+<div class="dot" style="background:var(--ingestion)">&nbsp;</div>
+수집 (Ingestion)</div>
+<div class="cards-grid">
+<div class="card ingestion">
+<div class="card-header">
+<div class="service-icon">🌊</div>
+<div>
+<div class="service-name">Kinesis Data Streams</div>
+<div class="service-sub">KDS &middot; 실시간 스트리밍</div>
+</div>
+</div>
+<div class="card-desc">실시간 데이터를 샤드(Shard) 단위로 수집. 직접 컨슈머를 붙여서 처리. 데이터를 1~365일 보관.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 일반 개념으로 이해</b>Kafka의 Topic &asymp; KDS의 Stream / Kafka의 Partition &asymp; KDS의 Shard. 완전관리형 Kafka라고 생각하면 됨.</div>
+<div class="tags"><span class="tag hot">시험 단골</span><span class="tag key">샤드 단위 확장</span><span class="tag">보존 기간 설정</span><span class="tag">Enhanced Fan-Out</span></div>
+</div>
+</div>
+<div class="card ingestion">
+<div class="card-header">
+<div class="service-icon">🔥</div>
+<div>
+<div class="service-name">Kinesis Firehose</div>
+<div class="service-sub">KDF &middot; 자동 전달</div>
+</div>
+</div>
+<div class="card-desc">스트림 데이터를 S3/Redshift/OpenSearch 등에 자동으로 배치 전달. 코드 불필요, 완전 관리형.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 차이점 KDS vs Firehose</b>KDS는 실시간 처리(소비자 직접 연결), Firehose는 목적지로 자동 전달(저장 중심). 보통 KDS &rarr; Firehose &rarr; S3 순으로 연결.</div>
+<div class="tags"><span class="tag hot">시험 단골</span><span class="tag">버퍼링 설정</span><span class="tag">Lambda 변환</span></div>
+</div>
+</div>
+<div class="card ingestion">
+<div class="card-header">
+<div class="service-icon">🐘</div>
+<div>
+<div class="service-name">Amazon MSK</div>
+<div class="service-sub">Managed Streaming for Kafka</div>
+</div>
+</div>
+<div class="card-desc">완전관리형 Apache Kafka. 기존 Kafka 워크로드를 AWS로 이전할 때 사용. KDS보다 더 많은 제어권 필요 시 선택.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 KDS vs MSK 선택 기준</b>Kafka 코드 그대로 쓰고 싶다 &rarr; MSK / AWS 네이티브로 새로 만든다 &rarr; KDS</div>
+<div class="tags"><span class="tag">Kafka 호환</span><span class="tag">온프렘 마이그레이션</span></div>
+</div>
+</div>
+<div class="card ingestion">
+<div class="card-header">
+<div class="service-icon">🔄</div>
+<div>
+<div class="service-name">AWS DMS</div>
+<div class="service-sub">Database Migration Service</div>
+</div>
+</div>
+<div class="card-desc">DB를 AWS로 마이그레이션. 이기종 DB 간 변환(Oracle&rarr;Aurora 등). CDC(변경 데이터 캡처)로 실시간 복제도 가능.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 CDC란?</b>DB 테이블의 INSERT/UPDATE/DELETE 변경사항을 실시간 캡처해 전달. 온프렘 DB &rarr; S3/Redshift 실시간 동기화에 활용.</div>
+<div class="tags"><span class="tag hot">CDC 중요</span><span class="tag">이기종 마이그레이션</span><span class="tag">SCT 함께 사용</span></div>
+</div>
+</div>
+<div class="card ingestion">
+<div class="card-header">
+<div class="service-icon">❄️</div>
+<div>
+<div class="service-name">AWS Snow 계열</div>
+<div class="service-sub">Snowcone / Snowball / Snowmobile</div>
+</div>
+</div>
+<div class="card-desc">물리적 장치로 대용량 데이터를 오프라인으로 AWS에 전송. 네트워크가 느리거나 수십TB 이상일 때 사용.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 언제 Snow를 쓰나?</b>"10TB 데이터, 100Mbps 인터넷으로 전송 시 며칠?" &rarr; 계산해보면 Snow가 빠름. 시험에 이런 판단 문제 나옴.</div>
+<div class="tags"><span class="tag">대용량 오프라인</span><span class="tag">엣지 컴퓨팅</span></div>
+</div>
+</div>
+<div class="card ingestion">
+<div class="card-header">
+<div class="service-icon">🔗</div>
+<div>
+<div class="service-name">AWS DataSync</div>
+<div class="service-sub">온라인 데이터 전송</div>
+</div>
+</div>
+<div class="card-desc">온프렘 스토리지 &harr; AWS 스토리지 간 자동화된 데이터 이동&middot;동기화. NFS, SMB, HDFS 지원.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 Snow vs DataSync</b>Snow: 오프라인(물리 장치) / DataSync: 온라인(네트워크). DataSync는 반복적 동기화에 적합.</div>
+<div class="tags"><span class="tag">반복 동기화</span><span class="tag">HDFS 지원</span></div>
+</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--storage)">&nbsp;</div>
+저장 (Storage)</div>
+<div class="cards-grid">
+<div class="card storage">
+<div class="card-header">
+<div class="service-icon">🪣</div>
+<div>
+<div class="service-name">Amazon S3</div>
+<div class="service-sub">Simple Storage Service &middot; 오브젝트 스토리지</div>
+</div>
+</div>
+<div class="card-desc">AWS 데이터 레이크의 핵심. 무제한 용량, 파일(객체) 단위 저장. 여러 스토리지 클래스로 비용 최적화.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 스토리지 클래스 선택</b>자주 접근 &rarr; Standard / 가끔(30일&uarr;) &rarr; Standard-IA / 아카이브(분~시간 복구) &rarr; Glacier Flexible / 아카이브(즉시 복구) &rarr; Glacier Instant / 예측 불가 &rarr; Intelligent-Tiering</div>
+<div class="tags"><span class="tag hot">Data Lake 핵심</span><span class="tag key">파티셔닝 전략</span><span class="tag">수명주기 정책</span><span class="tag">버저닝</span></div>
+</div>
+</div>
+<div class="card storage">
+<div class="card-header">
+<div class="service-icon">🏪</div>
+<div>
+<div class="service-name">Amazon Redshift</div>
+<div class="service-sub">컬럼형 DW (Data Warehouse)</div>
+</div>
+</div>
+<div class="card-desc">페타바이트급 클라우드 데이터 웨어하우스. 컬럼 기반 저장, MPP(병렬 처리). OLAP 분석에 최적화.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 핵심 개념</b>Redshift Spectrum: S3 데이터를 Redshift에서 직접 쿼리 (Data Lake 연동) / Redshift Serverless: 클러스터 관리 불필요 / RA3 노드: 스토리지와 컴퓨트 분리</div>
+<div class="tags"><span class="tag hot">DW 핵심</span><span class="tag">COPY 명령</span><span class="tag">Distribution Key</span><span class="tag">Sort Key</span></div>
+</div>
+</div>
+<div class="card storage">
+<div class="card-header">
+<div class="service-icon">⚡</div>
+<div>
+<div class="service-name">Amazon DynamoDB</div>
+<div class="service-sub">NoSQL &middot; Key-Value / Document</div>
+</div>
+</div>
+<div class="card-desc">완전관리형 NoSQL DB. 밀리초 레이턴시, 자동 스케일링. 대용량 고속 읽기/쓰기에 적합.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 DynamoDB Streams</b>테이블 변경사항을 실시간 캡처 &rarr; Lambda 트리거로 연결. 실시간 이벤트 처리 패턴에 자주 등장.</div>
+<div class="tags"><span class="tag">Partition Key</span><span class="tag">DynamoDB Streams</span><span class="tag">GSI/LSI</span></div>
+</div>
+</div>
+<div class="card storage">
+<div class="card-header">
+<div class="service-icon">🐬</div>
+<div>
+<div class="service-name">Amazon RDS / Aurora</div>
+<div class="service-sub">관계형 DB (OLTP)</div>
+</div>
+</div>
+<div class="card-desc">MySQL/PostgreSQL/Oracle 등 관계형 DB 완전관리형 서비스. Aurora는 AWS 최적화 버전(RDS보다 3~5배 빠름).</div>
+<div class="card-body">
+<div class="analogy"><b>💡 OLTP vs OLAP</b>RDS/Aurora: 트랜잭션 처리(OLTP, 운영 DB) &rarr; Redshift: 분석 쿼리(OLAP, DW). DEA 시험에서 이 둘을 혼동하면 안 됨.</div>
+<div class="tags"><span class="tag">Read Replica</span><span class="tag">Multi-AZ</span><span class="tag">Aurora Serverless</span></div>
+</div>
+</div>
+<div class="card storage">
+<div class="card-header">
+<div class="service-icon">🏞️</div>
+<div>
+<div class="service-name">AWS Lake Formation</div>
+<div class="service-sub">Data Lake 거버넌스</div>
+</div>
+</div>
+<div class="card-desc">S3 기반 Data Lake의 보안&middot;권한&middot;카탈로그를 통합 관리. 열(Column) 단위 세밀한 접근 제어 가능.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 Lake Formation의 역할</b>Glue Catalog + IAM + S3 버킷 정책을 하나로 통합. "누가 어떤 테이블의 어떤 컬럼을 볼 수 있나"를 한 곳에서 관리.</div>
+<div class="tags"><span class="tag hot">거버넌스 핵심</span><span class="tag">Column-level 보안</span><span class="tag">Row 필터</span></div>
+</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--process)">&nbsp;</div>
+처리 / ETL (Processing)</div>
+<div class="cards-grid">
+<div class="card process">
+<div class="card-header">
+<div class="service-icon">🦎</div>
+<div>
+<div class="service-name">AWS Glue</div>
+<div class="service-sub">완전관리형 서버리스 ETL</div>
+</div>
+</div>
+<div class="card-desc">서버리스 Spark 기반 ETL 서비스. 스크립트 자동 생성, 스케줄링 가능. Glue Catalog로 메타데이터 관리.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 Glue의 구성요소</b>Crawler: S3 스캔 &rarr; 스키마 자동 감지 / Data Catalog: Hive Metastore 역할 / Glue Job: 실제 ETL 변환 / Glue Studio: 시각적 ETL 설계</div>
+<div class="tags"><span class="tag hot">ETL 핵심</span><span class="tag key">Glue Catalog</span><span class="tag">Glue Crawler</span><span class="tag">DynamicFrame</span></div>
+</div>
+</div>
+<div class="card process">
+<div class="card-header">
+<div class="service-icon">🐘</div>
+<div>
+<div class="service-name">Amazon EMR</div>
+<div class="service-sub">Elastic MapReduce &middot; 관리형 Hadoop/Spark</div>
+</div>
+</div>
+<div class="card-desc">Hadoop, Spark, Hive, Presto 등 빅데이터 프레임워크 클러스터. 대규모 데이터 처리, 완전한 제어권.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 Glue vs EMR</b>Glue: 서버리스, 간단한 ETL, 빠른 시작 / EMR: 클러스터 직접 관리, 대규모&middot;복잡한 처리, 비용 유연성 높음.</div>
+<div class="tags"><span class="tag">Spot Instance 활용</span><span class="tag">EMR Serverless</span><span class="tag">EMRFS (S3 연동)</span></div>
+</div>
+</div>
+<div class="card process">
+<div class="card-header">
+<div class="service-icon">&lambda;</div>
+<div>
+<div class="service-name">AWS Lambda</div>
+<div class="service-sub">서버리스 함수 실행</div>
+</div>
+</div>
+<div class="card-desc">이벤트 기반 서버리스 컴퓨팅. 코드만 업로드하면 자동 실행. 소량 데이터 변환, 트리거 처리에 적합.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 데이터 파이프라인에서의 역할</b>S3 파일 업로드 시 자동 트리거, Kinesis 스트림 처리, 간단한 데이터 변환. 대용량 처리는 Glue/EMR 사용.</div>
+<div class="tags"><span class="tag">최대 15분 실행</span><span class="tag">이벤트 트리거</span><span class="tag">Firehose 변환</span></div>
+</div>
+</div>
+<div class="card process">
+<div class="card-header">
+<div class="service-icon">🦈</div>
+<div>
+<div class="service-name">Managed Flink (KDA)</div>
+<div class="service-sub">실시간 스트림 처리</div>
+</div>
+</div>
+<div class="card-desc">Apache Flink 기반 실시간 스트림 분석. SQL로 스트리밍 데이터 처리. Kinesis Data Analytics로도 불림.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 스트림 처리 비교</b>Lambda: 간단한 이벤트 처리 / Managed Flink: 복잡한 실시간 분석(윈도우 함수, 조인 등)</div>
+<div class="tags"><span class="tag">윈도우 함수</span><span class="tag">SQL 기반</span><span class="tag">Apache Flink</span></div>
+</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--orchestrate)">&nbsp;</div>
+오케스트레이션 (Orchestration)</div>
+<div class="cards-grid">
+<div class="card orchestrate">
+<div class="card-header">
+<div class="service-icon">📋</div>
+<div>
+<div class="service-name">AWS Step Functions</div>
+<div class="service-sub">워크플로우 오케스트레이션</div>
+</div>
+</div>
+<div class="card-desc">여러 AWS 서비스를 시각적 상태 머신(State Machine)으로 연결. 에러 처리, 재시도, 분기 로직 관리.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 일반 개념</b>Airflow의 DAG처럼 파이프라인 단계를 순서대로 실행. 단, AWS 서비스 간 연결에 특화. 시각적 흐름도로 표현됨.</div>
+<div class="tags"><span class="tag hot">워크플로우 핵심</span><span class="tag">State Machine</span><span class="tag">Express/Standard</span></div>
+</div>
+</div>
+<div class="card orchestrate">
+<div class="card-header">
+<div class="service-icon">🌪️</div>
+<div>
+<div class="service-name">Amazon MWAA</div>
+<div class="service-sub">Managed Workflows for Apache Airflow</div>
+</div>
+</div>
+<div class="card-desc">완전관리형 Apache Airflow. 기존 Airflow DAG 코드를 그대로 사용 가능. 복잡한 데이터 파이프라인 스케줄링.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 Step Functions vs MWAA</b>Step Functions: AWS 네이티브, 코드 없이 설정 / MWAA: Airflow 그대로, Python DAG 코드 재사용 가능</div>
+<div class="tags"><span class="tag">Airflow 호환</span><span class="tag">Python DAG</span></div>
+</div>
+</div>
+<div class="card orchestrate">
+<div class="card-header">
+<div class="service-icon">⏰</div>
+<div>
+<div class="service-name">Amazon EventBridge</div>
+<div class="service-sub">이벤트 버스 / 스케줄러</div>
+</div>
+</div>
+<div class="card-desc">AWS 서비스 이벤트를 감지해 규칙 기반으로 대상(Lambda, Step Functions 등) 트리거. Cron 스케줄링도 가능.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 역할</b>파이프라인의 시작점 역할. "매일 오전 2시에 Glue Job 실행" = EventBridge 스케줄 &rarr; Step Functions 시작.</div>
+<div class="tags"><span class="tag">Cron/Rate 표현식</span><span class="tag">이벤트 필터링</span></div>
+</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--analytics)">&nbsp;</div>
+분석 / 서빙 (Analytics &amp; Serving)</div>
+<div class="cards-grid">
+<div class="card analytics">
+<div class="card-header">
+<div class="service-icon">🔍</div>
+<div>
+<div class="service-name">Amazon Athena</div>
+<div class="service-sub">서버리스 S3 쿼리</div>
+</div>
+</div>
+<div class="card-desc">S3에 저장된 데이터를 SQL로 직접 쿼리. 인프라 불필요. 스캔한 데이터양만큼만 비용 발생.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 비용 최적화 핵심</b>Parquet/ORC 형식 + 파티셔닝 &rarr; 스캔량 줄임 &rarr; 비용 절감. 시험에 자주 나오는 패턴.</div>
+<div class="tags"><span class="tag hot">비용 최적화 단골</span><span class="tag key">Parquet/ORC</span><span class="tag">Federated Query</span></div>
+</div>
+</div>
+<div class="card analytics">
+<div class="card-header">
+<div class="service-icon">📊</div>
+<div>
+<div class="service-name">Amazon QuickSight</div>
+<div class="service-sub">BI 시각화 도구</div>
+</div>
+</div>
+<div class="card-desc">완전관리형 클라우드 BI 서비스. Redshift/Athena/S3 등 다양한 소스 연결. SPICE 인메모리 캐싱으로 빠른 조회.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 SPICE란?</b>Super-fast Parallel In-memory Calculation Engine. 데이터를 QuickSight 내부에 캐싱해 빠른 대시보드 제공.</div>
+<div class="tags"><span class="tag">SPICE</span><span class="tag">ML Insights</span><span class="tag">Embedded Analytics</span></div>
+</div>
+</div>
+<div class="card analytics">
+<div class="card-header">
+<div class="service-icon">🔎</div>
+<div>
+<div class="service-name">Amazon OpenSearch</div>
+<div class="service-sub">검색 + 실시간 로그 분석</div>
+</div>
+</div>
+<div class="card-desc">Elasticsearch 기반. 로그 분석, 전문(full-text) 검색, 실시간 대시보드(Kibana/OpenSearch Dashboards).</div>
+<div class="card-body">
+<div class="analogy"><b>💡 언제 OpenSearch?</b>로그 분석, 실시간 검색이 핵심인 경우. Redshift는 구조화된 분석, OpenSearch는 비정형 로그/검색.</div>
+<div class="tags"><span class="tag">로그 분석</span><span class="tag">Kibana 대시보드</span></div>
+</div>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--security)">&nbsp;</div>
+보안 / 거버넌스 (Security &amp; Governance)</div>
+<div class="cards-grid">
+<div class="card security">
+<div class="card-header">
+<div class="service-icon">👤</div>
+<div>
+<div class="service-name">AWS IAM</div>
+<div class="service-sub">Identity &amp; Access Management</div>
+</div>
+</div>
+<div class="card-desc">AWS 리소스 접근 제어의 기본. 사용자/역할/정책으로 "누가 무엇을 할 수 있는가" 정의.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 Role vs Policy</b>Policy: 권한 명세서 (JSON) / Role: 정책을 붙인 신분증. 서비스에는 Role 부여, 사람에게는 User+Policy 또는 Role.</div>
+<div class="tags"><span class="tag hot">모든 섹션 기본</span><span class="tag">최소 권한 원칙</span><span class="tag">SCP (조직 정책)</span></div>
+</div>
+</div>
+<div class="card security">
+<div class="card-header">
+<div class="service-icon">🔑</div>
+<div>
+<div class="service-name">AWS KMS</div>
+<div class="service-sub">Key Management Service</div>
+</div>
+</div>
+<div class="card-desc">암호화 키 생성&middot;관리&middot;회전. S3, Redshift, RDS 등 대부분의 서비스와 통합. 감사 추적 가능.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 암호화 옵션</b>SSE-S3: AWS가 키 관리 / SSE-KMS: KMS로 키 관리(감사 가능) / SSE-C: 고객이 키 제공. 규정 준수 &rarr; KMS.</div>
+<div class="tags"><span class="tag">키 회전</span><span class="tag">CMK</span><span class="tag">Envelope 암호화</span></div>
+</div>
+</div>
+<div class="card security">
+<div class="card-header">
+<div class="service-icon">📋</div>
+<div>
+<div class="service-name">AWS CloudTrail</div>
+<div class="service-sub">API 감사 로그</div>
+</div>
+</div>
+<div class="card-desc">AWS 계정의 모든 API 호출을 기록. "누가 언제 무엇을 했는가" 추적. 규정 준수&middot;감사&middot;보안 조사.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 CloudTrail vs CloudWatch</b>CloudTrail: 누가 API 호출했는지 (감사) / CloudWatch: 서비스 성능&middot;지표 모니터링 (운영)</div>
+<div class="tags"><span class="tag">API 감사</span><span class="tag">규정 준수</span></div>
+</div>
+</div>
+<div class="card security">
+<div class="card-header">
+<div class="service-icon">👁️</div>
+<div>
+<div class="service-name">Amazon Macie</div>
+<div class="service-sub">S3 민감 데이터 탐지</div>
+</div>
+</div>
+<div class="card-desc">ML로 S3 데이터에서 PII(개인정보), 신용카드 번호 등 민감 데이터 자동 탐지. GDPR/CCPA 규정 준수 지원.</div>
+<div class="card-body">
+<div class="analogy"><b>💡 언제 Macie?</b>"S3에 개인정보가 있는지 확인해야 한다" &rarr; Macie. 데이터 분류 + 민감 데이터 발견 자동화.</div>
+<div class="tags"><span class="tag">PII 탐지</span><span class="tag">데이터 분류</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- PANEL 3: COMPARISON -->
+<div id="panel-compare" class="panel">
+<div class="section-title">
+<div class="dot" style="background:var(--y50)">&nbsp;</div>
+헷갈리는 서비스 비교 <span class="badge badge-red">시험 핵심</span></div>
+<table class="compare-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>한 줄 정의</th>
+<th>이럴 때 선택</th>
+<th>이건 아님</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="svc">Kinesis Data<br />Streams</td>
+<td>실시간 스트림 수집&middot;보관<br /><small style="color:var(--g50)">소비자가 직접 처리</small></td>
+<td class="when">✓ 커스텀 처리 로직<br />✓ 여러 컨슈머<br />✓ 재처리 필요</td>
+<td class="avoid">✗ 목적지로 자동 전달<br />✗ 관리 최소화</td>
+</tr>
+<tr>
+<td class="svc">Kinesis<br />Firehose</td>
+<td>스트림 &rarr; 목적지 자동 전달<br /><small style="color:var(--g50)">코드 없이 S3/Redshift로</small></td>
+<td class="when">✓ 단순 저장 목적<br />✓ 코드 최소화<br />✓ 자동 배치 전달</td>
+<td class="avoid">✗ 실시간 커스텀 처리<br />✗ 재처리&middot;재생</td>
+</tr>
+<tr>
+<td class="svc">Amazon MSK</td>
+<td>관리형 Kafka<br /><small style="color:var(--g50)">기존 Kafka 이전용</small></td>
+<td class="when">✓ 기존 Kafka 코드 재사용<br />✓ Kafka 에코시스템 필요</td>
+<td class="avoid">✗ AWS 네이티브 신규 구축<br />&rarr; KDS 선택</td>
+</tr>
+<tr>
+<td class="svc">AWS Glue</td>
+<td>서버리스 ETL (Spark)<br /><small style="color:var(--g50)">+ 메타데이터 카탈로그</small></td>
+<td class="when">✓ 서버리스 ETL<br />✓ 메타데이터 관리<br />✓ 빠른 시작</td>
+<td class="avoid">✗ 대규모 클러스터 튜닝<br />✗ 복잡한 커스텀 환경</td>
+</tr>
+<tr>
+<td class="svc">Amazon EMR</td>
+<td>관리형 Hadoop/Spark 클러스터<br /><small style="color:var(--g50)">완전한 제어권</small></td>
+<td class="when">✓ 대규모 배치 처리<br />✓ Spot으로 비용 절감<br />✓ 커스텀 라이브러리</td>
+<td class="avoid">✗ 간단한 ETL<br />&rarr; Glue 선택</td>
+</tr>
+<tr>
+<td class="svc">Amazon Athena</td>
+<td>S3 &rarr; SQL 서버리스 쿼리<br /><small style="color:var(--g50)">스캔량 기반 과금</small></td>
+<td class="when">✓ 임시 분석<br />✓ S3 데이터 직접 쿼리<br />✓ 비용 최소화</td>
+<td class="avoid">✗ 복잡한 DW 쿼리<br />✗ 지속적 대시보드 &rarr; Redshift</td>
+</tr>
+<tr>
+<td class="svc">Redshift</td>
+<td>컬럼형 데이터 웨어하우스<br /><small style="color:var(--g50)">OLAP 분석</small></td>
+<td class="when">✓ 복잡한 집계 분석<br />✓ BI 도구 연결<br />✓ 정기 대시보드</td>
+<td class="avoid">✗ 트랜잭션 처리 &rarr; RDS<br />✗ 단순 임시 쿼리 &rarr; Athena</td>
+</tr>
+<tr>
+<td class="svc">DynamoDB</td>
+<td>NoSQL Key-Value DB<br /><small style="color:var(--g50)">밀리초 레이턴시</small></td>
+<td class="when">✓ 고속 단건 조회<br />✓ 자동 스케일링<br />✓ 세션&middot;장바구니</td>
+<td class="avoid">✗ 복잡한 JOIN 쿼리<br />✗ 분석용 집계</td>
+</tr>
+<tr>
+<td class="svc">Step Functions</td>
+<td>AWS 서비스 워크플로우<br /><small style="color:var(--g50)">State Machine</small></td>
+<td class="when">✓ AWS 서비스 연결<br />✓ 에러 처리&middot;재시도<br />✓ 시각적 흐름</td>
+<td class="avoid">✗ Python 코드 DAG<br />&rarr; MWAA(Airflow)</td>
+</tr>
+<tr>
+<td class="svc">MWAA</td>
+<td>관리형 Airflow<br /><small style="color:var(--g50)">Python DAG</small></td>
+<td class="when">✓ 기존 Airflow 코드 재사용<br />✓ 복잡한 의존성 관리</td>
+<td class="avoid">✗ AWS 전용 파이프라인<br />&rarr; Step Functions</td>
+</tr>
+<tr>
+<td class="svc">Lake Formation</td>
+<td>Data Lake 거버넌스 통합<br /><small style="color:var(--g50)">권한+카탈로그+보안</small></td>
+<td class="when">✓ 열/행 수준 접근 제어<br />✓ 다중 팀 Data Lake</td>
+<td class="avoid">✗ 단순 S3 버킷 접근<br />&rarr; IAM+S3 정책</td>
+</tr>
+</tbody>
+</table>
+<div class="section-title" style="margin-top:8px">
+<div class="dot" style="background:var(--s60)">&nbsp;</div>
+데이터 형식 비교 (S3/Athena 쿼리 성능)</div>
+<table class="compare-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>형식</th>
+<th>구조</th>
+<th>압축</th>
+<th>쿼리 성능</th>
+<th>사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="svc">Parquet</td>
+<td>컬럼 기반</td>
+<td>높음 (Snappy)</td>
+<td style="color:var(--s60)">⭐ 최고 (Athena 권장)</td>
+<td>분석 쿼리, Data Lake 표준</td>
+</tr>
+<tr>
+<td class="svc">ORC</td>
+<td>컬럼 기반</td>
+<td>높음</td>
+<td style="color:var(--s60)">⭐ 최고 (Hive 최적)</td>
+<td>Hive/EMR 환경</td>
+</tr>
+<tr>
+<td class="svc">CSV/JSON</td>
+<td>행 기반</td>
+<td>낮음</td>
+<td style="color:var(--r60)">느림 (전체 스캔)</td>
+<td>원천 데이터, 소량 데이터</td>
+</tr>
+<tr>
+<td class="svc">Avro</td>
+<td>행 기반</td>
+<td>중간</td>
+<td>중간</td>
+<td>스키마 진화, 이벤트 직렬화</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- PANEL 4: KEYWORD MAP -->
+<div id="panel-keyword" class="panel">
+<div class="section-title">
+<div class="dot" style="background:var(--accent)">&nbsp;</div>
+문제 키워드 &rarr; AWS 서비스 매핑 <span class="badge badge-red">빠른 참조</span></div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:16px" data-ke-size="size16">시험에서 이 키워드가 보이면 &rarr; 해당 서비스를 떠올리세요</p>
+<div class="keyword-map">
+<div class="kw-item"><span class="kw-service">Kinesis Streams</span><span class="kw-desc">실시간 수집, 샤드, 재처리, 여러 컨슈머, 밀리초</span></div>
+<div class="kw-item"><span class="kw-service">Kinesis Firehose</span><span class="kw-desc">자동 전달, 서버리스, S3로 배치, 버퍼링</span></div>
+<div class="kw-item"><span class="kw-service">MSK (Kafka)</span><span class="kw-desc">Kafka, 기존 이전, 오픈소스 호환, 토픽/파티션</span></div>
+<div class="kw-item"><span class="kw-service">AWS Glue</span><span class="kw-desc">서버리스 ETL, 스키마 감지, 크롤러, 카탈로그, DynamicFrame</span></div>
+<div class="kw-item"><span class="kw-service">Glue Catalog</span><span class="kw-desc">중앙 메타데이터, Hive Metastore, 테이블 정의</span></div>
+<div class="kw-item"><span class="kw-service">AWS EMR</span><span class="kw-desc">Hadoop, Spark, 대규모, Spot 절감, 커스텀 클러스터</span></div>
+<div class="kw-item"><span class="kw-service">Amazon S3</span><span class="kw-desc">Data Lake, 오브젝트 스토리지, 수명주기, 파티셔닝</span></div>
+<div class="kw-item"><span class="kw-service">Amazon Redshift</span><span class="kw-desc">DW, OLAP, 컬럼형, 페타바이트, MPP, Spectrum</span></div>
+<div class="kw-item"><span class="kw-service">DynamoDB</span><span class="kw-desc">NoSQL, 밀리초, 자동 스케일, 세션, Streams, TTL</span></div>
+<div class="kw-item"><span class="kw-service">RDS / Aurora</span><span class="kw-desc">관계형, OLTP, MySQL/PostgreSQL, 트랜잭션</span></div>
+<div class="kw-item"><span class="kw-service">Amazon Athena</span><span class="kw-desc">S3 직접 쿼리, 서버리스, 스캔량 과금, Parquet</span></div>
+<div class="kw-item"><span class="kw-service">QuickSight</span><span class="kw-desc">BI, 대시보드, 시각화, SPICE, 임베디드</span></div>
+<div class="kw-item"><span class="kw-service">OpenSearch</span><span class="kw-desc">로그 분석, 전문 검색, Elasticsearch, Kibana</span></div>
+<div class="kw-item"><span class="kw-service">Step Functions</span><span class="kw-desc">워크플로우, 상태머신, 에러 재시도, 파이프라인 조율</span></div>
+<div class="kw-item"><span class="kw-service">MWAA</span><span class="kw-desc">Airflow, Python DAG, 복잡한 의존성, 기존 Airflow</span></div>
+<div class="kw-item"><span class="kw-service">EventBridge</span><span class="kw-desc">스케줄, Cron, 이벤트 기반 트리거, 규칙</span></div>
+<div class="kw-item"><span class="kw-service">AWS DMS</span><span class="kw-desc">DB 마이그레이션, CDC, 이기종 변환, 실시간 복제</span></div>
+<div class="kw-item"><span class="kw-service">Lake Formation</span><span class="kw-desc">Data Lake 거버넌스, 열 보안, 행 필터, 권한 통합</span></div>
+<div class="kw-item"><span class="kw-service">AWS KMS</span><span class="kw-desc">암호화 키, 규정 준수, SSE-KMS, 키 회전</span></div>
+<div class="kw-item"><span class="kw-service">CloudTrail</span><span class="kw-desc">API 감사, 누가 무엇을, 규정 준수, 보안 조사</span></div>
+<div class="kw-item"><span class="kw-service">CloudWatch</span><span class="kw-desc">모니터링, 지표, 알람, 로그, 대시보드, 운영</span></div>
+<div class="kw-item"><span class="kw-service">Amazon Macie</span><span class="kw-desc">PII 탐지, 민감 데이터, GDPR, S3 분류</span></div>
+<div class="kw-item"><span class="kw-service">Snow 계열</span><span class="kw-desc">물리 장치, 대용량 오프라인 이전, 네트워크 느림</span></div>
+<div class="kw-item"><span class="kw-service">DataSync</span><span class="kw-desc">온프렘&harr;AWS 동기화, NFS/SMB/HDFS, 반복 전송</span></div>
+<div class="kw-item"><span class="kw-service">Lambda</span><span class="kw-desc">이벤트 트리거, 서버리스 함수, 15분 이하, 소량 변환</span></div>
+<div class="kw-item"><span class="kw-service">Managed Flink</span><span class="kw-desc">실시간 스트림 SQL, 윈도우 함수, Apache Flink, KDA</span></div>
+</div>
+</div>
+<!-- PANEL 5: EXAM TIPS -->
+<div id="panel-exam" class="panel">
+<div class="section-title">
+<div class="dot" style="background:var(--red)">&nbsp;</div>
+시험 출제 핵심 포인트</div>
+<div class="tips-grid">
+<div class="tip-card">
+<h4 data-ke-size="size20">⚡ 성능&middot;비용 최적화</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>Athena 비용 절감 = Parquet/ORC 변환 + S3 파티셔닝</li>
+<li>Redshift 성능 = Distribution Key / Sort Key 선택</li>
+<li>EMR 비용 절감 = Spot Instance 활용</li>
+<li>S3 비용 = 수명주기 정책으로 Glacier 이전</li>
+<li>Kinesis Streams 처리량 = 샤드 수 조절</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">🔐 보안&middot;거버넌스</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>S3 암호화 권장 = SSE-KMS (감사 추적 가능)</li>
+<li>규정 준수 감사 = CloudTrail (API 기록)</li>
+<li>운영 모니터링 = CloudWatch (지표&middot;알람)</li>
+<li>Data Lake 세밀 권한 = Lake Formation</li>
+<li>S3 개인정보 자동 탐지 = Amazon Macie</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">🔄 데이터 이동&middot;마이그레이션</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>온프렘 DB &rarr; AWS = AWS DMS (CDC 지원)</li>
+<li>대용량 오프라인 이전 = Snow 계열</li>
+<li>반복 온라인 동기화 = DataSync</li>
+<li>S3 리전 간 복제 = S3 CRR (Cross-Region Replication)</li>
+<li>이기종 DB 변환 = DMS + SCT(스키마 변환 도구)</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">📐 아키텍처 설계 원칙</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>Data Lake 표준 = S3 + Glue Catalog + Lake Formation</li>
+<li>실시간 처리 = KDS &rarr; Lambda/Flink &rarr; DynamoDB/OpenSearch</li>
+<li>배치 ETL = EventBridge &rarr; Step Functions &rarr; Glue Job</li>
+<li>서버리스 분석 = S3 + Glue + Athena + QuickSight</li>
+<li>DW + Lake 통합 = Redshift Spectrum으로 S3 직접 쿼리</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">📊 Redshift 핵심</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>COPY 명령: S3 &rarr; Redshift 대량 로드 (권장)</li>
+<li>Distribution Key: JOIN 많은 컬럼 선택</li>
+<li>Sort Key: WHERE/GROUP BY 많은 컬럼 선택</li>
+<li>Redshift Spectrum: S3 데이터 외부 테이블로 쿼리</li>
+<li>WLM: 쿼리 우선순위&middot;리소스 할당 관리</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">🌊 Kinesis 핵심</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>샤드 1개 = 1MB/s 쓰기, 2MB/s 읽기</li>
+<li>기본 보관 = 24시간 (최대 365일)</li>
+<li>Enhanced Fan-Out = 여러 컨슈머 2MB/s씩 병렬</li>
+<li>Firehose 버퍼: 크기(1-128MB) 또는 시간(60-900초)</li>
+<li>KDS &rarr; Firehose &rarr; S3 는 가장 흔한 패턴</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">🦎 Glue 핵심</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>Crawler: S3/DB 스캔 &rarr; 스키마 자동 감지 &rarr; Catalog 저장</li>
+<li>DPU: Glue Job 처리 단위 (비용 기준)</li>
+<li>Bookmark: 이미 처리한 데이터 건너뛰기 (중복 방지)</li>
+<li>Glue Studio: 노코드 시각적 ETL 설계</li>
+<li>Glue DataBrew: 데이터 정제&middot;프로파일링 (ML 지원)</li>
+</ul>
+</div>
+<div class="tip-card">
+<h4 data-ke-size="size20">🏗️ S3 Data Lake 설계</h4>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>파티션 예시: s3://bucket/year=2024/month=01/</li>
+<li>Zone 구분: Raw &rarr; Cleansed &rarr; Curated</li>
+<li>형식 변환: JSON/CSV &rarr; Parquet (Glue ETL)</li>
+<li>S3 Select: 파일 내 특정 데이터만 추출 (비용 절감)</li>
+<li>Requester Pays: 데이터 요청자가 비용 부담</li>
+</ul>
+</div>
+</div>
+<div class="section-title">
+<div class="dot" style="background:var(--accent)">&nbsp;</div>
+시험 도메인별 비중 (DEA-C01)</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:28px">
+<div style="background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+<div style="font-size:28px;font-weight:900;color:var(--ingestion)">34%</div>
+<div style="font-size:13px;font-weight:bold;margin:4px 0">데이터 수집 및 변환</div>
+<div style="font-size:11px;color:var(--muted)">Kinesis, Glue, DMS</div>
+</div>
+<div style="background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+<div style="font-size:28px;font-weight:900;color:var(--storage)">26%</div>
+<div style="font-size:13px;font-weight:bold;margin:4px 0">데이터 저장 및 관리</div>
+<div style="font-size:11px;color:var(--muted)">S3, Redshift, DynamoDB</div>
+</div>
+<div style="background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+<div style="font-size:28px;font-weight:900;color:var(--process)">22%</div>
+<div style="font-size:13px;font-weight:bold;margin:4px 0">데이터 운영 및 지원</div>
+<div style="font-size:11px;color:var(--muted)">CloudWatch, Step Functions</div>
+</div>
+<div style="background:var(--g0);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+<div style="font-size:28px;font-weight:900;color:var(--security)">18%</div>
+<div style="font-size:13px;font-weight:bold;margin:4px 0">데이터 보안 및 거버넌스</div>
+<div style="font-size:11px;color:var(--muted)">IAM, KMS, Lake Formation</div>
+</div>
+</div>
+</div>
+<p><button class="scroll-top">&uarr;</button></p>
+<script>
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('panel-' + id).classList.add('active');
+  el.classList.add('active');
+}
+function toggleCard(card) {
+  card.classList.toggle('expanded');
+}
+</script>
+</div>

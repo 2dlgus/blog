@@ -1,0 +1,396 @@
+<!--
+id: 121
+제목: 보고서를 자동화하지 말고 '보고'를 없애기: 현장 이슈 리포팅 업무 재설계
+카테고리: Stack/PythonFramework
+태그: pI, 업무재설계, 프로세스혁신, ECRS, 데이터포털, 자연어질의
+날짜: 2026-10-04 11:40
+수정: 2026-10-04 11:48
+형식: html
+-->
+<article class="hl-post hl-p01">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+article.hl-post:not(#hl-x){--p50:#256ef4;--p60:#0b50d0;--p70:#083891;--p10:#d8e5fd;--p5:#ecf2fe;--g0:#ffffff;--g5:#f4f5f6;--g10:#e6e8ea;--g20:#cdd1d5;--g30:#b1b8be;--g40:#8a949e;--g50:#6d7882;--g70:#464c53;--g90:#1e2124;display:block;max-width:760px;margin:0 auto;padding:0 0 48px;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;font-weight:400;line-height:1.75;color:var(--g90);text-align:left;word-break:keep-all;overflow-wrap:break-word;-webkit-text-size-adjust:100%;letter-spacing:0}
+article.hl-post:not(#hl-x) *{box-sizing:border-box}
+article.hl-post:not(#hl-x) p{margin:0 0 16px;padding:0;font-size:17px;line-height:1.75;color:var(--g90)}
+article.hl-post:not(#hl-x) h2{margin:64px 0 16px;padding:0;border:0;background:none;font-size:24px;line-height:1.5;font-weight:700;color:var(--g90);letter-spacing:-0.01em;text-align:left}
+article.hl-post:not(#hl-x) h3{margin:40px 0 12px;padding:0;border:0;background:none;font-size:19px;line-height:1.5;font-weight:700;color:var(--g90);text-align:left}
+article.hl-post:not(#hl-x) h2::before,article.hl-post:not(#hl-x) h2::after,article.hl-post:not(#hl-x) h3::before,article.hl-post:not(#hl-x) h3::after{content:none;display:none}
+article.hl-post:not(#hl-x) ul,article.hl-post:not(#hl-x) ol{margin:0 0 16px;padding:0 0 0 24px}
+article.hl-post:not(#hl-x) ul > li{list-style:disc}
+article.hl-post:not(#hl-x) ol > li{list-style:decimal}
+article.hl-post:not(#hl-x) li{margin:0 0 8px;font-size:17px;line-height:1.75;color:var(--g90)}
+article.hl-post:not(#hl-x) a{color:var(--p60);text-decoration:underline;text-underline-offset:3px}
+article.hl-post:not(#hl-x) a:hover{color:var(--p70)}
+article.hl-post:not(#hl-x) strong,article.hl-post:not(#hl-x) b{font-weight:700;color:inherit}
+article.hl-post:not(#hl-x) small{font-size:inherit}
+article.hl-post:not(#hl-x) code{font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:.88em;background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:1px 6px;color:var(--g90)}
+article.hl-post:not(#hl-x) button{font-family:inherit}
+article.hl-post:not(#hl-x) button:focus-visible{outline:2px solid var(--p50);outline-offset:2px}
+
+/* 시리즈 머리 */
+article.hl-post:not(#hl-x) .hl-series{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px;font-size:15px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-series-bar{display:flex;gap:4px;flex:0 0 auto}
+article.hl-post:not(#hl-x) .hl-series-bar i{display:block;width:12px;height:4px;border-radius:2px;background:var(--g20)}
+article.hl-post:not(#hl-x) .hl-series-bar i.on{background:var(--p50)}
+article.hl-post:not(#hl-x) p.hl-lead{margin:0 0 32px;font-size:19px;line-height:1.7;color:var(--g90)}
+
+/* 목차 */
+article.hl-post:not(#hl-x) .hl-toc{margin:0 0 40px;padding:24px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-toc p.hl-toc-t{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-toc ol{margin:0;padding:0 0 0 20px}
+article.hl-post:not(#hl-x) .hl-toc li{margin:0 0 4px;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-toc-a{appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;background:none;font-size:15px;line-height:1.6;color:var(--g90);text-align:left;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-toc-a:hover{color:var(--p60);text-decoration:underline;text-underline-offset:3px}
+
+/* 그림 */
+article.hl-post:not(#hl-x) .hl-fig{margin:32px 0;padding:24px;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-fig > *:last-child{margin-bottom:0}
+article.hl-post:not(#hl-x) p.hl-cap{margin:16px 0 0;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-figt{margin:0 0 16px;font-size:17px;font-weight:700;color:var(--g90)}
+
+/* 흐름도 */
+article.hl-post:not(#hl-x) .hl-flow{display:flex;align-items:stretch;gap:8px}
+article.hl-post:not(#hl-x) .hl-node{flex:1 1 0;min-width:0;padding:16px 12px;background:var(--g5);border:1px solid var(--g10);border-radius:8px;text-align:center}
+article.hl-post:not(#hl-x) .hl-node b{display:block;font-size:15px;line-height:1.5;font-weight:700;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-node span{display:block;margin-top:4px;font-size:13px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-node.pri{background:var(--p5);border-color:var(--p10)}
+article.hl-post:not(#hl-x) .hl-node.pri b{color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-node.dim{background:var(--g0);border:1px dashed var(--g30)}
+article.hl-post:not(#hl-x) .hl-node.dim b{color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-node.risk{background:#fdefec;border-color:#fcdfd9}
+article.hl-post:not(#hl-x) .hl-node.risk b{color:#bd2c0f}
+article.hl-post:not(#hl-x) .hl-node.ok{background:#eaf6ec;border-color:#d8eedd}
+article.hl-post:not(#hl-x) .hl-node.ok b{color:#267337}
+article.hl-post:not(#hl-x) .hl-arr{flex:0 0 16px;display:flex;align-items:center;justify-content:center;color:var(--g40)}
+article.hl-post:not(#hl-x) .hl-arr svg{display:block;width:16px;height:16px}
+article.hl-post:not(#hl-x) .hl-stack{display:flex;flex-direction:column;gap:8px}
+article.hl-post:not(#hl-x) .hl-stack .hl-arr{transform:rotate(90deg);height:16px}
+
+/* 비교 열 */
+article.hl-post:not(#hl-x) .hl-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+article.hl-post:not(#hl-x) .hl-col{padding:20px;border:1px solid var(--g20);border-radius:8px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-col.soft{background:var(--g5);border-color:var(--g10)}
+article.hl-post:not(#hl-x) .hl-col.pri{background:var(--p5);border-color:var(--p10)}
+article.hl-post:not(#hl-x) p.hl-col-t{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-col.pri p.hl-col-t{color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-col ul{margin:0;padding-left:20px}
+article.hl-post:not(#hl-x) .hl-col li{font-size:15px;line-height:1.6;margin:0 0 4px}
+article.hl-post:not(#hl-x) .hl-col p{font-size:15px;line-height:1.6}
+
+/* 알림 상자 */
+article.hl-post:not(#hl-x) .hl-note{display:flex;gap:12px;align-items:flex-start;margin:24px 0;padding:16px 20px;border:1px solid;border-radius:8px}
+article.hl-post:not(#hl-x) .hl-note .hl-ic{flex:0 0 20px;width:20px;height:20px;margin-top:4px}
+article.hl-post:not(#hl-x) .hl-note > div{flex:1 1 auto;min-width:0}
+article.hl-post:not(#hl-x) .hl-note p{margin:0 0 8px}
+article.hl-post:not(#hl-x) .hl-note p:last-child{margin:0}
+article.hl-post:not(#hl-x) .hl-note.info{background:#e7f4fe;border-color:#d3ebfd}
+article.hl-post:not(#hl-x) .hl-note.info b.lbl{color:#096ab3}
+article.hl-post:not(#hl-x) .hl-note.warn{background:#fff3db;border-color:#ffe0a3}
+article.hl-post:not(#hl-x) .hl-note.warn b.lbl{color:#8a5c00}
+article.hl-post:not(#hl-x) .hl-note.ok{background:#eaf6ec;border-color:#d8eedd}
+article.hl-post:not(#hl-x) .hl-note.ok b.lbl{color:#267337}
+article.hl-post:not(#hl-x) .hl-note.risk{background:#fdefec;border-color:#fcdfd9}
+article.hl-post:not(#hl-x) .hl-note.risk b.lbl{color:#bd2c0f}
+article.hl-post:not(#hl-x) b.lbl{margin-right:8px}
+
+/* 코드 */
+article.hl-post:not(#hl-x) .hl-code{margin:24px 0;border-radius:8px;background:#1e2124;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-code-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 16px;background:#131416;font-size:13px;line-height:1.5;color:#cdd1d5}
+article.hl-post:not(#hl-x) .hl-copy{appearance:none;-webkit-appearance:none;margin:0;padding:4px 12px;border:1px solid #464c53;border-radius:6px;background:transparent;font-size:13px;line-height:1.5;color:#f4f5f6;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-copy:hover{background:#464c53}
+article.hl-post:not(#hl-x) .hl-code pre{margin:0;padding:16px;border:0;border-radius:0;background:none;overflow-x:auto;font-family:'D2Coding',Consolas,'Courier New',monospace;font-size:15px;line-height:1.6;color:#f4f5f6;white-space:pre;word-break:normal;overflow-wrap:normal;tab-size:4}
+article.hl-post:not(#hl-x) .hl-code pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit}
+
+/* 표 */
+article.hl-post:not(#hl-x) .hl-tw{margin:24px 0;overflow-x:auto;border:1px solid var(--g20);border-radius:8px;background:var(--g0)}
+article.hl-post:not(#hl-x) table.hl-t{width:100%;margin:0;border:0;border-collapse:collapse;border-spacing:0;font-size:15px;line-height:1.6;background:var(--g0)}
+article.hl-post:not(#hl-x) table.hl-t th{padding:12px 16px;border:0;border-bottom:1px solid var(--g20);background:var(--g5);font-size:15px;font-weight:700;text-align:left;color:var(--g90);white-space:nowrap;vertical-align:bottom}
+article.hl-post:not(#hl-x) table.hl-t td{padding:12px 16px;border:0;border-bottom:1px solid var(--g10);font-size:15px;color:var(--g90);vertical-align:top;text-align:left}
+article.hl-post:not(#hl-x) table.hl-t tr:last-child td{border-bottom:0}
+article.hl-post:not(#hl-x) table.hl-t td.num,article.hl-post:not(#hl-x) table.hl-t th.num{text-align:right;white-space:nowrap}
+article.hl-post:not(#hl-x) table.hl-t td.sub{color:var(--g70)}
+article.hl-post:not(#hl-x) table.hl-t tr.hide{display:none}
+
+/* 탭, 칩, 버튼 */
+article.hl-post:not(#hl-x) .hl-tabs{margin:0}
+article.hl-post:not(#hl-x) .hl-seg{display:inline-flex;flex-wrap:wrap;gap:4px;margin:0 0 16px;padding:4px;background:var(--g5);border:1px solid var(--g10);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-seg button{appearance:none;-webkit-appearance:none;margin:0;padding:6px 16px;border:0;border-radius:6px;background:transparent;font-size:15px;line-height:1.5;font-weight:400;color:var(--g70);cursor:pointer}
+article.hl-post:not(#hl-x) .hl-seg button:hover{background:var(--g10);color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-seg button.on{background:var(--g0);color:var(--g90);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+article.hl-post:not(#hl-x) .hl-pane{display:none}
+article.hl-post:not(#hl-x) .hl-pane.on{display:block}
+article.hl-post:not(#hl-x) .hl-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+article.hl-post:not(#hl-x) .hl-chip{appearance:none;-webkit-appearance:none;margin:0;padding:6px 14px;border:1px solid var(--g30);border-radius:6px;background:var(--g0);font-size:15px;line-height:1.5;color:var(--g90);cursor:pointer;text-align:left}
+article.hl-post:not(#hl-x) .hl-chip:hover{border-color:var(--g50);background:var(--g5)}
+article.hl-post:not(#hl-x) .hl-chip.on{background:var(--p5);border-color:var(--p50);color:var(--p60);font-weight:700}
+article.hl-post:not(#hl-x) .hl-btn{appearance:none;-webkit-appearance:none;margin:0;padding:8px 16px;border:1px solid var(--p50);border-radius:6px;background:var(--p50);font-size:15px;line-height:1.5;font-weight:700;color:#fff;cursor:pointer}
+article.hl-post:not(#hl-x) .hl-btn:hover{background:var(--p60);border-color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-btn:active{background:var(--p70);border-color:var(--p70)}
+article.hl-post:not(#hl-x) .hl-btn.line{background:var(--g0);color:var(--g90);border-color:var(--g30);font-weight:400}
+article.hl-post:not(#hl-x) .hl-btn.line:hover{background:var(--g5);border-color:var(--g50)}
+article.hl-post:not(#hl-x) .hl-out{margin:16px 0 0;padding:16px 20px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-out p{margin:0 0 4px}
+article.hl-post:not(#hl-x) .hl-out p:last-child{margin:0}
+article.hl-post:not(#hl-x) .hl-muted{color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-s{font-size:15px;line-height:1.6}
+
+/* 배지, 범례 */
+article.hl-post:not(#hl-x) .hl-badge{display:inline-block;padding:2px 8px;border-radius:4px;border:1px solid;font-size:13px;line-height:1.5;font-weight:700;vertical-align:middle;white-space:nowrap}
+article.hl-post:not(#hl-x) .hl-badge.info{background:#e7f4fe;border-color:#d3ebfd;color:#096ab3}
+article.hl-post:not(#hl-x) .hl-badge.warn{background:#fff3db;border-color:#ffe0a3;color:#8a5c00}
+article.hl-post:not(#hl-x) .hl-badge.ok{background:#eaf6ec;border-color:#d8eedd;color:#267337}
+article.hl-post:not(#hl-x) .hl-badge.risk{background:#fdefec;border-color:#fcdfd9;color:#bd2c0f}
+article.hl-post:not(#hl-x) .hl-badge.gray{background:var(--g5);border-color:var(--g10);color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-badge.pri{background:var(--p5);border-color:var(--p10);color:var(--p60)}
+article.hl-post:not(#hl-x) .hl-legend{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-legend span{display:inline-flex;align-items:center;gap:6px}
+article.hl-post:not(#hl-x) .hl-legend i{display:inline-block;width:12px;height:12px;border-radius:2px}
+
+/* 막대 */
+article.hl-post:not(#hl-x) .hl-bars{margin:0}
+article.hl-post:not(#hl-x) .hl-brow{display:grid;grid-template-columns:140px 1fr 64px;gap:12px;align-items:center;margin:0 0 8px;font-size:15px;line-height:1.5}
+article.hl-post:not(#hl-x) .hl-bar{height:12px;background:var(--g10);border-radius:6px;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-bar i{display:block;height:100%;background:var(--p50);border-radius:6px}
+article.hl-post:not(#hl-x) .hl-brow .v{text-align:right;font-weight:700}
+
+/* 핵심 숫자 */
+article.hl-post:not(#hl-x) .hl-kv{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 40px}
+article.hl-post:not(#hl-x) .hl-kv > div{padding:16px 20px;background:var(--g5);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-kv b{display:block;font-size:24px;line-height:1.4;font-weight:700;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-kv span{display:block;font-size:15px;line-height:1.5;color:var(--g70)}
+
+/* 체크리스트 */
+article.hl-post:not(#hl-x) .hl-checkwrap{margin:24px 0;padding:8px 24px 16px;border:1px solid var(--g20);border-radius:10px;background:var(--g0)}
+article.hl-post:not(#hl-x) .hl-prog{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--g20);font-size:15px;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-prog-b{flex:1 1 auto;height:8px;background:var(--g10);border-radius:4px;overflow:hidden}
+article.hl-post:not(#hl-x) .hl-prog-b i{display:block;height:100%;width:0;background:var(--p50);border-radius:4px;transition:width .2s}
+article.hl-post:not(#hl-x) ul.hl-checks{list-style:none;margin:0;padding:0}
+article.hl-post:not(#hl-x) ul.hl-checks li{margin:0;padding:0;border-bottom:1px solid var(--g10);list-style:none}
+article.hl-post:not(#hl-x) ul.hl-checks li:last-child{border-bottom:0}
+article.hl-post:not(#hl-x) .hl-chk{appearance:none;-webkit-appearance:none;display:flex;gap:12px;align-items:flex-start;width:100%;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-box{flex:0 0 20px;width:20px;height:20px;margin-top:4px;border:1px solid var(--g50);border-radius:4px;background:var(--g0);display:flex;align-items:center;justify-content:center}
+article.hl-post:not(#hl-x) .hl-box svg{display:none;width:14px;height:14px}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-box{background:var(--p50);border-color:var(--p50)}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-box svg{display:block}
+article.hl-post:not(#hl-x) .hl-ct{display:block;font-size:17px;line-height:1.6}
+article.hl-post:not(#hl-x) .hl-ct small{display:block;margin-top:2px;font-size:15px;line-height:1.6;color:var(--g70)}
+article.hl-post:not(#hl-x) .hl-chk.on .hl-ct{color:var(--g70)}
+
+/* 끝 */
+article.hl-post:not(#hl-x) .hl-end{margin:64px 0 0;padding:24px 0 0;border-top:1px solid var(--g20)}
+article.hl-post:not(#hl-x) .hl-nav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px}
+article.hl-post:not(#hl-x) .hl-nav > div{padding:16px;border:1px solid var(--g20);border-radius:8px}
+article.hl-post:not(#hl-x) .hl-nav > div.r{text-align:right}
+article.hl-post:not(#hl-x) .hl-nav > div.none{visibility:hidden}
+article.hl-post:not(#hl-x) .hl-nav small{display:block;font-size:13px;line-height:1.5;color:var(--g50)}
+article.hl-post:not(#hl-x) .hl-nav span{display:block;margin-top:4px;font-size:15px;line-height:1.5;font-weight:500;color:var(--g90)}
+article.hl-post:not(#hl-x) .hl-tags{display:flex;flex-wrap:wrap;gap:8px}
+article.hl-post:not(#hl-x) .hl-tags span{padding:4px 8px;border-radius:4px;background:var(--g5);font-size:13px;line-height:1.5;color:var(--g70)}
+
+@media (max-width:600px){
+  article.hl-post:not(#hl-x) .hl-node{padding:12px}
+  article.hl-post:not(#hl-x) h2{margin:48px 0 16px;font-size:22px}
+  article.hl-post:not(#hl-x) p.hl-lead{font-size:17px}
+  article.hl-post:not(#hl-x) .hl-series-bar i{width:8px}
+  article.hl-post:not(#hl-x) .hl-fig{padding:16px}
+  article.hl-post:not(#hl-x) .hl-toc{padding:16px}
+  article.hl-post:not(#hl-x) .hl-flow{flex-direction:column}
+  article.hl-post:not(#hl-x) .hl-flow .hl-arr{transform:rotate(90deg);height:16px}
+  article.hl-post:not(#hl-x) .hl-cols{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-kv{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-kv b{font-size:22px}
+  article.hl-post:not(#hl-x) .hl-brow{grid-template-columns:96px 1fr 52px;gap:8px}
+  article.hl-post:not(#hl-x) .hl-code pre{font-size:13px}
+  article.hl-post:not(#hl-x) .hl-nav{grid-template-columns:1fr}
+  article.hl-post:not(#hl-x) .hl-nav > div.none{display:none}
+  article.hl-post:not(#hl-x) .hl-checkwrap{padding:8px 16px 12px}
+  article.hl-post:not(#hl-x) .hl-note{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){article.hl-post:not(#hl-x) *{transition:none !important;scroll-behavior:auto !important}}
+article.hl-post:not(#hl-x) p{word-break:keep-all}
+article.hl-post:not(#hl-x) table{table-layout:auto}
+</style>
+<div class="hl-series"><span>현장 데이터 서비스 구축기 1편</span><span class="hl-series-bar" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+<p class="hl-lead">제조 현장의 이슈 리포팅을 통합 포털과 자연어 질의로 다시 설계한 과정이다. 보고서 작성을 빠르게 만드는 대신 보고 행위 자체를 줄이는 쪽으로 과제를 재정의한 이유와 단계 구성을 PI 관점에서 정리했다.</p>
+<div class="hl-toc"><p class="hl-toc-t">이 글의 순서</p><ol></ol></div>
+<h2>첫 과제명은 내가 버렸다</h2>
+<p>이슈 관리 업무를 개선하는 과제를 기획하면서 처음 잡은 이름은 '이슈 분석·리포트 자동 작성'이었다. 이슈 데이터가 입력되면 복기회의록, 이행검증 보고서, 횡전개 대상 목록을 AI가 초안으로 만들어 주고, 사람은 검토만 하는 구조다.</p>
+<p>초안을 다 쓰고 다시 읽어 보니 방향이 틀려 있었다. 결국 '보고서를 더 빨리 만드는 일'이고, 현업이 보기에는 흔한 보고서 자동화 과제와 다를 게 없었다. 보고서가 왜 필요한지, 보고서를 만든 다음 누가 무엇을 하는지는 그대로 두고 앞단만 빠르게 만드는 셈이다.</p>
+<p>그래서 질문을 바꿨다. 무엇을 자동화할지가 아니라 무엇을 없앨 수 있는지부터 보기로 했다.</p>
+
+<h2>As-Is: 같은 데이터를 몇 번이고 다시 쓴다</h2>
+<p>현장의 이슈 리포팅은 대략 이렇게 흘러갔다. 이슈가 접수되면 사업장마다 쓰는 도구(BI 도구, PPT, 엑셀)로 각자 리포트를 만든다. 시스템이 자동으로 뽑아 주는 보고서도 있었지만 입력 데이터를 다시 나열한 수준이라 담당자가 결국 재가공했다. 임원 보고용 PPT는 또 따로 만들었다.</p>
+<div class="hl-fig">
+  <p class="hl-figt">As-Is 리포팅 흐름</p>
+  <div class="hl-flow">
+    <div class="hl-node"><b>이슈 접수</b><span>시스템 입력</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node risk"><b>사업장별 리포트</b><span>도구·양식 제각각</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node risk"><b>자동 보고서 재가공</b><span>데이터 재나열 수준</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node risk"><b>임원 보고 PPT</b><span>별도 작성</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+    <div class="hl-node"><b>회의·메일 공유</b><span>주 단위</span></div>
+  </div>
+  <p class="hl-cap">사업장별 리포트부터 임원 보고 PPT까지는 같은 이슈 정보를 사람이 다시 옮겨 쓰는 구간이다.</p>
+</div>
+<p>문제를 정리하면 세 가지였다.</p>
+<ul>
+  <li>같은 이슈 정보를 문서마다 반복해서 다시 입력한다.</li>
+  <li>현업 조직, 사업장, 담당자마다 정기 보고서 양식이 다르다.</li>
+  <li>보고서를 만드는 데 시간을 쓰느라 정작 대책을 검토할 시간이 줄어든다.</li>
+</ul>
+
+<h2>질문을 바꿨다: 자동화보다 제거가 먼저</h2>
+<p>산업공학에서 공정을 개선할 때 쓰는 ECRS 원칙이 있다. 제거(Eliminate), 결합(Combine), 재배치(Rearrange), 단순화(Simplify) 순서로 검토하라는 것이다. 순서에 의미가 있다. 없앨 수 있는 공정을 자동화하면 쓸모없는 일을 빠르게 하는 것뿐이다.</p>
+<p>보고서 자동화는 단순화(S)에 해당한다. 그런데 보고서가 하는 일을 따져 보면, 보고받는 사람이 궁금한 것에 답하는 것이다. 궁금한 사람이 데이터에 직접 물어보고 바로 답을 받을 수 있다면 보고서라는 중간 산출물 자체가 필요 없어진다. 이게 제거(E)다.</p>
+<div class="hl-fig">
+  <p class="hl-figt">같은 질문, 두 가지 답</p>
+  <div class="hl-cols">
+    <div class="hl-col soft">
+      <p class="hl-col-t">보고서 자동화</p>
+      <ul>
+        <li>보고서 초안 작성 시간이 줄어든다</li>
+        <li>보고서를 만들고, 보내고, 읽는 단계는 그대로다</li>
+        <li>질문이 바뀌면 양식을 다시 만든다</li>
+      </ul>
+    </div>
+    <div class="hl-col pri">
+      <p class="hl-col-t">보고 행위 제거</p>
+      <ul>
+        <li>궁금한 사람이 데이터에 직접 묻는다</li>
+        <li>작성·전달·열람 단계가 사라진다</li>
+        <li>질문이 바뀌어도 바로 답한다</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<h2>To-Be: 두 단계로 나눈 이유</h2>
+<p>바로 자연어 질의로 가고 싶었지만 그 전에 풀어야 할 전제가 있었다. 질문에 답하려면 데이터가 한곳에 정리돼 있어야 한다. 사업장마다 흩어진 리포트를 그대로 두고 AI를 붙이면 AI도 흩어진 데이터를 뒤지게 된다. 그래서 단계를 둘로 나눴다.</p>
+<div class="hl-fig">
+  <div class="hl-tabs">
+    <div class="hl-seg"><button type="button" class="on">1단계 통합 포털</button><button type="button">2단계 자연어 질의</button></div>
+    <div class="hl-pane on">
+      <div class="hl-flow">
+        <div class="hl-node"><b>이슈 데이터</b><span>데이터 레이크 연결</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node pri"><b>통합 포털</b><span>준실시간 갱신</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>브리핑·통계·KPI</b><span>한 화면에서 조회</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>AI 등급 추천</b><span>유사 사례 함께 제시</span></div>
+      </div>
+      <p class="hl-cap">흩어진 리포트를 하나의 포털로 모은다. 2단계의 데이터 기반이 된다.</p>
+    </div>
+    <div class="hl-pane">
+      <div class="hl-flow">
+        <div class="hl-node"><b>자연어 질문</b><span>"지난달 끼임 이슈 몇 건?"</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node pri"><b>사내 LLM</b><span>질문 해석</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>데이터 집계</b><span>포털과 같은 데이터</span></div><i class="hl-arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+        <div class="hl-node"><b>답변과 근거</b><span>집계 기준 함께 제시</span></div>
+      </div>
+      <p class="hl-cap">보고서를 만들고 읽는 대신 묻고 바로 답을 받는다.</p>
+    </div>
+  </div>
+</div>
+<p>1단계는 이미 끝났다. 이슈 데이터를 데이터 레이크에서 직접 읽어 브리핑, 통계, KPI를 한 포털에서 보여주고, 이슈 등급 추천과 유사 사례 검색까지 붙였다. 사용자는 현업 조직과 사업장 담당자 500명 이상이다. 2단계는 사내 LLM 연동을 마치고 화면 방식을 비교하고 있다.</p>
+<div class="hl-note info"><svg class="hl-ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#0b78cb"/><rect x="9" y="8.5" width="2" height="6.5" rx="1" fill="#fff"/><circle cx="10" cy="5.8" r="1.25" fill="#fff"/></svg><div><p><b class="lbl">핵심</b>2단계에서 가장 신경 쓴 것은 답변의 근거다. 임원이 받은 숫자를 다시 검증하느라 담당자를 부르면 보고 행위가 형태만 바꿔 되살아난다. 그래서 답변마다 어떤 기준으로 집계했는지 함께 보여주도록 했다.</p></div></div>
+
+<h2>로드맵과 성과 지표</h2>
+<div class="hl-tw"><table class="hl-t">
+  <thead><tr><th>시점</th><th>할 일</th></tr></thead>
+  <tbody>
+    <tr><td>1개월</td><td>통합 포털 콘텐츠 완성, 자동 메일링 보고 설계, 자연어 질의 대상 데이터와 질문 유형 정의</td></tr>
+    <tr><td>3개월</td><td>사내 LLM 연동 PoC, 질의 정확도와 근거 제시 검증, 임원 대상 질의 시나리오 시범</td></tr>
+    <tr><td>6개월</td><td>정확도와 활용도로 확대 여부 판단, 원인 분석과 횡전개 추천으로 콘텐츠 확대, 정식 오픈</td></tr>
+  </tbody>
+</table></div>
+<p>성과 지표는 '얼마나 빨리 만드느냐'가 아니라 '얼마나 덜 만드느냐'로 잡았다.</p>
+<ul>
+  <li>사업장별 정기 보고서 작성 시간 감소율</li>
+  <li>리포팅 도구 수: 여러 종 → 포털 1개</li>
+  <li>의사결정 리드타임: 주 단위 → 즉시</li>
+  <li>자연어 질의 응답 정확도</li>
+</ul>
+
+<h2>정리</h2>
+<p>과제 이름에 '자동화'가 들어가면 일단 의심해 볼 만하다. 자동화하려는 산출물이 왜 필요한지, 그 산출물을 받은 사람이 다음에 무엇을 하는지까지 따라가 보면 없앨 수 있는 단계가 보이는 경우가 많다.</p>
+<ul>
+  <li>자동화 전에 제거할 수 있는지부터 본다.</li>
+  <li>없애려면 대신 답해 줄 데이터가 먼저 정리돼 있어야 한다. 그래서 통합이 1단계다.</li>
+  <li>AI 답변에는 근거를 붙인다. 근거가 없으면 확인용 보고가 다시 생긴다.</li>
+</ul>
+<div class="hl-end"><div class="hl-nav"><div class="l none"></div><div class="r"><small>다음 편</small><span>2편. Mendix로 1년 만든 시스템을 코드로 다시 만들기로 한 이유</span></div></div><div class="hl-tags"><span>#PI</span><span>#업무재설계</span><span>#프로세스혁신</span><span>#ECRS</span><span></span><span></span><span>#데이터포털</span><span>#자연어질의</span></div></div>
+<script>
+(function(){
+  function each(list,fn){for(var i=0;i<list.length;i++){fn(list[i],i);}}
+  function fallbackCopy(txt){
+    var ta=document.createElement('textarea');
+    ta.value=txt;ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.top='0';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+  }
+  function init(root){
+    if(root.getAttribute('data-hl-ready')==='1'){return;}
+    root.setAttribute('data-hl-ready','1');
+
+    var toc=root.querySelector('.hl-toc ol');
+    if(toc){
+      var hs=root.querySelectorAll('h2');
+      if(hs.length<3){root.querySelector('.hl-toc').style.display='none';}
+      each(hs,function(h){
+        var li=document.createElement('li');
+        var b=document.createElement('button');
+        b.type='button';b.className='hl-toc-a';b.textContent=h.textContent;
+        b.addEventListener('click',function(){
+          var y=h.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop)-24;
+          try{window.scrollTo({top:y,behavior:'smooth'});}catch(e){window.scrollTo(0,y);}
+        });
+        li.appendChild(b);toc.appendChild(li);
+      });
+    }
+
+    each(root.querySelectorAll('.hl-tabs'),function(t){
+      var btns=t.querySelectorAll('.hl-seg button');
+      var panes=t.querySelectorAll('.hl-pane');
+      each(btns,function(b,i){
+        b.setAttribute('aria-pressed',b.className.indexOf('on')>-1?'true':'false');
+        b.addEventListener('click',function(){
+          each(btns,function(x,j){x.className=(j===i)?'on':'';x.setAttribute('aria-pressed',(j===i)?'true':'false');});
+          each(panes,function(p,j){if(j===i){p.classList.add('on');}else{p.classList.remove('on');}});
+        });
+      });
+    });
+
+    each(root.querySelectorAll('.hl-code'),function(c){
+      var btn=c.querySelector('.hl-copy');var pre=c.querySelector('pre');
+      if(!btn||!pre){return;}
+      btn.addEventListener('click',function(){
+        var txt=pre.textContent;
+        var done=function(){btn.textContent='복사됨';setTimeout(function(){btn.textContent='복사';},1500);};
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(txt).then(done,function(){fallbackCopy(txt);done();});
+        }else{fallbackCopy(txt);done();}
+      });
+    });
+
+    each(root.querySelectorAll('.hl-checkwrap'),function(w){
+      var items=w.querySelectorAll('.hl-chk');
+      var t=w.querySelector('.hl-prog-t');var bar=w.querySelector('.hl-prog-b i');
+      function upd(){
+        var n=w.querySelectorAll('.hl-chk.on').length;
+        if(t){t.textContent=items.length+'개 중 '+n+'개 확인';}
+        if(bar){bar.style.width=(items.length?Math.round(n/items.length*100):0)+'%';}
+      }
+      each(items,function(it){
+        it.setAttribute('aria-pressed','false');
+        it.addEventListener('click',function(){
+          var on=it.classList.toggle('on');
+          it.setAttribute('aria-pressed',on?'true':'false');upd();
+        });
+      });
+      upd();
+    });
+  }
+  each(document.querySelectorAll('article.hl-post'),init);
+})();
+</script>
+</article>

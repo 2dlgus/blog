@@ -1,0 +1,287 @@
+<!--
+id: 108
+제목: AWS DEA-C01 각색 문제 Day 11 — KMS + Lambda, Glue 카탈로그, Firehose + Lambda → OpenSearch, Secrets Manager, S3 Standard-IA
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, KMS 키 교체, Glue 카탈로그 암호화, Firehose OpenSearch, Secrets Manager 다중 리전, S3 Standard-IA
+날짜: 2026-03-27 23:31
+수정: 2026-03-27 23:31
+형식: html
+썸네일: /img/t/dJMcaiJtVex.webp
+-->
+<style>
+.pb-108 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-108 .dea-wrap *{box-sizing:border-box}
+.pb-108 .dea-post-header{margin-bottom:32px}
+.pb-108 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-108 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-108 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-108 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-108 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-108 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-108 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-108 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-108 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-108 .dea-q-block{margin-bottom:48px}
+.pb-108 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-108 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-108 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-108 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-108 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-108 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-108 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-108 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-108 .dea-seo-lead strong{color:var(--p50)}
+.pb-108 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-108 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-108 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-108 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-108 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-108 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-108 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-108 .dea-opt.ok{border-color:var(--s60)}
+.pb-108 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-108 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-108 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-108 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-108 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-108 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-108 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-108 .dea-term{font-weight:700;color:var(--p50)}
+.pb-108 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-108 .dea-btn:hover{background:var(--p60)}
+.pb-108 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-108 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-108 .dea-exp.on{display:flex}
+.pb-108 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-108 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-108 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-108 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-108 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-108 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-108 .dea-table th, .pb-108 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-108 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-108 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-108 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-108 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-108 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-108 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-108 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-108 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-108 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-108 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-108 .dea-hl{color:var(--p50);font-weight:700}
+.pb-108 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-108 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-108 .dea-wrap{padding:14px 6px 52px}
+.pb-108 .dea-post-title{font-size:18px}
+.pb-108 .dea-qcard p{font-size:14px}
+.pb-108 .dea-opt-row{font-size:13px}
+.pb-108 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-108 .dea-table{font-size:11.5px}
+.pb-108 .dea-table th, .pb-108 .dea-table td{padding:8px 9px}
+.pb-108 .dea-ans-main{font-size:14.5px}
+.pb-108 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-108">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 11</h1>
+  <p class="dea-post-desc">KMS + Lambda 데이터 마스킹, Glue 카탈로그 대칭 CMK 암호화, Firehose + Lambda → OpenSearch, Secrets Manager 다중 리전, S3 Standard-IA 블로그 수명주기 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 2·4 · 보안 · 암호화 · 스트리밍</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q51"><span class="dea-toc-num">Q51</span> 암호화 키 교체 + 데이터 마스킹 + 보안 스토리지</a></li>
+    <li><a href="#dea-q52"><span class="dea-toc-num">Q52</span> Glue 데이터 카탈로그 객체 KMS 암호화</a></li>
+    <li><a href="#dea-q53"><span class="dea-toc-num">Q53</span> Kinesis → 변환 → OpenSearch 수집 (운영 최소)</a></li>
+    <li><a href="#dea-q54"><span class="dea-toc-num">Q54</span> 다중 리전 Lambda JDBC 자격증명 안전 저장</a></li>
+    <li><a href="#dea-q55"><span class="dea-toc-num">Q55</span> 블로그 30일 후 비용 절감 + 실시간 검색 유지</a></li>
+  </ul>
+</nav>
+
+<!-- Q51 -->
+<div class="dea-q-block" id="dea-q51">
+  <div class="dea-meta"><span class="dea-badge qnum">Q51</span><span class="dea-badge topic">KMS · Lambda 마스킹 · 데이터 보안 거버넌스</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>포괄적 데이터 보안</strong>에는 암호화(KMS), 마스킹(Lambda), 안전한 저장소(Redshift)가 모두 필요합니다. 각각의 역할을 명확히 구분하는 것이 DEA-C01 보안 도메인의 핵심입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>금융 데이터 플랫폼이 암호화, 마스킹을 포함한 포괄적인 데이터 보안 요건을 충족해야 합니다. 암호화 키는 주기적으로 교체 가능해야 합니다. 이 요건을 모두 충족하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q51-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Glue로 데이터를 카탈로그화·변환하고 Glue 내부에서 데이터 마스킹을 적용합니다. Amazon S3에 데이터를 저장합니다.</span></div><div class="dea-inline-exp">❌ Glue는 ETL 도구. 암호화 키 관리 및 교체 기능이 없음. S3 기본 암호화는 있지만 포괄적 암호화·마스킹 요건을 단독으로 충족하기 어려움.</div></li>
+    <li class="dea-opt" id="q51-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>AWS KMS로 암호화 키를 생성·관리하고, Lambda 함수로 민감 데이터에 마스킹을 적용합니다. Amazon Redshift에 데이터를 저장합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS KMS</span> — 암호화 키 생성·관리·자동 교체 기능 제공. <span class="dea-term">Lambda</span> — 서버리스 마스킹 로직 실행. <span class="dea-term">Amazon Redshift</span> — KMS와 통합된 안전한 데이터 웨어하우스. 세 서비스가 <strong>암호화 + 마스킹 + 보안 스토리지 + 키 교체</strong> 요건을 모두 충족.</div></li>
+    <li class="dea-opt" id="q51-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>AWS CloudTrail로 API 호출을 모니터링하고, Lambda로 CloudTrail 로그에 마스킹을 적용합니다. Amazon S3에 데이터를 저장합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS CloudTrail</span> — 감사 로그 기록 서비스. 실제 데이터 암호화 기능이 없음. CloudTrail 로그 마스킹은 요건의 데이터 마스킹과 다른 개념.</div></li>
+    <li class="dea-opt" id="q51-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Secrets Manager로 API 키·자격증명을 저장하고, Secrets Manager 내에서 마스킹을 구현합니다. Amazon Redshift에 저장합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS Secrets Manager</span> — 자격증명 저장·교체 서비스. 데이터 마스킹 기능이 내장되어 있지 않음. 실제 데이터 암호화 요건도 충족하지 못함.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q51">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q51">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — KMS(암호화·키 교체) + Lambda(마스킹) + Redshift(저장)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 데이터 보안 서비스 역할 분담</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>역할</th><th>키 교체?</th><th>마스킹?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AWS KMS</strong></td><td>암호화 키 생성·관리</td><td><span class="dea-pill good">✓ 자동</span></td><td>없음</td></tr>
+      <tr><td><strong>AWS Lambda</strong></td><td>마스킹 로직 실행</td><td>없음</td><td><span class="dea-pill good">✓ 커스텀</span></td></tr>
+      <tr><td>Secrets Manager</td><td>자격증명 저장·교체</td><td>자격증명만</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>CloudTrail</td><td>API 호출 감사</td><td>없음</td><td><span class="dea-pill bad">✗</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"암호화 키 교체 + 데이터 마스킹 + 보안 스토리지"<br>  →  <span class="dea-hl">KMS</span> + <span class="dea-hl">Lambda</span> + <span class="dea-hl">Redshift</span><br><br>Secrets Manager = 자격증명 교체 (데이터 암호화·마스킹 아님)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q52 -->
+<div class="dea-q-block" id="dea-q52">
+  <div class="dea-meta"><span class="dea-badge qnum">Q52</span><span class="dea-badge topic">Glue 데이터 카탈로그 · KMS 암호화 · 대칭 CMK</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Glue 데이터 카탈로그 암호화</strong>는 카탈로그 객체(테이블·데이터베이스 메타데이터)를 KMS로 암호화하는 기능입니다. <strong>대칭 고객 관리형 키(Symmetric CMK)만 지원</strong>하며, S3 버킷 암호화와는 별개입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>금융 회사가 민감한 데이터를 S3 버킷에 저장하고 AWS Glue 데이터 카탈로그로 메타데이터를 관리합니다. 규정상 S3 메타데이터에서 생성되는 모든 Glue 데이터 카탈로그 객체를 AWS KMS로 암호화해야 합니다. 올바른 설정 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q52-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Glue 데이터 카탈로그 설정에서 메타데이터 암호화를 위한 대칭 고객 관리형 키(Symmetric CMK)를 선택합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Glue 데이터 카탈로그 암호화 설정</span> — 카탈로그 전체 객체(테이블·데이터베이스)를 KMS로 암호화. <span class="dea-term">대칭 CMK(Symmetric Customer Managed Key)</span> — AWS Glue가 지원하는 유일한 키 유형. 암호화·복호화에 같은 키를 사용. 카탈로그 설정에서 활성화하면 이후 생성되는 모든 객체에 적용.</div></li>
+    <li class="dea-opt" id="q52-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 데이터 카탈로그 설정에서 메타데이터 암호화를 위한 비대칭 고객 관리형 키(Asymmetric CMK)를 선택합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">비대칭 CMK(Asymmetric CMK)</span> — 공개키/개인키 쌍 방식. <strong>AWS Glue 데이터 카탈로그는 비대칭 키를 지원하지 않음</strong>. 대칭 키만 사용 가능.</div></li>
+    <li class="dea-opt" id="q52-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>S3 버킷 서버 측 암호화 설정에서 대칭 고객 관리형 키를 선택합니다.</span></div><div class="dea-inline-exp">❌ S3 버킷 암호화는 <strong>S3에 저장된 데이터 파일(객체)</strong>을 암호화하는 것. 요건은 Glue 데이터 카탈로그 객체(메타데이터) 암호화로 별개의 설정. 두 가지는 서로 다른 암호화 범위.</div></li>
+    <li class="dea-opt" id="q52-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>S3 버킷 서버 측 암호화 설정에서 비대칭 고객 관리형 키를 선택합니다.</span></div><div class="dea-inline-exp">❌ Amazon S3는 저장 데이터 암호화에 비대칭 CMK를 지원하지 않음. 또한 S3 설정으로는 Glue 카탈로그 객체를 암호화할 수 없음. 두 가지 모두 오답.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q52">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q52">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — Glue 카탈로그 설정에서 대칭 CMK로 메타데이터 암호화</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Glue 카탈로그 vs S3 암호화 범위</div>
+    <table class="dea-table"><thead><tr><th>암호화 설정</th><th>암호화 대상</th><th>지원 키 유형</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Glue 카탈로그 설정</strong></td><td>카탈로그 객체(메타데이터)</td><td>대칭 CMK만</td></tr>
+      <tr><td>S3 서버 측 암호화(SSE)</td><td>S3 버킷의 데이터 파일</td><td>대칭 키만</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"Glue 데이터 카탈로그 객체 KMS 암호화"<br>  →  <span class="dea-hl">카탈로그 설정</span> + <span class="dea-hl">대칭 CMK</span><br><br>비대칭 CMK = Glue 카탈로그에서 지원 안 함<br>S3 암호화 = 카탈로그 암호화와 별개</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q53 -->
+<div class="dea-q-block" id="dea-q53">
+  <div class="dea-meta"><span class="dea-badge qnum">Q53</span><span class="dea-badge topic">Firehose · Lambda 변환 · OpenSearch</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon Data Firehose</strong>는 Kinesis Data Streams에서 데이터를 받아 Lambda로 변환한 뒤 OpenSearch Service 등으로 전송하는 완전관리형 스트리밍 파이프라인입니다. 자체 컨슈머 개발 없이 낮은 운영 오버헤드로 구현 가능합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>음악 분석 플랫폼이 Kinesis Data Streams를 통해 매일 수백만 건의 스트리밍 이벤트를 수신합니다. 이 데이터를 변환한 후 Amazon OpenSearch Service 도메인으로 수집해야 합니다. 운영 오버헤드가 가장 적은 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q53-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon Data Firehose로 Kinesis Data Streams에서 데이터를 받아 Lambda 함수로 변환하고 OpenSearch Service로 전송합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon Data Firehose</span> — Kinesis Data Streams를 소스로, OpenSearch Service를 대상으로 직접 지원. <span class="dea-term">Lambda 변환</span> — Firehose가 대상 전달 전 Lambda를 자동 호출해 레코드 변환. <strong>자체 컨슈머 코드 없이</strong> 완전관리형으로 파이프라인 구성.</div></li>
+    <li class="dea-opt" id="q53-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>사전 구성된 필터가 있는 Logstash 파이프라인으로 데이터를 변환하고 OpenSearch Service로 전송합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Logstash</span> — 오픈소스 데이터 수집·처리 도구. <strong>자체 호스팅 및 관리가 필요</strong>. 서버 운영 비용과 유지보수 부담 발생. 완전관리형 대비 운영 오버헤드 높음.</div></li>
+    <li class="dea-opt" id="q53-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Lambda 함수로 Kinesis Agent를 호출하여 데이터를 변환하고 OpenSearch로 전송합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Kinesis Agent</span> — 데이터를 Kinesis Data Streams에 <strong>쓰는(Write)</strong> 도구. 스트림에서 읽어서 처리하는 기능이 없음. 데이터 흐름 방향이 반대.</div></li>
+    <li class="dea-opt" id="q53-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Kinesis Client Library(KCL)로 데이터를 읽어 변환하고 OpenSearch로 전송합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">KCL(Kinesis Client Library)</span> — Kinesis 스트림 읽기 애플리케이션 개발 라이브러리. 직접 애플리케이션을 개발·배포·관리해야 해 Firehose보다 <strong>훨씬 높은 운영 오버헤드</strong> 발생.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q53">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q53">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — Firehose + Lambda 변환 → OpenSearch (완전관리형)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Kinesis → OpenSearch 파이프라인 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>운영 부담</th><th>OpenSearch 네이티브?</th><th>변환 지원?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Firehose + Lambda</strong></td><td><span class="dea-pill good">최소</span></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓ 내장</span></td></tr>
+      <tr><td>KCL 직접 개발</td><td><span class="dea-pill bad">높음</span></td><td>개발 필요</td><td>직접 구현</td></tr>
+      <tr><td>Logstash 자체 호스팅</td><td><span class="dea-pill bad">높음</span></td><td>✓</td><td>✓</td></tr>
+      <tr><td>Kinesis Agent</td><td>중간</td><td><span class="dea-pill bad">쓰기 전용</span></td><td>제한적</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"Kinesis → 변환 → OpenSearch + 운영 최소"<br>  →  <span class="dea-hl">Firehose</span> + <span class="dea-hl">Lambda 변환</span><br><br>Firehose = Kinesis 소스 + Lambda 변환 + OpenSearch 대상 모두 지원<br>KCL = 직접 개발 필요 → 오버헤드 높음</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q54 -->
+<div class="dea-q-block" id="dea-q54">
+  <div class="dea-meta"><span class="dea-badge qnum">Q54</span><span class="dea-badge topic">Secrets Manager · 다중 리전 · JDBC 자격증명</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Secrets Manager</strong>는 자격증명을 안전하게 저장하고 다중 리전 복제를 지원합니다. Lambda 환경 변수나 Lambda 계층에 자격증명을 저장하는 것은 보안 모범 사례에 어긋납니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>Lambda 함수가 JDBC를 사용하여 여러 AWS 리전의 Amazon Redshift 클러스터에 ETL 작업을 수행합니다. JDBC 자격증명을 안전하게 저장하고 모든 리전에서 접근 가능하도록 해야 합니다. 가장 안전한 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q54-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Lambda 환경 변수에 자격증명을 저장하고 필요한 리전에 구성을 복제합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Lambda 환경 변수</span> — 함수별 설정값 저장 용도. <strong>암호 같은 민감 정보를 저장하면 안 됨</strong>. 환경 변수는 콘솔에서 평문으로 보일 수 있어 보안 위험.</div></li>
+    <li class="dea-opt" id="q54-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>KMS로 암호화된 S3 버킷에 자격증명 파일을 저장하고 S3 교차 리전 복제로 배포합니다.</span></div><div class="dea-inline-exp">❌ S3 파일에 자격증명을 저장하는 것은 모범 사례가 아님. S3/KMS 읽기 권한이 있는 사람은 자격증명에 접근 가능. 잘못된 퍼블릭 접근 설정 위험도 있음.</div></li>
+    <li class="dea-opt" id="q54-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>AWS Secrets Manager에 자격증명을 저장하고 필요한 리전에 보안 암호를 복제합니다. Lambda 함수에서 Secrets Manager API로 자격증명을 조회합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Secrets Manager</span> — 자격증명 저장·암호화·자동 교체를 위한 전용 서비스. <span class="dea-term">다중 리전 복제</span> — 보안 암호를 다른 리전으로 자동 동기화. Lambda에서 API 호출로 최신 자격증명 조회. 가장 안전하고 관리하기 쉬운 방법.</div></li>
+    <li class="dea-opt" id="q54-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>자격증명을 Lambda 계층(Layer)에 저장하고 각 리전에 Lambda 계층을 복사합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Lambda 계층</span> — 재사용 가능한 코드·라이브러리 패키지. 자격증명 저장 용도가 아님. 계층은 코드 패키지라 자격증명이 노출될 위험이 있음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q54">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q54">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — Secrets Manager 다중 리전 복제 + API 조회</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 자격증명 저장 방법 보안성 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>보안성</th><th>다중 리전?</th><th>적합성</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Secrets Manager</strong></td><td><span class="dea-pill good">✓ 최고</span></td><td><span class="dea-pill good">✓ 복제 지원</span></td><td><span class="dea-pill good">✓ 모범 사례</span></td></tr>
+      <tr><td>Lambda 환경 변수</td><td><span class="dea-pill bad">낮음</span></td><td>수동 복제</td><td><span class="dea-pill bad">비권장</span></td></tr>
+      <tr><td>S3 파일(KMS 암호화)</td><td><span class="dea-pill mid">중간</span></td><td>복제 가능</td><td><span class="dea-pill bad">비권장</span></td></tr>
+      <tr><td>Lambda 계층</td><td><span class="dea-pill bad">낮음</span></td><td>복사 필요</td><td><span class="dea-pill bad">비권장</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"JDBC 자격증명 안전 저장 + 다중 리전"<br>  →  <span class="dea-hl">AWS Secrets Manager</span> + 다중 리전 복제<br><br>Lambda 환경 변수 = 민감 정보 저장 금지<br>Lambda 계층 = 코드 패키지 (자격증명 저장 금지)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q55 -->
+<div class="dea-q-block" id="dea-q55">
+  <div class="dea-meta"><span class="dea-badge qnum">Q55</span><span class="dea-badge topic">S3 Standard-IA · 수명주기 · 고가용성 + 실시간</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>S3 Standard-IA(Infrequent Access)</strong>는 접근 빈도가 낮지만 즉시(실시간) 검색이 필요한 데이터에 적합합니다. Glacier는 검색 시간이 분~시간 단위로 실시간 검색 불가, One Zone-IA는 단일 AZ라 고가용성 미보장입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>개인 블로그 플랫폼이 S3에 콘텐츠를 저장하며 고가용성이 필요합니다. 분석 결과 게시 후 30일 동안은 자주 조회되고, 이후에는 드물게 접근됩니다. 30일이 지난 게시물도 사용자 요청 시 즉시 제공되어야 합니다. 가장 비용 효율적인 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q55-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>30일 후 S3 Glacier Flexible Retrieval로 전환하는 수명주기 정책을 설정합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">S3 Glacier Flexible Retrieval</span> — 신속 검색 수 분, 표준 검색 수 시간 소요. <strong>즉시(실시간) 검색 요건 미충족</strong>. 사용자가 오래된 게시물을 요청해도 수 분~수 시간 후에나 제공됨.</div></li>
+    <li class="dea-opt" id="q55-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>S3 Intelligent-Tiering을 사용하여 30일 지난 게시물을 자동으로 더 저렴한 계층으로 전환합니다.</span></div><div class="dea-inline-exp">❌ S3 Intelligent-Tiering은 접근 패턴이 <strong>불규칙하거나 예측 불가</strong>할 때 유용. 이 케이스는 30일이라는 명확한 패턴이 이미 파악됨 → 수명주기 정책이 더 비용 효율적. Intelligent-Tiering은 객체별 월별 모니터링 비용이 추가됨.</div></li>
+    <li class="dea-opt" id="q55-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>30일 후 S3 Standard-IA로 전환하는 수명주기 정책을 설정합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">S3 Standard-IA</span> — 다중 AZ 저장(고가용성 ✓) + 즉시 검색(실시간 ✓) + Standard보다 저렴한 스토리지 비용. 접근 패턴이 명확하므로 수명주기 정책으로 정확히 전환. <strong>세 요건(비용 절감·고가용성·실시간) 모두 충족</strong>.</div></li>
+    <li class="dea-opt" id="q55-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>30일 후 S3 One Zone-IA로 전환하는 수명주기 정책을 설정합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">S3 One Zone-IA</span> — 단일 AZ 저장으로 Standard-IA보다 저렴하지만 <strong>고가용성 요건 미충족</strong>. AZ 장애 시 데이터 손실 가능.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q55">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q55">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — 30일 후 S3 Standard-IA 전환 (고가용성 + 실시간 검색)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 요건별 적합 스토리지 클래스</div>
+    <table class="dea-table"><thead><tr><th>클래스</th><th>즉시 검색?</th><th>고가용성(다중 AZ)?</th><th>비용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>S3 Standard-IA</strong></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓</span></td><td>중간</td></tr>
+      <tr><td>S3 One Zone-IA</td><td>✓</td><td><span class="dea-pill bad">✗ 단일 AZ</span></td><td>낮음</td></tr>
+      <tr><td>Glacier Flexible</td><td><span class="dea-pill bad">✗ 수 분~시간</span></td><td>✓</td><td>매우 낮음</td></tr>
+      <tr><td>S3 Intelligent-Tiering</td><td>✓</td><td>✓</td><td>모니터링 비용 추가</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"드문 접근 + 즉시 검색 + 고가용성"  →  <span class="dea-hl">S3 Standard-IA</span><br><br>Glacier = 즉시 검색 불가 (수 분~시간 소요)<br>One Zone-IA = 단일 AZ → 고가용성 미보장<br>접근 패턴 명확 = Intelligent-Tiering보다 수명주기 정책이 비용 효율적</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">KMS 키 교체</span><span class="dea-tag">Glue 카탈로그 암호화</span><span class="dea-tag">Firehose OpenSearch</span><span class="dea-tag">Secrets Manager 다중 리전</span><span class="dea-tag">S3 Standard-IA</span><span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var q=[
+    {id:'q51',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — KMS + Lambda + Redshift'},
+    {id:'q52',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — 대칭 CMK'},
+    {id:'q53',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — Firehose + Lambda'},
+    {id:'q54',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Secrets Manager 다중 리전'},
+    {id:'q55',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — S3 Standard-IA'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

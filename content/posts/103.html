@@ -1,0 +1,522 @@
+<!--
+id: 103
+제목: AWS DEA-C01 각색 문제 Day 06 — AppFlow, Glue PII, EBS gp3, S3 Intelligent-Tiering, DMS 이기종 마이그레이션
+카테고리: Stack/AWS
+태그: dms, AWS 자격증, AppFlow, AWS DEA-C01, Glue PII, EBS gp3, S3 Intelligent-Tiering, 데이터 엔지니어링 자격증
+날짜: 2026-03-26 23:56
+수정: 2026-03-26 23:58
+형식: html
+썸네일: /img/t/dJMcaadErnl.webp
+-->
+<style>
+.pb-103 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-103 .dea-wrap *{box-sizing:border-box}
+.pb-103 .dea-post-header{margin-bottom:32px}
+.pb-103 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-103 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-103 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-103 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-103 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-103 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-103 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-103 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-103 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-103 .dea-q-block{margin-bottom:48px}
+.pb-103 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-103 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-103 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-103 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-103 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-103 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-103 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-103 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-103 .dea-seo-lead strong{color:var(--p50)}
+.pb-103 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-103 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-103 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-103 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-103 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-103 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-103 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-103 .dea-opt.ok{border-color:var(--s60)}
+.pb-103 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-103 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-103 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-103 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-103 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-103 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-103 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-103 .dea-term{font-weight:700;color:var(--p50)}
+.pb-103 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-103 .dea-btn:hover{background:var(--p60)}
+.pb-103 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-103 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-103 .dea-exp.on{display:flex}
+.pb-103 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-103 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-103 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-103 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-103 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-103 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-103 .dea-table th, .pb-103 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-103 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-103 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-103 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-103 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-103 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-103 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-103 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-103 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-103 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-103 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-103 .dea-hl{color:var(--p50);font-weight:700}
+.pb-103 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-103 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-103 .dea-wrap{padding:14px 6px 52px}
+.pb-103 .dea-post-title{font-size:18px}
+.pb-103 .dea-qcard p{font-size:14px}
+.pb-103 .dea-opt-row{font-size:13px}
+.pb-103 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-103 .dea-table{font-size:11.5px}
+.pb-103 .dea-table th, .pb-103 .dea-table td{padding:8px 9px}
+.pb-103 .dea-ans-main{font-size:14.5px}
+.pb-103 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-103">
+<article class="dea-wrap">
+<div>
+
+</div>
+<div class="dea-post-header">
+<h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 &mdash; Day 06</h1>
+<p class="dea-post-desc" data-ke-size="size16">AppFlow SaaS 연동, Glue PII 탐지 변환, EBS gp3 비용 최적화, S3 Intelligent-Tiering, DMS 이기종 DB 마이그레이션 &mdash; 5문제 핵심 정리.</p>
+<div class="dea-post-meta"><span class="dea-badge exam">AWS DEA-C01</span> <span class="dea-badge topic">Domain 1&middot;2 &middot; 수집 &middot; 스토리지 &middot; 보안</span> <span class="dea-badge diff">5문제</span></div>
+</div>
+<nav class="dea-toc">
+<div class="dea-toc-title">📋 목차</div>
+<ul class="dea-toc-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><a href="#dea-q26"><span class="dea-toc-num">Q26</span> SaaS CRM 데이터를 Redshift로 &mdash; 최소 코딩으로 연동</a></li>
+<li><a href="#dea-q27"><span class="dea-toc-num">Q27</span> ETL 파이프라인에서 PII 자동 탐지&middot;마스킹</a></li>
+<li><a href="#dea-q28"><span class="dea-toc-num">Q28</span> EBS 볼륨 비용 절감 &mdash; gp3 마이그레이션</a></li>
+<li><a href="#dea-q29"><span class="dea-toc-num">Q29</span> 접근 패턴이 혼재된 S3 데이터 레이크 비용 최적화</a></li>
+<li><a href="#dea-q30"><span class="dea-toc-num">Q30</span> SQL Server &rarr; RDS PostgreSQL 최소 다운타임 마이그레이션</a></li>
+</ul>
+</nav><!-- Q26 -->
+<div id="dea-q26" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q26</span><span class="dea-badge topic">AppFlow &middot; SaaS 연동 &middot; 운영 최소화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Amazon AppFlow</b>는 Salesforce&middot;Slack 등 SaaS 서비스와 AWS 스토리지 간 데이터 이동을 코드 없이 구성하는 완전 관리형 통합 서비스입니다. 직접 Redshift를 대상으로 설정할 수 있어 파이프라인 구축 노력을 최소화합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">B2B 플랫폼 회사가 CRM 시스템에 저장된 수백만 건의 거래 레코드를 분석하려 합니다. 분석 쿼리는 Amazon Redshift에서 실행되며, CRM의 특정 거래 데이터 서브셋이 필요합니다. 회사는 CRM에서 Redshift로 데이터를 이전하되, 파이프라인 구축&middot;유지보수에 드는 시간을 최소화하고 싶습니다. 가장 적합한 솔루션은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q26-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Glue와 서드파티 라이브러리로 Apache Spark를 CRM에 연결하고, 데이터를 Parquet 형식으로 S3에 추출한 뒤 Redshift Spectrum으로 쿼리합니다.</span></div>
+<div class="dea-inline-exp">❌ 서드파티 라이브러리 도입 + Glue Spark 잡 작성 + Redshift Spectrum 외부 테이블 설정까지 여러 단계를 직접 코딩해야 함. <b>구축&middot;유지보수 부담이 가장 큰</b> 방법.</div>
+</li>
+<li id="q26-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon AppFlow에서 흐름을 생성합니다. CRM을 소스로, Amazon Redshift 테이블을 대상으로 연결을 설정하고 트리거를 구성합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Amazon AppFlow</span> &mdash; SaaS와 AWS 간 데이터 이동을 코드 없이 구성하는 완전 관리형 통합 서비스. 레고 블록 연결처럼 소스(CRM)와 대상(Redshift)을 콘솔에서 연결하면 끝. <b>코딩&middot;인프라 관리 없이</b> 바로 사용 가능.</div>
+</li>
+<li id="q26-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon API Gateway로 CRM 이벤트 구독을 설정하고 Lambda 함수를 연결합니다. 데이터를 Parquet 형식으로 S3에 저장한 뒤 Redshift Spectrum으로 쿼리합니다.</span></div>
+<div class="dea-inline-exp">❌ API Gateway 설정 + Lambda 함수 개발 + S3 저장 로직 + Redshift Spectrum 외부 테이블 구성까지 <b>여러 서비스를 직접 연결하는 코딩이 필요</b>. 운영 부담이 큼.</div>
+</li>
+<li id="q26-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>CRM의 데이터 내보내기 도구로 데이터를 .csv 파일로 추출해 S3에 업로드한 뒤 Redshift Spectrum으로 쿼리합니다.</span></div>
+<div class="dea-inline-exp">❌ 수동 내보내기 + S3 업로드 + Spectrum 설정은 자동화가 안 되어 있어 <b>정기적 반복 작업이 발생</b>. 운영 오버헤드 최소화와 정반대.</div>
+</li>
+</ul>
+<button id="btn-q26" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q26" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; Amazon AppFlow로 CRM &rarr; Redshift 코드 없이 연동</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; SaaS 데이터 연동 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>코딩 필요</th>
+<th>관리 부담</th>
+<th>SaaS 직접 지원</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Amazon AppFlow</b></td>
+<td><span class="dea-pill good">없음</span></td>
+<td><span class="dea-pill good">최소</span></td>
+<td><span class="dea-pill good">✓ 네이티브</span></td>
+</tr>
+<tr>
+<td>Glue + 서드파티 라이브러리</td>
+<td><span class="dea-pill bad">많음</span></td>
+<td>높음</td>
+<td>라이브러리 의존</td>
+</tr>
+<tr>
+<td>API Gateway + Lambda</td>
+<td><span class="dea-pill bad">많음</span></td>
+<td>높음</td>
+<td>직접 구현 필요</td>
+</tr>
+<tr>
+<td>수동 CSV 내보내기</td>
+<td>없음</td>
+<td><span class="dea-pill bad">반복 수작업</span></td>
+<td>미지원</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"SaaS(Salesforce 등) &rarr; AWS + 최소 코딩"  &rarr;  <span class="dea-hl">Amazon AppFlow</span><br /><br />AppFlow  = 노코드 SaaS&harr;AWS 데이터 파이프라인<br />DataSync = 파일시스템&harr;AWS (SaaS 아님)<br />Data Exchange = 타사 데이터 마켓플레이스 (SaaS 아님)</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q27 -->
+<div id="dea-q27" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q27</span><span class="dea-badge topic">Glue PII 탐지 &middot; 데이터 마스킹 &middot; 운영 최소화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS Glue PII 탐지 변환(Detect PII Transform)</b>은 전화번호&middot;이메일&middot;주민번호 등 개인식별정보를 자동으로 찾아내고 마스킹하는 내장 기능입니다. 직접 정규식 코드를 작성하는 것보다 훨씬 적은 노력으로 구현 가능합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">데이터 팀이 S3에 저장된 고객 테이블을 ETL 작업으로 처리하고 있습니다. 이 테이블에는 전화번호와 이메일 주소가 포함된 컬럼이 있으며, 보안 정책에 따라 해당 민감 정보를 마스킹해야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q27-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>전화번호&middot;이메일을 찾는 코드를 직접 작성한 Amazon EMR 작업을 생성하고, 해당 데이터를 수정합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon EMR</span> &mdash; EC2 기반 Spark/Hadoop 클러스터. PII 탐지 로직을 직접 코딩 + 클러스터 관리까지 필요. 운영 오버헤드가 가장 큼.</div>
+</li>
+<li id="q27-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>전화번호&middot;이메일을 찾는 코드를 직접 작성한 AWS Glue 작업을 생성하고, 해당 데이터를 수정합니다.</span></div>
+<div class="dea-inline-exp">❌ Glue를 쓰는 건 맞지만 PII 탐지 로직(정규식 등)을 <b>직접 코딩</b>해야 함. C의 내장 PII 탐지 변환과 비교하면 불필요한 코딩 부담이 있음.</div>
+</li>
+<li id="q27-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Glue의 내장 PII 탐지 변환(Detect PII Transform)을 사용하는 AWS Glue 작업을 생성하여 전화번호&middot;이메일을 찾아내고 마스킹합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue PII 탐지 변환(Detect PII Transform)</span> &mdash; 경비원이 자동으로 민감 정보를 식별하고 마스킹하는 내장 기능. 정규식 코드 없이 GUI 또는 간단한 설정만으로 전화번호&middot;이메일&middot;신용카드 번호 등 PII를 자동 탐지&middot;수정. <b>최소 코딩으로 운영 오버헤드 최소화</b>.</div>
+</li>
+<li id="q27-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon Comprehend API를 호출하는 Lambda 함수를 생성하여 전화번호&middot;이메일을 찾아내고 수정합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon Comprehend</span> &mdash; 자연어 처리(NLP) 서비스. PII 탐지 기능이 있지만 Lambda 함수 개발 + Comprehend API 호출 로직 + 수정 로직까지 직접 구현해야 해 <b>운영 오버헤드가 높음</b>. ETL 파이프라인에 Glue 내장 변환보다 비효율적.</div>
+</li>
+</ul>
+<button id="btn-q27" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q27" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">C &mdash; Glue 내장 PII 탐지 변환으로 최소 코딩 마스킹</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; PII 탐지&middot;마스킹 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>코딩 필요</th>
+<th>ETL 파이프라인 통합</th>
+<th>운영 부담</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Glue PII 탐지 변환</b></td>
+<td><span class="dea-pill good">없음</span></td>
+<td><span class="dea-pill good">✓ 내장</span></td>
+<td><span class="dea-pill good">최소</span></td>
+</tr>
+<tr>
+<td>Glue 직접 코딩</td>
+<td><span class="dea-pill mid">필요</span></td>
+<td>✓ 통합</td>
+<td>중간</td>
+</tr>
+<tr>
+<td>Lambda + Comprehend</td>
+<td><span class="dea-pill bad">많음</span></td>
+<td>별도 구성</td>
+<td>높음</td>
+</tr>
+<tr>
+<td>EMR 직접 코딩</td>
+<td><span class="dea-pill bad">많음</span></td>
+<td>별도 구성</td>
+<td><span class="dea-pill bad">최대</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"ETL 내 PII(전화번호&middot;이메일) 자동 탐지&middot;마스킹"<br />  &rarr;  <span class="dea-hl">AWS Glue Detect PII Transform</span> (내장, 코딩 불필요)<br /><br />Comprehend = NLP 서비스 (PII 탐지 가능하나 별도 구현 필요)<br />Glue 내장 변환 = ETL 파이프라인에 직접 통합, 최소 노력</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q28 -->
+<div id="dea-q28" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q28</span><span class="dea-badge topic">EBS &middot; gp2 &rarr; gp3 &middot; 비용 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>EBS gp3</b>는 gp2 대비 약 20% 저렴하면서 IOPS와 처리량을 독립적으로 설정 가능한 범용 SSD 볼륨입니다. 같은 성능을 더 저렴하게 유지하면서 크기까지 줄이면 추가 비용 절감이 가능합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">비용 최적화 검토 중 여러 EBS gp2 볼륨이 10TB로 프로비저닝되어 있지만 실제 사용률은 20% 수준임을 확인했습니다. 동일한 성능을 유지하면서 EBS 스토리지 비용을 줄이는 가장 효과적인 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q28-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>gp2 볼륨을 크기는 그대로(10TB) 유지하면서 gp3 볼륨으로 마이그레이션하고, gp3 기본 IOPS&middot;처리량으로 구성합니다.</span></div>
+<div class="dea-inline-exp">❌ gp3로 전환해 단가는 절감되지만 <b>10TB 크기를 그대로 유지</b>하므로 낭비되는 스토리지 비용이 남음. 사용률이 20%뿐이므로 크기도 줄여야 더 효과적.</div>
+</li>
+<li id="q28-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>gp2 볼륨을 3TB 크기의 gp2 볼륨으로 마이그레이션하고, 원래와 동일한 IOPS&middot;처리량으로 구성합니다.</span></div>
+<div class="dea-inline-exp">❌ 크기는 줄였지만 <b>gp2에 그대로 머뭄</b>. gp2는 gp3보다 단가가 높고 IOPS가 볼륨 크기에 연동되어 있어 유연성이 낮음. gp3로 전환하는 것이 더 비용 효율적.</div>
+</li>
+<li id="q28-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>gp2 볼륨을 3TB gp3 볼륨으로 마이그레이션하고, 원래 볼륨과 동일한 IOPS&middot;처리량으로 구성합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">EBS gp3</span> &mdash; gp2 대비 GB당 약 20% 저렴하고 IOPS&middot;처리량을 독립 설정 가능. 크기를 10TB &rarr; 3TB(실사용 기준)로 줄이고, gp3로 전환하면 <b>단가 절감 + 용량 절감 두 가지 효과 동시 달성</b>. 성능은 IOPS&middot;처리량 수동 지정으로 그대로 유지.</div>
+</li>
+<li id="q28-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>볼륨 크기는 그대로 유지하고 EBS 볼륨에 부분 쓰기 방지를 구현합니다.</span></div>
+<div class="dea-inline-exp">❌ 부분 쓰기 방지는 데이터 무결성 기능이지 비용 절감과 무관. 크기도 그대로라 스토리지 비용 절감이 전혀 없음.</div>
+</li>
+</ul>
+<button id="btn-q28" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q28" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">C &mdash; 3TB gp3로 마이그레이션 + 동일 IOPS&middot;처리량 유지</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; EBS gp2 vs gp3 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>구분</th>
+<th>gp2</th>
+<th>gp3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>가격</td>
+<td>기준</td>
+<td><span class="dea-pill good">약 20% 저렴</span></td>
+</tr>
+<tr>
+<td>IOPS</td>
+<td>볼륨 크기에 연동 (3 IOPS/GB)</td>
+<td><span class="dea-pill good">독립 설정 가능</span></td>
+</tr>
+<tr>
+<td>처리량</td>
+<td>크기 연동</td>
+<td><span class="dea-pill good">독립 설정 가능</span></td>
+</tr>
+<tr>
+<td>기본 IOPS</td>
+<td>볼륨 크기 &times; 3</td>
+<td>3,000 IOPS (기본)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>EBS 비용 절감 = <span class="dea-hl">크기 축소</span> + <span class="dea-hl">gp2 &rarr; gp3 전환</span><br /><br />gp3 = gp2보다 20% 저렴 + IOPS&middot;처리량 독립 설정<br />크기만 줄이고 gp2 유지 = 절반의 효과</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q29 -->
+<div id="dea-q29" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q29</span><span class="dea-badge topic">S3 Intelligent-Tiering &middot; 스토리지 비용 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>S3 Intelligent-Tiering</b>은 접근 패턴을 자동으로 모니터링하여 자주 접근하는 데이터와 그렇지 않은 데이터를 각각 최적의 스토리지 계층으로 자동 이동합니다. 접근 패턴이 예측 불가하거나 혼재된 경우에 최적의 선택입니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">분석 플랫폼이 S3 데이터 레이크를 운영하고 있습니다. 프로덕션 애플리케이션이 매일 데이터의 절반에 실시간으로 접근하고, 나머지 절반은 연 1회 정도만 접근합니다. 매일 새 데이터가 추가되며 S3 스토리지 비용을 최적화해야 합니다. 가장 적합한 스토리지 클래스는 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q29-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>S3 Standard</span></div>
+<div class="dea-inline-exp">❌ 모든 데이터를 Standard로 유지하면 연 1회만 접근하는 절반의 데이터에도 높은 스토리지 비용을 지불하게 됨. 비용 최적화 미달.</div>
+</li>
+<li id="q29-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>S3 Glacier Flexible Retrieval</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">S3 Glacier Flexible Retrieval</span> &mdash; 검색에 분~시간이 소요되는 아카이브 스토리지. 매일 실시간으로 접근하는 데이터 절반에는 사용 불가. 검색 지연이 너무 큼.</div>
+</li>
+<li id="q29-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>S3 Intelligent-Tiering</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">S3 Intelligent-Tiering</span> &mdash; AWS가 접근 패턴을 자동 모니터링해 자주 접근하는 데이터는 Standard 계층에, 잘 접근하지 않는 데이터는 IA 계층에 자동 배치. 매일 새 데이터가 추가되고 접근 패턴이 혼재된 이 시나리오에 <b>가장 적합</b>. 수명주기 규칙 관리 불필요.</div>
+</li>
+<li id="q29-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>S3 One Zone-Infrequent Access (S3 One Zone-IA)</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">S3 One Zone-IA</span> &mdash; 단일 AZ 저장으로 고가용성 미보장. 매일 실시간 접근하는 데이터가 있어 IA 계층의 검색 비용이 높고, 하나의 스토리지 클래스로 두 가지 접근 패턴을 모두 커버하기 어려움.</div>
+</li>
+</ul>
+<button id="btn-q29" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q29" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">C &mdash; S3 Intelligent-Tiering으로 접근 패턴 자동 최적화</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; S3 Intelligent-Tiering이 맞는 상황</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>상황</th>
+<th>Intelligent-Tiering 적합?</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>접근 패턴이 예측 불가</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+<td>자동 모니터링&middot;이동</td>
+</tr>
+<tr>
+<td>자주 + 드물게 혼재</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+<td>계층 자동 분리</td>
+</tr>
+<tr>
+<td>매일 새 데이터 추가</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+<td>수명주기 규칙 불필요</td>
+</tr>
+<tr>
+<td>연 1~2회만 접근</td>
+<td><span class="dea-pill mid">Glacier 고려</span></td>
+<td>Deep Archive가 더 저렴</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"접근 패턴 예측 불가 or 자주+드물게 혼재"  &rarr;  <span class="dea-hl">S3 Intelligent-Tiering</span><br /><br />자동으로 적절한 계층으로 이동 &rarr; 수명주기 규칙 관리 불필요<br />접근 패턴이 명확하면 &rarr; 수명주기 정책으로 Standard-IA &rarr; Glacier</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q30 -->
+<div id="dea-q30" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q30</span><span class="dea-badge topic">DMS &middot; 이기종 DB 마이그레이션 &middot; 스키마 변환</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS DMS(Database Migration Service)</b>는 최소 다운타임으로 이기종 DB를 마이그레이션하는 서비스입니다. 스키마 변환은 <b>DMS Schema Conversion</b>(현재 DMS에 통합)이 담당하며, 별도 SCT 설치 없이 사용 가능합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">온프레미스의 Microsoft SQL Server 2019 데이터베이스(8TB)를 AWS의 Amazon RDS for PostgreSQL로 마이그레이션해야 합니다. 서비스 중단 시간을 최소화하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q30-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>AWS DataSync로 DB를 마이그레이션하고, DMS Schema Conversion으로 스키마를 RDS for PostgreSQL에 맞게 변환합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">AWS DataSync</span> &mdash; 파일시스템(NFS, SMB) 데이터 동기화 서비스. <b>DB 마이그레이션 도구가 아님</b>. DataSync 스트림을 DMS로 읽는 기능도 없음.</div>
+</li>
+<li id="q30-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>AWS DMS로 데이터를 마이그레이션하고, DMS Schema Conversion을 사용하여 SQL Server 스키마를 RDS for PostgreSQL 형식으로 변환합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS DMS(Database Migration Service)</span> &mdash; 이기종 DB 최소 다운타임 마이그레이션 전문 서비스. CDC(Change Data Capture)로 마이그레이션 중에도 원본 DB 계속 운영 가능. <span class="dea-term">DMS Schema Conversion</span> &mdash; DMS에 통합된 스키마 변환 기능으로 별도 도구 설치 불필요. 가장 간단하고 완전한 솔루션.</div>
+</li>
+<li id="q30-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>AWS DMS로 마이그레이션하고, 대상 RDS 인스턴스에 AWS SCT(Schema Conversion Tool)를 직접 설치하여 스키마를 변환합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">AWS SCT(Schema Conversion Tool)</span> &mdash; 온프레미스 또는 별도 서버에 설치해야 하는 도구. <b>대상 RDS 인스턴스에 직접 설치는 불가</b>. 또한 현재 DMS Schema Conversion이 SCT 기능을 통합했으므로 B가 더 간단.</div>
+</li>
+<li id="q30-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>AWS DMS로 마이그레이션하되 Amazon RDS Custom을 대상으로 사용하고, 대상 인스턴스에 AWS SCT를 설치해 스키마를 변환합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon RDS Custom</span> &mdash; OS 및 DB 엔진 수준의 커스터마이징이 필요한 특수 케이스용. 일반 PostgreSQL 마이그레이션에는 표준 RDS for PostgreSQL로 충분. 불필요한 복잡성 추가.</div>
+</li>
+</ul>
+<button id="btn-q30" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q30" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; AWS DMS + DMS Schema Conversion으로 최소 다운타임 마이그레이션</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; DMS 스키마 변환 옵션 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>도구</th>
+<th>설치 방법</th>
+<th>이기종 변환</th>
+<th>현재 권장?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>DMS Schema Conversion</b></td>
+<td>DMS 콘솔에 내장</td>
+<td>✓</td>
+<td><span class="dea-pill good">✓ 권장</span></td>
+</tr>
+<tr>
+<td>AWS SCT</td>
+<td>별도 서버에 설치</td>
+<td>✓</td>
+<td>레거시 방식</td>
+</tr>
+<tr>
+<td>DataSync</td>
+<td>-</td>
+<td><span class="dea-pill bad">✗ DB 아님</span></td>
+<td>파일 동기화 전용</td>
+</tr>
+<tr>
+<td>RDS Custom</td>
+<td>-</td>
+<td>-</td>
+<td>고급 커스텀 필요 시만</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"이기종 DB 마이그레이션 + 최소 다운타임"<br />  &rarr;  <span class="dea-hl">AWS DMS</span> + <span class="dea-hl">DMS Schema Conversion</span><br /><br />DataSync = 파일시스템 동기화 (DB 마이그레이션 아님)<br />SCT = 구형 방식, DMS에 통합됨</code></div>
+</div>
+</div>
+<div class="dea-tags"><span class="dea-tag">AWS DEA-C01</span> <span class="dea-tag">Amazon AppFlow</span> <span class="dea-tag">Glue PII 탐지</span> <span class="dea-tag">EBS gp3</span> <span class="dea-tag">S3 Intelligent-Tiering</span> <span class="dea-tag">AWS DMS</span> <span class="dea-tag">데이터 엔지니어 자격증</span> <span class="dea-tag">AWS 자격증</span></div>
+<script>
+(function(){
+  var questions=[
+    {id:'q26',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Amazon AppFlow'},
+    {id:'q27',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Glue PII 탐지 변환'},
+    {id:'q28',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — 3TB gp3 마이그레이션'},
+    {id:'q29',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — S3 Intelligent-Tiering'},
+    {id:'q30',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — DMS + DMS Schema Conversion'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

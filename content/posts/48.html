@@ -1,0 +1,103 @@
+<!--
+id: 48
+제목: AWS DEA-C01 아키텍처 플레이북 (feat. NotebookLM)
+카테고리: Stack/AWS
+태그: AWS, DEA, 데이터 엔지니어링, Data Engineer, notebooklm, DEA-C01
+날짜: 2026-03-07 23:03
+수정: 2026-03-21 23:45
+형식: legacy
+썸네일: /img/t/dJMb99S4LLF.webp
+-->
+<p><figure class="tt-img center"><img src="/img/dJMb99S4LLF.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="4" data-ke-list-type="disc">
+<li><span data-path-to-node="4,0,0,1"><span>DEA-C01 자격증 취득을 위한 4대 핵심 도메인을 마스터할 수 있습니다</span></span><span data-path-to-node="4,0,0,3">.</span></li>
+<li><span data-path-to-node="4,1,0,1"><span>데이터 수집부터 보안까지 아우르는 확장 가능하고 안전한 모던 데이터 플랫폼 구축 방법을 다룹니다</span></span><span data-path-to-node="4,1,0,3">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcacoJVeT.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="6" data-ke-list-type="disc">
+<li><span data-path-to-node="6,0,1,0"><b data-index-in-node="0" data-path-to-node="6,0,1,0"><span>[Domain 1] Data Ingestion and Transformation (34%):</span></b><span> 스트리밍 및 배치 데이터 수집, 서버리스 ETL 파이프라인을 다룹니다</span></span><span data-path-to-node="6,0,1,1"><span></span></span><span data-path-to-node="6,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-21" data-path-to-node="6,1,1"><span data-path-to-node="6,1,1,0"><b data-index-in-node="0" data-path-to-node="6,1,1,0"><span>[Domain 2] Data Store Management (26%):</span></b><span> 스토리지 라이프사이클 관리, 데이터 카탈로그, 스키마 설계를 포함합니다</span></span><span data-path-to-node="6,1,1,1"><span></span></span><span data-path-to-node="6,1,1,2">.</span><b data-index-in-node="0" data-path-to-node="6,2,1,0">[Domain 3] Data Operations and Support (22%):</b> 자동화, 데이터 품질 검증, 성능 모니터링을 검증합니다<span style="letter-spacing: 0px;" data-path-to-node="6,2,1,1"></span><span style="letter-spacing: 0px;" data-path-to-node="6,2,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-23" data-path-to-node="6,3,1"><span data-path-to-node="6,3,1,0"><b data-index-in-node="0" data-path-to-node="6,3,1,0"><span>[Domain 4] Data Security and Governance (18%):</span></b><span> 인증, 권한 부여, 암호화 및 PII 보호를 다룹니다</span></span><span data-path-to-node="6,3,1,1"><span></span></span><span data-path-to-node="6,3,1,2">.</span></li>
+<li><span data-path-to-node="6,4,0,0"></span><span data-path-to-node="6,4,0,1"><span>시험 범위에서 머신러닝 모델 학습 및 비즈니스 결론 도출은 제외됩니다</span></span><span data-path-to-node="6,4,0,2"><span></span></span><span data-path-to-node="6,4,0,3">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcajuBtoR.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="8" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-25" data-path-to-node="8,0,1"><span data-path-to-node="8,0,1,0"><b data-index-in-node="0" data-path-to-node="8,0,1,0"><span>Raw Layer:</span></b><span> 원본 형식 그대로 저장되는 초기 랜딩 존으로, 장기 보존 및 감사 목적을 가집니다</span></span><span data-path-to-node="8,0,1,1"><span></span></span><span data-path-to-node="8,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-26" data-path-to-node="8,1,1"><span data-path-to-node="8,1,1,0"><b data-index-in-node="0" data-path-to-node="8,1,1,0"><span>Standardized Layer:</span></b><span> Apache Parquet 등 표준 형식으로 변환하며, 스키마 검증 및 데이터 클렌징을 수행합니다</span></span><span data-path-to-node="8,1,1,1"><span></span></span><span data-path-to-node="8,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-27" data-path-to-node="8,2,1"><span data-path-to-node="8,2,1,0"><b data-index-in-node="0" data-path-to-node="8,2,1,0"><span>Conformed Layer:</span></b><span> 조직 전체에서 통용되는 공통 엔티티로, 데이터 카탈로그를 통한 중앙 집중식 거버넌스가 적용됩니다</span></span><span data-path-to-node="8,2,1,1"><span></span></span><span data-path-to-node="8,2,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-28" data-path-to-node="8,3,1"><span data-path-to-node="8,3,1,0"><b data-index-in-node="0" data-path-to-node="8,3,1,0"><span>Enriched Layer:</span></b><span> 비즈니스 도메인별로 맞춤화된 골든 데이터셋(Golden Datasets)을 제공합니다</span></span><span data-path-to-node="8,3,1,1"><span></span></span><span data-path-to-node="8,3,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcacI32Lk.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="10" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-29" data-path-to-node="10,0,1"><span data-path-to-node="10,0,1,0"><b data-index-in-node="0" data-path-to-node="10,0,1,0"><span>Inside-Out:</span></b><span> Data Lake(Amazon S3)의 데이터를 전문화된 분석을 위해 목적별 DB(Amazon Neptune 등)로 이동시킵니다</span></span><span data-path-to-node="10,0,1,1"><span></span></span><span data-path-to-node="10,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-30" data-path-to-node="10,1,1"><span data-path-to-node="10,1,1,0"><b data-index-in-node="0" data-path-to-node="10,1,1,0"><span>Outside-In:</span></b><span> 애플리케이션에 최적화된 DB(DynamoDB 등)의 데이터를 분석을 위해 Data Lake로 복제합니다</span></span><span data-path-to-node="10,1,1,1"><span></span></span><span data-path-to-node="10,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-31" data-path-to-node="10,2,1"><span data-path-to-node="10,2,1,0"><b data-index-in-node="0" data-path-to-node="10,2,1,0"><span>Around the Perimeter:</span></b><span> 특화된 데이터 스토어 간의 직접적인 이동을 의미합니다</span></span><span data-path-to-node="10,2,1,1"><span></span></span><span data-path-to-node="10,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcadVrmI2.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="12" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-32" data-path-to-node="12,0,1"><span data-path-to-node="12,0,1,0"><b data-index-in-node="0" data-path-to-node="12,0,1,0"><span>스트리밍 데이터 수집:</span></b><span> Amazon Kinesis, MSK, DynamoDB Streams를 활용하여 실시간 팬인/팬아웃 분배를 수행합니다</span></span><span data-path-to-node="12,0,1,1"><span></span></span><span data-path-to-node="12,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-33" data-path-to-node="12,1,1"><span data-path-to-node="12,1,1,0"><b data-index-in-node="0" data-path-to-node="12,1,1,0"><span>배치 데이터 수집:</span></b><span> Amazon S3, RDS, API를 통해 대용량 데이터 스케줄링을 진행하며, EventBridge 및 Apache Airflow로 이벤트 트리거를 구성합니다</span></span><span data-path-to-node="12,1,1,1"><span></span></span><span data-path-to-node="12,1,1,2">.</span></li>
+<li><span data-path-to-node="12,2,0,0"></span><span data-path-to-node="12,2,0,1"><span>상태 저장(Stateful) 및 상태 비저장(Stateless) 데이터 트랜잭션의 최적화를 다룹니다</span></span><span data-path-to-node="12,2,0,2"><span></span></span><span data-path-to-node="12,2,0,3">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcagLsAmd.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="14" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-35" data-path-to-node="14,0,1"><span data-path-to-node="14,0,1,0"><b data-index-in-node="0" data-path-to-node="14,0,1,0"><span>AWS Data Pipeline:</span></b><span> S3와 EMR, RDS 간의 예약된 워크플로우에 적합한 배치 기반의 단순한 데이터 이동 도구입니다</span></span><span data-path-to-node="14,0,1,1"><span></span></span><span data-path-to-node="14,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-36" data-path-to-node="14,1,1"><span data-path-to-node="14,1,1,0"><b data-index-in-node="0" data-path-to-node="14,1,1,0"><span>AWS Glue:</span></b><span> 서버리스 ETL의 핵심으로, Spark 기반의 데이터 변환과 Glue Data Catalog를 통한 메타데이터 관리를 지원합니다</span></span><span data-path-to-node="14,1,1,1"><span></span></span><span data-path-to-node="14,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-37" data-path-to-node="14,2,1"><span data-path-to-node="14,2,1,0"><b data-index-in-node="0" data-path-to-node="14,2,1,0"><span>AWS Step Functions:</span></b><span> 분기 처리, 병렬 실행, 오류 재시도 및 마이크로서비스 조정에 탁월한 비즈니스 및 애플리케이션 워크플로우 오케스트레이션 서비스입니다</span></span><span data-path-to-node="14,2,1,1"><span></span></span><span data-path-to-node="14,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcajahQXA.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="16" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-38" data-path-to-node="16,0,1"><span data-path-to-node="16,0,1,0"><b data-index-in-node="0" data-path-to-node="16,0,1,0"><span>시각적 데이터 준비:</span></b><span> 코딩 지식 없이도 분석가와 데이터 과학자가 직접 데이터를 정제할 수 있습니다</span></span><span data-path-to-node="16,0,1,1"><span></span></span><span data-path-to-node="16,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-39" data-path-to-node="16,1,1"><span data-path-to-node="16,1,1,0"><b data-index-in-node="0" data-path-to-node="16,1,1,0"><span>DataBrew Recipe:</span></b><span> 이상치 필터링, 결측값 처리, 텍스트 정규화 등 250개 이상의 내장된 트랜스포메이션 레시피를 제공합니다</span></span><span data-path-to-node="16,1,1,1"><span></span></span><span data-path-to-node="16,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-40" data-path-to-node="16,2,1"><span data-path-to-node="16,2,1,0"><b data-index-in-node="0" data-path-to-node="16,2,1,0"><span>자동화 및 추적:</span></b><span> 시각적 데이터 계보 추적을 통해 투명성을 확보하고, Data Profiling으로 데이터 품질을 검증합니다</span></span><span data-path-to-node="16,2,1,1"><span></span></span><span data-path-to-node="16,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcabXFAZu.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="18" data-ke-list-type="disc">
+<li><span data-path-to-node="18,0,0,0"></span><span data-path-to-node="18,0,0,1"><span>트랜잭션 데이터를 분석하기 위한 별도의 ETL 파이프라인 구축 및 유지보수 작업을 완전히 제거하여 복잡성을 줄입니다</span></span><span data-path-to-node="18,0,0,2"><span></span></span><span data-path-to-node="18,0,0,3">.</span></li>
+<li><span data-path-to-node="18,1,0,0"></span><span data-path-to-node="18,1,0,1"><span>트랜잭션 소스(Amazon Aurora, DynamoDB 등)의 데이터 변경 사항이 거의 실시간(Near real-time)으로 Amazon Redshift에 동기화됩니다</span></span><span data-path-to-node="18,1,0,2"><span></span></span><span data-path-to-node="18,1,0,3">.</span></li>
+<li><span data-path-to-node="18,2,0,0"></span><span data-path-to-node="18,2,0,1"><span>머신러닝 및 AI 모델의 지연 없는 최신 데이터 기반 학습을 지원합니다</span></span><span data-path-to-node="18,2,0,2"><span></span></span><span data-path-to-node="18,2,0,3">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMb99S4LVV.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="20" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-44" data-path-to-node="20,0,1"><span data-path-to-node="20,0,1,0"><b data-index-in-node="0" data-path-to-node="20,0,1,0"><span>Storage Classes:</span></b><span> 비용 최적화를 위해 지능형 계층화(Intelligent-Tiering) 및 보관(Glacier) 정책을 적용합니다</span></span><span data-path-to-node="20,0,1,1"><span></span></span><span data-path-to-node="20,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-45" data-path-to-node="20,1,1"><span data-path-to-node="20,1,1,0"><b data-index-in-node="0" data-path-to-node="20,1,1,0"><span>데이터 라이프사이클:</span></b><span> S3 Lifecycle 정책을 활용해 핫/콜드 데이터 자동 전환 및 삭제를 자동화합니다</span></span><span data-path-to-node="20,1,1,1"><span></span></span><span data-path-to-node="20,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-46" data-path-to-node="20,2,1"><span data-path-to-node="20,2,1,0"><b data-index-in-node="0" data-path-to-node="20,2,1,0"><span>데이터 카탈로그:</span></b><span> AWS Glue Crawler를 통해 스키마를 자동 검색하고 파티션을 동기화하며, Apache Hive 메타스토어와 호환됩니다</span></span><span data-path-to-node="20,2,1,1"><span></span></span><span data-path-to-node="20,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcadOEQRk.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="22" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-47" data-path-to-node="22,0,1"><span data-path-to-node="22,0,1,0"><b data-index-in-node="0" data-path-to-node="22,0,1,0"><span>Directory Buckets (S3 Express One Zone):</span></b><span> 성능 집약적 워크로드를 위한 초저지연 아키텍처를 지원합니다</span></span><span data-path-to-node="22,0,1,1"><span></span></span><span data-path-to-node="22,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-48" data-path-to-node="22,1,1"><span data-path-to-node="22,1,1,0"><b data-index-in-node="0" data-path-to-node="22,1,1,0"><span>S3 Tables:</span></b><span> Apache Iceberg V3 형식을 기본 지원하며 AWS 분석 서비스와 완벽하게 통합됩니다</span></span><span data-path-to-node="22,1,1,1"><span></span></span><span data-path-to-node="22,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-49" data-path-to-node="22,2,1"><span data-path-to-node="22,2,1,0"><b data-index-in-node="0" data-path-to-node="22,2,1,0"><span>S3 Vectors:</span></b><span> 생성형 AI 애플리케이션을 위한 벡터 임베딩 저장과 고속 밀리초 쿼리를 지원합니다</span></span><span data-path-to-node="22,2,1,1"><span></span></span><span data-path-to-node="22,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcafls1oN.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="24" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-50" data-path-to-node="24,0,1"><span data-path-to-node="24,0,1,0"><b data-index-in-node="0" data-path-to-node="24,0,1,0"><span>모니터링 및 트러블슈팅:</span></b><span> Amazon CloudWatch Logs 및 CloudTrail로 API를 추적하고 애플리케이션 로그를 분석하며, Amazon Athena를 이용해 대용량 로그를 쿼리합니다</span></span><span data-path-to-node="24,0,1,1"><span></span></span><span data-path-to-node="24,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-51" data-path-to-node="24,1,1"><span data-path-to-node="24,1,1,0"><b data-index-in-node="0" data-path-to-node="24,1,1,0"><span>데이터 품질 제어:</span></b><span> 파이프라인 내 데이터의 일관성, 정확성, 무결성을 검증하기 위한 규칙을 자동화합니다</span></span><span data-path-to-node="24,1,1,1"><span></span></span><span data-path-to-node="24,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-52" data-path-to-node="24,2,1"><span data-path-to-node="24,2,1,0"><b data-index-in-node="0" data-path-to-node="24,2,1,0"><span>CI/CD 및 IaC:</span></b><span> AWS CloudFormation, AWS SAM을 활용하여 서버리스 파이프라인의 반복 가능한 인프라 배포를 구현합니다</span></span><span data-path-to-node="24,2,1,1"><span></span></span><span data-path-to-node="24,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcahwPECt.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="26" data-ke-list-type="disc">
+<li><span data-path-to-node="26,0,0,0"></span><span data-path-to-node="26,0,0,1"><span>계정, 리전, 버킷, 접두사 레벨까지 드릴다운 가능한 60개 이상의 메트릭을 지원하여 조직 단위의 통합 뷰를 제공합니다</span></span><span data-path-to-node="26,0,0,2"><span></span></span><span data-path-to-node="26,0,0,3">.</span></li>
+<li><span data-path-to-node="26,1,0,0"></span><span data-path-to-node="26,1,0,1"><span>불완전한 멀티파트 업로드 및 불필요한 비최신 버전 데이터를 식별해 비용 낭비를 제거함으로써 비용을 최적화(6배의 ROI)합니다</span></span><span data-path-to-node="26,1,0,2"><span></span></span><span data-path-to-node="26,1,0,3">.</span></li>
+<li><span data-path-to-node="26,2,0,0"></span><span data-path-to-node="26,2,0,1"><span>MFA Delete 비활성화 버킷이나 암호화되지 않은 객체를 실시간 탐지해 보안 상태를 강화합니다</span></span><span data-path-to-node="26,2,0,2"><span></span></span><span data-path-to-node="26,2,0,3">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcaaR1bDm.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="28" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-56" data-path-to-node="28,0,1"><span data-path-to-node="28,0,1,0"><b data-index-in-node="0" data-path-to-node="28,0,1,0"><span>네트워크 보안:</span></b><span> VPC Security Group 및 AWS PrivateLink를 활용해 안전하게 트래픽을 라우팅합니다</span></span><span data-path-to-node="28,0,1,1"><span></span></span><span data-path-to-node="28,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-57" data-path-to-node="28,1,1"><span data-path-to-node="28,1,1,0"><b data-index-in-node="0" data-path-to-node="28,1,1,0"><span>인증 및 인가 (최소 권한 원칙):</span></b><span> IAM Role, Bucket Policy, S3 Access Point를 활용해 세분화된 접근 제어를 수행합니다</span></span><span data-path-to-node="28,1,1,1"><span></span></span><span data-path-to-node="28,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-58" data-path-to-node="28,2,1"><span data-path-to-node="28,2,1,0"><b data-index-in-node="0" data-path-to-node="28,2,1,0"><span>암호화 및 거버넌스:</span></b><span> AWS KMS를 활용해 저장 데이터 및 전송 중 데이터를 암호화하고, Amazon Macie를 통해 PII를 탐지 및 마스킹합니다</span></span><span data-path-to-node="28,2,1,1"><span></span></span><span data-path-to-node="28,2,1,2">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcacWyHnn.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="30" data-ke-list-type="disc">
+<li id="p-rc_32b4d1eac4364893-59" data-path-to-node="30,0,1"><span data-path-to-node="30,0,1,0"><b data-index-in-node="0" data-path-to-node="30,0,1,0"><span>ACL 비활성화 (Object Ownership):</span></b><span> 객체 소유권 강제를 통해 복잡한 레거시 ACL 의존성을 제거하고 Bucket Policy 중심으로 단순화합니다</span></span><span data-path-to-node="30,0,1,1"><span></span></span><span data-path-to-node="30,0,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-60" data-path-to-node="30,1,1"><span data-path-to-node="30,1,1,0"><b data-index-in-node="0" data-path-to-node="30,1,1,0"><span>S3 Access Grants 적용:</span></b><span> 기업 디렉터리(IAM Identity Center)와 연동하여 사용자 그룹 권한에 기반한 확장 가능한 동적 접근 권한 관리를 제공합니다</span></span><span data-path-to-node="30,1,1,1"><span></span></span><span data-path-to-node="30,1,1,2">.</span></li>
+<li><span data-path-to-node="30,2,0,0"></span><span data-path-to-node="30,2,0,1"><span>수만 명의 사용자 접근을 단일 정책으로 손쉽게 스케일링할 수 있습니다</span></span><span data-path-to-node="30,2,0,2"><span></span></span><span data-path-to-node="30,2,0,3">.</span></li>
+</ul>
+<p><figure class="tt-img center"><img src="/img/dJMcaaYKxs3.webp" alt="" width="1376" height="768" loading="lazy" decoding="async"></figure></p>
+<ul style="list-style-type: disc;" data-path-to-node="32" data-ke-list-type="disc">
+<li><span data-path-to-node="32,0,0,0"></span><span data-path-to-node="32,0,0,1"><span>모던 데이터 아키텍처 구축은 곧 DEA-C01 자격증 핵심 역량의 완성을 의미합니다</span></span><span data-path-to-node="32,0,0,2"><span></span></span><span data-path-to-node="32,0,0,3">.</span></li>
+<li id="p-rc_32b4d1eac4364893-63" data-path-to-node="32,1,1"><span data-path-to-node="32,1,1,0"><b data-index-in-node="0" data-path-to-node="32,1,1,0"><span>[1]</span></b><span> Zero-ETL 및 DataBrew를 통한 수집/변환 구조를 현대화합니다</span></span><span data-path-to-node="32,1,1,1"><span></span></span><span data-path-to-node="32,1,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-64" data-path-to-node="32,2,1"><span data-path-to-node="32,2,1,0"><b data-index-in-node="0" data-path-to-node="32,2,1,0"><span>[2]</span></b><span> S3의 라이프사이클 및 차세대 스토리지 혁신을 마스터합니다</span></span><span data-path-to-node="32,2,1,1"><span></span></span><span data-path-to-node="32,2,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-65" data-path-to-node="32,3,1"><span data-path-to-node="32,3,1,0"><b data-index-in-node="0" data-path-to-node="32,3,1,0"><span>[3]</span></b><span> Step Functions와 Storage Lens로 운영 효율성을 6배 극대화합니다</span></span><span data-path-to-node="32,3,1,1"><span></span></span><span data-path-to-node="32,3,1,2">.</span></li>
+<li id="p-rc_32b4d1eac4364893-66" data-path-to-node="32,4,1"><span data-path-to-node="32,4,1,0"><b data-index-in-node="0" data-path-to-node="32,4,1,0"><span>[4]</span></b><span> 객체 소유권 및 KMS 중심의 무결점 보안 아키텍처를 확보합니다</span></span><span data-path-to-node="32,4,1,1"><span></span></span><span data-path-to-node="32,4,1,2">.</span></li>
+</ul>

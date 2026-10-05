@@ -1,0 +1,385 @@
+<!--
+id: 71
+제목: AWS DEA-C01 공식 샘플 문제 — Lake Formation 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, Lake formation
+날짜: 2026-03-11 22:32
+수정: 2026-03-24 22:26
+형식: html
+썸네일: /img/t/dJMcabpTVvM.webp
+-->
+<style>
+.pb-71 *, .pb-71, .pb-71 *::before, .pb-71 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-71{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-71{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-71 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-71 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-71 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-71 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-71 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-71 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-71 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-71 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-71 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-71 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-71 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-71 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-71 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-71 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-71 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-71 .question-box p:last-child{margin-bottom:0}
+.pb-71 .hl-blue{color:var(--blue);font-weight:700}
+.pb-71 .hl-orange{color:var(--orange);font-weight:700}
+.pb-71 .hl-green{color:var(--green);font-weight:700}
+.pb-71 .hl-bold{font-weight:900}
+.pb-71 .req-list{list-style:none;padding:0}
+.pb-71 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-71 .req-list li:last-child{border-bottom:none}
+.pb-71 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-71 .pyramid{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.pb-71 .py-level{border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;border:1.5px solid}
+.pb-71 .py-level .py-scope{font-size:11px;font-weight:400;color:var(--muted);margin-left:auto;white-space:nowrap}
+.pb-71 .py-lv1{background:var(--p5);border-color:var(--p10);color:var(--blue)}
+.pb-71 .py-lv2{background:var(--s5);border-color:var(--green-border);color:var(--green);margin:0 20px}
+.pb-71 .py-lv3{background:var(--y5);border-color:var(--y50);color:var(--orange);margin:0 40px}
+.pb-71 .py-lv4{background:var(--g5);border-color:var(--p10);color:var(--purple);margin:0 60px}
+.pb-71 .py-lv5{background:var(--i5);border-color:var(--i50);color:var(--teal);margin:0 80px}
+@media (max-width: 520px){.pb-71 .py-lv2{margin:0 8px}
+.pb-71 .py-lv3{margin:0 16px}
+.pb-71 .py-lv4{margin:0 24px}
+.pb-71 .py-lv5{margin:0 32px}
+.pb-71 .py-level .py-scope{display:none}}
+.pb-71 .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width: 520px){.pb-71 .svc-grid{grid-template-columns:1fr}}
+.pb-71 .svc-card{border-radius:12px;padding:14px;border:1.5px solid var(--border)}
+.pb-71 .svc-card.best{background:var(--green-light);border-color:var(--green-border)}
+.pb-71 .svc-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-71 .svc-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-71 .svc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pb-71 .svc-icon{font-size:20px}
+.pb-71 .svc-name{font-weight:800;font-size:13px;line-height:1.3}
+.pb-71 .svc-card.best .svc-name{color:var(--green)}
+.pb-71 .svc-card.bad  .svc-name{color:var(--red)}
+.pb-71 .svc-card.warn .svc-name{color:var(--yellow)}
+.pb-71 .svc-rows{display:flex;flex-direction:column;gap:5px}
+.pb-71 .svc-row{display:flex;align-items:flex-start;gap:6px;font-size:12px}
+.pb-71 .svc-row .svc-label{color:var(--muted);width:76px;flex-shrink:0;padding-top:2px}
+.pb-71 .chip{padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+.pb-71 .chip-ok{background:var(--s10);color:var(--green)}
+.pb-71 .chip-bad{background:var(--r5);color:var(--red)}
+.pb-71 .chip-na{background:var(--p5);color:var(--muted)}
+.pb-71 .chip-warn{background:var(--y10);color:var(--yellow)}
+.pb-71 .svc-verdict{margin-top:10px;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}
+.pb-71 .svc-card.best .svc-verdict{background:var(--s10);color:var(--green)}
+.pb-71 .svc-card.bad  .svc-verdict{background:var(--r5);color:var(--red)}
+.pb-71 .svc-card.warn .svc-verdict{background:var(--y10);color:var(--yellow)}
+.pb-71 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:14px}
+.pb-71 .alert-red{background:var(--g5);border-color:var(--red);color:var(--r60)}
+.pb-71 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-71 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-71 .perm-compare{display:flex;flex-direction:column;gap:8px}
+.pb-71 .perm-row{display:flex;align-items:center;gap:10px}
+.pb-71 .perm-label{font-size:12px;font-weight:700;width:130px;flex-shrink:0}
+.pb-71 .perm-bar-wrap{flex:1;background:var(--p5);border-radius:99px;height:20px;overflow:hidden}
+.pb-71 .perm-bar{height:100%;border-radius:99px;display:flex;align-items:center;padding-left:10px;font-size:10px;font-weight:700;color:#fff;white-space:nowrap}
+.pb-71 .perm-bar.full{width:100%;background:var(--green)}
+.pb-71 .perm-bar.half{width:40%;background:var(--yellow)}
+.pb-71 .perm-bar.less{width:20%;background:var(--orange)}
+.pb-71 .perm-bar.none{width:5%;background:var(--red)}
+.pb-71 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-71 .option:hover{border-color:var(--p50)}
+.pb-71 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-71 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-71 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-71 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-71 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-71 .opt-body{flex:1;min-width:0}
+.pb-71 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-71 .opt-main.correct{color:var(--green)}
+.pb-71 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-71 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-71 .opt-why.show{display:block}
+.pb-71 .opt-why.ok-why{background:var(--s10)}
+.pb-71 .opt-why.bad-why{background:var(--r5)}
+.pb-71 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-71 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-71 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-71 .answer-body{display:none;margin-top:14px}
+.pb-71 .answer-body.show{display:block}
+.pb-71 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-71 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-71 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-71 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-71 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-71 .summary-table tr:last-child td{border-bottom:none}
+.pb-71 .summary-table tr:hover td{background:var(--g0)}
+.pb-71 .ok-text{color:var(--green);font-weight:700}
+.pb-71 .bad-text{color:var(--red);font-weight:700}
+.pb-71 .warn-text{color:var(--yellow);font-weight:700}
+.pb-71 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-71 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-71 .wrap{padding:20px 14px 50px}
+.pb-71 h1.post-title{font-size:19px}
+.pb-71 .question-box p{font-size:14px}
+.pb-71 .opt-main{font-size:13px}
+.pb-71 .code-block{font-size:11px}}
+.pb-71 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-71 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-71 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-71 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-71 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-71 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-71 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-71 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-71 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-71 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-71 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-71 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-71 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-71 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-71 .ans-label::before{content:'🎯 '}
+.pb-71 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-71 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-71 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-71 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-71 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-71 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-71">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">Lake Formation</span> <span class="badge badge-orange">세분화 권한 제어</span> <span class="badge badge-teal">데이터 카탈로그</span> <span class="badge badge-purple">메타데이터 관리</span></div>
+<h1 class="post-title">중앙 메타데이터 + 셀 수준 권한 제어 &mdash; AWS Lake Formation이 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 메타데이터 권한 제어 문제입니다. <b>데이터베이스 &middot; 테이블 &middot; 열 &middot; 행 &middot; 셀 5단계 세분화 권한</b>을 최소 운영 오버헤드로 지원하는 서비스는 <b>AWS Lake Formation 데이터 필터</b>뿐입니다. Glue Data Catalog가 테이블 수준까지만 제어하는 이유, Aurora Hive Metastore와 EMR Hive의 한계를 함께 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">AWS에 <span class="hl-blue">중앙 집중식 메타데이터 스토리지 솔루션</span>을 배포해야 하는 데이터 엔지니어가 있다. 솔루션은 <span class="hl-bold">안정적이고 확장 가능</span>해야 하며, <span class="hl-orange">데이터베이스, 테이블, 열, 행 및 셀 수준에서 세분화된 권한을 제어</span>할 수 있어야 한다.</p>
+<p data-ke-size="size16">다음 중 <span class="hl-bold">최소한의 운영 오버헤드</span>로 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 분석</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🗂️</span>
+<div><b>중앙 집중식 메타데이터 스토리지</b><br /><span style="font-size:13px;color:var(--muted)">데이터베이스/테이블/스키마 정보를 한 곳에서 관리하는 데이터 카탈로그</span></div>
+</li>
+<li><span class="req-icon">📐</span>
+<div><b>안정적 + 확장 가능 (서버리스 선호)</b><br /><span style="font-size:13px;color:var(--muted)">EMR 클러스터처럼 직접 관리하는 인프라 없이 AWS 완전관리형 서비스</span></div>
+</li>
+<li><span class="req-icon">🔐</span>
+<div><b>5단계 세분화 권한 (핵심 조건)</b><br /><span style="font-size:13px;color:var(--muted)"> 데이터베이스 &rarr; 테이블 &rarr; <b>열(Column)</b> &rarr; <b>행(Row)</b> &rarr; <b>셀(Cell)</b> 수준까지 제어 &mdash; 이것이 핵심 구분 포인트 </span></div>
+</li>
+<li><span class="req-icon">⚙️</span>
+<div><b>최소 운영 오버헤드</b><br /><span style="font-size:13px;color:var(--muted)">Hive 애플리케이션 배포, EC2 관리 등의 수동 운영 작업이 없어야 함</span></div>
+</li>
+</ul>
+</div>
+<!-- Lake Formation 5단계 권한 계층 -->
+<h2 class="section-title" data-ke-size="size26">🏗️ AWS Lake Formation 권한 제어 계층</h2>
+<div class="card">
+<p style="font-size:12px;color:var(--muted);margin-bottom:14px" data-ke-size="size16">Lake Formation 데이터 필터는 아래 5단계 계층을 모두 지원합니다. 좁아질수록 더 세밀한 제어입니다.</p>
+<div class="pyramid">
+<div class="py-level py-lv1"><span>🏢</span> <span>데이터베이스 (Database) 수준</span> <span class="py-scope">전체 DB 접근 권한</span></div>
+<div class="py-level py-lv2"><span>📋</span> <span>테이블 (Table) 수준</span> <span class="py-scope">특정 테이블 접근</span></div>
+<div class="py-level py-lv3"><span>📊</span> <span>열 (Column) 수준</span> <span class="py-scope">특정 컬럼만 노출</span></div>
+<div class="py-level py-lv4"><span>📌</span> <span>행 (Row) 수준</span> <span class="py-scope">WHERE 조건으로 행 필터</span></div>
+<div class="py-level py-lv5"><span>🔬</span> <span>셀 (Cell) 수준</span> <span class="py-scope">행 + 열 조합 마스킹</span></div>
+</div>
+<div class="alert alert-blue" style="margin-top:14px">💡 <b>셀 수준 보안</b>은 특정 열 값이 특정 조건일 때만 해당 행의 특정 열을 마스킹합니다. 예: 특정 부서 직원만 급여 컬럼을 볼 수 있도록 제한.</div>
+<!-- 권한 범위 비교 바 차트 -->
+<div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">📊 솔루션별 최대 권한 제어 수준</p>
+<div class="perm-compare">
+<div class="perm-row">
+<div class="perm-label">Lake Formation ⭐</div>
+<div class="perm-bar-wrap">
+<div class="perm-bar full">DB &middot; 테이블 &middot; 열 &middot; 행 &middot; 셀 (5단계)</div>
+</div>
+</div>
+<div class="perm-row">
+<div class="perm-label">Glue Catalog</div>
+<div class="perm-bar-wrap">
+<div class="perm-bar half">DB &middot; 테이블 수준만</div>
+</div>
+</div>
+<div class="perm-row">
+<div class="perm-label">Aurora Hive</div>
+<div class="perm-bar-wrap">
+<div class="perm-bar less">SQL GRANT (운영 복잡)</div>
+</div>
+</div>
+<div class="perm-row">
+<div class="perm-label">EMR Hive</div>
+<div class="perm-bar-wrap">
+<div class="perm-bar none">HiveQL 제한적</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4가지 서비스 비교 -->
+<h2 class="section-title" data-ke-size="size26">🔍 4가지 솔루션 특징 비교</h2>
+<div class="card">
+<div class="svc-grid">
+<div class="svc-card best">
+<div class="svc-header"><span class="svc-icon">🏞️</span>
+<div class="svc-name">AWS Lake Formation ⭐</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">메타데이터</span> <span class="chip chip-ok">✅ 중앙 카탈로그</span></div>
+<div class="svc-row"><span class="svc-label">권한 제어</span> <span class="chip chip-ok">✅ 5단계 전부</span></div>
+<div class="svc-row"><span class="svc-label">데이터 필터</span> <span class="chip chip-ok">✅ 행&middot;열&middot;셀 지원</span></div>
+<div class="svc-row"><span class="svc-label">운영 오버헤드</span> <span class="chip chip-ok">✅ 최소 (관리형)</span></div>
+<div class="svc-row"><span class="svc-label">인프라 관리</span> <span class="chip chip-ok">✅ 서버리스</span></div>
+</div>
+<div class="svc-verdict">✅ 모든 요건 충족 &mdash; 정답</div>
+</div>
+<div class="svc-card warn">
+<div class="svc-header"><span class="svc-icon">🗂️</span>
+<div class="svc-name">AWS Glue Data Catalog</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">메타데이터</span> <span class="chip chip-ok">✅ 중앙 카탈로그</span></div>
+<div class="svc-row"><span class="svc-label">DB&middot;테이블 권한</span> <span class="chip chip-ok">✅ 리소스 정책</span></div>
+<div class="svc-row"><span class="svc-label">열 수준 권한</span> <span class="chip chip-bad">❌ 미지원</span></div>
+<div class="svc-row"><span class="svc-label">행&middot;셀 수준</span> <span class="chip chip-bad">❌ 미지원</span></div>
+<div class="svc-row"><span class="svc-label">운영 오버헤드</span> <span class="chip chip-ok">✅ 낮음</span></div>
+</div>
+<div class="svc-verdict">⚠️ 테이블 수준까지만 &mdash; 세분화 불가</div>
+</div>
+<div class="svc-card bad">
+<div class="svc-header"><span class="svc-icon">🐦</span>
+<div class="svc-name">Aurora Hive Metastore</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">메타데이터</span> <span class="chip chip-warn">⚠️ Hive 메타스토어</span></div>
+<div class="svc-row"><span class="svc-label">권한 방식</span> <span class="chip chip-warn">SQL GRANT</span></div>
+<div class="svc-row"><span class="svc-label">Hive 배포</span> <span class="chip chip-bad">❌ EMR/EC2 필요</span></div>
+<div class="svc-row"><span class="svc-label">운영 오버헤드</span> <span class="chip chip-bad">❌ 높음</span></div>
+<div class="svc-row"><span class="svc-label">관리형 여부</span> <span class="chip chip-bad">❌ 직접 관리</span></div>
+</div>
+<div class="svc-verdict">❌ 운영 오버헤드 높음 &mdash; Hive 별도 배포 필요</div>
+</div>
+<div class="svc-card bad">
+<div class="svc-header"><span class="svc-icon">🐝</span>
+<div class="svc-name">Amazon EMR + Hive</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">메타데이터</span> <span class="chip chip-warn">⚠️ Hive 메타스토어</span></div>
+<div class="svc-row"><span class="svc-label">HiveQL DDL 권한</span> <span class="chip chip-bad">❌ 미지원</span></div>
+<div class="svc-row"><span class="svc-label">EMR 클러스터</span> <span class="chip chip-bad">❌ 직접 관리</span></div>
+<div class="svc-row"><span class="svc-label">운영 오버헤드</span> <span class="chip chip-bad">❌ 매우 높음</span></div>
+<div class="svc-row"><span class="svc-label">확장성</span> <span class="chip chip-warn">⚠️ 수동 스케일링</span></div>
+</div>
+<div class="svc-verdict">❌ HiveQL로 권한 제어 불가 + 높은 오버헤드</div>
+</div>
+</div>
+<div class="alert alert-orange" style="margin-top:14px">⚠️ <b>핵심 함정:</b> Glue Data Catalog는 Lake Formation의 메타스토어로 사용되며 안정적이고 확장 가능합니다. 그러나 <b>열&middot;행&middot;셀 수준의 세분화 권한 제어는 Lake Formation 데이터 필터를 통해서만 가능</b>합니다. "Glue Catalog + Lake Formation"이 사실상 정답 아키텍처입니다.</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ AWS Glue 데이터 카탈로그 + 리소스 수준 정책으로 액세스 제어</div>
+<div class="opt-sub">테이블 수준까지만 &mdash; 열&middot;행&middot;셀 세분화 권한 미지원</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 AWS Glue Data Catalog는 중앙 집중식 메타데이터 저장소로 훌륭하게 작동합니다. 리소스 수준 정책으로 데이터베이스와 테이블에 대한 접근 제어도 가능합니다. 그러나 <b>열(Column), 행(Row), 셀(Cell) 수준의 세분화된 권한 제어는 지원하지 않습니다.</b> 이 수준의 제어를 하려면 Lake Formation 데이터 필터를 사용해야 합니다. 실제로 Lake Formation은 Glue Data Catalog를 내부 메타스토어로 활용하면서 권한 계층을 추가로 제공하는 구조입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon Aurora를 Hive 메타스토어로 사용 + SQL GRANT로 권한 제어</div>
+<div class="opt-sub">Hive 애플리케이션을 EMR/EC2에 별도 배포해야 함 &mdash; 운영 오버헤드 증가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Aurora를 Hive 메타스토어의 백엔드 스토리지로 사용하는 것은 기술적으로 가능합니다. 그러나 <b>이 솔루션이 작동하려면 Hive 애플리케이션 자체를 Amazon EMR 클러스터나 독립형 EC2 Linux 인스턴스에 직접 배포&middot;관리해야 합니다.</b> "최소 운영 오버헤드" 조건에 정면으로 어긋납니다. 또한 Aurora 자체의 SQL GRANT는 RDS 내부 권한 관리이며, 데이터 레이크의 분산 데이터에 대한 세분화 권한 제어 메커니즘이 아닙니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">C</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ AWS Lake Formation + Lake Formation 데이터 필터로 액세스 제어</div>
+<div class="opt-sub">5단계 세분화 권한 + 완전관리형 서버리스 + 최소 운영 오버헤드</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> AWS Lake Formation은 데이터 레이크와 메타데이터 카탈로그를 통합 관리하는 완전관리형 서비스입니다. <b>데이터 필터(Data Filter)</b>를 통해 데이터베이스 &rarr; 테이블 &rarr; 열 &rarr; 행 &rarr; 셀 수준까지 5단계 세분화 권한을 지원합니다. 인프라를 직접 관리할 필요 없이 서버리스로 작동하여 운영 오버헤드가 최소화됩니다. 내부적으로 Glue Data Catalog를 메타스토어로 활용하므로 안정적이고 확장 가능합니다. IAM과 통합되어 사용자/역할별 세분화 권한도 일관되게 관리할 수 있습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon EMR + Hive 메타스토어 + HiveQL DDL로 사용자 액세스 제어</div>
+<div class="opt-sub">HiveQL DDL로는 메타스토어 접근 권한 제어 불가 + EMR 클러스터 직접 관리</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 이유로 탈락합니다. 첫째, <b>HiveQL 데이터 정의 언어(DDL) 구문(CREATE TABLE, DROP TABLE 등)으로는 Hive 메타스토어에 대한 사용자 액세스를 제어할 수 없습니다.</b> HiveQL DDL은 스키마 정의용이지 권한 관리 도구가 아닙니다. 둘째, EMR 클러스터를 직접 배포하고 관리해야 하므로 운영 오버헤드가 매우 높습니다. 클러스터 유지보수, 스케일링, 패치 등을 모두 수동으로 처리해야 합니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: C &mdash; AWS Lake Formation + 데이터 필터</b></p>
+<p data-ke-size="size16">이 문제의 핵심 구분 포인트는 <b>열&middot;행&middot;셀 수준 세분화 권한</b>입니다. Glue Data Catalog는 테이블 수준까지만 제어 가능하며, 나머지 세 선택지는 운영 오버헤드가 높거나 기술적 한계가 있습니다. 오직 <b>Lake Formation 데이터 필터</b>만이 5단계 권한을 완전관리형으로 지원합니다.</p>
+<div class="code-block"># 권한 제어 수준 비교 서비스 DB 테이블 열 행 셀 운영 오버헤드 ───────────────────────────────────────────────────────────── Lake Formation ⭐ ✅ ✅ ✅ ✅ ✅ 낮음 (서버리스) Glue Catalog ✅ ✅ ❌ ❌ ❌ 낮음 Aurora Hive Metastore △ △ △ △ △ 높음 (EMR/EC2 필요) EMR + Hive △ △ ❌ ❌ ❌ 매우 높음 # Lake Formation 데이터 필터 활용 예시 - 열 수준: 급여 컬럼을 HR 팀에만 노출 - 행 수준: 각 지역 팀에 자신의 지역 데이터만 접근 - 셀 수준: 특정 등급 이상 직원에게만 민감 데이터 표시</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>서비스</th>
+<th>열&middot;행&middot;셀 권한</th>
+<th>운영 오버헤드</th>
+<th>확장성</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A</b></td>
+<td>Glue Catalog</td>
+<td class="bad-text">❌ 테이블까지만</td>
+<td class="ok-text">낮음</td>
+<td class="ok-text">높음</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>B</b></td>
+<td>Aurora Hive</td>
+<td class="warn-text">SQL GRANT 제한</td>
+<td class="bad-text">높음 (Hive 배포)</td>
+<td class="warn-text">보통</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>C ⭐</b></td>
+<td>Lake Formation</td>
+<td class="ok-text">✅ 5단계 전부</td>
+<td class="ok-text">최소 (서버리스)</td>
+<td class="ok-text">높음</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>D</b></td>
+<td>EMR + Hive</td>
+<td class="bad-text">❌ HiveQL DDL 불가</td>
+<td class="bad-text">매우 높음</td>
+<td class="warn-text">수동 스케일</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWSLakeFormation</span> <span class="seo-tag">#LakeFormation데이터필터</span> <span class="seo-tag">#GlueDataCatalog</span> <span class="seo-tag">#세분화권한제어</span> <span class="seo-tag">#열수준보안</span> <span class="seo-tag">#행수준보안</span> <span class="seo-tag">#셀수준보안</span> <span class="seo-tag">#HiveMetastore</span> <span class="seo-tag">#AmazonEMR</span> <span class="seo-tag">#데이터레이크</span> <span class="seo-tag">#메타데이터카탈로그</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

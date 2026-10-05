@@ -1,0 +1,288 @@
+<!--
+id: 119
+제목: AWS DEA-C01 각색 문제 Day 16 — Redshift, MSK OpenSearch, Kinesis 핫샤드, DynamoDB SSE-KMS, S3 Glacier Vault Lock
+카테고리: Stack/AWS
+태그: AWS 자격증, Glacier Vault Lock, AWS DEA-C01, Firehose Redshift, OpenSearch Dashboards, Kinesis 핫샤드, DynamoDB SSE-KMS
+날짜: 2026-04-06 23:43
+수정: 2026-04-06 23:43
+형식: html
+썸네일: /img/t/dJMcaibPjW5.webp
+-->
+<style>
+.pb-119 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-119 .dea-wrap *{box-sizing:border-box}
+.pb-119 .dea-post-header{margin-bottom:32px}
+.pb-119 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-119 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-119 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-119 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-119 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-119 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-119 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-119 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-119 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-119 .dea-q-block{margin-bottom:48px}
+.pb-119 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-119 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-119 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-119 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-119 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-119 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-119 .dea-badge.multi{background:var(--r5);color:var(--r60)}
+.pb-119 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-119 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-119 .dea-seo-lead strong{color:var(--p50)}
+.pb-119 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-119 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-119 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-119 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-119 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-119 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-119 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-119 .dea-opt.ok{border-color:var(--s60)}
+.pb-119 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-119 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-119 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-119 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-119 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-119 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-119 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-119 .dea-term{font-weight:700;color:var(--p50)}
+.pb-119 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-119 .dea-btn:hover{background:var(--p60)}
+.pb-119 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-119 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-119 .dea-exp.on{display:flex}
+.pb-119 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-119 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-119 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-119 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-119 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-119 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-119 .dea-table th, .pb-119 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-119 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-119 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-119 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-119 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-119 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-119 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-119 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-119 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-119 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-119 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-119 .dea-hl{color:var(--p50);font-weight:700}
+.pb-119 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-119 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-119 .dea-wrap{padding:14px 6px 52px}
+.pb-119 .dea-post-title{font-size:18px}
+.pb-119 .dea-qcard p{font-size:14px}
+.pb-119 .dea-opt-row{font-size:13px}
+.pb-119 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-119 .dea-table{font-size:11.5px}
+.pb-119 .dea-table th, .pb-119 .dea-table td{padding:8px 9px}
+.pb-119 .dea-ans-main{font-size:14.5px}
+.pb-119 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-119">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 16</h1>
+  <p class="dea-post-desc">클릭스트림 → Redshift 최소 오버헤드, MSK OpenSearch 최소 지연 시각화, Kinesis 핫샤드 WriteThroughputExceeded 해결, DynamoDB SSE-KMS·클라이언트 암호화(복수), S3 Glacier Vault Lock 삭제 방지 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1·2·4 · 스트리밍·보안·시각화</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q76"><span class="dea-toc-num">Q76</span> 클릭스트림 → 변환 → Redshift 적재 파이프라인 (최소 오버헤드)</a></li>
+    <li><a href="#dea-q77"><span class="dea-toc-num">Q77</span> MSK 시계열 → 최소 지연 대시보드 시각화</a></li>
+    <li><a href="#dea-q78"><span class="dea-toc-num">Q78</span> Kinesis 핫샤드 문제 — WriteThroughputExceeded 해결</a></li>
+    <li><a href="#dea-q79"><span class="dea-toc-num">Q79</span> DynamoDB 저장 데이터 암호화 안전한 방법 (복수)</a></li>
+    <li><a href="#dea-q80"><span class="dea-toc-num">Q80</span> 10년 보관 + 직원 삭제 방지 + 48시간 내 검색</a></li>
+  </ul>
+</nav>
+
+<!-- Q76 -->
+<div class="dea-q-block" id="dea-q76">
+  <div class="dea-meta"><span class="dea-badge qnum">Q76</span><span class="dea-badge topic">Firehose · Lambda 변환 · Redshift · 스트리밍 파이프라인</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon Data Firehose</strong>는 Lambda를 통해 스트리밍 데이터를 변환하고 Redshift에 직접 적재하는 완전관리형 파이프라인을 제공합니다. 별도 MSK·Flink·추가 Lambda 없이 단일 Firehose 구성으로 최소 오버헤드로 구현 가능합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>전자상거래 앱의 대량 클릭스트림 이벤트를 수집·변환하고 분석을 위해 Amazon Redshift에 적재하는 파이프라인이 필요합니다. 운영 오버헤드를 최소화하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q76-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon MSK Serverless로 데이터를 수집하고, Glue 스트리밍 ETL로 변환해 S3에 저장합니다. 객체 생성 시 Lambda 함수로 Redshift에 적재합니다.</span></div><div class="dea-inline-exp">❌ MSK Serverless + Glue 스트리밍 + S3 + Lambda 4개 서비스를 연결. <strong>각 서비스 구성·모니터링·유지보수</strong>가 필요해 오버헤드가 높음.</div></li>
+    <li class="dea-opt" id="q76-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>CloudWatch Logs로 데이터를 전송하고, 구독 필터로 Lambda에 전달합니다. Lambda로 변환 후 S3에 저장하고, 두 번째 Lambda로 Redshift에 적재합니다.</span></div><div class="dea-inline-exp">❌ CloudWatch Logs는 애플리케이션 로그 저장 서비스. <strong>대량 클릭스트림 이벤트 수집에 부적합</strong>. Lambda 2개 + 여러 서비스 연결로 오버헤드가 큼.</div></li>
+    <li class="dea-opt" id="q76-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Kinesis Data Streams로 수집하고, Apache Flink 애플리케이션으로 변환해 S3에 저장합니다. 객체 생성 시 Lambda로 Redshift에 적재합니다.</span></div><div class="dea-inline-exp">❌ Kinesis Data Streams + Flink + S3 + Lambda 4개 서비스 연결. <strong>Flink 애플리케이션 개발·배포·관리</strong>가 추가 오버헤드.</div></li>
+    <li class="dea-opt" id="q76-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon Data Firehose로 스트리밍 데이터를 직접 수신합니다. 들어오는 데이터를 변환하는 Lambda 함수를 호출하도록 Firehose 데이터 변환을 구성합니다. 변환된 데이터를 Amazon Redshift로 직접 적재합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon Data Firehose</span> — 수집 + Lambda 변환 + Redshift 직접 적재까지 단일 서비스에서 구성. 중간 S3 단계 없이 Redshift로 바로 전달 가능. <strong>가장 적은 서비스 수 = 최소 운영 오버헤드</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q76">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q76">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — Firehose(수집·변환·적재 통합) 단일 구성</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 스트리밍 → Redshift 파이프라인 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>서비스 수</th><th>오버헤드</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Firehose + Lambda 변환</strong></td><td>1-2개</td><td><span class="dea-pill good">최소</span></td></tr>
+      <tr><td>KDS + Flink + Lambda</td><td>4개</td><td>높음</td></tr>
+      <tr><td>MSK + Glue + Lambda</td><td>4개</td><td>높음</td></tr>
+      <tr><td>CW Logs + Lambda×2</td><td>3개+</td><td><span class="dea-pill bad">부적합</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"스트리밍 수집 + 변환 + Redshift 적재 + 최소 오버헤드"<br>  →  <span class="dea-hl">Firehose</span> + Lambda 데이터 변환 + Redshift 직접 적재<br><br>Firehose = 수집·변환·적재 한 번에 처리 가능</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q77 -->
+<div class="dea-q-block" id="dea-q77">
+  <div class="dea-meta"><span class="dea-badge qnum">Q77</span><span class="dea-badge topic">OpenSearch · 실시간 대시보드 · 최소 지연</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon OpenSearch Service + OpenSearch Dashboards</strong>는 데이터 인덱스에 직접 연결되어 실시간에 가까운 데이터 시각화를 제공합니다. Athena(S3 쿼리)나 Grafana보다 스트리밍 데이터의 지연이 낮습니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>시계열 데이터 실시간 대시보드를 구축합니다. Amazon MSK로 데이터를 수집하고, 커스텀 파이프라인이 Amazon Keyspaces, Amazon OpenSearch Service, S3(Apache Avro 형식)에 동시에 씁니다. <strong>가장 짧은 지연</strong>으로 시각화하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q77-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>OpenSearch Service에 저장된 데이터로 OpenSearch Dashboards를 생성합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">OpenSearch Dashboards</span> — OpenSearch Service에 이미 저장된 데이터를 실시간으로 직접 시각화. 파이프라인이 OpenSearch에 이미 쓰고 있으므로 <strong>추가 처리 없이 즉시 시각화</strong> 가능. S3 Avro나 Keyspaces를 경유하는 경로보다 지연이 낮음.</div></li>
+    <li class="dea-opt" id="q77-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Hive 메타스토어와 Athena로 S3 Avro 객체를 쿼리하고, Amazon Managed Grafana로 대시보드를 생성합니다.</span></div><div class="dea-inline-exp">❌ S3 Avro → Athena 쿼리 → Grafana 경로는 S3에 데이터가 쌓인 뒤에야 쿼리 가능. <strong>OpenSearch 직접 연결보다 지연이 높음</strong>. Hive 메타스토어 설정도 추가 오버헤드.</div></li>
+    <li class="dea-opt" id="q77-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Athena로 S3 Avro를 쿼리하고 Keyspaces를 카탈로그로 사용합니다. QuickSight를 Athena에 연결해 대시보드를 생성합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon Keyspaces</span>는 데이터 카탈로그가 아닌 NoSQL DB. Avro → Athena → QuickSight는 S3 배치 처리 기반으로 <strong>실시간 지연이 높음</strong>.</div></li>
+    <li class="dea-opt" id="q77-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Glue로 데이터를 카탈로그화하고, EMR 기반 Presto로 S3 Avro를 쿼리합니다. QuickSight를 S3에 연결해 대시보드를 생성합니다.</span></div><div class="dea-inline-exp">❌ Glue + EMR Presto + QuickSight S3 연결은 여러 서비스 연결 + S3 배치 쿼리 기반. 실시간 대시보드보다는 배치 분석에 적합. <strong>지연이 가장 높음</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q77">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q77">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — OpenSearch Service + OpenSearch Dashboards 직접 연결</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 실시간 스트리밍 시각화 지연 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>데이터 소스</th><th>지연</th></tr></thead>
+    <tbody>
+      <tr><td><strong>OpenSearch Dashboards</strong></td><td>OpenSearch(실시간 인덱스)</td><td><span class="dea-pill good">최소</span></td></tr>
+      <tr><td>Athena + QuickSight</td><td>S3 (배치 쿼리)</td><td>중간~높음</td></tr>
+      <tr><td>Athena + Grafana</td><td>S3 (배치 쿼리)</td><td>중간~높음</td></tr>
+      <tr><td>EMR Presto + QuickSight</td><td>S3</td><td>높음</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"스트리밍 데이터 최소 지연 시각화"<br>  →  데이터가 이미 들어가 있는 저장소에서 직접 시각화<br>  →  <span class="dea-hl">OpenSearch + OpenSearch Dashboards</span><br><br>S3 경유 = 배치 처리 → 지연 큼</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q78 -->
+<div class="dea-q-block" id="dea-q78">
+  <div class="dea-meta"><span class="dea-badge qnum">Q78</span><span class="dea-badge topic">Kinesis 핫샤드 · 파티션 키 · WriteThroughputExceeded</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Kinesis 핫샤드(Hot Shard)</strong>는 파티션 키가 편중되어 특정 샤드에 트래픽이 집중될 때 발생합니다. 시설 ID처럼 분포가 고르지 않은 키 대신 <strong>무작위 키</strong>를 사용하면 샤드 간 부하가 균등하게 분산됩니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>전세계 시설의 IoT 디바이스 데이터를 Amazon Kinesis Data Streams로 수집합니다. 데이터에는 디바이스 ID, 날짜, 측정 유형, 측정값, 시설 ID가 있으며 파티션 키로 시설 ID를 사용합니다. 최근 <code>WriteThroughputExceeded</code> 예외가 많이 발생하고 일부 샤드는 과부하, 나머지는 유휴 상태입니다. 어떻게 해결해야 할까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q78-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>파티션 키를 시설 ID에서 무작위로 생성된 키로 변경합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">무작위 파티션 키</span> — 시설 ID는 규모가 큰 시설에 편중(일부 시설에 IoT 디바이스가 훨씬 많음). 무작위 키를 사용하면 레코드가 모든 샤드에 <strong>균등하게 분산</strong>되어 핫샤드 제거. WriteThroughputExceeded 해결.</div></li>
+    <li class="dea-opt" id="q78-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>샤드 수를 늘립니다.</span></div><div class="dea-inline-exp">❌ 샤드 수를 늘려도 파티션 키(시설 ID)가 그대로면 <strong>같은 시설 ID의 모든 트래픽이 특정 샤드에 몰림</strong>. 핫샤드 문제 근본 해결 불가. 비용만 증가.</div></li>
+    <li class="dea-opt" id="q78-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>생산자 측에 데이터를 아카이브합니다.</span></div><div class="dea-inline-exp">❌ 아카이브는 스트리밍 처리 중 WriteThroughputExceeded와 무관. 데이터를 생산자에 쌓아두는 방식으로는 Kinesis 스로틀링 해결 불가.</div></li>
+    <li class="dea-opt" id="q78-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>파티션 키를 시설 ID에서 캡처 날짜로 변경합니다.</span></div><div class="dea-inline-exp">❌ 캡처 날짜를 파티션 키로 쓰면 같은 시간대에 모든 디바이스가 동일 날짜 키를 가짐 → <strong>다시 핫샤드 발생</strong>. 균등 분산 효과 없음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q78">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q78">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — 파티션 키를 무작위 키로 변경해 균등 분산</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Kinesis 핫샤드 원인과 해결</div>
+    <table class="dea-table"><thead><tr><th>파티션 키</th><th>샤드 분산</th><th>핫샤드?</th></tr></thead>
+    <tbody>
+      <tr><td>시설 ID (편중 분포)</td><td>불균등</td><td><span class="dea-pill bad">✓ 발생</span></td></tr>
+      <tr><td>캡처 날짜 (동일 시간대 동일값)</td><td>불균등</td><td><span class="dea-pill bad">✓ 발생</span></td></tr>
+      <tr><td><strong>무작위 키</strong></td><td>균등</td><td><span class="dea-pill good">✗ 해결</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"Kinesis 핫샤드 (일부 과부하, 나머지 유휴)"<br>  →  파티션 키 편중이 원인<br>  →  해결: <span class="dea-hl">무작위 파티션 키</span>로 변경<br><br>샤드 수 증가만으로는 해결 불가 (키 편중 유지)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q79 -->
+<div class="dea-q-block" id="dea-q79">
+  <div class="dea-meta"><span class="dea-badge qnum">Q79</span><span class="dea-badge topic">DynamoDB · SSE-KMS · 클라이언트 암호화</span><span class="dea-badge multi">✌️ 복수 정답</span></div>
+  <p class="dea-seo-lead">DynamoDB 저장 데이터 암호화는 <strong>서버 측(SSE-KMS)</strong>과 <strong>클라이언트 측(클라이언트 암호화 후 업로드)</strong> 두 가지 방식이 있습니다. 암호화 키를 Git에 저장하거나 Lambda로 자동 복호화하는 방식은 보안 위험이 있습니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question — 두 가지를 선택하세요</div>
+    <p>의료 회사의 데이터 엔지니어가 환자 기록을 Amazon DynamoDB에 저장합니다. 규정 준수를 위해 저장 중인 데이터를 암호화해야 합니다. 안전하게 암호화하는 방법 두 가지는 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q79-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>DynamoDB 테이블에서 AWS KMS 키를 통한 서버 측 암호화(SSE-KMS)를 활성화합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">DynamoDB SSE-KMS</span> — KMS 고객 관리 키를 사용한 DynamoDB 기본 서버 측 암호화. 저장된 데이터를 자동으로 암호화·복호화. 키 관리·감사·교체가 KMS에서 통합 관리. <strong>규정 준수 암호화의 표준 방법</strong>.</div></li>
+    <li class="dea-opt" id="q79-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>DynamoDB에 항목을 업로드하기 전에 클라이언트 측 암호화를 적용합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">클라이언트 측 암호화</span> — 애플리케이션에서 데이터를 암호화한 후 DynamoDB에 저장. 데이터가 AWS 인프라에 도달하기 전부터 암호화됨. DynamoDB Encryption Client 라이브러리 활용. <strong>엔드투엔드 암호화로 규정 준수 충족</strong>.</div></li>
+    <li class="dea-opt" id="q79-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>암호화 키를 프라이빗 Git 리포지토리에 저장하여 팀원에게 접근 권한을 제공합니다.</span></div><div class="dea-inline-exp">❌ Git 리포지토리는 암호화 키 저장소로 <strong>안전하지 않음</strong>. 소스 코드 유출·내부자 위협 시 키가 노출될 수 있음. AWS KMS나 Secrets Manager가 키 관리 표준.</div></li>
+    <li class="dea-opt" id="q79-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Lambda를 사용하여 DynamoDB에서 데이터에 접근할 때마다 자동으로 복호화합니다.</span></div><div class="dea-inline-exp">❌ Lambda 복호화 함수를 추가 계층으로 구성하는 방식. A(SSE-KMS)를 쓰면 DynamoDB가 투명하게 복호화해줘 <strong>불필요한 복잡도</strong>. 복호화 키 관리도 별도로 필요.</div></li>
+    <li class="dea-opt" id="q79-E"><div class="dea-opt-row"><span class="dea-k">E</span><span>Lambda를 사용하여 DynamoDB와 함께 쓰는 AWS KMS 키를 주 단위로 교체합니다.</span></div><div class="dea-inline-exp">❌ KMS 키 교체(Rotation)는 KMS 자체 기능으로 설정 가능. Lambda로 직접 구현할 필요가 없음. 또한 키 교체는 저장 데이터 암호화 요건(데이터 보호)과 다른 주제.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q79">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q79">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A + B — SSE-KMS 서버 측 + 클라이언트 측 암호화</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — DynamoDB 암호화 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>암호화 시점</th><th>키 관리</th><th>안전성</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SSE-KMS</strong></td><td>저장 시 (서버)</td><td>KMS 통합</td><td><span class="dea-pill good">✓ 안전</span></td></tr>
+      <tr><td><strong>클라이언트 측 암호화</strong></td><td>전송 전 (클라이언트)</td><td>앱 레벨</td><td><span class="dea-pill good">✓ 안전</span></td></tr>
+      <tr><td>Git 리포지토리에 키 저장</td><td>-</td><td>Git</td><td><span class="dea-pill bad">✗ 위험</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>DynamoDB 저장 데이터 암호화:<br>  <span class="dea-hl">SSE-KMS</span>  (서버 측, KMS 관리)<br>  <span class="dea-hl">클라이언트 암호화</span> (전송 전 암호화)<br><br>Git에 키 저장 = 보안 금지 (항상 오답)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q80 -->
+<div class="dea-q-block" id="dea-q80">
+  <div class="dea-meta"><span class="dea-badge qnum">Q80</span><span class="dea-badge topic">S3 Glacier · Vault Lock · 삭제 방지 · 48시간 검색</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>S3 Glacier Vault Lock</strong>은 저장소 수준에서 데이터 삭제를 영구적으로 방지하는 WORM 정책입니다. S3 Glacier Flexible Retrieval은 신속 검색(수 분) ~ 표준 검색(수 시간)을 지원해 48시간 내 검색 요건을 충족합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>금융 서비스 회사가 ML 모델 입력 데이터를 10년 동안 보관해야 합니다. <strong>직원이 데이터를 삭제할 수 없어야</strong> 하고, <strong>48시간 이내에 데이터를 검색</strong>할 수 있어야 합니다. 이 요건을 충족하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q80-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>S3 Glacier Deep Archive에 데이터를 저장합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">S3 Glacier Deep Archive</span> — 검색 시간이 <strong>12~48시간</strong>으로 48시간 내 검색은 가능하지만 삭제 방지 정책(Vault Lock)이 없음. 직원 삭제 방지 요건 미충족.</div></li>
+    <li class="dea-opt" id="q80-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon S3 Glacier Flexible Retrieval에 데이터를 저장하고, S3 Glacier 저장소 잠금(Vault Lock) 정책을 적용합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">S3 Glacier Flexible Retrieval</span> — 신속 검색 1~5분, 표준 검색 3~5시간으로 <strong>48시간 내 검색 충족</strong>. <span class="dea-term">Vault Lock 정책</span> — 저장소 수준의 불변 WORM 정책. 루트 사용자 포함 <strong>누구도 잠금 기간 내 삭제 불가</strong>. 두 요건 모두 충족.</div></li>
+    <li class="dea-opt" id="q80-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon S3 Glacier Flexible Retrieval에 데이터를 저장합니다.</span></div><div class="dea-inline-exp">❌ Glacier Flexible Retrieval만으로는 검색 요건은 충족하지만 <strong>삭제 방지 정책(Vault Lock)이 없음</strong>. 직원이 여전히 데이터를 삭제할 수 있어 삭제 방지 요건 미충족.</div></li>
+    <li class="dea-opt" id="q80-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon S3 Glacier Flexible Retrieval에 데이터를 저장하고, S3 Glacier 저장소 액세스 정책을 적용합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">저장소 액세스 정책(Vault Access Policy)</span>은 리소스 기반 접근 제어 정책. 권한이 있는 관리자가 <strong>정책을 수정하여 삭제를 허용</strong>할 수 있음. Vault Lock처럼 불변성을 보장하지 않음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q80">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q80">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Glacier Flexible Retrieval + Vault Lock 정책</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Glacier 삭제 방지 정책 비교</div>
+    <table class="dea-table"><thead><tr><th>정책 유형</th><th>불변성</th><th>삭제 방지?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Vault Lock 정책</strong></td><td>잠금 후 수정 불가</td><td><span class="dea-pill good">✓ 영구</span></td></tr>
+      <tr><td>Vault Access Policy</td><td>수정 가능</td><td><span class="dea-pill bad">✗ 우회 가능</span></td></tr>
+      <tr><td>없음</td><td>-</td><td><span class="dea-pill bad">✗</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"장기 보관 + 삭제 불가 + 48시간 내 검색"<br>  →  <span class="dea-hl">S3 Glacier Flexible Retrieval</span> + <span class="dea-hl">Vault Lock 정책</span><br><br>Vault Lock = 잠금 후 수정 불가 (루트도 삭제 못함)<br>Vault Access Policy ≠ Vault Lock (우회 가능)</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">Firehose Redshift</span><span class="dea-tag">OpenSearch Dashboards</span><span class="dea-tag">Kinesis 핫샤드</span><span class="dea-tag">DynamoDB SSE-KMS</span><span class="dea-tag">Glacier Vault Lock</span><span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var q=[
+    {id:'q76',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — Firehose 단일 구성'},
+    {id:'q77',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — OpenSearch Dashboards'},
+    {id:'q78',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — 무작위 파티션 키'},
+    {id:'q79',ans:{'A':true,'B':true},keys:['A','B','C','D','E'],label:'✅ 정답: A+B — SSE-KMS + 클라이언트 암호화'},
+    {id:'q80',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glacier + Vault Lock'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

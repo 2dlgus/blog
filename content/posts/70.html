@@ -1,0 +1,418 @@
+<!--
+id: 70
+제목: AWS DEA-C01 공식 샘플 문제 — Secrets Manager 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, SQL Server, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, Secrets Manager
+날짜: 2026-03-11 22:31
+수정: 2026-03-24 22:26
+형식: html
+썸네일: /img/t/dJMcahwSiF9.webp
+-->
+<style>
+.pb-70 *, .pb-70, .pb-70 *::before, .pb-70 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-70{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-70{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-70 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-70 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-70 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-70 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-70 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-70 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-70 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-70 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-70 .badge-red{background:var(--red-light);color:var(--red);border:1px solid var(--red-border)}
+.pb-70 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-70 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-70 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-70 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-70 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-70 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-70 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-70 .question-box p:last-child{margin-bottom:0}
+.pb-70 .hl-blue{color:var(--blue);font-weight:700}
+.pb-70 .hl-orange{color:var(--orange);font-weight:700}
+.pb-70 .hl-green{color:var(--green);font-weight:700}
+.pb-70 .hl-red{color:var(--red);font-weight:700}
+.pb-70 .hl-bold{font-weight:900}
+.pb-70 .req-list{list-style:none;padding:0}
+.pb-70 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-70 .req-list li:last-child{border-bottom:none}
+.pb-70 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-70 .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
+@media (max-width: 520px){.pb-70 .svc-grid{grid-template-columns:1fr}}
+.pb-70 .svc-card{border-radius:12px;padding:14px 14px;border:1.5px solid var(--border)}
+.pb-70 .svc-card.best{background:var(--green-light);border-color:var(--green-border)}
+.pb-70 .svc-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-70 .svc-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-70 .svc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pb-70 .svc-icon{font-size:20px}
+.pb-70 .svc-name{font-weight:800;font-size:13px;line-height:1.3}
+.pb-70 .svc-card.best .svc-name{color:var(--green)}
+.pb-70 .svc-card.bad  .svc-name{color:var(--red)}
+.pb-70 .svc-card.warn .svc-name{color:var(--yellow)}
+.pb-70 .svc-rows{display:flex;flex-direction:column;gap:5px}
+.pb-70 .svc-row{display:flex;align-items:center;gap:6px;font-size:12px}
+.pb-70 .svc-row .svc-label{color:var(--muted);width:72px;flex-shrink:0}
+.pb-70 .svc-row .chip{padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+.pb-70 .chip-ok{background:var(--s10);color:var(--green)}
+.pb-70 .chip-bad{background:var(--r5);color:var(--red)}
+.pb-70 .chip-na{background:var(--p5);color:var(--muted)}
+.pb-70 .svc-verdict{margin-top:10px;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}
+.pb-70 .svc-card.best .svc-verdict{background:var(--s10);color:var(--green)}
+.pb-70 .svc-card.bad  .svc-verdict{background:var(--r5);color:var(--red)}
+.pb-70 .svc-card.warn .svc-verdict{background:var(--y10);color:var(--yellow)}
+.pb-70 .flow-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pb-70 .flow-box{padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid;white-space:nowrap}
+.pb-70 .flow-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-70 .flow-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-70 .flow-box.orange{background:var(--y5);color:var(--orange);border-color:var(--y50)}
+.pb-70 .flow-box.gray{background:var(--p5);color:var(--muted);border-color:var(--border)}
+.pb-70 .flow-arrow{font-size:14px;color:var(--muted);flex-shrink:0}
+.pb-70 .flow-note{font-size:11px;color:var(--muted);padding:4px 8px;background:var(--g0);border-radius:6px;border:1px solid var(--border)}
+.pb-70 .engine-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px}
+@media (max-width: 520px){.pb-70 .engine-grid{grid-template-columns:1fr 1fr}}
+.pb-70 .engine-card{border-radius:10px;padding:10px 8px;border:1.5px solid var(--border);text-align:center}
+.pb-70 .engine-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-70 .engine-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-70 .engine-card .e-icon{font-size:18px;margin-bottom:4px}
+.pb-70 .engine-card .e-name{font-size:11px;font-weight:700;line-height:1.3}
+.pb-70 .engine-card.ok  .e-name{color:var(--green)}
+.pb-70 .engine-card.bad .e-name{color:var(--red)}
+.pb-70 .engine-card .e-chip{margin-top:5px;padding:2px 6px;border-radius:99px;font-size:10px;font-weight:700}
+.pb-70 .engine-card.ok  .e-chip{background:var(--s10);color:var(--green)}
+.pb-70 .engine-card.bad .e-chip{background:var(--r5);color:var(--red)}
+.pb-70 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-70 .option:hover{border-color:var(--p50)}
+.pb-70 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-70 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-70 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-70 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-70 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-70 .opt-body{flex:1;min-width:0}
+.pb-70 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-70 .opt-main.correct{color:var(--green)}
+.pb-70 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-70 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-70 .opt-why.show{display:block}
+.pb-70 .opt-why.ok-why{background:var(--s10)}
+.pb-70 .opt-why.bad-why{background:var(--r5)}
+.pb-70 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-70 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-70 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-70 .answer-body{display:none;margin-top:14px}
+.pb-70 .answer-body.show{display:block}
+.pb-70 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-70 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-70 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-70 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-70 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-70 .summary-table tr:last-child td{border-bottom:none}
+.pb-70 .summary-table tr:hover td{background:var(--g0)}
+.pb-70 .ok-text{color:var(--green);font-weight:700}
+.pb-70 .bad-text{color:var(--red);font-weight:700}
+.pb-70 .warn-text{color:var(--yellow);font-weight:700}
+.pb-70 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:14px}
+.pb-70 .alert-red{background:var(--g5);border-color:var(--red);color:var(--red)}
+.pb-70 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--orange)}
+.pb-70 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-70 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-70 .wrap{padding:20px 14px 50px}
+.pb-70 h1.post-title{font-size:19px}
+.pb-70 .question-box p{font-size:14px}
+.pb-70 .opt-main{font-size:13px}
+.pb-70 .code-block{font-size:11px}}
+.pb-70 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-70 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-70 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-70 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-70 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-70 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-70 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-70 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-70 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-70 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-70 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-70 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-70 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-70 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-70 .ans-label::before{content:'🎯 '}
+.pb-70 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-70 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-70 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-70 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-70 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-70 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-70">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">보안</span> <span class="badge badge-orange">Secrets Manager</span> <span class="badge badge-teal">자격 증명 교체</span> <span class="badge badge-purple">RDS SQL Server</span></div>
+<h1 class="post-title">RDS SQL Server 자격 증명 자동 교체 &mdash; Secrets Manager가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 자격 증명 보안 관리 문제입니다. <b>AWS Secrets Manager</b>만이 RDS 자격 증명의 자동 교체를 네이티브로 지원합니다. Parameter Store는 자동 교체 미지원, IAM DB 인증은 SQL Server 미지원, STS는 노출 위험 제거 불가. 4가지 서비스의 특징 차이를 도식으로 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사에서는 <span class="hl-blue">Amazon RDS for Microsoft SQL Server</span> 데이터베이스 기반 Amazon EC2 인스턴스에서 클라우드 기반 소프트웨어 애플리케이션을 실행하고 있다. 애플리케이션에서는 데이터베이스의 <span class="hl-orange">자격 증명 정보 및 레코드를 수집, 처리 및 저장</span>한다.</p>
+<p data-ke-size="size16">회사는 <span class="hl-red">자격 증명 노출 위험을 완화</span>하려고 한다. 솔루션은 기본적으로 <span class="hl-bold">30일마다 자격 증명이 자동으로 교체</span>되어야 한다.</p>
+<p data-ke-size="size16">다음 중 이 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 분석</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🔑</span>
+<div><b>자격 증명 보안 저장</b><br /><span style="font-size:13px;color:var(--muted)">DB 아이디/비밀번호를 코드나 환경 변수에 하드코딩하지 않고 안전하게 관리</span></div>
+</li>
+<li><span class="req-icon">🔄</span>
+<div><b>30일마다 자동 교체 (핵심 조건)</b><br /><span style="font-size:13px;color:var(--muted)">수동 개입 없이 주기적으로 패스워드가 교체되어 노출 위험 최소화</span></div>
+</li>
+<li><span class="req-icon">🗄️</span>
+<div><b>RDS for Microsoft SQL Server 호환</b><br /><span style="font-size:13px;color:var(--muted)">솔루션이 SQL Server 엔진에서 실제로 작동해야 함 (엔진 제약 확인 필요)</span></div>
+</li>
+</ul>
+</div>
+<!-- 4대 서비스 비교 -->
+<h2 class="section-title" data-ke-size="size26">🔍 4가지 서비스 특징 비교</h2>
+<div class="card">
+<div class="svc-grid">
+<div class="svc-card best">
+<div class="svc-header"><span class="svc-icon">🔐</span>
+<div class="svc-name">AWS Secrets Manager ⭐</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">자격증명 저장</span> <span class="chip chip-ok">✅ 지원</span></div>
+<div class="svc-row"><span class="svc-label">자동 교체</span> <span class="chip chip-ok">✅ 네이티브 지원</span></div>
+<div class="svc-row"><span class="svc-label">교체 주기 설정</span> <span class="chip chip-ok">✅ 30일 기본값</span></div>
+<div class="svc-row"><span class="svc-label">SQL Server</span> <span class="chip chip-ok">✅ 지원</span></div>
+<div class="svc-row"><span class="svc-label">Lambda 통합</span> <span class="chip chip-ok">✅ 자동 구성</span></div>
+</div>
+<div class="svc-verdict">✅ 모든 요건 충족 &mdash; 정답</div>
+</div>
+<div class="svc-card warn">
+<div class="svc-header"><span class="svc-icon">📦</span>
+<div class="svc-name">SSM Parameter Store</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">자격증명 저장</span> <span class="chip chip-ok">✅ 가능 (SecureString)</span></div>
+<div class="svc-row"><span class="svc-label">자동 교체</span> <span class="chip chip-bad">❌ 미지원</span></div>
+<div class="svc-row"><span class="svc-label">교체 주기 설정</span> <span class="chip chip-bad">❌ 없음</span></div>
+<div class="svc-row"><span class="svc-label">SQL Server</span> <span class="chip chip-ok">✅ 무관</span></div>
+<div class="svc-row"><span class="svc-label">비용</span> <span class="chip chip-ok">✅ 무료 (Standard)</span></div>
+</div>
+<div class="svc-verdict">⚠️ 저장 가능하나 자동 교체 불가</div>
+</div>
+<div class="svc-card bad">
+<div class="svc-header"><span class="svc-icon">🪪</span>
+<div class="svc-name">IAM 데이터베이스 인증</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">자격증명 저장</span> <span class="chip chip-bad">❌ IAM 토큰 방식</span></div>
+<div class="svc-row"><span class="svc-label">자동 교체</span> <span class="chip chip-ok">✅ 토큰 15분 만료</span></div>
+<div class="svc-row"><span class="svc-label">MySQL/PostgreSQL</span> <span class="chip chip-ok">✅ 지원</span></div>
+<div class="svc-row"><span class="svc-label">SQL Server</span> <span class="chip chip-bad">❌ 미지원</span></div>
+<div class="svc-row"><span class="svc-label">MariaDB</span> <span class="chip chip-ok">✅ 지원</span></div>
+</div>
+<div class="svc-verdict">❌ SQL Server 미지원 &mdash; 탈락</div>
+</div>
+<div class="svc-card bad">
+<div class="svc-header"><span class="svc-icon">🎫</span>
+<div class="svc-name">AWS STS</div>
+</div>
+<div class="svc-rows">
+<div class="svc-row"><span class="svc-label">목적</span> <span class="chip chip-bad">임시 AWS 자격증명</span></div>
+<div class="svc-row"><span class="svc-label">DB 자격증명</span> <span class="chip chip-bad">❌ 해당 없음</span></div>
+<div class="svc-row"><span class="svc-label">자동 교체</span> <span class="chip chip-bad">❌ 별도 구성 필요</span></div>
+<div class="svc-row"><span class="svc-label">노출 위험 완화</span> <span class="chip chip-bad">❌ 불완전</span></div>
+<div class="svc-row"><span class="svc-label">SQL Server</span> <span class="chip chip-bad">❌ 해당 없음</span></div>
+</div>
+<div class="svc-verdict">❌ RDS DB 인증용이 아님</div>
+</div>
+</div>
+<!-- 경고 박스 -->
+<div class="alert alert-red" style="margin-top:12px">⚠️ <b>핵심 함정:</b> IAM 데이터베이스 인증은 MySQL, MariaDB, PostgreSQL만 지원합니다. <b>Microsoft SQL Server, Oracle은 지원하지 않습니다.</b></div>
+</div>
+<!-- IAM DB 인증 지원 엔진 -->
+<h2 class="section-title" data-ke-size="size26">🗄️ IAM 데이터베이스 인증 &mdash; 지원 엔진</h2>
+<div class="card">
+<p style="font-size:13px;color:var(--muted);margin-bottom:14px" data-ke-size="size16">IAM 데이터베이스 인증은 아래 엔진에서만 동작합니다. 시험에 자주 출제되는 함정 포인트입니다.</p>
+<div class="engine-grid">
+<div class="engine-card ok">
+<div class="e-icon">🐬</div>
+<div class="e-name">MySQL</div>
+<div class="e-chip">✅ 지원</div>
+</div>
+<div class="engine-card ok">
+<div class="e-icon">🐘</div>
+<div class="e-name">PostgreSQL</div>
+<div class="e-chip">✅ 지원</div>
+</div>
+<div class="engine-card ok">
+<div class="e-icon">🐟</div>
+<div class="e-name">MariaDB</div>
+<div class="e-chip">✅ 지원</div>
+</div>
+<div class="engine-card ok">
+<div class="e-icon">☁️</div>
+<div class="e-name">Aurora<br />MySQL/PG</div>
+<div class="e-chip">✅ 지원</div>
+</div>
+<div class="engine-card bad">
+<div class="e-icon">🪟</div>
+<div class="e-name">SQL Server</div>
+<div class="e-chip">❌ 미지원</div>
+</div>
+<div class="engine-card bad">
+<div class="e-icon">🏛️</div>
+<div class="e-name">Oracle</div>
+<div class="e-chip">❌ 미지원</div>
+</div>
+<div class="engine-card bad">
+<div class="e-icon">🗄️</div>
+<div class="e-name">DB2</div>
+<div class="e-chip">❌ 미지원</div>
+</div>
+<div class="engine-card bad">
+<div class="e-icon">🔴</div>
+<div class="e-name">Custom<br />SQL Server</div>
+<div class="e-chip">❌ 미지원</div>
+</div>
+</div>
+</div>
+<!-- Secrets Manager 자동 교체 흐름 -->
+<h2 class="section-title" data-ke-size="size26">🔄 Secrets Manager 자동 교체 동작 흐름</h2>
+<div class="card">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:14px" data-ke-size="size16">30일 주기 자동 교체 &mdash; 무중단으로 비밀번호 교체</p>
+<div class="flow-row">
+<div class="flow-box blue">Secrets Manager</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box orange">Lambda 교체 함수 호출</div>
+<div class="flow-note">30일마다 자동 트리거</div>
+</div>
+<div class="flow-row">
+<div class="flow-box orange">Lambda</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box green">새 비밀번호 생성</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box blue">RDS SQL Server에 적용</div>
+</div>
+<div class="flow-row">
+<div class="flow-box blue">Secrets Manager</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box green">새 자격 증명 버전 저장</div>
+<div class="flow-note">이전 버전도 일정 기간 유지</div>
+</div>
+<div class="flow-row">
+<div class="flow-box orange">EC2 애플리케이션</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box blue">Secrets Manager API 호출</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-box green">최신 자격 증명 반환</div>
+</div>
+<div class="alert alert-orange" style="margin-top:12px">💡 <b>핵심:</b> 애플리케이션이 매번 Secrets Manager에서 자격 증명을 가져오기 때문에 코드에 비밀번호가 하드코딩되지 않고, 교체 시 애플리케이션 재배포도 불필요합니다.</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ IAM 데이터베이스 인증으로 RDS for SQL Server 인증 구성</div>
+<div class="opt-sub">SQL Server는 IAM DB 인증 미지원 &mdash; MySQL/MariaDB/PostgreSQL 전용</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 <b>IAM 데이터베이스 인증은 Microsoft SQL Server에서 작동하지 않습니다.</b> MySQL, MariaDB, PostgreSQL, Aurora(MySQL/PG) 엔진에서만 지원하는 기능입니다. 문제 조건이 SQL Server인데, 이 솔루션은 기술적으로 아예 구성 자체가 불가능합니다. 시험에서 엔진 종류와 지원 서비스의 매핑 관계를 정확히 암기해야 합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ AWS Systems Manager Parameter Store에 자격 증명 저장</div>
+<div class="opt-sub">저장은 가능하나 자동 교체 미지원 &mdash; 수동 교체만 가능</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Parameter Store는 SecureString 타입으로 암호화된 자격 증명을 안전하게 저장할 수 있습니다. 그러나 <b>자동 교체(Automatic Rotation) 기능이 없습니다.</b> 자격 증명을 교체하려면 수동으로 값을 업데이트하거나 별도 Lambda 함수를 직접 구현해야 합니다. 문제 조건인 "30일마다 자동 교체"를 네이티브로 충족하지 못합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ AWS STS로 RDS for SQL Server 인증 구성</div>
+<div class="opt-sub">STS는 AWS 서비스용 임시 자격 증명 &mdash; DB 비밀번호 관리 목적이 아님</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 AWS STS(Security Token Service)는 IAM 사용자나 역할에게 <b>제한된 권한의 임시 AWS 자격 증명(액세스 키 + 세션 토큰)을 발급</b>합니다. AWS 서비스 API 호출 권한을 임시로 부여하는 용도이며, <b>RDS 데이터베이스의 DB 사용자 아이디/비밀번호를 관리하거나 교체하는 기능이 아닙니다.</b> 자격 증명 노출 위험을 근본적으로 제거할 수 없습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">D</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ AWS Secrets Manager에 자격 증명 저장</div>
+<div class="opt-sub">자동 교체 네이티브 지원 + 30일 기본 주기 + SQL Server 호환</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> AWS Secrets Manager는 RDS 자격 증명 관리에 특화된 서비스입니다. ① <b>자동 교체(Automatic Rotation)</b>를 기본 30일 주기로 네이티브 지원합니다. ② 내부적으로 Lambda 함수를 자동 생성&middot;실행하여 RDS 비밀번호를 교체하고 Secrets Manager에 새 버전을 저장합니다. ③ <b>SQL Server를 포함한 모든 RDS 엔진</b>을 지원합니다. ④ 애플리케이션이 SDK를 통해 최신 자격 증명을 동적으로 가져오므로 코드에 하드코딩이 필요 없습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: D &mdash; AWS Secrets Manager</b></p>
+<p data-ke-size="size16">이 문제의 핵심 구분 포인트는 두 가지입니다. <b>① 자동 교체 지원 여부</b>: Secrets Manager만 네이티브 지원, Parameter Store는 미지원. <b>② SQL Server와 IAM DB 인증 호환 여부</b>: IAM DB 인증은 MySQL/PostgreSQL/MariaDB 전용.</p>
+<div class="code-block"># Secrets Manager vs Parameter Store 핵심 차이 항목 Secrets Manager Parameter Store ─────────────────────────────────────────────────────── 자격증명 저장 ✅ 지원 ✅ 지원 (SecureString) 자동 교체 ✅ 네이티브 지원 ❌ 미지원 (직접 구현 필요) 교체 주기 설정 ✅ 30일 기본값 ❌ 없음 RDS 통합 ✅ Lambda 자동 생성 ❌ 없음 비용 유료 ($0.40/암호) 무료 (Standard 티어) SQL Server 지원 ✅ 모든 엔진 가능 무관 # IAM 데이터베이스 인증 지원 엔진 지원 ✅: MySQL, MariaDB, PostgreSQL, Aurora(MySQL/PG) 미지원 ❌: SQL Server, Oracle, DB2</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>서비스</th>
+<th>자격증명 저장</th>
+<th>자동 교체</th>
+<th>SQL Server 호환</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A</b></td>
+<td>IAM DB 인증</td>
+<td class="warn-text">토큰 방식</td>
+<td class="ok-text">15분 만료</td>
+<td class="bad-text">❌ 미지원</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>B</b></td>
+<td>Parameter Store</td>
+<td class="ok-text">✅ SecureString</td>
+<td class="bad-text">❌ 미지원</td>
+<td class="ok-text">무관 ✅</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>C</b></td>
+<td>AWS STS</td>
+<td class="bad-text">❌ DB용 아님</td>
+<td class="bad-text">❌ 해당 없음</td>
+<td class="bad-text">❌ 해당 없음</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>D ⭐</b></td>
+<td>Secrets Manager</td>
+<td class="ok-text">✅ 전용 지원</td>
+<td class="ok-text">✅ 네이티브</td>
+<td class="ok-text">✅ 모든 엔진</td>
+<td class="ok-text">정답</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWS데이터엔지니어</span> <span class="seo-tag">#SecretsManager</span> <span class="seo-tag">#ParameterStore</span> <span class="seo-tag">#IAM데이터베이스인증</span> <span class="seo-tag">#자격증명자동교체</span> <span class="seo-tag">#RDSSQLServer</span> <span class="seo-tag">#AWS보안</span> <span class="seo-tag">#AWSSTS</span> <span class="seo-tag">#데이터보안</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#보안암호교체</span></div>
+</article>
+</div>

@@ -1,0 +1,290 @@
+<!--
+id: 107
+제목: AWS DEA-C01 각색 문제 Day 10 — Athena, MWAA, EMR, CloudTrail Lake, Redshift
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, Athena DROP PARTITION, Amazon MWAA, EMR 보안 구성, CloudTrail Lake, Redshift ALL 분산
+날짜: 2026-03-27 23:29
+수정: 2026-03-27 23:29
+형식: html
+썸네일: /img/t/dJMcaiirECH.webp
+-->
+<style>
+.pb-107 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-107 .dea-wrap *{box-sizing:border-box}
+.pb-107 .dea-post-header{margin-bottom:32px}
+.pb-107 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-107 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-107 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-107 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-107 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-107 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-107 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-107 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-107 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-107 .dea-q-block{margin-bottom:48px}
+.pb-107 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-107 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-107 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-107 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-107 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-107 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-107 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-107 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-107 .dea-seo-lead strong{color:var(--p50)}
+.pb-107 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-107 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-107 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-107 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-107 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-107 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-107 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-107 .dea-opt.ok{border-color:var(--s60)}
+.pb-107 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-107 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-107 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-107 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-107 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-107 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-107 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-107 .dea-term{font-weight:700;color:var(--p50)}
+.pb-107 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-107 .dea-btn:hover{background:var(--p60)}
+.pb-107 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-107 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-107 .dea-exp.on{display:flex}
+.pb-107 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-107 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-107 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-107 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-107 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-107 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-107 .dea-table th, .pb-107 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-107 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-107 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-107 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-107 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-107 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-107 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-107 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-107 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-107 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-107 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-107 .dea-hl{color:var(--p50);font-weight:700}
+.pb-107 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-107 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-107 .dea-wrap{padding:14px 6px 52px}
+.pb-107 .dea-post-title{font-size:18px}
+.pb-107 .dea-qcard p{font-size:14px}
+.pb-107 .dea-opt-row{font-size:13px}
+.pb-107 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-107 .dea-table{font-size:11.5px}
+.pb-107 .dea-table th, .pb-107 .dea-table td{padding:8px 9px}
+.pb-107 .dea-ans-main{font-size:14.5px}
+.pb-107 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-107">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 10</h1>
+  <p class="dea-post-desc">Athena 부실 파티션 제거, MWAA 하이브리드 오케스트레이션, EMR 암호화 보안 구성, CloudTrail Lake 멀티계정 감사, Redshift ALL 분산 스타일 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1·2·4 · 쿼리·보안·오케스트레이션</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q46"><span class="dea-toc-num">Q46</span> Athena 파티션 삭제 후 발생하는 오류 해결</a></li>
+    <li><a href="#dea-q47"><span class="dea-toc-num">Q47</span> 온프레미스+클라우드 하이브리드 오케스트레이션 서비스</a></li>
+    <li><a href="#dea-q48"><span class="dea-toc-num">Q48</span> EMR 저장·전송 데이터 암호화 설정</a></li>
+    <li><a href="#dea-q49"><span class="dea-toc-num">Q49</span> 멀티 AWS 계정 활동 감사 + SQL 쿼리</a></li>
+    <li><a href="#dea-q50"><span class="dea-toc-num">Q50</span> Redshift 브로드캐스트 최소화 — 분산 스타일 변경</a></li>
+  </ul>
+</nav>
+
+<!-- Q46 -->
+<div class="dea-q-block" id="dea-q46">
+  <div class="dea-meta"><span class="dea-badge qnum">Q46</span><span class="dea-badge topic">Athena · 파티션 관리 · DDL</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Athena에서 S3 파티션을 수동 삭제</strong>하면 Glue 데이터 카탈로그에 파티션 메타데이터가 남아 "Partitions missing from file system" 오류가 발생합니다. <strong>ALTER TABLE DROP PARTITION</strong>으로 부실 메타데이터를 제거해야 합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>데이터 팀이 Amazon Athena 외부 테이블의 S3 파티션 경로 하나를 콘솔에서 직접 삭제했습니다. 이후 Athena 테이블을 새로 고치려 했지만 <code>"Partitions missing from file system"</code> 오류가 발생합니다. 운영 효율적으로 오류를 해결하고 테이블을 정상화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q46-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>오류가 사라질 때까지 MSCK REPAIR TABLE 명령을 반복 실행합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">MSCK REPAIR TABLE</span> — S3에 있는 파티션을 카탈로그에 <strong>추가</strong>하는 명령. 이미 S3에서 삭제된 파티션 메타데이터를 <strong>제거하지 않음</strong>. 반복 실행해도 오류 해결 불가.</div></li>
+    <li class="dea-opt" id="q46-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>누락된 파티션 경로를 S3에 다시 만드는 Python 스크립트를 작성합니다.</span></div><div class="dea-inline-exp">❌ 문제는 S3에 파일이 없는데 카탈로그에 메타데이터가 남아있는 것. 해결책은 S3에 파일을 복원하는 것이 아니라 <strong>카탈로그의 부실 메타데이터를 제거</strong>하는 것. 방향이 반대.</div></li>
+    <li class="dea-opt" id="q46-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>ALTER TABLE DROP PARTITION 명령으로 카탈로그에 남아있는 부실 파티션 메타데이터를 제거합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">ALTER TABLE DROP PARTITION</span> — Glue 데이터 카탈로그에서 특정 파티션 메타데이터를 제거하는 Athena DDL 명령. S3에서 이미 삭제된 파티션의 <strong>카탈로그 항목만 정확히 삭제</strong>. 한 번 실행으로 해결 가능.</div></li>
+    <li class="dea-opt" id="q46-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>VACUUM 명령을 실행하여 부실 파티션을 정리합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">VACUUM</span> — Iceberg/Delta 테이블에서 오래된 데이터 파일을 압축·정리하는 명령. Athena 파티션 메타데이터 관리와 무관. Athena에서 파티션 제거에 사용하지 않음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q46">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q46">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — ALTER TABLE DROP PARTITION으로 부실 메타데이터 제거</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Athena 파티션 관리 명령 비교</div>
+    <table class="dea-table"><thead><tr><th>명령</th><th>동작</th><th>S3 파일 삭제 후 오류 해결?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ALTER TABLE DROP PARTITION</strong></td><td>카탈로그 파티션 메타데이터 삭제</td><td><span class="dea-pill good">✓ 정확</span></td></tr>
+      <tr><td>MSCK REPAIR TABLE</td><td>S3 경로 스캔 후 메타데이터 추가</td><td><span class="dea-pill bad">✗ 추가만 가능</span></td></tr>
+      <tr><td>ALTER TABLE ADD PARTITION</td><td>수동으로 파티션 메타데이터 추가</td><td><span class="dea-pill bad">✗ 방향 반대</span></td></tr>
+      <tr><td>VACUUM</td><td>데이터 파일 정리·압축</td><td><span class="dea-pill bad">✗ 무관</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"S3 파티션 삭제 후 카탈로그 오류"<br>  →  <span class="dea-hl">ALTER TABLE DROP PARTITION</span> (부실 메타데이터 제거)<br><br>MSCK REPAIR = 추가만 가능 (제거 불가) → 이 경우 오답<br>VACUUM = 파티션 관리 아님</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q47 -->
+<div class="dea-q-block" id="dea-q47">
+  <div class="dea-meta"><span class="dea-badge qnum">Q47</span><span class="dea-badge topic">MWAA · 하이브리드 · 오픈소스 오케스트레이션</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon MWAA(Managed Workflows for Apache Airflow)</strong>는 오픈소스 Apache Airflow를 완전 관리형으로 제공합니다. 온프레미스와 클라우드 리소스를 모두 오케스트레이션할 수 있으며, 오픈소스 생태계와의 호환성이 핵심 강점입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>데이터 팀이 온프레미스 리소스와 AWS 클라우드 리소스를 함께 사용하는 하이브리드 데이터 오케스트레이션 워크플로를 구축하려 합니다. 이동성과 오픈소스 생태계 활용을 우선시합니다. 두 환경 모두를 지원하는 단일 서비스는 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q47-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Data Exchange</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS Data Exchange</span> — 타사 데이터셋 구독·공유 서비스. 데이터 오케스트레이션 기능 없음. 클라우드 전용 서비스로 온프레미스 연동 불가.</div></li>
+    <li class="dea-opt" id="q47-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon Simple Workflow Service(SWF)</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon SWF</span> — 분산 애플리케이션 조정 서비스. 오케스트레이션 기능은 있지만 오픈소스가 아니며 온프레미스·클라우드 하이브리드에 특화되지 않음. 추가 서비스나 드라이버가 별도로 필요.</div></li>
+    <li class="dea-opt" id="q47-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon Managed Workflows for Apache Airflow(Amazon MWAA)</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon MWAA</span> — 오픈소스 Apache Airflow의 완전 관리형 서비스. 플러그인으로 온프레미스·클라우드 데이터 소스 모두 연결 가능. 오픈소스 오퍼레이터 생태계(1,000+)를 그대로 사용. 이동성(Portability) 완벽 지원.</div></li>
+    <li class="dea-opt" id="q47-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Glue</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS Glue 워크플로</span> — AWS 클라우드 전용 ETL 오케스트레이션. 온프레미스에서 Glue 워크플로를 직접 실행할 수 없음. 오픈소스가 아닌 AWS 고유 서비스.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q47">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q47">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — Amazon MWAA (관리형 Apache Airflow)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 오케스트레이션 서비스 비교</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>오픈소스?</th><th>온프레미스 지원?</th><th>하이브리드 적합?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Amazon MWAA (Airflow)</strong></td><td><span class="dea-pill good">✓ Apache</span></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓ 최적</span></td></tr>
+      <tr><td>AWS Step Functions</td><td><span class="dea-pill bad">✗ AWS 전용</span></td><td>제한적</td><td>클라우드 중심</td></tr>
+      <tr><td>AWS Glue 워크플로</td><td><span class="dea-pill bad">✗ AWS 전용</span></td><td><span class="dea-pill bad">✗</span></td><td><span class="dea-pill bad">클라우드만</span></td></tr>
+      <tr><td>Amazon SWF</td><td><span class="dea-pill bad">✗</span></td><td>제한적</td><td>추가 서비스 필요</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"하이브리드 오케스트레이션 + 오픈소스 + 이동성"<br>  →  <span class="dea-hl">Amazon MWAA</span> (관리형 Apache Airflow)<br><br>Glue 워크플로 = 클라우드 전용 (온프레미스 불가)<br>Airflow = 오픈소스 → 어디서나 실행 가능</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q48 -->
+<div class="dea-q-block" id="dea-q48">
+  <div class="dea-meta"><span class="dea-badge qnum">Q48</span><span class="dea-badge topic">EMR · 보안 구성 · 저장·전송 암호화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon EMR 보안 구성(Security Configuration)</strong>은 클러스터의 저장 데이터 암호화(at rest)와 전송 데이터 암호화(in transit)를 한 번에 설정하는 기능입니다. IAM 정책이나 외부 소프트웨어 설치 없이 내장 기능으로 구성합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>분석팀이 Amazon EMR 클러스터에서 대용량 데이터를 처리합니다. 보안 정책상 클러스터에 저장된 데이터와 노드 간 전송 중인 데이터 모두 암호화해야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q48-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>EMR 클러스터를 시작하기 전에 부트스트랩 작업을 사용하여 각 노드에 암호화 설정 스크립트를 배포합니다.</span></div><div class="dea-inline-exp">❌ 부트스트랩 스크립트로 암호화 설정하는 것은 기술적으로 가능하지만 직접 코드 작성·유지보수 부담이 큼. EMR에 내장된 보안 구성 기능을 쓰면 코딩 없이 해결 가능.</div></li>
+    <li class="dea-opt" id="q48-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon EMR의 보안 구성(Security Configuration) 기능을 사용하여 저장 데이터 및 전송 데이터 암호화를 설정합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">EMR 보안 구성(Security Configuration)</span> — EMR 전용 보안 설정 템플릿. 저장 데이터 암호화(S3, HDFS, EBS), 전송 중 암호화(노드 간 TLS), Kerberos 인증을 GUI/JSON으로 한번에 설정. 클러스터 생성 시 보안 구성을 선택하면 자동 적용.</div></li>
+    <li class="dea-opt" id="q48-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>EMR 클러스터에서 암호화를 허용하는 IAM 정책을 생성합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">IAM 정책</span> — AWS 리소스 접근 권한 관리. 암호화 설정은 IAM 정책이 아닌 EMR 보안 구성에서 수행. IAM으로 "암호화를 허용"해도 실제 암호화가 활성화되지 않음.</div></li>
+    <li class="dea-opt" id="q48-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>각 EMR 클러스터 노드에 서드파티 암호화 소프트웨어를 직접 설치하고 구성합니다.</span></div><div class="dea-inline-exp">❌ 외부 소프트웨어 설치·유지보수·라이선스 관리까지 추가되어 <strong>운영 오버헤드가 가장 큼</strong>. EMR 내장 보안 구성으로 불필요한 작업.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q48">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q48">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — EMR 보안 구성으로 저장·전송 데이터 암호화 한번에 설정</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — EMR 보안 구성이 지원하는 암호화</div>
+    <table class="dea-table"><thead><tr><th>암호화 대상</th><th>지원 방식</th></tr></thead>
+    <tbody>
+      <tr><td>S3 저장 데이터</td><td>SSE-S3, SSE-KMS, CSE-KMS</td></tr>
+      <tr><td>HDFS 저장 데이터</td><td>HDFS 투명 암호화</td></tr>
+      <tr><td>EBS 볼륨</td><td>AWS KMS 암호화</td></tr>
+      <tr><td>노드 간 전송 데이터</td><td>TLS(전송 계층 보안)</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"EMR 저장·전송 데이터 암호화"  →  <span class="dea-hl">EMR 보안 구성(Security Configuration)</span><br><br>IAM 정책 = 접근 제어 (암호화 설정 아님)<br>EMR 보안 구성 = 암호화 전용 설정 템플릿 (내장, 코딩 불필요)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q49 -->
+<div class="dea-q-block" id="dea-q49">
+  <div class="dea-meta"><span class="dea-badge qnum">Q49</span><span class="dea-badge topic">CloudTrail Lake · 멀티계정 감사 · SQL 쿼리</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS CloudTrail Lake</strong>는 여러 AWS 계정의 CloudTrail 이벤트를 이벤트 데이터 스토어로 집계하고 SQL로 직접 쿼리할 수 있는 완전관리형 서비스입니다. S3 + Glue + Athena 파이프라인보다 훨씬 적은 설정으로 구현 가능합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>다수의 AWS 계정을 운영하는 기업이 모든 계정의 활동을 중앙에서 감사하려 합니다. 감사팀이 SQL 쿼리로 이벤트 로그를 분석할 수 있어야 합니다. 최소한의 개발·관리 작업으로 구현하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q49-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>중앙 S3 버킷으로 CloudTrail 로그를 수집하고, Glue ETL로 JSON을 변환한 뒤 Athena로 쿼리합니다.</span></div><div class="dea-inline-exp">❌ S3 프로비저닝 + Glue ETL 작업 구성 + Athena 테이블 스키마 정의 + SQL 스크립트 작성까지 <strong>여러 단계를 직접 구성</strong>해야 함. 개발·관리 부담이 큼.</div></li>
+    <li class="dea-opt" id="q49-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>AWS CloudTrail Lake를 사용하여 이벤트 데이터 스토어를 생성하고 SQL 쿼리로 분석합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS CloudTrail Lake</span> — 여러 계정 이벤트를 이벤트 데이터 스토어로 자동 집계 + SQL 쿼리 기능 내장. 별도 S3·Glue·Athena 설정 없이 CloudTrail Lake 하나로 완결. <strong>최소 설정으로 멀티계정 감사 + SQL 분석</strong> 구현.</div></li>
+    <li class="dea-opt" id="q49-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>중앙 S3 버킷으로 CloudTrail 로그를 수집하고 Redshift에 로드하여 쿼리합니다.</span></div><div class="dea-inline-exp">❌ S3 + Redshift 클러스터 배포 + COPY 명령 구성까지 <strong>추가 인프라와 설정</strong>이 필요. 관리 부담이 높음.</div></li>
+    <li class="dea-opt" id="q49-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>계정별 S3 버킷에 CloudTrail 로그를 수집하고 중앙 Glue 카탈로그 + Athena로 쿼리합니다.</span></div><div class="dea-inline-exp">❌ 계정별 S3 버킷 관리 + Glue 크롤러 + ETL 작업 + Athena 설정까지 가장 많은 구성이 필요. <strong>개발·관리 오버헤드 최대</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q49">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q49">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — CloudTrail Lake로 멀티계정 이벤트 수집 + SQL 분석</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — CloudTrail 로그 분석 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>SQL 쿼리</th><th>설정 복잡도</th><th>관리 부담</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CloudTrail Lake</strong></td><td><span class="dea-pill good">✓ 내장</span></td><td><span class="dea-pill good">최소</span></td><td><span class="dea-pill good">완전관리형</span></td></tr>
+      <tr><td>S3 + Athena</td><td>✓ (설정 필요)</td><td>중간</td><td>중간</td></tr>
+      <tr><td>S3 + Glue + Athena</td><td>✓ (많은 설정)</td><td>높음</td><td>높음</td></tr>
+      <tr><td>S3 + Redshift</td><td>✓ (클러스터 필요)</td><td>높음</td><td>높음</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"멀티 AWS 계정 감사 + SQL 쿼리 + 최소 설정"<br>  →  <span class="dea-hl">AWS CloudTrail Lake</span><br><br>이벤트 데이터 스토어 생성 → SQL 쿼리 바로 실행<br>S3+Glue+Athena = 여러 단계 직접 구성 필요</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q50 -->
+<div class="dea-q-block" id="dea-q50">
+  <div class="dea-meta"><span class="dea-badge qnum">Q50</span><span class="dea-badge topic">Redshift · 분산 스타일 · ALL 분산</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Redshift ALL 분산 스타일</strong>은 테이블 전체 복사본을 모든 노드에 배치합니다. 자주 변경되지 않는 소규모 차원 테이블에 적합하며, 조인 시 브로드캐스트(네트워크 전송)를 제거해 쿼리 성능을 크게 향상시킵니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>Redshift 클러스터에서 트랜잭션, 매장위치, 고객 테이블 세 개가 EVEN 분산으로 설정되어 있습니다. 매장위치 테이블은 수년에 한두 번만 업데이트됩니다. 대부분의 쿼리 실행 시 매장위치 테이블 전체가 4개 노드 모두로 브로드캐스트되어 성능이 저하됩니다. 가장 비용 효율적으로 브로드캐스트를 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q50-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>매장위치 테이블의 분산 스타일을 EVEN에서 ALL로 변경합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">ALL 분산</span> — 테이블 전체를 모든 노드에 미리 복사해 두는 방식. 쿼리 실행 시 브로드캐스트(실시간 전송) 불필요 → 네트워크 오버헤드 제거. 수년에 한두 번만 업데이트되는 <strong>느리게 변하는 차원 테이블에 최적</strong>.</div></li>
+    <li class="dea-opt" id="q50-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>매장위치 테이블을 카디널리티가 높은 컬럼 기준 KEY 분산으로 변경합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">KEY 분산</span> — 특정 키 값으로 행을 각 노드에 분산. 같은 키 값끼리 같은 노드에 모임. 브로드캐스트를 줄이지 않음. 팩트-차원 테이블 조인 최적화에는 조인 키로 KEY 분산이 유리하지만 이 케이스엔 부적합.</div></li>
+    <li class="dea-opt" id="q50-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>모든 테이블 정렬 키에 매장 ID 조인 컬럼을 추가합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">정렬 키(Sort Key)</span> — 노드 내 데이터 정렬로 범위 스캔 최적화. 노드 간 브로드캐스트를 줄이는 기능은 없음. 서로 다른 문제를 해결하는 설정.</div></li>
+    <li class="dea-opt" id="q50-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Redshift 예약 노드를 더 큰 인스턴스 크기로 업그레이드합니다.</span></div><div class="dea-inline-exp">❌ 인스턴스 크기 업그레이드는 각 노드의 컴퓨팅·메모리 증가. 노드 간 브로드캐스트 자체는 줄어들지 않음. 추가 비용만 발생.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q50">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q50">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — ALL 분산으로 브로드캐스트 제거</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Redshift 분산 스타일 비교</div>
+    <table class="dea-table"><thead><tr><th>분산 스타일</th><th>데이터 배치</th><th>적합한 테이블</th><th>브로드캐스트?</th></tr></thead>
+    <tbody>
+      <tr><td>EVEN</td><td>라운드 로빈 균등 분산</td><td>일반 팩트 테이블</td><td>조인 시 발생</td></tr>
+      <tr><td><strong>ALL</strong></td><td>모든 노드에 전체 복사</td><td>소규모·느린 변경 차원 테이블</td><td><span class="dea-pill good">✗ 제거됨</span></td></tr>
+      <tr><td>KEY</td><td>키 값 기준 분산</td><td>팩트-차원 조인 키 일치</td><td>키 일치 시 제거</td></tr>
+      <tr><td>AUTO</td><td>Redshift 자동 선택</td><td>일반 케이스</td><td>상황에 따라</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"브로드캐스트 반복 발생 + 자주 안 바뀌는 소규모 테이블"<br>  →  <span class="dea-hl">ALL 분산</span> (모든 노드에 미리 복사, 브로드캐스트 제거)<br><br>EVEN = 균등 분산 (브로드캐스트 여전히 발생)<br>ALL  = 차원 테이블 전용 (느린 업데이트 테이블에 최적)</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">Athena DROP PARTITION</span><span class="dea-tag">Amazon MWAA</span><span class="dea-tag">EMR 보안 구성</span><span class="dea-tag">CloudTrail Lake</span><span class="dea-tag">Redshift ALL 분산</span><span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var q=[
+    {id:'q46',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — ALTER TABLE DROP PARTITION'},
+    {id:'q47',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Amazon MWAA'},
+    {id:'q48',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — EMR 보안 구성'},
+    {id:'q49',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — CloudTrail Lake'},
+    {id:'q50',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — ALL 분산 스타일'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);
+    if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

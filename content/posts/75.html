@@ -1,0 +1,389 @@
+<!--
+id: 75
+제목: AWS DEA-C01 공식 샘플 문제 — Macie + EventBridge 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: AWS, DEA, Data Engineering, 데이터 엔지니어, eventbridge, 데이터 엔지니어링, Data Engineer, Macie, PII, 개인정보식별
+날짜: 2026-03-14 22:31
+수정: 2026-03-24 22:25
+형식: html
+썸네일: /img/t/dJMcaa5Cfk4.webp
+-->
+<style>
+.pb-75 *, .pb-75, .pb-75 *::before, .pb-75 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-75{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-75{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-75 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-75 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-75 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-75 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-75 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-75 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-75 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-75 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-75 .badge-red{background:var(--red-light);color:var(--red);border:1px solid var(--red-border)}
+.pb-75 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-75 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-75 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-75 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-75 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-75 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-75 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-75 .question-box p:last-child{margin-bottom:0}
+.pb-75 .hl-blue{color:var(--blue);font-weight:700}
+.pb-75 .hl-orange{color:var(--orange);font-weight:700}
+.pb-75 .hl-green{color:var(--green);font-weight:700}
+.pb-75 .hl-red{color:var(--red);font-weight:700}
+.pb-75 .hl-bold{font-weight:900}
+.pb-75 .req-list{list-style:none;padding:0}
+.pb-75 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-75 .req-list li:last-child{border-bottom:none}
+.pb-75 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-75 .arch-flow{display:flex;flex-direction:column;gap:8px}
+.pb-75 .arch-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pb-75 .arch-box{padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700;border:1.5px solid;text-align:center;line-height:1.4}
+.pb-75 .arch-box.blue{background:var(--blue-light);color:var(--blue);border-color:var(--p10)}
+.pb-75 .arch-box.orange{background:var(--y5);color:var(--orange);border-color:var(--y50)}
+.pb-75 .arch-box.green{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
+.pb-75 .arch-box.purple{background:var(--g5);color:var(--purple);border-color:var(--p10)}
+.pb-75 .arch-box.red{background:var(--red-light);color:var(--red);border-color:var(--red-border)}
+.pb-75 .arch-box.teal{background:var(--i5);color:var(--teal);border-color:var(--i50)}
+.pb-75 .arch-box.gray{background:var(--p5);color:var(--muted);border-color:var(--border)}
+.pb-75 .arch-arrow{font-size:16px;color:var(--muted);flex-shrink:0}
+.pb-75 .arch-note{font-size:11px;color:var(--muted);padding:4px 8px;background:var(--g0);border-radius:6px;border:1px solid var(--border)}
+.pb-75 .macie-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media (max-width: 520px){.pb-75 .macie-grid{grid-template-columns:1fr}}
+.pb-75 .macie-item{border-radius:10px;padding:12px 13px;background:var(--g5);border:1.5px solid var(--p10)}
+.pb-75 .macie-item .mi-title{font-size:12px;font-weight:800;color:var(--purple);margin-bottom:5px}
+.pb-75 .macie-item .mi-desc{font-size:11px;color:var(--muted);line-height:1.6}
+.pb-75 .sol-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media (max-width: 520px){.pb-75 .sol-compare{grid-template-columns:1fr}}
+.pb-75 .sol-card{border-radius:12px;padding:14px;border:1.5px solid}
+.pb-75 .sol-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-75 .sol-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-75 .sol-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pb-75 .sol-icon{font-size:18px}
+.pb-75 .sol-name{font-weight:800;font-size:12px;line-height:1.3}
+.pb-75 .sol-card.ok  .sol-name{color:var(--green)}
+.pb-75 .sol-card.bad .sol-name{color:var(--red)}
+.pb-75 .sol-rows{display:flex;flex-direction:column;gap:4px}
+.pb-75 .sol-row{display:flex;align-items:flex-start;gap:5px;font-size:11px}
+.pb-75 .sol-row .sl-label{color:var(--muted);width:58px;flex-shrink:0;padding-top:1px}
+.pb-75 .chip{padding:2px 7px;border-radius:99px;font-size:10px;font-weight:700}
+.pb-75 .chip-ok{background:var(--s10);color:var(--green)}
+.pb-75 .chip-bad{background:var(--r5);color:var(--red)}
+.pb-75 .chip-na{background:var(--p5);color:var(--muted)}
+.pb-75 .chip-warn{background:var(--y10);color:var(--yellow)}
+.pb-75 .sol-verdict{margin-top:8px;padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}
+.pb-75 .sol-card.ok  .sol-verdict{background:var(--s10);color:var(--green)}
+.pb-75 .sol-card.bad .sol-verdict{background:var(--r5);color:var(--red)}
+.pb-75 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-75 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-75 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-75 .alert-red{background:var(--red-light);border-color:var(--red);color:var(--r60)}
+.pb-75 .alert-green{background:var(--green-light);border-color:var(--green);color:var(--s60)}
+.pb-75 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-75 .option:hover{border-color:var(--p50)}
+.pb-75 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-75 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-75 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-75 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-75 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-75 .opt-body{flex:1;min-width:0}
+.pb-75 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-75 .opt-main.correct{color:var(--green)}
+.pb-75 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-75 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-75 .opt-why.show{display:block}
+.pb-75 .opt-why.ok-why{background:var(--s10)}
+.pb-75 .opt-why.bad-why{background:var(--r5)}
+.pb-75 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-75 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-75 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-75 .answer-body{display:none;margin-top:14px}
+.pb-75 .answer-body.show{display:block}
+.pb-75 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-75 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-75 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-75 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-75 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-75 .summary-table tr:last-child td{border-bottom:none}
+.pb-75 .summary-table tr:hover td{background:var(--g0)}
+.pb-75 .ok-text{color:var(--green);font-weight:700}
+.pb-75 .bad-text{color:var(--red);font-weight:700}
+.pb-75 .warn-text{color:var(--yellow);font-weight:700}
+.pb-75 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-75 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-75 .wrap{padding:20px 14px 50px}
+.pb-75 h1.post-title{font-size:19px}
+.pb-75 .question-box p{font-size:14px}
+.pb-75 .opt-main{font-size:13px}
+.pb-75 .code-block{font-size:11px}}
+.pb-75 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-75 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-75 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-75 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-75 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-75 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-75 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-75 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-75 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-75 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-75 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-75 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-75 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-75 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-75 .ans-label::before{content:'🎯 '}
+.pb-75 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-75 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-75 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-75 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-75 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-75 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-75">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-purple">Amazon Macie</span> <span class="badge badge-teal">Amazon EventBridge</span> <span class="badge badge-red">PII 감지</span> <span class="badge badge-orange">데이터 마스킹</span> <span class="badge badge-green">최소 운영 오버헤드</span></div>
+<h1 class="post-title">S3 PII 자동 감지 &rarr; 즉시 마스킹 호출 &mdash; Amazon Macie + EventBridge가 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 데이터 보안 자동화 문제입니다. S3에 저장된 신규&middot;기존 데이터의 <b>PII(개인 식별 정보)를 자동 감지</b>하고 <b>마스킹 애플리케이션을 즉시 호출</b>하는 솔루션으로 <b>Amazon Macie + EventBridge 이벤트 규칙</b>이 정답인 이유를 Lambda 수동 구현, S3 알림 방식과 비교하여 도식으로 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사가 <span class="hl-blue">Amazon S3 데이터 레이크</span>를 사용하며, 수집&middot;저장되는 일부 데이터에는 <span class="hl-red">PII(개인 식별 정보)</span>가 포함된다.</p>
+<p data-ke-size="size16">데이터 엔지니어는 <span class="hl-bold">신규 및 기존 데이터의 PII를 자동으로 식별</span>하고 <span class="hl-bold">식별된 데이터의 개요를 제공</span>해야 한다. 데이터를 마스킹하는 작업은 <span class="hl-orange">이미 생성된 애플리케이션</span>에서 처리하며, 데이터 엔지니어는 <span class="hl-bold">PII가 발견되는 즉시 이 애플리케이션을 호출</span>해야 한다.</p>
+<p data-ke-size="size16">다음 중 <span class="hl-bold">최소한의 운영 오버헤드</span>로 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 분석</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🔍</span>
+<div><b>PII 자동 식별 &mdash; 신규 + 기존 데이터 모두</b><br /><span style="font-size:13px;color:var(--muted)">단순히 새 파일 업로드 감지가 아니라, 이미 저장된 기존 데이터도 스캔해야 함</span></div>
+</li>
+<li><span class="req-icon">📊</span>
+<div><b>식별된 데이터 개요(Overview) 제공</b><br /><span style="font-size:13px;color:var(--muted)">어떤 파일에 어떤 PII가 있는지 리포트&middot;대시보드 형태로 요약 제공</span></div>
+</li>
+<li><span class="req-icon">⚡</span>
+<div><b>PII 발견 즉시 마스킹 애플리케이션 호출</b><br /><span style="font-size:13px;color:var(--muted)">폴링(주기적 확인)이 아닌 이벤트 기반(Event-Driven) 즉시 트리거</span></div>
+</li>
+<li><span class="req-icon">⚙️</span>
+<div><b>최소 운영 오버헤드</b><br /><span style="font-size:13px;color:var(--muted)">PII 감지 로직을 직접 구현하지 않고 AWS 완전관리형 서비스 활용</span></div>
+</li>
+</ul>
+</div>
+<!-- Amazon Macie 소개 -->
+<h2 class="section-title" data-ke-size="size26">🔐 Amazon Macie &mdash; PII 자동 감지 완전관리형 서비스</h2>
+<div class="card">
+<div class="alert alert-blue" style="margin-bottom:14px">💡 <b>Amazon Macie</b>는 S3 데이터에서 PII(이름&middot;이메일&middot;신용카드&middot;주민번호 등)를 머신러닝으로 자동 감지하는 AWS 완전관리형 데이터 보안 서비스입니다.</div>
+<div class="macie-grid">
+<div class="macie-item">
+<div class="mi-title">🔍 PII 자동 감지</div>
+<div class="mi-desc">100+ PII 유형 기본 지원<br />이름, 이메일, 전화, 신용카드, 여권번호, 주민번호 등<br />커스텀 식별자 추가 가능</div>
+</div>
+<div class="macie-item">
+<div class="mi-title">📊 결과 개요 제공</div>
+<div class="mi-desc">Macie 결과(Findings)로 어떤 S3 버킷&middot;파일에 PII가 있는지 상세 보고서 제공<br />AWS Console + API 조회 가능</div>
+</div>
+<div class="macie-item">
+<div class="mi-title">🗂️ 신규 + 기존 데이터 모두 스캔</div>
+<div class="mi-desc">예약 작업(Scheduled Job)으로 기존 S3 데이터 스캔<br />새 업로드 감지 + 증분 스캔 지원</div>
+</div>
+<div class="macie-item">
+<div class="mi-title">📡 EventBridge 자동 통합</div>
+<div class="mi-desc">Macie 결과 생성 시 EventBridge 기본 이벤트 버스에 자동 이벤트 발행<br />별도 구성 없이 즉시 연동</div>
+</div>
+</div>
+<!-- 정답 아키텍처 흐름 -->
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin:14px 0 10px" data-ke-size="size16">🏗️ 정답 아키텍처 &mdash; Macie + EventBridge 자동화 흐름</p>
+<div class="arch-flow">
+<div class="arch-row">
+<div class="arch-box blue">S3 데이터 레이크<br />(신규 + 기존)</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box purple">Amazon Macie<br />PII 자동 스캔</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box purple">Macie 결과<br />(Finding) 생성</div>
+</div>
+<div class="arch-row" style="margin-left:20px">
+<div class="arch-arrow">&darr;</div>
+<div class="arch-note" style="margin-left:4px">자동으로 EventBridge 이벤트 버스에 발행</div>
+</div>
+<div class="arch-row">
+<div class="arch-box teal">EventBridge<br />기본 이벤트 버스</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box teal">Macie Finding<br />규칙 매칭</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-box green">마스킹 애플리케이션<br />즉시 호출 ✅</div>
+</div>
+</div>
+<div class="alert alert-green" style="margin-top:14px">✅ <b>핵심:</b> Macie는 활성화만 하면 자동으로 EventBridge에 결과를 발행합니다. 별도 Lambda&middot;폴링 로직 없이 EventBridge 규칙 하나로 마스킹 앱을 즉시 트리거할 수 있어 <b>운영 오버헤드가 최소</b>입니다.</div>
+</div>
+<!-- 오답 비교 -->
+<h2 class="section-title" data-ke-size="size26">🔍 솔루션 비교 &mdash; 정답 vs 오답 이유</h2>
+<div class="card">
+<div class="sol-compare">
+<div class="sol-card ok">
+<div class="sol-header"><span class="sol-icon">🏆</span>
+<div class="sol-name">D. Macie + EventBridge ⭐</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">PII 감지</span> <span class="chip chip-ok">✅ Macie 전용</span></div>
+<div class="sol-row"><span class="sl-label">기존 데이터</span> <span class="chip chip-ok">✅ 스캔 지원</span></div>
+<div class="sol-row"><span class="sl-label">결과 개요</span> <span class="chip chip-ok">✅ Finding 제공</span></div>
+<div class="sol-row"><span class="sl-label">즉시 호출</span> <span class="chip chip-ok">✅ 이벤트 기반</span></div>
+<div class="sol-row"><span class="sl-label">오버헤드</span> <span class="chip chip-ok">✅ 최소</span></div>
+</div>
+<div class="sol-verdict">✅ 모든 요건 충족 &mdash; 정답</div>
+</div>
+<div class="sol-card bad">
+<div class="sol-header"><span class="sol-icon">⚠️</span>
+<div class="sol-name">C. Macie + Lambda 폴링</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">PII 감지</span> <span class="chip chip-ok">✅ Macie 사용</span></div>
+<div class="sol-row"><span class="sl-label">기존 데이터</span> <span class="chip chip-ok">✅ 스캔 지원</span></div>
+<div class="sol-row"><span class="sl-label">즉시 호출</span> <span class="chip chip-bad">❌ 폴링 지연</span></div>
+<div class="sol-row"><span class="sl-label">Lambda 유지</span> <span class="chip chip-bad">❌ 추가 운영</span></div>
+<div class="sol-row"><span class="sl-label">오버헤드</span> <span class="chip chip-bad">❌ 높음</span></div>
+</div>
+<div class="sol-verdict">❌ 폴링 방식 &mdash; 즉시 호출 요건 미충족</div>
+</div>
+<div class="sol-card bad">
+<div class="sol-header"><span class="sol-icon">⚠️</span>
+<div class="sol-name">A. Lambda 직접 PII 분석</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">PII 감지</span> <span class="chip chip-bad">❌ 직접 구현</span></div>
+<div class="sol-row"><span class="sl-label">기존 데이터</span> <span class="chip chip-bad">❌ S3 알림만</span></div>
+<div class="sol-row"><span class="sl-label">결과 개요</span> <span class="chip chip-bad">❌ 별도 구현</span></div>
+<div class="sol-row"><span class="sl-label">ML 모델</span> <span class="chip chip-bad">❌ 없음</span></div>
+<div class="sol-row"><span class="sl-label">오버헤드</span> <span class="chip chip-bad">❌ 매우 높음</span></div>
+</div>
+<div class="sol-verdict">❌ PII 감지 로직 직접 구현 필요</div>
+</div>
+<div class="sol-card bad">
+<div class="sol-header"><span class="sol-icon">⚠️</span>
+<div class="sol-name">B. S3 알림 + EventBridge</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">PII 감지</span> <span class="chip chip-bad">❌ 없음</span></div>
+<div class="sol-row"><span class="sl-label">기존 데이터</span> <span class="chip chip-bad">❌ 신규만</span></div>
+<div class="sol-row"><span class="sl-label">결과 개요</span> <span class="chip chip-bad">❌ 없음</span></div>
+<div class="sol-row"><span class="sl-label">업로드 감지</span> <span class="chip chip-ok">✅ S3 알림</span></div>
+<div class="sol-row"><span class="sl-label">PII 여부 판단</span> <span class="chip chip-bad">❌ 불가</span></div>
+</div>
+<div class="sol-verdict">❌ PII 감지 기능 자체가 없음</div>
+</div>
+</div>
+<div class="alert alert-orange">⚠️ <b>핵심 함정 &mdash; C vs D:</b> C는 Macie를 사용하지만 <b>Lambda가 주기적으로 Macie 결과를 폴링</b>합니다. 문제 조건 "PII 발견 즉시 호출"을 충족하지 못하며 Lambda 스케줄 관리 오버헤드가 추가됩니다. D는 Macie 결과가 EventBridge에 <b>자동 발행</b>되어 즉시 트리거되므로 완전 이벤트 기반입니다.</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ Lambda 함수로 PII 직접 분석 + S3 신규 업로드 알림으로 Lambda 호출</div>
+<div class="opt-sub">PII 감지 로직 직접 구현 + 기존 데이터 스캔 불가 + 결과 개요 없음</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 세 가지 문제가 있습니다. 첫째, <b>Lambda로 PII를 직접 분석하려면 머신러닝 모델&middot;정규표현식 등 복잡한 로직을 직접 구현</b>해야 합니다. 이는 운영 오버헤드가 매우 크고 Amazon Macie처럼 100+ PII 유형을 정확하게 감지하기 어렵습니다. 둘째, S3 버킷 알림은 <b>신규 업로드 이벤트에만 동작</b>하므로 기존에 저장된 데이터는 스캔할 수 없습니다. 셋째, 식별된 데이터의 개요(결과 리포트)를 제공하는 기능도 별도로 구현해야 합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ S3 알림 + EventBridge 규칙 &rarr; 마스킹 애플리케이션 호출</div>
+<div class="opt-sub">PII 감지 기능 자체가 없음 &mdash; 업로드 이벤트만 감지, PII 여부 판단 불가</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 S3 알림과 EventBridge 규칙을 조합하면 새 객체 업로드 시 마스킹 애플리케이션을 호출하는 것은 가능합니다. 그러나 <b>이 구성에는 PII를 감지하는 기능이 전혀 없습니다.</b> 모든 업로드 파일을 무조건 마스킹 애플리케이션에 전달하게 되어 PII가 없는 파일도 처리하게 됩니다. 또한 기존 데이터 스캔과 식별 결과 개요 제공도 불가능합니다. "PII 발견 즉시"가 아니라 "파일 업로드 즉시" 트리거되는 구조입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Macie 활성화 + Lambda 예약 실행으로 Macie 결과 폴링 &rarr; 마스킹 애플리케이션 호출</div>
+<div class="opt-sub">Macie 사용은 올바르나 폴링 방식 &mdash; "즉시 호출" 요건 미충족 + Lambda 스케줄 관리 오버헤드</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Macie를 사용하여 PII를 감지하는 방향은 올바릅니다. 그러나 <b>Lambda가 예약(Schedule)에 따라 주기적으로 Macie 결과를 폴링</b>하는 구조는 문제 조건인 "PII가 발견되는 즉시 호출"을 충족하지 못합니다. 폴링 주기(예: 5분, 1시간)만큼의 지연이 발생합니다. 또한 Lambda 함수 생성&middot;스케줄 관리&middot;오류 처리 등 불필요한 운영 오버헤드가 추가됩니다. Macie는 결과 생성 즉시 EventBridge에 자동으로 이벤트를 발행하므로, Lambda 폴링 없이 EventBridge 규칙만으로 더 간단하게 처리할 수 있습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">D</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Macie 활성화 + Macie 결과 기반 EventBridge 규칙 &rarr; 마스킹 애플리케이션을 대상으로 설정</div>
+<div class="opt-sub">PII 자동 감지(Macie) + 즉시 이벤트 트리거(EventBridge) + 결과 개요(Finding) + 최소 오버헤드</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> 4가지 요건을 모두 최소 오버헤드로 충족합니다. ① <b>PII 자동 식별 (신규 + 기존):</b> Amazon Macie는 S3 버킷의 신규 업로드와 기존 객체 모두를 스캔하여 100+ PII 유형을 머신러닝으로 자동 감지합니다. ② <b>결과 개요 제공:</b> Macie Finding(결과)이 어떤 파일에 어떤 PII가 있는지 상세 보고서를 제공합니다. ③ <b>즉시 호출:</b> Macie는 결과 생성 즉시 EventBridge 기본 이벤트 버스에 자동으로 이벤트를 발행합니다. EventBridge 규칙이 이 이벤트를 감지하고 마스킹 애플리케이션을 즉시 호출합니다. ④ <b>최소 운영 오버헤드:</b> Lambda&middot;스케줄&middot;폴링 로직이 필요 없습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: D &mdash; Amazon Macie + EventBridge 이벤트 규칙</b></p>
+<p data-ke-size="size16">이 문제의 핵심 구분 포인트는 두 가지입니다. <b>① PII 감지 전용 서비스(Macie) vs 직접 구현:</b> Lambda로 PII를 직접 분석하는 것은 복잡하고 오버헤드가 크며, S3 알림에는 PII 감지 기능이 없습니다. <b>② 폴링(C) vs 이벤트 기반(D):</b> "즉시 호출" 조건은 EventBridge 이벤트 규칙으로만 충족됩니다.</p>
+<div class="code-block"># 정답 D &mdash; Macie + EventBridge 자동화 파이프라인 S3 데이터 레이크 (신규 + 기존 객체) &darr; (스캔) Amazon Macie ├─ PII 자동 감지 (100+ 유형, ML 기반) ├─ 신규&middot;기존 데이터 모두 스캔 지원 └─ Macie Finding(결과) 생성 &rarr; 개요 제공 &darr; (자동 이벤트 발행) EventBridge 기본 이벤트 버스 &darr; (Macie Finding 타입 규칙 매칭) 마스킹 애플리케이션 즉시 호출 ✅ # 오답 C vs 정답 D 핵심 차이 C: Macie + Lambda(폴링) &rarr; IteratorAge 지연, Lambda 관리 필요 D: Macie + EventBridge(Push) &rarr; 즉시 트리거, 서버리스 완전 자동화 # Macie가 충족하는 요건 ✅ PII 자동 감지 (직접 구현 불필요) ✅ 신규 + 기존 데이터 스캔 ✅ Finding으로 결과 개요 제공 ✅ EventBridge 자동 통합 (폴링 불필요)</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>PII 감지</th>
+<th>기존 데이터</th>
+<th>결과 개요</th>
+<th>즉시 호출</th>
+<th>오버헤드</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A</b></td>
+<td class="bad-text">직접 구현</td>
+<td class="bad-text">❌ 신규만</td>
+<td class="bad-text">❌ 없음</td>
+<td class="warn-text">이벤트 기반</td>
+<td class="bad-text">매우 높음</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>B</b></td>
+<td class="bad-text">❌ 없음</td>
+<td class="bad-text">❌ 신규만</td>
+<td class="bad-text">❌ 없음</td>
+<td class="warn-text">업로드만</td>
+<td class="warn-text">낮음</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>C</b></td>
+<td class="ok-text">✅ Macie</td>
+<td class="ok-text">✅ 지원</td>
+<td class="ok-text">✅ Finding</td>
+<td class="bad-text">❌ 폴링 지연</td>
+<td class="warn-text">중간</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>D ⭐</b></td>
+<td class="ok-text">✅ Macie</td>
+<td class="ok-text">✅ 지원</td>
+<td class="ok-text">✅ Finding</td>
+<td class="ok-text">✅ 즉시</td>
+<td class="ok-text">최소</td>
+<td class="ok-text">정답</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AmazonMacie</span> <span class="seo-tag">#AmazonEventBridge</span> <span class="seo-tag">#PII감지</span> <span class="seo-tag">#개인식별정보</span> <span class="seo-tag">#데이터마스킹</span> <span class="seo-tag">#S3데이터레이크</span> <span class="seo-tag">#MacieFinding</span> <span class="seo-tag">#이벤트기반아키텍처</span> <span class="seo-tag">#최소운영오버헤드</span> <span class="seo-tag">#데이터보안자동화</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

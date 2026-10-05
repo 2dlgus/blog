@@ -1,0 +1,350 @@
+<!--
+id: 78
+제목: AWS DEA-C01 공식 샘플 문제 — Redshift SUPER 타입 + PartiQL 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, AWS, DEA, Redshift, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, partiql, SUPER 데이터 타입
+날짜: 2026-03-15 12:54
+수정: 2026-03-24 22:25
+형식: html
+썸네일: /img/t/dJMcadgX3RO.webp
+-->
+<style>
+.pb-78 *, .pb-78, .pb-78 *::before, .pb-78 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-78{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--yellow:var(--y50);--teal:var(--i60);--indigo:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-78{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-78 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-78 .post-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-78 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.pb-78 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-78 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-78 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-78 .badge-teal{background:var(--i5);color:var(--teal);border:1px solid var(--i50)}
+.pb-78 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-78 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;margin-bottom:10px}
+.pb-78 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-78 h2.section-title{font-size:16px;font-weight:700;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-78 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-78 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-78 .question-box{background:linear-gradient(135deg, var(--p5), var(--s5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-78 .question-box p{font-size:15px;line-height:1.85;margin-bottom:10px}
+.pb-78 .question-box p:last-child{margin-bottom:0}
+.pb-78 .hl-blue{color:var(--blue);font-weight:700}
+.pb-78 .hl-orange{color:var(--orange);font-weight:700}
+.pb-78 .hl-green{color:var(--green);font-weight:700}
+.pb-78 .hl-bold{font-weight:900}
+.pb-78 .req-list{list-style:none;padding:0}
+.pb-78 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-78 .req-list li:last-child{border-bottom:none}
+.pb-78 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-78 .concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media (max-width: 520px){.pb-78 .concept-grid{grid-template-columns:1fr}}
+.pb-78 .concept-card{border-radius:12px;padding:14px;border:1.5px solid}
+.pb-78 .concept-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-78 .concept-card.info{background:var(--g5);border-color:var(--p10)}
+.pb-78 .cc-title{font-size:13px;font-weight:800;margin-bottom:8px}
+.pb-78 .concept-card.ok   .cc-title{color:var(--green)}
+.pb-78 .concept-card.info .cc-title{color:var(--purple)}
+.pb-78 .cc-body{font-size:12px;color:var(--muted);line-height:1.7}
+.pb-78 .json-block{background:var(--p70);border-radius:10px;padding:14px 16px;font-family:'JetBrains Mono', monospace;font-size:12px;line-height:1.8;overflow-x:auto;white-space:pre;margin-bottom:14px}
+.pb-78 .j-key{color:var(--p50)}
+.pb-78 .j-str{color:var(--s60)}
+.pb-78 .j-num{color:var(--y60)}
+.pb-78 .j-nested{color:var(--p50)}
+.pb-78 .j-comment{color:var(--g50)}
+.pb-78 .sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width: 520px){.pb-78 .sol-grid{grid-template-columns:1fr}}
+.pb-78 .sol-card{border-radius:12px;padding:13px;border:1.5px solid}
+.pb-78 .sol-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-78 .sol-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-78 .sol-card.warn{background:var(--y5);border-color:var(--y50)}
+.pb-78 .sol-header{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.pb-78 .sol-icon{font-size:18px}
+.pb-78 .sol-name{font-weight:800;font-size:12px;line-height:1.3}
+.pb-78 .sol-card.ok  .sol-name{color:var(--green)}
+.pb-78 .sol-card.bad .sol-name{color:var(--red)}
+.pb-78 .sol-card.warn .sol-name{color:var(--yellow)}
+.pb-78 .sol-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.pb-78 .sol-row{display:flex;align-items:flex-start;gap:6px;font-size:11px}
+.pb-78 .sol-row .sl-label{color:var(--muted);width:64px;flex-shrink:0;padding-top:1px}
+.pb-78 .chip{padding:2px 7px;border-radius:99px;font-size:10px;font-weight:700}
+.pb-78 .chip-ok{background:var(--s10);color:var(--green)}
+.pb-78 .chip-bad{background:var(--r5);color:var(--red)}
+.pb-78 .chip-warn{background:var(--y10);color:var(--yellow)}
+.pb-78 .chip-na{background:var(--p5);color:var(--muted)}
+.pb-78 .sol-verdict{padding:4px 9px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}
+.pb-78 .sol-card.ok  .sol-verdict{background:var(--s10);color:var(--green)}
+.pb-78 .sol-card.bad .sol-verdict{background:var(--r5);color:var(--red)}
+.pb-78 .sol-card.warn .sol-verdict{background:var(--y10);color:var(--yellow)}
+.pb-78 .alert{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;margin-bottom:12px}
+.pb-78 .alert-orange{background:var(--y5);border-color:var(--orange);color:var(--r60)}
+.pb-78 .alert-blue{background:var(--blue-light);border-color:var(--blue);color:var(--p60)}
+.pb-78 .alert-green{background:var(--green-light);border-color:var(--green);color:var(--s60)}
+.pb-78 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-78 .option:hover{border-color:var(--p50)}
+.pb-78 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-78 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-78 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-78 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-78 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-78 .opt-body{flex:1;min-width:0}
+.pb-78 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-78 .opt-main.correct{color:var(--green)}
+.pb-78 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-78 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75}
+.pb-78 .opt-why.show{display:block}
+.pb-78 .opt-why.ok-why{background:var(--s10)}
+.pb-78 .opt-why.bad-why{background:var(--r5)}
+.pb-78 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-78 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-78 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-78 .answer-body{display:none;margin-top:14px}
+.pb-78 .answer-body.show{display:block}
+.pb-78 .answer-body p{font-size:14px;line-height:1.85;margin-bottom:8px}
+.pb-78 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-78 .summary-table{width:100%;border-collapse:collapse;font-size:12px}
+.pb-78 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-78 .summary-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.5}
+.pb-78 .summary-table tr:last-child td{border-bottom:none}
+.pb-78 .summary-table tr:hover td{background:var(--g0)}
+.pb-78 .ok-text{color:var(--green);font-weight:700}
+.pb-78 .bad-text{color:var(--red);font-weight:700}
+.pb-78 .warn-text{color:var(--yellow);font-weight:700}
+.pb-78 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-78 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-78 .wrap{padding:20px 14px 50px}
+.pb-78 h1.post-title{font-size:19px}
+.pb-78 .question-box p{font-size:14px}
+.pb-78 .opt-main{font-size:13px}
+.pb-78 .code-block{font-size:11px}}
+.pb-78 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-78 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-78 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-78 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-78 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-78 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-78 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-78 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-78 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-78 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-78 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-78 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-78 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-78 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-78 .ans-label::before{content:'🎯 '}
+.pb-78 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-78 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-78 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-78 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-78 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-78 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-78">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta-row"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-teal">Amazon Redshift</span> <span class="badge badge-purple">SUPER 타입</span> <span class="badge badge-orange">PartiQL</span> <span class="badge badge-green">중첩 JSON 쿼리</span></div>
+<h1 class="post-title">중첩 JSON + 기존 테이블 무결성 유지 &mdash; Redshift SUPER 타입 + PartiQL이 정답인 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 Redshift 데이터 타입 문제입니다. 중첩 JSON 데이터를 기존 Redshift 테이블 구조를 변경하지 않고 쿼리하려면 <b>SUPER 데이터 타입으로 로드 후 PartiQL로 쿼리</b>하는 방법이 최적입니다. Redshift Spectrum(SQL 한계), Glue 평면화(스키마 변경), Glue Studio 노트북(고가용성 부재)이 탈락하는 이유를 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">한 ISP에서는 최근 <span class="hl-orange">고객 상호 작용 데이터를 중첩 JSON 형식으로 저장</span>하기 시작했다. 회사는 이 데이터와 <span class="hl-blue">Amazon Redshift 데이터 웨어하우스의 추가 데이터</span>를 결합하여 고객 상호 작용을 개선하려고 한다.</p>
+<p data-ke-size="size16">회사는 <span class="hl-bold">매일 여러 번</span> 데이터에 대한 쿼리를 실행할 예정이다. <span class="hl-bold">기존 Redshift 테이블의 무결성을 유지</span>해야 하며, 솔루션은 <span class="hl-bold">가용성이 높아야</span> 한다.</p>
+<p data-ke-size="size16">다음 중 이러한 요구 사항을 충족하는 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 분석</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🔀</span>
+<div><b>중첩 JSON + 기존 Redshift 데이터 결합 쿼리</b><br /><span style="font-size:13px;color:var(--muted)">두 데이터 소스를 함께 분석해야 하므로 Redshift 내에서 통합 가능해야 함</span></div>
+</li>
+<li><span class="req-icon">🛡️</span>
+<div><b>기존 Redshift 테이블 무결성 유지 (핵심 조건)</b><br /><span style="font-size:13px;color:var(--muted)">스키마 변경&middot;열 추가&middot;평면화 등 기존 테이블 구조를 수정하면 안 됨</span></div>
+</li>
+<li><span class="req-icon">📅</span>
+<div><b>매일 여러 번 쿼리 &mdash; 빈번한 접근</b><br /><span style="font-size:13px;color:var(--muted)">비용 효율적이고 빠른 쿼리 응답이 필요, 매번 변환 파이프라인 실행은 비효율</span></div>
+</li>
+<li><span class="req-icon">🏗️</span>
+<div><b>고가용성</b><br /><span style="font-size:13px;color:var(--muted)">단일 노트북&middot;단일 Lambda처럼 이중화가 없는 솔루션은 부적합</span></div>
+</li>
+</ul>
+</div>
+<!-- SUPER 타입 + PartiQL 개념 -->
+<h2 class="section-title" data-ke-size="size26">🔑 핵심 개념 &mdash; Redshift SUPER 타입과 PartiQL</h2>
+<div class="card">
+<div class="concept-grid">
+<div class="concept-card ok">
+<div class="cc-title">🧩 SUPER 데이터 타입</div>
+<div class="cc-body">Redshift 테이블의 열에 <b>중첩된 JSON/반정형 데이터를 네이티브로 저장</b>하는 타입입니다. JSON 객체, 배열, 스칼라 값을 모두 하나의 열에 담을 수 있으며, 스키마 변경 없이 기존 테이블에 SUPER 열만 추가하면 됩니다. 기존 열과 SUPER 열을 같은 테이블에서 함께 사용할 수 있습니다.</div>
+</div>
+<div class="concept-card info">
+<div class="cc-title">🔍 PartiQL</div>
+<div class="cc-body"><b>중첩된 데이터를 SQL처럼 쿼리하는 언어</b>입니다. 표준 SQL의 FROM&middot;WHERE&middot;SELECT 구문을 그대로 사용하면서 JSON의 중첩 구조를 점(.)과 배열 인덱스([])로 탐색합니다. Redshift는 PartiQL을 SUPER 열에 네이티브로 지원합니다.</div>
+</div>
+</div>
+<!-- JSON 예시 -->
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:8px" data-ke-size="size16">📋 중첩 JSON 데이터 예시 + PartiQL 쿼리</p>
+<div class="json-block"><span class="j-comment">-- SUPER 열에 저장되는 중첩 JSON 데이터 예시</span> { <span class="j-key">"customer_id"</span>: <span class="j-num">12345</span>, <span class="j-key">"interactions"</span>: <span class="j-nested">[</span> { <span class="j-key">"type"</span>: <span class="j-str">"call"</span>, <span class="j-key">"duration_sec"</span>: <span class="j-num">180</span>, <span class="j-key">"resolved"</span>: <span class="j-str">true</span> }, { <span class="j-key">"type"</span>: <span class="j-str">"chat"</span>, <span class="j-key">"duration_sec"</span>: <span class="j-num">60</span>, <span class="j-key">"resolved"</span>: <span class="j-str">false</span> } <span class="j-nested">]</span>, <span class="j-key">"contact_info"</span>: { <span class="j-key">"region"</span>: <span class="j-str">"ap-northeast-2"</span> } } <span class="j-comment">-- PartiQL로 중첩 데이터 쿼리</span> SELECT c.customer_id, i.type, i.duration_sec FROM customer_interactions c, c.interactions i WHERE i.resolved = false;</div>
+<div class="alert alert-green">✅ <b>핵심:</b> SUPER 열은 기존 Redshift 테이블에 <b>새 열로 추가</b>하는 것이므로 기존 열과 기존 쿼리는 전혀 영향받지 않습니다. 테이블 무결성이 완벽하게 유지됩니다.</div>
+</div>
+<!-- 4가지 솔루션 비교 -->
+<h2 class="section-title" data-ke-size="size26">🔍 4가지 솔루션 요건 충족 비교</h2>
+<div class="card">
+<div class="sol-grid">
+<div class="sol-card bad">
+<div class="sol-header"><span class="sol-icon">🔭</span>
+<div class="sol-name">A. Redshift Spectrum + SQL</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">중첩 JSON</span> <span class="chip chip-warn">⚠️ 복잡한 변환</span></div>
+<div class="sol-row"><span class="sl-label">테이블 무결성</span> <span class="chip chip-ok">✅ 유지</span></div>
+<div class="sol-row"><span class="sl-label">고가용성</span> <span class="chip chip-ok">✅ Redshift HA</span></div>
+<div class="sol-row"><span class="sl-label">PartiQL</span> <span class="chip chip-bad">❌ 표준 SQL만</span></div>
+</div>
+<div class="sol-verdict">⚠️ 중첩 JSON 쿼리 복잡 &mdash; 부적합</div>
+</div>
+<div class="sol-card ok">
+<div class="sol-header"><span class="sol-icon">⭐</span>
+<div class="sol-name">B. SUPER 타입 + PartiQL</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">중첩 JSON</span> <span class="chip chip-ok">✅ 네이티브 저장</span></div>
+<div class="sol-row"><span class="sl-label">테이블 무결성</span> <span class="chip chip-ok">✅ 완벽 유지</span></div>
+<div class="sol-row"><span class="sl-label">고가용성</span> <span class="chip chip-ok">✅ Redshift HA</span></div>
+<div class="sol-row"><span class="sl-label">PartiQL</span> <span class="chip chip-ok">✅ 네이티브 지원</span></div>
+</div>
+<div class="sol-verdict">✅ 모든 요건 충족 &mdash; 정답</div>
+</div>
+<div class="sol-card bad">
+<div class="sol-header"><span class="sol-icon">🔧</span>
+<div class="sol-name">C. Glue 평면화 + 별도 열</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">중첩 JSON</span> <span class="chip chip-warn">⚠️ 변환 후 저장</span></div>
+<div class="sol-row"><span class="sl-label">테이블 무결성</span> <span class="chip chip-bad">❌ 스키마 변경</span></div>
+<div class="sol-row"><span class="sl-label">기존 쿼리</span> <span class="chip chip-bad">❌ 영향 가능</span></div>
+<div class="sol-row"><span class="sl-label">PartiQL</span> <span class="chip chip-bad">❌ 불필요 (평면화)</span></div>
+</div>
+<div class="sol-verdict">❌ 테이블 무결성 훼손</div>
+</div>
+<div class="sol-card bad">
+<div class="sol-header"><span class="sol-icon">📓</span>
+<div class="sol-name">D. Glue Studio 노트북</div>
+</div>
+<div class="sol-rows">
+<div class="sol-row"><span class="sl-label">두 데이터 결합</span> <span class="chip chip-bad">❌ 별도 분석</span></div>
+<div class="sol-row"><span class="sl-label">고가용성</span> <span class="chip chip-bad">❌ 노트북 이중화 없음</span></div>
+<div class="sol-row"><span class="sl-label">언로드 비용</span> <span class="chip chip-bad">❌ 추가 발생</span></div>
+<div class="sol-row"><span class="sl-label">매일 다수 쿼리</span> <span class="chip chip-bad">❌ 비효율</span></div>
+</div>
+<div class="sol-verdict">❌ 고가용성 미충족 + 비효율</div>
+</div>
+</div>
+<div class="alert alert-orange">⚠️ <b>A vs B 핵심 차이:</b> Redshift Spectrum(A)도 S3의 JSON 데이터를 Redshift와 결합할 수 있지만, <b>표준 SQL로 중첩 JSON을 쿼리하려면 복잡한 데이터 변환이 필요</b>합니다. SUPER 타입(B)은 중첩 구조 그대로 저장하고 PartiQL로 직접 탐색하므로 변환이 불필요합니다.</div>
+</div>
+<!-- 선택지 해설 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ S3에 데이터 저장 + Redshift Spectrum으로 결합 + SQL 쿼리</div>
+<div class="opt-sub">Spectrum은 S3 데이터 쿼리 가능 &mdash; 그러나 표준 SQL로 중첩 JSON 쿼리는 복잡한 변환 필요</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Redshift Spectrum은 S3에 저장된 데이터를 직접 쿼리하고 Redshift 내 데이터와 결합하는 강력한 기능입니다. 그러나 <b>표준 SQL로 중첩된 JSON 구조를 쿼리하려면 JSON_EXTRACT_PATH_TEXT 같은 함수를 사용하는 복잡한 변환 로직이 필요</b>합니다. 중첩 깊이가 깊어질수록 쿼리가 매우 복잡해지며, 매일 여러 번 실행하기에 적합하지 않습니다. 더 나은 선택은 중첩 데이터를 자연스럽게 탐색할 수 있는 PartiQL을 사용하는 것입니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">B</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ 데이터를 SUPER 열로 Redshift에 로드 + PartiQL로 중첩 데이터 쿼리</div>
+<div class="opt-sub">중첩 JSON 네이티브 저장 + 기존 테이블 무결성 완벽 유지 + Redshift 고가용성 + PartiQL 직접 탐색</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> 네 가지 요건을 모두 충족합니다. ① <b>중첩 JSON 저장:</b> SUPER 데이터 타입은 중첩 JSON 구조를 그대로 Redshift 열에 저장합니다. ② <b>기존 테이블 무결성 유지:</b> 기존 테이블에 SUPER 열을 추가하는 것이므로 기존 열&middot;스키마&middot;쿼리에 전혀 영향을 주지 않습니다. ③ <b>효율적 쿼리:</b> PartiQL은 SUPER 열의 중첩 구조를 직접 탐색하여 복잡한 변환 없이 매일 여러 번 빠르게 쿼리할 수 있습니다. ④ <b>고가용성:</b> Amazon Redshift는 자체적으로 고가용성을 제공합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Glue로 데이터를 표 형식으로 평면화 &rarr; 별도 열로 Redshift에 로드 + PartiQL</div>
+<div class="opt-sub">스키마 변경으로 기존 테이블 무결성 훼손 &mdash; 기존 쿼리&middot;애플리케이션에 부정적 영향</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 AWS Glue로 중첩 JSON을 평면화(Flatten)하여 개별 열로 분리하면 데이터를 쿼리하기 쉬워지는 장점이 있습니다. 그러나 <b>이 방식은 Redshift 테이블에 새 열을 추가하거나 테이블 구조를 변경</b>해야 합니다. 기존 스키마를 사용하는 쿼리와 애플리케이션이 영향을 받을 수 있어 "기존 테이블 무결성 유지" 요건을 충족하지 못합니다. 또한 이미 데이터가 평면화된 상태이므로 PartiQL을 사용할 필요도 없어 구성이 모순됩니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">D</div>
+<div class="opt-body">
+<div class="opt-main">❌ S3 &rarr; Redshift 언로드 + Glue Studio 노트북으로 탐색 + SQL 쿼리</div>
+<div class="opt-sub">두 데이터 집합 결합 불가 + Glue Studio 노트북 이중화 없어 고가용성 미충족</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 두 가지 치명적 문제가 있습니다. 첫째, Redshift 데이터를 S3로 언로드한 후 Glue Studio에서 분석하면 <b>Redshift에 있는 기존 데이터와 고객 상호 작용 데이터를 함께 효율적으로 쿼리할 수 없습니다.</b> 두 데이터가 별도 환경에서 분리 분석됩니다. 둘째, <b>Glue Studio 노트북은 고가용성(HA)을 제공하지 않습니다.</b> 노트북은 이중화 구성이 없어 장애 시 서비스가 중단될 수 있습니다. 매일 여러 번 안정적으로 쿼리해야 하는 요건에도 맞지 않습니다.</div>
+</div>
+<!-- 정답 토글 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: B &mdash; SUPER 데이터 타입 + PartiQL</b></p>
+<p data-ke-size="size16">이 문제의 구분 포인트는 두 가지입니다. <b>① 중첩 JSON 쿼리 방법:</b> 표준 SQL(A)은 변환 복잡, PartiQL(B)은 네이티브 탐색. <b>② 테이블 무결성:</b> Glue 평면화(C)는 스키마 변경, SUPER 열 추가(B)는 기존 구조 보존.</p>
+<div class="code-block"># SUPER 타입 + PartiQL 사용 패턴 -- 1. 기존 테이블에 SUPER 열 추가 (기존 열 영향 없음) ALTER TABLE customer_data ADD COLUMN interactions SUPER; -- 2. 중첩 JSON 데이터 로드 (COPY 명령) COPY customer_data (customer_id, interactions) FROM 's3://bucket/interactions.json' FORMAT JSON 'auto'; -- 3. PartiQL로 중첩 데이터 + 기존 데이터 결합 쿼리 SELECT c.customer_id, c.name, -- 기존 열 i.type, -- SUPER 열 내 중첩 데이터 i.duration_sec FROM customer_data c, c.interactions i WHERE i.resolved = false AND c.region = 'ap-northeast-2'; # 요건 충족 요약 중첩 JSON 쿼리 &rarr; SUPER 타입 네이티브 저장 + PartiQL ✅ 기존 테이블 무결성 &rarr; 기존 열&middot;스키마 변경 없음 ✅ 고가용성 &rarr; Amazon Redshift 자체 HA ✅ 빈번한 쿼리 &rarr; 변환 없이 직접 쿼리 ✅</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 선택지 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>선택지</th>
+<th>방식</th>
+<th>중첩 JSON 쿼리</th>
+<th>테이블 무결성</th>
+<th>고가용성</th>
+<th>결론</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>A</b></td>
+<td>Spectrum + SQL</td>
+<td class="warn-text">⚠️ 변환 복잡</td>
+<td class="ok-text">✅ 유지</td>
+<td class="ok-text">✅ Redshift HA</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>B ⭐</b></td>
+<td>SUPER + PartiQL</td>
+<td class="ok-text">✅ 네이티브</td>
+<td class="ok-text">✅ 완벽 유지</td>
+<td class="ok-text">✅ Redshift HA</td>
+<td class="ok-text">정답</td>
+</tr>
+<tr>
+<td><b>C</b></td>
+<td>Glue 평면화</td>
+<td class="warn-text">평면화 후 일반 열</td>
+<td class="bad-text">❌ 스키마 변경</td>
+<td class="ok-text">✅ Redshift HA</td>
+<td class="bad-text">탈락</td>
+</tr>
+<tr>
+<td><b>D</b></td>
+<td>Glue Studio 노트북</td>
+<td class="warn-text">SQL 분리 분석</td>
+<td class="warn-text">무관</td>
+<td class="bad-text">❌ 노트북 이중화 없음</td>
+<td class="bad-text">탈락</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AmazonRedshift</span> <span class="seo-tag">#SUPER데이터타입</span> <span class="seo-tag">#PartiQL</span> <span class="seo-tag">#중첩JSON쿼리</span> <span class="seo-tag">#RedshiftSpectrum</span> <span class="seo-tag">#AWSGlue</span> <span class="seo-tag">#Glue Studio노트북</span> <span class="seo-tag">#테이블무결성</span> <span class="seo-tag">#반정형데이터</span> <span class="seo-tag">#고가용성</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#AWS데이터엔지니어</span></div>
+</article>
+</div>

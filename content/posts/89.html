@@ -1,0 +1,648 @@
+<!--
+id: 89
+제목: [Mendix] DeepLink + SAML SSO 구현 — 메일 버튼 클릭 한 번으로 팝업 이동
+카테고리: Stack/Lowcode
+태그: Spa, SSO, saml, single page application, DeepLink, lowcode, mendix, 멘딕스, 메일 자동발송, Microflow
+날짜: 2026-03-18 21:43
+수정: 2026-03-21 23:01
+형식: html
+썸네일: /img/t/dJMcahKu1Ih.webp
+-->
+<style>
+.pb-89 .mdx-wrap *{box-sizing:border-box;margin:0;padding:0}
+.pb-89 .mdx-wrap{font-size:15px;line-height:1.75;color:var(--p70);max-width:780px;margin:0 auto;padding:0 16px 60px;background:var(--g0)}
+.pb-89 .mdx-hero{background:linear-gradient(135deg, var(--p70) 0%, var(--p70) 60%, var(--i50) 100%);border-radius:16px;padding:48px 36px 40px;margin:32px 0 40px;color:#fff;position:relative;overflow:hidden}
+.pb-89 .mdx-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;border-radius:50%;background:color-mix(in srgb, var(--i50) 18%, transparent)}
+.pb-89 .mdx-hero-badge{display:inline-block;background:color-mix(in srgb, var(--i50) 25%, transparent);color:var(--i60);font-size:12px;font-weight:600;letter-spacing:.08em;padding:4px 12px;border-radius:20px;border:1px solid color-mix(in srgb, var(--i50) 30%, transparent);margin-bottom:16px;text-transform:uppercase}
+.pb-89 .mdx-hero h1{font-size:clamp(20px, 4vw, 28px);font-weight:800;line-height:1.35;margin-bottom:14px;letter-spacing:-.02em}
+.pb-89 .mdx-hero-desc{font-size:14px;color:var(--i10);line-height:1.65}
+.pb-89 .mdx-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pb-89 .mdx-hero-tags span{font-size:12px;background:color-mix(in srgb, var(--g0) 10%, transparent);color:var(--i10);padding:3px 10px;border-radius:12px;border:1px solid color-mix(in srgb, var(--g0) 15%, transparent)}
+.pb-89 .mdx-toc{background:var(--g0);border:1px solid var(--p10);border-radius:10px;padding:20px 24px;margin:36px 0}
+.pb-89 .mdx-toc-title{font-size:13px;font-weight:700;color:var(--g50);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.pb-89 .mdx-toc ol{padding-left:18px}
+.pb-89 .mdx-toc li{font-size:14px;color:var(--p70);margin-bottom:6px}
+.pb-89 .mdx-toc a{color:var(--i60);text-decoration:none}
+.pb-89 .mdx-toc a:hover{text-decoration:underline}
+.pb-89 .mdx-h2{font-size:20px;font-weight:800;color:var(--p70);margin:52px 0 18px;padding-bottom:10px;border-bottom:2px solid var(--p10);display:flex;align-items:center;gap:10px;letter-spacing:-.02em}
+.pb-89 .mdx-h2 .mdx-h2-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--i50);color:#fff;border-radius:7px;font-size:13px;font-weight:800;flex-shrink:0}
+.pb-89 .mdx-h3{font-size:16px;font-weight:700;color:var(--p70);margin:28px 0 12px;padding-left:12px}
+.pb-89 .mdx-p{margin-bottom:14px;color:var(--p70)}
+.pb-89 .mdx-ul, .pb-89 .mdx-ol{padding-left:22px;margin-bottom:16px}
+.pb-89 .mdx-ul li, .pb-89 .mdx-ol li{margin-bottom:7px;color:var(--p70);font-size:14.5px}
+.pb-89 .mdx-callout{display:flex;gap:12px;align-items:flex-start;padding:16px 18px;border-radius:10px;margin:20px 0;font-size:14px;line-height:1.65}
+.pb-89 .mdx-callout.info{background:var(--p5);border:1px solid var(--p10);color:var(--p50)}
+.pb-89 .mdx-callout.tip{background:var(--s5);border:1px solid var(--s10);color:var(--s60)}
+.pb-89 .mdx-callout.warn{background:var(--y5);border:1px solid var(--y50);color:var(--y60)}
+.pb-89 .mdx-callout.danger{background:var(--g5);border:1px solid var(--r10);color:var(--r60)}
+.pb-89 .mdx-callout-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.pb-89 .mdx-code-block{background:var(--p70);border-radius:10px;margin:20px 0;overflow:hidden;font-size:13px}
+.pb-89 .mdx-code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:var(--p70);border-bottom:1px solid var(--p70)}
+.pb-89 .mdx-code-lang{font-size:11px;font-weight:600;color:var(--p50);letter-spacing:.06em;text-transform:uppercase}
+.pb-89 .mdx-code-dots{display:flex;gap:6px}
+.pb-89 .mdx-code-dots span{width:10px;height:10px;border-radius:50%}
+.pb-89 .mdx-code-dots span:nth-child(1){background:var(--r50)}
+.pb-89 .mdx-code-dots span:nth-child(2){background:var(--y50)}
+.pb-89 .mdx-code-dots span:nth-child(3){background:var(--s50)}
+.pb-89 .mdx-code-block pre{padding:18px 20px;overflow-x:auto;margin:0}
+.pb-89 .mdx-code-block code{font-family:'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;font-size:13px;color:var(--p10);white-space:pre}
+.pb-89 .mdx-inline-code{font-family:'JetBrains Mono', Consolas, monospace;font-size:12.5px;background:var(--p5);color:var(--i60);padding:2px 6px;border-radius:4px;border:1px solid var(--p10)}
+.pb-89 .mdx-flow{background:var(--g0);border:1px solid var(--p10);border-radius:12px;padding:24px 20px;margin:24px 0;overflow-x:auto}
+.pb-89 .mdx-flow-title{font-size:12px;font-weight:700;color:var(--g50);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.pb-89 .mdx-flow-row{display:flex;align-items:center;gap:0;flex-wrap:nowrap;min-width:max-content}
+.pb-89 .mdx-flow-node{display:flex;align-items:center;justify-content:center;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;text-align:center;white-space:nowrap;line-height:1.35}
+.pb-89 .mdx-flow-node.blue{background:var(--p10);color:var(--p60);border:1.5px solid var(--p50)}
+.pb-89 .mdx-flow-node.green{background:var(--s10);color:var(--s60);border:1.5px solid var(--s50)}
+.pb-89 .mdx-flow-node.orange{background:var(--y10);color:var(--r60);border:1.5px solid var(--y50)}
+.pb-89 .mdx-flow-node.purple{background:var(--p5);color:var(--p60);border:1.5px solid var(--p10)}
+.pb-89 .mdx-flow-node.gray{background:var(--p5);color:var(--p60);border:1.5px solid var(--p50)}
+.pb-89 .mdx-flow-arrow{font-size:18px;color:var(--p50);padding:0 6px;flex-shrink:0}
+.pb-89 .mdx-flow-note{font-size:11px;color:var(--p50);margin-top:10px;font-style:italic}
+.pb-89 .mdx-steps{display:flex;flex-direction:column;gap:16px;margin:20px 0}
+.pb-89 .mdx-step{display:flex;gap:16px;align-items:flex-start;background:var(--g0);border:1px solid var(--p10);border-radius:12px;padding:18px 20px}
+.pb-89 .mdx-step-num{display:flex;align-items:center;justify-content:center;min-width:32px;height:32px;background:linear-gradient(135deg, var(--i50), var(--p50));color:#fff;border-radius:50%;font-size:14px;font-weight:800;flex-shrink:0}
+.pb-89 .mdx-step-body{}
+.pb-89 .mdx-step-title{font-size:15px;font-weight:700;color:var(--p70);margin-bottom:6px}
+.pb-89 .mdx-step-desc{font-size:14px;color:var(--p60);line-height:1.65}
+.pb-89 .mdx-table-wrap{overflow-x:auto;margin:20px 0}
+.pb-89 .mdx-table{width:100%;border-collapse:collapse;font-size:14px}
+.pb-89 .mdx-table th{background:var(--p70);color:var(--p10);padding:11px 16px;text-align:left;font-weight:600;font-size:13px}
+.pb-89 .mdx-table td{padding:10px 16px;border-bottom:1px solid var(--p5);color:var(--p70);vertical-align:top}
+.pb-89 .mdx-table tr:nth-child(even) td{background:var(--g0)}
+.pb-89 .mdx-table tr:hover td{background:var(--p5)}
+.pb-89 .mdx-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+.pb-89 .mdx-badge.req{background:var(--s10);color:var(--s60)}
+.pb-89 .mdx-badge.opt{background:var(--y10);color:var(--y60)}
+.pb-89 .mdx-badge.hard{background:var(--p5);color:var(--r60)}
+.pb-89 .mdx-badge.easy{background:var(--p10);color:var(--p60)}
+.pb-89 .mdx-summary{background:linear-gradient(135deg, var(--p70) 0%, var(--p70) 100%);border-radius:14px;padding:28px 28px 24px;margin:40px 0 20px;color:#fff}
+.pb-89 .mdx-summary h3{font-size:16px;font-weight:800;margin-bottom:16px;color:var(--i60);letter-spacing:-.01em}
+.pb-89 .mdx-summary-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px}
+.pb-89 .mdx-summary-item{background:color-mix(in srgb, var(--g0) 7%, transparent);border:1px solid color-mix(in srgb, var(--g0) 12%, transparent);border-radius:10px;padding:14px 16px}
+.pb-89 .mdx-summary-item .mdx-si-icon{font-size:20px;margin-bottom:6px}
+.pb-89 .mdx-summary-item .mdx-si-label{font-size:11px;color:var(--p50);margin-bottom:3px}
+.pb-89 .mdx-summary-item .mdx-si-val{font-size:14px;font-weight:700;color:var(--p10)}
+.pb-89 .mdx-divider{border:none;border-top:1px solid var(--p10);margin:40px 0}
+@media (max-width: 600px){.pb-89 .mdx-hero{padding:32px 20px 28px}
+.pb-89 .mdx-step{flex-direction:column;gap:10px}
+.pb-89 .mdx-flow-row{gap:0}
+.pb-89 .mdx-flow-node{padding:7px 10px;font-size:11.5px}
+.pb-89 .mdx-flow-arrow{padding:0 3px;font-size:14px}
+.pb-89 .mdx-summary-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.pb-89 .mdx-summary-item{min-width:0;overflow-wrap:anywhere}}
+</style>
+<div class="pb pb-89">
+<article class="mdx-wrap">
+<div>
+
+</div>
+<!-- Hero -->
+<div class="mdx-hero">
+<div class="mdx-hero-badge">Mendix 실전 개발기</div>
+<h1><span style="color:#fff">Mendix 메일 딥링크(DeepLink) + SAML SSO 구현</span><br /><span style="color:#fff">&mdash; 메일 버튼 클릭 한 번으로 팝업 페이지까지</span></h1>
+<p class="mdx-hero-desc" data-ke-size="size16">자동발송 메일 본문에 "시스템 바로가기" 버튼을 넣고, 클릭 시 SAML SSO 로그인을 거쳐 Mendix 팝업 페이지로 바로 이동하는 전체 흐름을 단계별로 정리했습니다.</p>
+<div class="mdx-hero-tags"><span>Mendix 10.x</span> <span>DeepLink 모듈</span> <span>SAML SSO</span> <span>메일 자동발송</span> <span>사내 Mendix Cloud</span></div>
+</div>
+<!-- TOC -->
+<div class="mdx-toc">
+<div class="mdx-toc-title">📋 목차</div>
+<ol class="mdx-ol" style="list-style-type:decimal" data-ke-list-type="decimal">
+<li><a href="#mdx-s0">문제 정의 &mdash; 왜 단순하지 않은가</a></li>
+<li><a href="#mdx-s1">전체 흐름 한눈에 보기</a></li>
+<li><a href="#mdx-s2">Step 1 &mdash; ReviewMeeting 엔티티에 Token 추가</a></li>
+<li><a href="#mdx-s3">Step 2 &mdash; DeepLink 처리 Microflow 생성</a></li>
+<li><a href="#mdx-s4">Step 3 &mdash; DeepLink 등록 MF 생성</a></li>
+<li><a href="#mdx-s5">Step 4 &mdash; After Startup 래퍼 MF 구성</a></li>
+<li><a href="#mdx-s6">Step 5 &mdash; 메일 본문에 딥링크 버튼 삽입</a></li>
+<li><a href="#mdx-s7">Step 6 &mdash; DeepLink 모듈 상수 설정 (SAML 연동)</a></li>
+<li><a href="#mdx-s8">트러블슈팅 &amp; 함정 모음</a></li>
+<li><a href="#mdx-s9">최종 체크리스트</a></li>
+</ol>
+</div>
+<!-- S0 -->
+<div id="mdx-s0">
+<div class="mdx-h2"><span class="mdx-h2-num">0</span> 문제 정의 &mdash; 왜 단순하지 않은가</div>
+<p class="mdx-p" data-ke-size="size16">Mendix는 기본적으로 <b>SPA(Single Page Application)</b> 구조라 URL이 하나입니다. 페이지 이동이 내부 상태로 처리되어, 외부에서 특정 팝업 페이지로 바로 들어오는 딥링크가 기본적으로 동작하지 않습니다. 여기에 회사 SAML SSO까지 끼면 아래 세 가지 문제가 겹칩니다.</p>
+<div class="mdx-table-wrap">
+<table class="mdx-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>문제</th>
+<th>원인</th>
+<th>해결 수단</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>외부 URL로 내부 페이지 접근 불가</td>
+<td>SPA 구조, 단일 엔드포인트</td>
+<td>DeepLink 모듈</td>
+</tr>
+<tr>
+<td>로그인 전 딥링크 URL 소실</td>
+<td>SSO 리디렉션 시 원래 URL 유실</td>
+<td>Force login + LoginLocation 상수</td>
+</tr>
+<tr>
+<td>SAML 로그인 후 원래 URL 복귀</td>
+<td>cont 파라미터 전달 여부</td>
+<td>js_SSOLogin 자동 실행</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mdx-callout info"><span class="mdx-callout-icon">💡</span>
+<div><b>Popup Layout &ne; 브라우저 팝업</b><br />Mendix에서 팝업처럼 보이는 화면은 레이아웃만 PopupLayout으로 설정된 일반 <b>Page</b>입니다. 진짜 별도 창이 아니기 때문에 DeepLink 모듈로 충분히 직접 연결할 수 있습니다.</div>
+</div>
+</div>
+<!-- S1 -->
+<div id="mdx-s1">
+<div class="mdx-h2"><span class="mdx-h2-num">1</span> 전체 흐름 한눈에 보기</div>
+<div class="mdx-h3">메일 바로가기 버튼 클릭 시 흐름</div>
+<div class="mdx-flow">
+<div class="mdx-flow-title">🔗 딥링크 접근 &rarr; SSO &rarr; 팝업 오픈</div>
+<div class="mdx-flow-row">
+<div class="mdx-flow-node blue">메일 버튼<br />클릭</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node gray">/link/reviewmeeting/<br />토큰값</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node orange">미로그인<br />감지</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node purple">PG_Login<br />페이지</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node orange">SAML SSO<br />로그인</div>
+</div>
+<br />
+<div class="mdx-flow-row">
+<div class="mdx-flow-node green">복기회의록<br />팝업 오픈 ✅</div>
+<div class="mdx-flow-arrow">&larr;</div>
+<div class="mdx-flow-node blue">MF_DeepLink<br />실행</div>
+<div class="mdx-flow-arrow">&larr;</div>
+<div class="mdx-flow-node gray">딥링크 URL<br />복원</div>
+<div class="mdx-flow-arrow">&larr;</div>
+<div class="mdx-flow-node green">SSO<br />완료</div>
+</div>
+<div class="mdx-flow-note">* 이미 로그인된 상태면 PG_Login 없이 MF 직접 실행</div>
+</div>
+<div class="mdx-h3">복기회의록 등록 시 흐름 (메일 발송 측)</div>
+<div class="mdx-flow">
+<div class="mdx-flow-title">📧 복기회의록 등록 &rarr; 메일 발송</div>
+<div class="mdx-flow-row">
+<div class="mdx-flow-node blue">[등록] 버튼<br />클릭</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node gray">IVK_ShowPage<br />_ReviewMeeting</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node purple">Token 생성<br />+ HTML 삽입</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node green">복기회의록<br />팝업 오픈</div>
+</div>
+<br />
+<div class="mdx-flow-row">
+<div class="mdx-flow-node blue">[메일발송] 버튼</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node gray">MF_SendMail<br />_Main</div>
+<div class="mdx-flow-arrow">&rarr;</div>
+<div class="mdx-flow-node green">딥링크 버튼<br />포함 메일 발송 ✅</div>
+</div>
+</div>
+<div class="mdx-callout tip"><span class="mdx-callout-icon">✅</span>
+<div><b>두 MF의 역할 구분</b><br /><span class="mdx-inline-code">IVK_ShowPage_ReviewMeeting_NewEdit</span> &mdash; 복기회의록 Object 생성 + Token 생성 + 딥링크 URL을 Details HTML에 삽입<br /><span class="mdx-inline-code">MF_SendMail_Main</span> &mdash; 이미 만들어진 Object를 메일로 발송 (이 MF는 수정 불필요)</div>
+</div>
+</div>
+<!-- S2 -->
+<div id="mdx-s2">
+<div class="mdx-h2"><span class="mdx-h2-num">2</span> Step 1 &mdash; ReviewMeeting 엔티티에 Token 추가</div>
+<p class="mdx-p" data-ke-size="size16">Mendix 내부 ID를 URL에 그대로 노출하면 보안상 좋지 않습니다. 별도 <b>Token</b> 어트리뷰트를 만들어 랜덤 값을 부여하고 딥링크 식별자로 사용합니다.</p>
+<div class="mdx-steps">
+<div class="mdx-step">
+<div class="mdx-step-num">1</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Domain Model 열기</div>
+<div class="mdx-step-desc"><span class="mdx-inline-code">MyApp</span> 모듈 &rarr; <span class="mdx-inline-code">ReviewMeeting</span> 엔티티 더블클릭</div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">2</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Token 어트리뷰트 추가</div>
+<div class="mdx-step-desc">New attribute &rarr; Name: <span class="mdx-inline-code">Token</span> / Type: <span class="mdx-inline-code">String</span></div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">3</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">IVK_ShowPage_ReviewMeeting_NewEdit에서 Token 세팅</div>
+<div class="mdx-step-desc"><span class="mdx-inline-code">Create ReviewMeeting</span> 액션 더블클릭 &rarr; Token 어트리뷰트 값 설정</div>
+</div>
+</div>
+</div>
+<div class="mdx-code-block">
+<div class="mdx-code-header">
+<div class="mdx-code-dots">&nbsp;</div>
+<div class="mdx-code-lang">Mendix Expression &mdash; Token 생성</div>
+</div>
+<pre class="reasonml"><code>// 방법 1: round() 사용 (Mendix 기본 함수)
+toString(round(random() * 1000000000)) + toString(round(random() * 1000000000))
+
+// 방법 2: CommunityCommons 모듈이 있다면
+CommunityCommons.CreateGUID()
+
+// 방법 3: java.util.UUID (Java Action 없이는 동작 안 할 수 있음)
+java.util.UUID.randomUUID().toString()</code></pre>
+</div>
+<div class="mdx-callout warn"><span class="mdx-callout-icon">⚠️</span>
+<div><b>generateGUID()는 Mendix 10.x에서 없음</b><br />구버전 예제에서 자주 보이는 <span class="mdx-inline-code">generateGUID()</span>는 10.x에서 동작하지 않습니다. <span class="mdx-inline-code">round()</span>를 활용한 방법 1이 가장 안전합니다.</div>
+</div>
+</div>
+<!-- S3 -->
+<div id="mdx-s3">
+<div class="mdx-h2"><span class="mdx-h2-num">3</span> Step 2 &mdash; DeepLink 처리 Microflow 생성</div>
+<p class="mdx-p" data-ke-size="size16">딥링크 URL이 접근될 때 실행되는 MF입니다. Token으로 Object를 조회하고 페이지를 엽니다.</p>
+<div class="mdx-h3">MF 기본 정보</div>
+<div class="mdx-table-wrap">
+<table class="mdx-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MF 이름</td>
+<td><span class="mdx-inline-code">MF_DeepLink_OpenReviewMeeting</span></td>
+</tr>
+<tr>
+<td>파라미터 이름</td>
+<td><span class="mdx-inline-code">UrlPath</span></td>
+</tr>
+<tr>
+<td>파라미터 타입</td>
+<td><span class="mdx-inline-code">String</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mdx-h3">MF 내부 흐름</div>
+<div class="mdx-steps">
+<div class="mdx-step">
+<div class="mdx-step-num">1</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Retrieve ReviewMeeting</div>
+<div class="mdx-step-desc">Source: <span class="mdx-inline-code">From database</span> / XPath Builder에서 Token = $UrlPath 조건 설정 / Range: <span class="mdx-inline-code">First</span></div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">2</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Exclusive Split (분기)</div>
+<div class="mdx-step-desc">조건: <span class="mdx-inline-code">$ReviewMeeting != empty</span><br />false &rarr; 에러 페이지 또는 홈페이지 Show<br />true &rarr; 다음 단계</div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">3</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">연관 Object들 Retrieve</div>
+<div class="mdx-step-desc">팝업 페이지에 필요한 파라미터(ActionItem, ActionItemClear, ExternalInspectionIssue, UIContext_2)를 Association 또는 XPath로 조회합니다.<br /><b>빠른 방법:</b> 원래 등록 MF에서 Create 이후 Show Page까지 블록 복사(Ctrl+C) 후 붙여넣고 앞단 Create만 Retrieve로 교체</div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">4</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Show Page</div>
+<div class="mdx-step-desc">Page: <span class="mdx-inline-code">PG_ReviewMeeting_NewEdit</span> (PopupLayout) / 파라미터로 조회한 Object들 전달</div>
+</div>
+</div>
+</div>
+<div class="mdx-code-block">
+<div class="mdx-code-header">
+<div class="mdx-code-dots">&nbsp;</div>
+<div class="mdx-code-lang">XPath &mdash; Token으로 ReviewMeeting 조회</div>
+</div>
+<pre class="haml"><code>[MyApp.ReviewMeeting/Token = $UrlPath]
+
+-- Builder 모드에서 설정 시:
+-- 왼쪽: Token
+-- 가운데: =
+-- 오른쪽: $UrlPath (파라미터 선택)</code></pre>
+</div>
+<div class="mdx-callout info"><span class="mdx-callout-icon">💡</span>
+<div>XPath 창 텍스트 모드에서 Token을 인식 못 하면 <b>Ctrl+S로 저장</b> 후 Builder 모드에서 드롭다운으로 선택하세요.</div>
+</div>
+</div>
+<!-- S4 -->
+<div id="mdx-s4">
+<div class="mdx-h2"><span class="mdx-h2-num">4</span> Step 3 &mdash; DeepLink 등록 MF 생성</div>
+<p class="mdx-p" data-ke-size="size16">앱 시작 시 어떤 URL 패턴에 어떤 MF를 연결할지 등록하는 MF입니다. Mendix 10.x에서는 상수(constant) 대신 <b>Set Deeplink 액션</b>으로 직접 등록합니다.</p>
+<div class="mdx-table-wrap">
+<table class="mdx-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>MF 이름</th>
+<th>액션</th>
+<th>설정값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="5"><span class="mdx-inline-code">MF_Setup_DeepLinks</span></td>
+<td>액션 타입</td>
+<td>Set Deeplink With String Input Parameters</td>
+</tr>
+<tr>
+<td>Microflow</td>
+<td><span class="mdx-inline-code">MF_DeepLink_OpenReviewMeeting</span></td>
+</tr>
+<tr>
+<td>Force login</td>
+<td><span class="mdx-inline-code">true</span> &larr; SSO 강제</td>
+</tr>
+<tr>
+<td>Deep link name</td>
+<td><span class="mdx-inline-code">reviewmeeting</span></td>
+</tr>
+<tr>
+<td>Keep as home deeplink</td>
+<td><span class="mdx-inline-code">false</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mdx-callout tip"><span class="mdx-callout-icon">✅</span>
+<div><b>Deep link name이 URL 경로가 됩니다</b><br /><span class="mdx-inline-code">reviewmeeting</span>으로 설정하면 접근 URL은 <span class="mdx-inline-code">/link/reviewmeeting/토큰값</span> 형태가 됩니다. 쿼리스트링(<span class="mdx-inline-code">?id=</span>) 방식이 아니라 path 방식으로 토큰이 <span class="mdx-inline-code">UrlPath</span> 파라미터에 자동 전달됩니다.</div>
+</div>
+<p class="mdx-p" data-ke-size="size16">패턴을 확인하려면 DeepLink 모듈 &rarr; <span class="mdx-inline-code">_Use me &rarr; Examples &rarr; SetupExampleDeeplinks</span>를 참고하세요.</p>
+</div>
+<!-- S5 -->
+<div id="mdx-s5">
+<div class="mdx-h2"><span class="mdx-h2-num">5</span> Step 4 &mdash; After Startup 래퍼 MF 구성</div>
+<p class="mdx-p" data-ke-size="size16">Mendix App Settings의 After Startup에는 MF를 하나만 등록할 수 있습니다. 기존에 SAML StartSSO가 등록되어 있으므로, 두 MF를 순서대로 호출하는 래퍼 MF를 만들어야 합니다.</p>
+<div class="mdx-code-block">
+<div class="mdx-code-header">
+<div class="mdx-code-dots">&nbsp;</div>
+<div class="mdx-code-lang">MF_AfterStartup 내부 흐름</div>
+</div>
+<pre class="sql"><code>[시작]
+  &rarr; Call Microflow: CustomSAML.StartSSO
+  &rarr; Call Microflow: MF_Setup_DeepLinks
+[끝 &mdash; Return type: Boolean / Value: true]
+
+※ End Event 리턴 타입을 Boolean으로 설정하지 않으면 에러 발생</code></pre>
+</div>
+<div class="mdx-steps">
+<div class="mdx-step">
+<div class="mdx-step-num">1</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">MF_AfterStartup 생성 후 두 MF 순서대로 연결</div>
+<div class="mdx-step-desc">End Event &rarr; Return type: <span class="mdx-inline-code">Boolean</span>, Value: <span class="mdx-inline-code">true</span></div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">2</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">App Settings 교체</div>
+<div class="mdx-step-desc">App &rarr; Settings &rarr; Runtime 탭 &rarr; After startup &rarr; <span class="mdx-inline-code">MF_AfterStartup</span> 선택</div>
+</div>
+</div>
+</div>
+<div class="mdx-callout warn"><span class="mdx-callout-icon">⚠️</span>
+<div>After Startup MF는 <b>앱 재시작 시에만 실행</b>됩니다. 배포 후 DeepLink가 동작하지 않는다면 앱을 Stop &rarr; Start로 완전 재시작하세요.</div>
+</div>
+</div>
+<!-- S6 -->
+<div id="mdx-s6">
+<div class="mdx-h2"><span class="mdx-h2-num">6</span> Step 5 &mdash; 메일 본문에 딥링크 버튼 삽입</div>
+<p class="mdx-p" data-ke-size="size16">복기회의록 등록 MF(<span class="mdx-inline-code">IVK_ShowPage_ReviewMeeting_NewEdit</span>)에서 Token을 생성한 직후 딥링크 버튼 HTML을 Details에 이어붙입니다.</p>
+<div class="mdx-h3">MF 수정 순서</div>
+<div class="mdx-steps">
+<div class="mdx-step">
+<div class="mdx-step-num">1</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Create ReviewMeeting &mdash; Token 포함해서 생성</div>
+<div class="mdx-step-desc">Token 어트리뷰트 값: <span class="mdx-inline-code">toString(round(random() * 1000000000)) + toString(round(random() * 1000000000))</span></div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">2</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">Change Object &mdash; Details에 버튼 HTML 추가</div>
+<div class="mdx-step-desc">Create 바로 뒤에 Change Object 액션 삽입, 아래 Expression 사용</div>
+</div>
+</div>
+<div class="mdx-step">
+<div class="mdx-step-num">3</div>
+<div class="mdx-step-body">
+<div class="mdx-step-title">이후 흐름 (ActionItem, UIContext 등) 은 기존 그대로 유지</div>
+<div class="mdx-step-desc">메일 발송 MF(<span class="mdx-inline-code">MF_SendMail_Main</span>)는 수정 불필요</div>
+</div>
+</div>
+</div>
+<div class="mdx-code-block">
+<div class="mdx-code-header">
+<div class="mdx-code-dots">&nbsp;</div>
+<div class="mdx-code-lang">Mendix Expression &mdash; Change Object / Details</div>
+</div>
+<pre class="vbnet"><code>$NewReviewMeeting/Details +
+'&lt;br&gt;&lt;br&gt;' +
+'&lt;div style="text-align:center;margin-top:16px"&gt;' +
+'&lt;a href="https://your-app.mendixcloud.com/link/reviewmeeting/' +
+$NewReviewMeeting/Token +
+'" style="display:inline-block;background-color:var(--p50);color:#fff;' +
+'padding:10px 24px;text-decoration:none;border-radius:4px;font-size:14px"&gt;' +
+'🔗 시스템 바로가기' +
+'&lt;/a&gt;' +
+'&lt;/div&gt;'</code></pre>
+</div>
+<div class="mdx-callout warn"><span class="mdx-callout-icon">⚠️</span>
+<div><b>URL 하드코딩 이슈</b><br /><span class="mdx-inline-code">DeepLink.SUB_GetApplicationURL</span> MF가 도커 내부 호스트명을 반환하는 경우 운영 URL을 직접 하드코딩해야 합니다. 개발/운영 분기가 필요하다면 Mendix Constant를 환경별로 다르게 설정하는 방법을 사용하세요.</div>
+</div>
+</div>
+<!-- S7 -->
+<div id="mdx-s7">
+<div class="mdx-h2"><span class="mdx-h2-num">7</span> Step 6 &mdash; DeepLink 모듈 상수 설정 (SAML 연동)</div>
+<p class="mdx-p" data-ke-size="size16">딥링크 클릭 시 미로그인 상태면 어디로 보낼지, SSO 완료 후 어디로 돌아올지를 상수로 설정합니다.</p>
+<div class="mdx-table-wrap">
+<table class="mdx-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>상수명</th>
+<th>설정값</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="mdx-inline-code">LoginLocation</span></td>
+<td><span class="mdx-inline-code">/p/PG_Login</span></td>
+<td>미로그인 시 이동할 로그인 페이지</td>
+</tr>
+<tr>
+<td><span class="mdx-inline-code">SSOHandlerLocation</span></td>
+<td><span class="mdx-inline-code">/SSO/</span></td>
+<td>SSO 완료 후 딥링크 복원 경로</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mdx-callout info"><span class="mdx-callout-icon">💡</span>
+<div>상수 위치: <span class="mdx-inline-code">DeepLink 모듈 &rarr; _Use me &rarr; Configuration &rarr; (상수 목록)</span><br />Mendix 10.x에서는 <span class="mdx-inline-code">UseDeepLink</span> 같은 별도 활성화 상수가 없으며, After Startup 등록만으로 활성화됩니다.</div>
+</div>
+<div class="mdx-h3">SAML + DeepLink 연동 핵심</div>
+<p class="mdx-p" data-ke-size="size16">커스텀 SAML 모듈의 <span class="mdx-inline-code">js_SSOLogin</span> JavaScript Action이 현재 URL을 <span class="mdx-inline-code">cont</span> 파라미터로 붙여서 <span class="mdx-inline-code">/sso</span>로 리디렉션하는 구조입니다.</p>
+<div class="mdx-code-block">
+<div class="mdx-code-header">
+<div class="mdx-code-dots">&nbsp;</div>
+<div class="mdx-code-lang">JavaScript &mdash; js_SSOLogin 내부 로직</div>
+</div>
+<pre class="javascript"><code>export async function js_SSOLogin() {
+    let href = window.location.href;
+    let origin = window.location.origin;
+    let pathname = href.replace(origin, "");
+    pathname = pathname.replace('/#', '/p');
+
+    let cont = "";
+    if (pathname &amp;&amp; pathname !== '/') {
+        cont = `?cont=${pathname}`;  // 현재 URL을 cont 파라미터로 전달
+    }
+
+    window.location.href = `/sso${cont}`;  // /sso?cont=/link/reviewmeeting/토큰
+    return Promise.resolve();
+}</code></pre>
+</div>
+<p class="mdx-p" data-ke-size="size16">딥링크 접근 &rarr; PG_Login 이동 &rarr; 사용자가 SSO 버튼 클릭 &rarr; <span class="mdx-inline-code">/sso?cont=/link/reviewmeeting/토큰</span>으로 이동 &rarr; SSO 완료 &rarr; <span class="mdx-inline-code">/link/reviewmeeting/토큰</span>으로 복귀 &rarr; MF 실행 &rarr; 팝업 오픈</p>
+<div class="mdx-callout tip"><span class="mdx-callout-icon">✅</span>
+<div><b>자동 SSO 리디렉션 (선택적 개선)</b><br />PG_Login 페이지에 HTML Snippet 위젯을 추가하면 버튼 클릭 없이 자동으로 SSO 페이지로 이동시킬 수 있습니다. 단, Mendix 10.x에서는 On page load 이벤트가 없으므로 아래 방법을 사용합니다.</div>
+</div>
+<div class="mdx-code-block">
+<div class="mdx-code-header">
+<div class="mdx-code-dots">&nbsp;</div>
+<div class="mdx-code-lang">HTML Snippet &mdash; PG_Login 자동 SSO 리디렉션 (선택)</div>
+</div>
+<pre class="xquery"><code>&lt;script&gt;
+  setTimeout(function() {
+    let href = window.location.href;
+    let origin = window.location.origin;
+    let pathname = href.replace(origin, "");
+    pathname = pathname.replace('/#', '/p');
+    let cont = "";
+    if (pathname &amp;&amp; pathname !== '/') {
+      cont = "?cont=" + pathname;
+    }
+    window.location.href = "/sso" + cont;
+  }, 500);
+&lt;/script&gt;</code></pre>
+</div>
+</div>
+<!-- S8 -->
+<div id="mdx-s8">
+<div class="mdx-h2"><span class="mdx-h2-num">8</span> 트러블슈팅 &amp; 함정 모음</div>
+<div class="mdx-table-wrap">
+<table class="mdx-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>증상</th>
+<th>원인</th>
+<th>해결</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>login.html로 이동됨</td>
+<td>LoginLocation 상수가 비어있음</td>
+<td><span class="mdx-inline-code">LoginLocation = /p/PG_Login</span> 설정</td>
+</tr>
+<tr>
+<td>"Page not found" 후 홈으로 이동</td>
+<td>DeepLink 등록 MF가 After Startup에서 미실행</td>
+<td>앱 완전 재시작 (Stop &rarr; Start)</td>
+</tr>
+<tr>
+<td>Token URL에 소수점 포함 (1234.56...)</td>
+<td><span class="mdx-inline-code">random()</span> 결과가 float</td>
+<td><span class="mdx-inline-code">round()</span>로 감싸기</td>
+</tr>
+<tr>
+<td>docker_example.com으로 URL 생성됨</td>
+<td><span class="mdx-inline-code">SUB_GetApplicationURL</span>이 내부 호스트 반환</td>
+<td>운영 URL 하드코딩 또는 Constant 사용</td>
+</tr>
+<tr>
+<td>Undefined variable 'DeepLinkURL'</td>
+<td>변수 선언 전에 HTML에서 참조</td>
+<td>Create 액션 내 참조 제거 &rarr; Change Object로 분리</td>
+</tr>
+<tr>
+<td>After startup MF boolean 에러</td>
+<td>End Event 리턴 타입 미설정</td>
+<td>End Event &rarr; Return type: Boolean, Value: true</td>
+</tr>
+<tr>
+<td>XPath에서 Token 인식 안 됨</td>
+<td>엔티티 저장 전 참조</td>
+<td>Ctrl+S 저장 후 Builder 모드에서 드롭다운 선택</td>
+</tr>
+<tr>
+<td>generateGUID() 함수 없음 에러</td>
+<td>Mendix 10.x에서 제거된 함수</td>
+<td><span class="mdx-inline-code">toString(round(random() * 1000000000))</span> 사용</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- S9 -->
+<div id="mdx-s9">
+<div class="mdx-h2"><span class="mdx-h2-num">9</span> 최종 체크리스트</div>
+<div class="mdx-summary">
+<h3 data-ke-size="size23">✅ 구현 완료 체크리스트</h3>
+<div class="mdx-summary-grid">
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">🗄️</div>
+<div class="mdx-si-label">엔티티</div>
+<div class="mdx-si-val">Token 어트리뷰트 추가</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">⚙️</div>
+<div class="mdx-si-label">처리 MF</div>
+<div class="mdx-si-val">MF_DeepLink_Open 생성</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">🔗</div>
+<div class="mdx-si-label">등록 MF</div>
+<div class="mdx-si-val">MF_Setup_DeepLinks 생성</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">🚀</div>
+<div class="mdx-si-label">After Startup</div>
+<div class="mdx-si-val">래퍼 MF로 교체</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">📧</div>
+<div class="mdx-si-label">메일 본문</div>
+<div class="mdx-si-val">버튼 HTML 삽입</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">🔐</div>
+<div class="mdx-si-label">SAML 상수</div>
+<div class="mdx-si-val">LoginLocation 설정</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">↩️</div>
+<div class="mdx-si-label">SSO 복귀</div>
+<div class="mdx-si-val">SSOHandlerLocation 설정</div>
+</div>
+<div class="mdx-summary-item">
+<div class="mdx-si-icon">🧪</div>
+<div class="mdx-si-label">테스트</div>
+<div class="mdx-si-val">운영 배포 후 확인</div>
+</div>
+</div>
+</div>
+<div class="mdx-callout tip"><span class="mdx-callout-icon">🎯</span>
+<div><b>테스트 순서</b><br />1. 운영 배포 완료 확인 (CICD &rarr; 자동 재시작)<br />2. 복기회의록 <b>새로 등록</b> (기존 데이터는 Token이 없음)<br />3. [메일발송] 클릭 &rarr; 메일 수신 확인<br />4. "🔗 시스템 바로가기" 버튼 클릭<br />5. SSO 로그인 &rarr; 복기회의록 팝업 오픈 확인</div>
+</div>
+<hr class="mdx-divider" data-ke-style="style1" />
+<p class="mdx-p" style="font-size:13px;color:var(--p50);text-align:center" data-ke-size="size16">Mendix 10.12.8 / DeepLink 모듈 10.0.10 기준 &middot; 사내 Mendix Cloud 운영 환경</p>
+</div>
+</article>
+</div>

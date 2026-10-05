@@ -1,0 +1,323 @@
+<!--
+id: 95
+제목: 파이썬 코인 자동매매 봇 만들기 — 업비트 변동성 돌파 전략 + 백테스트 결과 공개
+카테고리: Stack/VibeCoding
+태그: 변동성 돌파, 백테스트, Pyupbit, 코인 자동매매, 파이썬 자동매매, 업비트 api, 바이브코딩
+날짜: 2026-03-21 23:13
+수정: 2026-03-21 23:13
+형식: html
+썸네일: /img/t/dJMcaiJorEn.webp
+-->
+<style>
+.pb-95 *, .pb-95{box-sizing:border-box;margin:0;padding:0}
+.pb-95{background:var(--g0);color:var(--g90);line-height:1.75}
+.pb-95 article.vibe-wrap{max-width:780px;margin:0 auto;padding:32px 20px 60px}
+.pb-95 .vibe-lead{background:var(--g5);padding:16px 20px;border-radius:6px;margin-bottom:32px;font-size:0.95rem;color:var(--g90)}
+.pb-95 .vibe-wrap h1{font-size:1.65rem;font-weight:800;color:var(--g90);margin-bottom:8px;line-height:1.3}
+.pb-95 .vibe-wrap h2{font-size:1.2rem;font-weight:700;color:var(--p60);margin:36px 0 12px;border-bottom:2px solid var(--p5);padding-bottom:6px}
+.pb-95 .vibe-wrap h3{font-size:1rem;font-weight:700;color:var(--g90);margin:24px 0 8px}
+.pb-95 .vibe-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.pb-95 .vibe-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:600}
+.pb-95 .vibe-badge.blue{background:var(--p5);color:var(--p60)}
+.pb-95 .vibe-badge.green{background:var(--s10);color:var(--s60)}
+.pb-95 .vibe-badge.orange{background:var(--y5);color:var(--r60)}
+.pb-95 .vibe-wrap p{margin-bottom:16px;font-size:0.97rem;color:var(--g90)}
+.pb-95 .vibe-table-wrap{overflow-x:auto;margin:20px 0}
+.pb-95 .vibe-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.pb-95 .vibe-table th{background:var(--p60);color:#fff;padding:10px 14px;text-align:left}
+.pb-95 .vibe-table td{padding:9px 14px;border-bottom:1px solid var(--g10);color:var(--g90)}
+.pb-95 .vibe-table tr:nth-child(even) td{background:var(--g0)}
+.pb-95 .vibe-table .pos{color:var(--s60);font-weight:700}
+.pb-95 .vibe-table .neg{color:var(--r60);font-weight:700}
+.pb-95 .vibe-table .best{background:var(--p5) !important}
+.pb-95 .vibe-code{background:var(--p70);color:var(--p10);padding:20px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.6;overflow-x:auto;margin:16px 0}
+.pb-95 .vibe-code .cm{color:var(--g50)}
+.pb-95 .vibe-code .kw{color:var(--i60)}
+.pb-95 .vibe-code .st{color:var(--s60)}
+.pb-95 .vibe-code .nm{color:var(--y60)}
+.pb-95 .vibe-insight{background:var(--s5);border:1px solid var(--s50);border-radius:8px;padding:16px 20px;margin:20px 0}
+.pb-95 .vibe-insight .label{font-weight:700;color:var(--s60);font-size:0.85rem;margin-bottom:6px}
+.pb-95 .vibe-insight p{margin:0;color:var(--s60);font-size:0.92rem}
+.pb-95 .vibe-warn{background:var(--y5);border:1px solid var(--y50);border-radius:8px;padding:16px 20px;margin:20px 0}
+.pb-95 .vibe-warn .label{font-weight:700;color:var(--y60);font-size:0.85rem;margin-bottom:6px}
+.pb-95 .vibe-warn p{margin:0;color:var(--y60);font-size:0.92rem}
+.pb-95 .vibe-flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:16px 0;font-size:0.88rem}
+.pb-95 .vibe-flow-step{background:var(--p5);color:var(--p60);padding:6px 14px;border-radius:20px;font-weight:600;white-space:nowrap}
+.pb-95 .vibe-flow-arrow{color:var(--p50);font-size:1.1rem}
+.pb-95 .vibe-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.pb-95 .vibe-card{background:var(--g0);border:1px solid var(--p10);border-radius:8px;padding:14px 16px;text-align:center}
+.pb-95 .vibe-card .num{font-size:1.5rem;font-weight:800;color:var(--p60)}
+.pb-95 .vibe-card .desc{font-size:0.78rem;color:var(--g50);margin-top:4px}
+.pb-95 .vibe-tags{margin-top:40px;padding-top:20px;border-top:1px solid var(--g10);display:flex;flex-wrap:wrap;gap:8px}
+.pb-95 .vibe-tag{background:var(--p5);color:var(--p60);padding:4px 12px;border-radius:4px;font-size:0.8rem}
+.pb-95 .vibe-divider{border:none;border-top:1px dashed var(--p10);margin:32px 0}
+@media(max-width:600px){.pb-95 .vibe-wrap{padding:20px 14px 40px}
+.pb-95 .vibe-wrap h1{font-size:1.3rem}
+.pb-95 .vibe-cards{grid-template-columns:repeat(2,1fr)}
+.pb-95 .vibe-flow{flex-direction:column;align-items:flex-start}}
+</style>
+<div class="pb pb-95">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파이썬 코인 자동매매 봇 만들기 — 업비트 변동성 돌파 전략 + 백테스트 결과 공개</title>
+
+</head>
+<body>
+<article class="vibe-wrap">
+
+<!-- SEO 리드 -->
+<div class="vibe-lead">
+  파이썬과 Claude AI로 업비트 코인 자동매매 봇을 바이브코딩으로 만들었습니다. 변동성 돌파 전략 + BTC 200일선 필터 조합으로 ETH 3년 백테스트 결과 <strong>수익률 +24%, 샤프 1.27</strong>을 달성한 과정을 공유합니다.
+</div>
+
+<!-- 제목 + 메타 -->
+<h1>파이썬 코인 자동매매 봇 만들기 — 업비트 변동성 돌파 전략 + 백테스트 결과 공개</h1>
+<div class="vibe-meta">
+  <span class="vibe-badge blue">바이브코딩</span>
+  <span class="vibe-badge blue">Python</span>
+  <span class="vibe-badge blue">업비트 API</span>
+  <span class="vibe-badge green">백테스트</span>
+  <span class="vibe-badge orange">자동매매</span>
+</div>
+
+<!-- 목차 -->
+<h2>📋 목차</h2>
+<p>
+  1. 왜 코인 자동매매인가<br>
+  2. 변동성 돌파 전략이란<br>
+  3. 백테스트 설계 (pyupbit + Python)<br>
+  4. BTC 200일선 필터 추가 후 결과<br>
+  5. 최종 수익률 및 주요 지표<br>
+  6. 실전 봇 구조
+</p>
+
+<hr class="vibe-divider">
+
+<!-- 1. 왜 코인 -->
+<h2>1. 왜 코인 자동매매인가</h2>
+<p>
+  주식 장투는 이미 하고 있다. 메인 포트폴리오를 건드리지 않고 <strong>24/7 돌아가는 부수입 채널</strong>을 만들고 싶었다. 코인은 주말에도 장이 열리고, 업비트 공식 API가 무료로 제공되며, 파이썬으로 자동화하기 쉽다.
+</p>
+<p>
+  직접 짜고 싶었다. 유료 솔루션 쓰면 블랙박스고 공부도 안 된다. Claude와 함께 바이브코딩으로 하루 만에 백테스터부터 실전 봇까지 완성했다.
+</p>
+
+<hr class="vibe-divider">
+
+<!-- 2. 전략 -->
+<h2>2. 변동성 돌파 전략이란</h2>
+<p>
+  래리 윌리엄스가 고안한 단기 트레이딩 전략이다. 로직은 단순하다.
+</p>
+
+<div class="vibe-flow">
+  <span class="vibe-flow-step">전날 변동폭 계산</span>
+  <span class="vibe-flow-arrow">→</span>
+  <span class="vibe-flow-step">목표가 = 당일 시가 + 변동폭 × K</span>
+  <span class="vibe-flow-arrow">→</span>
+  <span class="vibe-flow-step">현재가 ≥ 목표가 → 매수</span>
+  <span class="vibe-flow-arrow">→</span>
+  <span class="vibe-flow-step">23:50 전량 청산</span>
+</div>
+
+<div class="vibe-code">
+<span class="cm"># 핵심 로직 (Python)</span><br>
+<span class="kw">volatility</span> = prev_high - prev_low<br>
+<span class="kw">target</span>     = today_open + volatility * <span class="nm">K</span><br>
+<br>
+<span class="cm"># K = 0.75 (ETH 3년 백테스트 최적값)</span><br>
+<span class="kw">if</span> current_price >= target:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">buy(ticker, invest_ratio=0.3)</span>  <span class="cm"># 잔고의 30% 매수</span>
+  </div>
+
+<div class="vibe-insight">
+  <div class="label">💡 K값이란?</div>
+  <p>변동성 계수. 0.5면 전날 변동폭의 50%를 더한 가격이 목표가. K가 클수록 진입 조건이 까다로워 거래 횟수가 줄고, 작을수록 자주 진입한다. 3년 데이터 최적화 결과 ETH에서 K=0.75가 가장 좋았다.</p>
+</div>
+
+<hr class="vibe-divider">
+
+<!-- 3. 백테스트 설계 -->
+<h2>3. 백테스트 설계</h2>
+<p>
+  <code>pyupbit</code> 라이브러리로 업비트 일봉 데이터를 무료로 가져올 수 있다. BTC, ETH, XRP, SOL, DOGE 5종목 대상으로 K값 0.1~0.9 전수 탐색했다.
+</p>
+
+<div class="vibe-code">
+<span class="cm"># 패키지 설치</span><br>
+pip install pyupbit pandas numpy matplotlib pyyaml<br>
+<br>
+<span class="cm"># 실행</span><br>
+python backtest.py                  <span class="cm"># 기본 백테스트</span><br>
+python backtest.py --optimize       <span class="cm"># K값 최적화</span><br>
+python backtest.py --coins KRW-ETH  <span class="cm"># 특정 코인만</span>
+  </div>
+
+<h3>초기 결과 (필터 없음, K=0.5, 1년)</h3>
+<div class="vibe-table-wrap">
+  <table class="vibe-table">
+    <thead><tr><th>코인</th><th>수익률</th><th>승률</th><th>MDD</th></tr></thead>
+    <tbody>
+      <tr><td>KRW-BTC</td><td class="neg">-14.4%</td><td>39.2%</td><td>-15.4%</td></tr>
+      <tr><td>KRW-ETH</td><td class="neg">-5.8%</td><td>46.2%</td><td>-13.0%</td></tr>
+      <tr><td>KRW-XRP</td><td class="neg">-28.6%</td><td>35.1%</td><td>-29.5%</td></tr>
+      <tr><td>KRW-SOL</td><td class="neg">-33.8%</td><td>41.1%</td><td>-35.6%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="vibe-warn">
+  <div class="label">⚠️ 전부 마이너스?</div>
+  <p>지난 1년(2024.3~2025.3)이 코인 전반적 하락장이었다. 변동성 돌파는 상승장 전략이라 이 구간이 불리하다. 하지만 BTC를 그냥 홀딩했어도 -10%였으니 전략이 일부 손실을 방어한 셈이다.</p>
+</div>
+
+<hr class="vibe-divider">
+
+<!-- 4. 200일선 필터 -->
+<h2>4. BTC 200일선 필터 추가 후 결과</h2>
+<p>
+  하락장에서 손실을 막으려면 시장 국면 판단이 필요하다. BTC가 200일 이동평균선 위에 있을 때만 봇을 켜는 필터를 추가했다.
+</p>
+
+<div class="vibe-flow">
+  <span class="vibe-flow-step">BTC 현재가</span>
+  <span class="vibe-flow-arrow">vs</span>
+  <span class="vibe-flow-step">BTC MA200</span>
+  <span class="vibe-flow-arrow">→</span>
+  <span class="vibe-flow-step">위면 상승장 → 봇 ON</span>
+  <span class="vibe-flow-arrow">|</span>
+  <span class="vibe-flow-step">아래면 하락장 → 봇 OFF</span>
+</div>
+
+<h3>필터 적용 전후 비교 (1년, K=0.5)</h3>
+<div class="vibe-table-wrap">
+  <table class="vibe-table">
+    <thead><tr><th>코인</th><th>필터 없음</th><th>200일선 필터</th><th>개선</th></tr></thead>
+    <tbody>
+      <tr><td>KRW-BTC</td><td class="neg">-8.65%</td><td class="neg">-4.58%</td><td class="pos">+4.07%p</td></tr>
+      <tr class="best"><td>KRW-ETH</td><td class="pos">+8.40%</td><td class="pos">+10.05%</td><td class="pos">+1.65%p</td></tr>
+      <tr><td>KRW-XRP</td><td class="neg">-11.86%</td><td class="neg">-3.83%</td><td class="pos">+8.03%p</td></tr>
+      <tr><td>KRW-SOL</td><td class="neg">-17.93%</td><td class="neg">-5.38%</td><td class="pos">+12.55%p</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="vibe-insight">
+  <div class="label">✅ ETH가 압도적으로 좋다</div>
+  <p>필터 없이도 +8.4%, 필터 적용 후 +10.05%, MDD -3.6%, 샤프 1.53. 하락장 159일을 현금으로 쉬면서 손실을 차단한 결과다.</p>
+</div>
+
+<hr class="vibe-divider">
+
+<!-- 5. 3년 백테스트 -->
+<h2>5. ETH 3년 백테스트 최종 결과</h2>
+<p>
+  1년은 샘플이 부족하다. 상승/하락 사이클을 모두 포함한 3년(1095일) 데이터로 K값 최적화를 돌렸다.
+</p>
+
+<div class="vibe-table-wrap">
+  <table class="vibe-table">
+    <thead><tr><th>K값</th><th>수익률(3년)</th><th>MDD</th><th>샤프</th></tr></thead>
+    <tbody>
+      <tr><td>0.70</td><td class="pos">+24.18%</td><td>-3.80%</td><td>1.25</td></tr>
+      <tr class="best"><td><strong>0.75</strong></td><td class="pos"><strong>+23.83%</strong></td><td>-4.46%</td><td><strong>1.27</strong></td></tr>
+      <tr><td>0.80</td><td class="pos">+19.99%</td><td>-4.35%</td><td>1.12</td></tr>
+      <tr><td>0.95</td><td class="pos">+17.80%</td><td>-2.82%</td><td>1.12</td></tr>
+      <tr><td>0.50</td><td class="pos">+15.28%</td><td>-6.58%</td><td>0.71</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>최종 확정 파라미터</h3>
+<div class="vibe-cards">
+  <div class="vibe-card"><div class="num">K = 0.75</div><div class="desc">3년 최적 계수</div></div>
+  <div class="vibe-card"><div class="num">+23.8%</div><div class="desc">3년 총 수익률</div></div>
+  <div class="vibe-card"><div class="num">1.27</div><div class="desc">샤프 비율</div></div>
+  <div class="vibe-card"><div class="num">-4.46%</div><div class="desc">MDD (최대 낙폭)</div></div>
+  <div class="vibe-card"><div class="num">ETH</div><div class="desc">거래 대상 코인</div></div>
+  <div class="vibe-card"><div class="num">30%</div><div class="desc">잔고 투입 비율</div></div>
+</div>
+
+<div class="vibe-insight">
+  <div class="label">💡 연환산으로 계산하면</div>
+  <p>3년 +23.8% → 연 약 <strong>7~8%</strong>. 천만원 기준 연 70~80만원, 월 평균 6~7만원. 완전 자동화니까 시간 투입 없이 가능하다. 샤프 1.27은 운용 업계에서 "우수한 전략"으로 분류되는 수준이다.</p>
+</div>
+
+<hr class="vibe-divider">
+
+<!-- 6. 실전 봇 구조 -->
+<h2>6. 실전 봇 구조</h2>
+<p>
+  백테스트 검증 후 실전 봇도 함께 작성했다. 파일 구조는 이렇다.
+</p>
+
+<div class="vibe-code">
+upbit-bot/<br>
+├── main.py         <span class="cm"># 봇 메인 (스케줄러 + 전체 흐름)</span><br>
+├── strategy.py     <span class="cm"># 목표가 계산 + 200일선 판단</span><br>
+├── executor.py     <span class="cm"># 업비트 매수/매도 실행</span><br>
+├── notifier.py     <span class="cm"># 텔레그램 알림</span><br>
+├── logger.py       <span class="cm"># 로그 설정 (30일 자동 로테이션)</span><br>
+├── config.yaml     <span class="cm"># 전략 파라미터 (K값, 투입비율 등)</span><br>
+└── backtest.py     <span class="cm"># 백테스트</span>
+  </div>
+
+<h3>실행 방법</h3>
+<div class="vibe-code">
+<span class="cm"># 페이퍼 트레이딩 (주문 없이 시뮬레이션)</span><br>
+python main.py --paper<br>
+<br>
+<span class="cm"># 실전</span><br>
+python main.py
+  </div>
+
+<p>
+  봇이 켜지면 매일 00:01에 목표가를 계산하고, 1분마다 현재가를 모니터링한다. BTC 200일선 아래면 오늘 매수 없음 메시지를 텔레그램으로 보내고 대기한다.
+</p>
+
+<div class="vibe-warn">
+  <div class="label">⚠️ 투자 유의사항</div>
+  <p>백테스트 결과가 실전 수익을 보장하지 않는다. 현재 BTC가 200일선 아래(하락장)라 실전 봇은 대기 중이다. 상승 전환 시점을 기다리며 페이퍼 트레이딩으로 로직을 검증 중이다.</p>
+</div>
+
+<hr class="vibe-divider">
+
+<!-- 마무리 -->
+<h2>📌 정리</h2>
+<p>
+  Claude와 바이브코딩으로 하루 만에 백테스터부터 실전 봇까지 만들었다. 전략 설계 → 데이터 수집 → K값 최적화 → 200일선 필터 추가 → 봇 완성 순서로 진행했고, 코드는 GitHub에 정리 예정이다.
+</p>
+<p>
+  다음 포스팅에서는 Oracle Cloud 무료 서버에 이 봇을 올려 24시간 무인 운영하는 방법을 다룰 예정이다.
+</p>
+
+<!-- 태그 -->
+<div class="vibe-tags">
+  <span class="vibe-tag">파이썬 자동매매</span>
+  <span class="vibe-tag">업비트 API</span>
+  <span class="vibe-tag">변동성 돌파</span>
+  <span class="vibe-tag">백테스트</span>
+  <span class="vibe-tag">코인 자동매매</span>
+  <span class="vibe-tag">바이브코딩</span>
+  <span class="vibe-tag">pyupbit</span>
+  <span class="vibe-tag">ETH</span>
+  <span class="vibe-tag">데이터 엔지니어</span>
+</div>
+
+</article>
+
+<script>
+/* 클릭 이벤트 예시 (onclick 인라인 금지) */
+document.querySelectorAll('.vibe-tag').forEach(function(tag) {
+  tag.addEventListener('click', function() {
+    var keyword = this.textContent;
+    window.open('https://hyeonlee.net/tag/' + encodeURIComponent(keyword), '_blank');
+  });
+});
+</script>
+</body>
+</html>
+</div>

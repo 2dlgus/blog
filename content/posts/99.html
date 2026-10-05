@@ -1,0 +1,309 @@
+<!--
+id: 99
+제목: AWS DEA-C01 각색 문제 Day 04 — DynamoDB DAX, Redshift UNLOAD, 경고 시스템 테이블, Glue 데이터 품질
+카테고리: Stack/AWS
+태그: 자격증, AWS, DAX, DEA, Glue, DynamoDB, Redshift, Data Engineering, 데이터 엔지니어링, DQDL
+날짜: 2026-03-23 21:54
+수정: 2026-03-25 16:28
+형식: html
+썸네일: /img/t/dJMcac3vN4I.webp
+-->
+<style>
+.pb-99 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-99 .dea-wrap *{box-sizing:border-box}
+.pb-99 .dea-post-header{margin-bottom:32px}
+.pb-99 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-99 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-99 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-99 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-99 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-99 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-99 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-99 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-99 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-99 .dea-q-block{margin-bottom:48px}
+.pb-99 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-99 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-99 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-99 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-99 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-99 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-99 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-99 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-99 .dea-seo-lead strong{color:var(--p50)}
+.pb-99 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-99 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-99 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-99 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-99 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-99 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-99 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-99 .dea-opt.ok{border-color:var(--s60)}
+.pb-99 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-99 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-99 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-99 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-99 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-99 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-99 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-99 .dea-term{font-weight:700;color:var(--p50)}
+.pb-99 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-99 .dea-btn:hover{background:var(--p60)}
+.pb-99 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-99 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-99 .dea-exp.on{display:flex}
+.pb-99 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-99 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-99 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-99 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-99 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-99 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-99 .dea-table th, .pb-99 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-99 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-99 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-99 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-99 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-99 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-99 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-99 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-99 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-99 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-99 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-99 .dea-hl{color:var(--p50);font-weight:700}
+.pb-99 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-99 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-99 .dea-wrap{padding:14px 6px 52px}
+.pb-99 .dea-post-title{font-size:18px}
+.pb-99 .dea-qcard p{font-size:14px}
+.pb-99 .dea-opt-row{font-size:13px}
+.pb-99 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-99 .dea-table{font-size:11.5px}
+.pb-99 .dea-table th, .pb-99 .dea-table td{padding:8px 9px}
+.pb-99 .dea-ans-main{font-size:14.5px}
+.pb-99 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-99">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 04</h1>
+  <p class="dea-post-desc">DynamoDB 최소 RCU 쿼리, DynamoDB DAX 서버리스, Redshift UNLOAD, Redshift 경고 시스템 테이블, Glue 데이터 품질까지 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1·2 · DynamoDB · Redshift · Glue</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q16"><span class="dea-toc-num">Q16</span> DynamoDB 파티션 키 — 최소 RCU로 특정 레코드 읽기</a></li>
+    <li><a href="#dea-q17"><span class="dea-toc-num">Q17</span> 서버리스·밀리초 응답·반정형 데이터 DB</a></li>
+    <li><a href="#dea-q18"><span class="dea-toc-num">Q18</span> Redshift 데이터를 외부 S3로 주기적 내보내기</a></li>
+    <li><a href="#dea-q19"><span class="dea-toc-num">Q19</span> Redshift 쿼리 최적화 이상 현상 자동 기록 테이블</a></li>
+    <li><a href="#dea-q20"><span class="dea-toc-num">Q20</span> ETL 파이프라인 내 날짜 품질 검사 + 실패 레코드 분리</a></li>
+  </ul>
+</nav>
+
+<!-- Q16 -->
+<div class="dea-q-block" id="dea-q16">
+  <div class="dea-meta"><span class="dea-badge qnum">Q16</span><span class="dea-badge topic">DynamoDB · RCU · 쿼리 vs 스캔</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>DynamoDB Query</strong>는 파티션 키를 조건으로 해당 파티션만 읽어 <strong>RCU(읽기 용량 단위)</strong>를 최소화합니다. Scan은 전체 테이블을 읽어 RCU 낭비가 크며, DEA-C01에서 "최소 RCU" 키워드가 나오면 Query + 파티션 키 조합이 정답입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>AWS Glue PySpark 작업이 Amazon DynamoDB 테이블에서 특정 레코드를 읽어야 합니다. 처리해야 할 레코드의 파티션 키 값은 이미 알고 있으며, 이후 처리 로직은 데이터가 DynamicFrame 형식이어야 합니다. 불필요한 데이터를 최대한 적게 읽으면서 이 요건을 충족하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q16-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Glue DynamoDB ETL 커넥터로 테이블 전체를 읽고, 커넥터의 필터 옵션으로 필요한 파티션 키 레코드만 걸러냅니다.</span></div><div class="dea-inline-exp">❌ Glue DynamoDB 커넥터의 필터 옵션은 내부적으로 <strong>전체 테이블 스캔 후 필터링</strong>. 원하는 데이터만 읽는 게 아니라 전체를 읽고 버리는 방식 → RCU 낭비.</div></li>
+    <li class="dea-opt" id="q16-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 작업에서 DynamoDB 테이블 전체를 스캔하여 DynamicFrame에 적재한 뒤, 파티션 키로 DynamicFrame을 필터링합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">스캔(Scan)</span> — 도서관 전체 책을 다 꺼내서 읽은 후 필요한 책만 고르는 것. 테이블 전체를 읽으므로 <strong>RCU가 가장 많이 소비됨</strong>. 최소 RCU와 반대.</div></li>
+    <li class="dea-opt" id="q16-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Glue 작업에서 파티션 키를 키 조건식으로 사용해 DynamoDB 쿼리를 실행하고, 결과를 DynamicFrame에 저장합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">쿼리(Query)</span> — 도서관 색인에서 책 번호 확인 후 그 책만 꺼내는 것. <strong>파티션 키를 키 조건식에 사용</strong>하면 해당 파티션의 데이터만 정확히 읽음 → RCU 최소화. 결과를 DynamicFrame으로 변환해 기존 처리 로직과 호환.</div></li>
+    <li class="dea-opt" id="q16-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>정렬 키만 키 조건식으로 사용해 DynamoDB 쿼리를 실행하고, 결과를 DynamicFrame에 로드합니다.</span></div><div class="dea-inline-exp">❌ DynamoDB 쿼리는 <strong>반드시 파티션 키가 있어야</strong> 실행 가능. 정렬 키(Sort Key)만으로는 쿼리 자체가 불가. 파티션 키 없이 정렬 키만 사용하면 에러 발생.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q16">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q16">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — Query + 파티션 키 조건식으로 최소 RCU</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — DynamoDB 읽기 방식 비교</div>
+    <table class="dea-table"><thead><tr><th>방식</th><th>비유</th><th>읽는 범위</th><th>RCU 소비</th></tr></thead>
+    <tbody>
+      <tr><td>GetItem</td><td>📖 책 번호로 한 권 바로 꺼냄</td><td>단일 항목</td><td><span class="dea-pill good">최소</span></td></tr>
+      <tr><td><strong>Query (파티션 키)</strong></td><td>📚 색인으로 해당 선반만</td><td>파티션 내 항목들</td><td><span class="dea-pill good">✓ 적음</span></td></tr>
+      <tr><td>Scan + 필터</td><td>🏛️ 전체 도서관 다 꺼내고 골라냄</td><td>테이블 전체</td><td><span class="dea-pill bad">최대</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"최소 RCU로 특정 항목 읽기"  →  <span class="dea-hl">Query + 파티션 키</span><br><br>Scan       = 전체 읽기  →  RCU 최대 (오답 패턴)<br>정렬 키만  = Query 불가 →  파티션 키 필수!</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q17 -->
+<div class="dea-q-block" id="dea-q17">
+  <div class="dea-meta"><span class="dea-badge qnum">Q17</span><span class="dea-badge topic">DynamoDB · DAX · 서버리스</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon DynamoDB + DAX(DynamoDB Accelerator)</strong>는 서버리스 NoSQL에 인메모리 캐시를 더해 마이크로초 단위 응답을 제공합니다. 반정형 데이터·서버리스·밀리초 응답 조합은 DEA-C01의 단골 정답 패턴입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>애플리케이션이 JSON 구조의 트랜잭션 데이터를 저장해야 합니다. 인프라 관리 부담이 없는 서버리스 데이터베이스여야 하며, 쓰기는 드물게 발생하지만 읽기 요청은 매우 빈번합니다. 데이터는 밀리초 이내에 반환되어야 합니다. 운영 부담을 최소화하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q17-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon S3에 Apache Iceberg 테이블 형태로 데이터를 저장하고, S3 Transfer Acceleration을 활성화합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">S3 Iceberg</span> — 데이터 레이크 테이블 포맷. 밀리초 단위 개별 레코드 조회 불가. <span class="dea-term">S3 Transfer Acceleration</span>은 업로드 속도 향상 기능으로 쿼리 응답속도와 무관.</div></li>
+    <li class="dea-opt" id="q17-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon S3 Standard 버킷에 데이터를 저장하고 S3 Transfer Acceleration을 활성화합니다.</span></div><div class="dea-inline-exp">❌ S3는 객체 스토리지로 DB가 아님. 개별 레코드 검색에 밀리초 응답 불가. S3 Transfer Acceleration도 이 요건과 무관.</div></li>
+    <li class="dea-opt" id="q17-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon RDS for MySQL에 데이터를 저장하고 RDS Optimized Reads를 구성합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon RDS</span> — 관계형 DB 관리 서비스. 서버(EC2 인스턴스)를 프로비저닝해야 해서 <strong>서버리스 아님</strong>. MySQL은 정형 데이터에 적합하고 반정형(JSON) 처리에 DynamoDB보다 불편.</div></li>
+    <li class="dea-opt" id="q17-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon DynamoDB에 데이터를 저장하고, DAX(DynamoDB Accelerator) 캐시를 앞단에 구성합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon DynamoDB</span> — 완전 서버리스 NoSQL, 반정형(JSON) 데이터 저장 가능. <span class="dea-term">DAX(DynamoDB Accelerator)</span> — DynamoDB 앞단의 인메모리 캐시. 자주 읽는 데이터를 캐시에 올려 <strong>마이크로초 단위</strong> 응답. 쓰기는 적고 읽기가 많은 패턴에 최적.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q17">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q17">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — DynamoDB + DAX로 서버리스 + 밀리초 응답</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 서버리스 DB 비교</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>서버리스?</th><th>데이터 형태</th><th>응답 속도</th><th>읽기 최적화</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DynamoDB + DAX</strong></td><td><span class="dea-pill good">✓</span></td><td>반정형(JSON)</td><td>마이크로초</td><td><span class="dea-pill good">✓ DAX 캐시</span></td></tr>
+      <tr><td>Aurora Serverless</td><td><span class="dea-pill good">✓</span></td><td>정형(SQL)</td><td>밀리초</td><td>읽기 전용 복제본</td></tr>
+      <tr><td>RDS MySQL</td><td><span class="dea-pill bad">✗</span></td><td>정형(SQL)</td><td>밀리초</td><td>최적화 읽기</td></tr>
+      <tr><td>S3</td><td><span class="dea-pill good">✓</span></td><td>파일 기반</td><td>초 단위</td><td>해당 없음</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"서버리스 + 반정형 + 밀리초 + 읽기 多"  →  <span class="dea-hl">DynamoDB + DAX</span><br><br>DAX = DynamoDB 앞단 인메모리 캐시 (마이크로초 응답)<br>읽기 多 · 쓰기 少 패턴에 특히 효과적</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q18 -->
+<div class="dea-q-block" id="dea-q18">
+  <div class="dea-meta"><span class="dea-badge qnum">Q18</span><span class="dea-badge topic">Redshift · UNLOAD · S3 내보내기</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Redshift UNLOAD</strong>는 분석 연구실(Redshift)의 결과물을 초대형 창고(S3)로 내보내는 명령어입니다. 반대로 <strong>COPY</strong>는 창고(S3)에서 연구실(Redshift)로 가져오는 것입니다. 이 방향 구분이 DEA-C01에서 자주 출제되는 함정입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>기업의 Amazon Redshift 데이터 웨어하우스에 협력사 관련 데이터가 포함되어 있습니다. 협력사 측에서 매주 한 번 해당 데이터를 자사의 Amazon S3 버킷으로 받고 싶다고 요청했습니다. 이 요건을 충족하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q18-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Redshift 데이터 공유(Data Sharing) 기능을 설정하고, 협력사 S3 버킷을 공유 대상으로 지정합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Redshift 데이터 공유(Data Sharing)</span> — 다른 AWS 계정의 <strong>Redshift 클러스터끼리</strong> 데이터를 실시간 공유하는 기능. S3 버킷을 대상으로 설정하는 기능이 없음. 용도 자체가 다름.</div></li>
+    <li class="dea-opt" id="q18-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Redshift에 연결하는 Lambda 함수를 만들고, COPY 명령으로 데이터를 협력사 S3 버킷에 주기적으로 복사합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">COPY 명령</span> — 창고(S3) → 연구실(Redshift) 방향(데이터 가져오기). 문제는 연구실(Redshift) → 창고(S3) 방향(내보내기)을 원함. 방향이 반대.</div></li>
+    <li class="dea-opt" id="q18-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Redshift Spectrum의 대상 위치를 협력사 S3 버킷으로 설정하고 양방향 쿼리를 활성화합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Redshift Spectrum</span> — 창고(S3)의 데이터를 연구실(Redshift)에서 외부 테이블로 <strong>읽어오는</strong> 기능. S3에 쓰는 기능이 아님. "양방향 쿼리 활성화"라는 옵션도 존재하지 않음.</div></li>
+    <li class="dea-opt" id="q18-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Redshift에 연결하는 Glue 작업을 만들고, UNLOAD 명령으로 필요한 데이터를 협력사 S3 버킷에 주간 스케줄로 내보냅니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">UNLOAD 명령</span> — 연구실(Redshift) 결과물을 창고(S3)에 보관하는 것. Glue 작업에서 UNLOAD를 실행하고 Glue Trigger로 주간 스케줄링 → 요건 완벽 충족.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q18">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q18">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — Glue 작업 + UNLOAD로 Redshift → S3 주기적 내보내기</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Redshift 데이터 이동 명령 방향</div>
+    <table class="dea-table"><thead><tr><th>명령</th><th>방향</th><th>비유</th></tr></thead>
+    <tbody>
+      <tr><td><strong>UNLOAD</strong></td><td>Redshift → S3</td><td>📦 연구실(Redshift) 결과물을 창고(S3)에 보관</td></tr>
+      <tr><td>COPY</td><td>S3 → Redshift</td><td>🏭 창고(S3)에서 연구실(Redshift)로 재료 가져오기</td></tr>
+      <tr><td>Spectrum</td><td>S3 → Redshift (읽기전용)</td><td>🔭 창고 짐을 연구실로 안 옮기고 제자리에서 분석</td></tr>
+      <tr><td>Data Sharing</td><td>Redshift → Redshift</td><td>🤝 연구실 간 데이터 직접 공유</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>Redshift → S3  →  <span class="dea-hl">UNLOAD</span>  (연구실 결과물 → 창고 보관)<br>S3 → Redshift  →  <span class="dea-hl">COPY</span>    (창고 재료 → 연구실로 가져오기)<br><br>COPY와 UNLOAD 방향 헷갈리면 오답!</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q19 -->
+<div class="dea-q-block" id="dea-q19">
+  <div class="dea-meta"><span class="dea-badge qnum">Q19</span><span class="dea-badge topic">Redshift · 시스템 테이블 · 쿼리 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>STL_ALERT_EVENT_LOG</strong>는 Redshift 쿼리 최적화 엔진이 성능 이상 패턴을 감지할 때 자동으로 기록하는 시스템 테이블입니다. DEA-C01 Redshift 운영 도메인에서 자주 출제됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>운영 리포팅 팀이 Amazon Redshift를 사용하고 있으며, 장기 실행 쿼리로 인한 성능 저하를 사전에 방지하고자 합니다. Redshift의 쿼리 최적화 엔진이 성능 문제로 이어질 수 있는 조건을 감지했을 때 자동으로 이를 기록하는 시스템 테이블은 무엇인가요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q19-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>STL_UTILITYTEXT</span></div><div class="dea-inline-exp">❌ <span class="dea-term">STL_UTILITYTEXT</span> — COPY·UNLOAD·CREATE 등 유틸리티 SQL 명령의 실행 텍스트를 기록. 쿼리 최적화 이상 현상과 무관.</div></li>
+    <li class="dea-opt" id="q19-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>STL_PLAN_INFO</span></div><div class="dea-inline-exp">❌ <span class="dea-term">STL_PLAN_INFO</span> — 쿼리 실행 계획(Execution Plan)의 세부 정보를 기록. 계획 자체를 보는 것이지, 성능 <strong>이상 현상을 자동 감지해 기록</strong>하는 것이 아님.</div></li>
+    <li class="dea-opt" id="q19-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>STL_ALERT_EVENT_LOG</span></div><div class="dea-inline-exp">✅ <span class="dea-term">STL_ALERT_EVENT_LOG</span> — 쿼리 최적화 엔진이 성능 경고를 감지할 때 자동 기록. 경비원이 이상한 상황을 발견하면 자동으로 경보 일지를 쓰는 것. 해시 루프·중첩 루프 조인·대용량 분산·파티션 누락 등 성능 이슈 패턴을 기록.</div></li>
+    <li class="dea-opt" id="q19-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>STL_QUERY_METRICS</span></div><div class="dea-inline-exp">❌ <span class="dea-term">STL_QUERY_METRICS</span> — CPU·메모리·디스크 I/O 같은 쿼리 실행 중 리소스 소비 지표를 기록. 성능 지표를 측정하는 것이지 최적화 이상 현상을 자동 감지하는 것이 아님.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q19">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q19">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — STL_ALERT_EVENT_LOG로 최적화 이상 현상 자동 기록</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Redshift STL 시스템 테이블 비교</div>
+    <table class="dea-table"><thead><tr><th>테이블</th><th>기록 내용</th><th>자동 이상 감지?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>STL_ALERT_EVENT_LOG</strong></td><td>쿼리 최적화 경고 이벤트</td><td><span class="dea-pill good">✓ 자동 감지</span></td></tr>
+      <tr><td>STL_QUERY_METRICS</td><td>CPU·메모리·I/O 리소스 지표</td><td><span class="dea-pill bad">✗ 수동 분석</span></td></tr>
+      <tr><td>STL_PLAN_INFO</td><td>쿼리 실행 계획 세부 정보</td><td><span class="dea-pill bad">✗ 계획 정보만</span></td></tr>
+      <tr><td>STL_UTILITYTEXT</td><td>유틸리티 SQL 텍스트</td><td><span class="dea-pill bad">✗ 무관</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"쿼리 최적화 이상 현상 자동 기록"  →  <span class="dea-hl">STL_ALERT_EVENT_LOG</span><br><br>ALERT = 경보 → 최적화가 문제 감지 시 자동 기록<br>METRICS = 지표 → 수동으로 분석해야 함</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q20 -->
+<div class="dea-q-block" id="dea-q20">
+  <div class="dea-meta"><span class="dea-badge qnum">Q20</span><span class="dea-badge topic">Glue 데이터 품질 · ETL · 품질 검사</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Glue 데이터 품질(Data Quality)</strong>은 ETL 파이프라인 내에서 사용자 정의 규칙으로 데이터를 검증하고, 실패한 레코드를 별도 경로로 자동 라우팅하는 기능입니다. 추가 도구 없이 파이프라인에 통합되어 비용 효율적입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>물류 회사가 AWS Glue ETL 파이프라인으로 주문 데이터를 처리하고 Athena로 분석합니다. 이제 배송일과 도착일 컬럼이 추가되었으며, "배송일 &gt; 주문일", "도착일 &gt; 배송일" 조건을 만족하지 않는 주문은 별도의 S3 버킷에 격리해야 합니다. 가장 비용 효율적인 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q20-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon Athena로 세 날짜 컬럼을 쿼리하여 비교하고, 조건을 만족하지 않는 레코드를 두 번째 S3 버킷으로 내보냅니다.</span></div><div class="dea-inline-exp">❌ Athena는 분석용 쿼리 도구. ETL 파이프라인에 통합되어 있지 않아 별도 쿼리를 매번 실행해야 함. 기존 Glue ETL과 분리된 솔루션으로 운영 부담이 있음.</div></li>
+    <li class="dea-opt" id="q20-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 크롤러로 Glue 데이터 카탈로그를 업데이트하고, 세 날짜 컬럼에 대한 필터를 생성합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Glue 크롤러(Crawler)</span> — 스키마를 자동 탐지해 카탈로그에 등록하는 도구. 데이터 품질 검사나 레코드 라우팅 기능이 없음.</div></li>
+    <li class="dea-opt" id="q20-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>AWS Glue 데이터 품질 기능으로 날짜 순서를 검증하는 사용자 정의 규칙을 만들고, 규칙 미통과 레코드를 두 번째 S3 버킷으로 자동 라우팅합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue 데이터 품질(Data Quality)</span> — Glue ETL 파이프라인 내에서 DQDL(Data Quality Definition Language)로 규칙을 정의하고 실패 레코드를 자동 분리하는 기능. 기존 Glue 파이프라인에 통합 → <strong>추가 서비스 없이 비용 효율적으로</strong> 날짜 순서 검증 + 별도 버킷 라우팅 구현.</div></li>
+    <li class="dea-opt" id="q20-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Glue DataBrew에서 DATEDIFF 함수로 날짜 차이 컬럼을 추가하고 유효성을 검사한 뒤, 실패 레코드를 두 번째 S3 버킷에 저장합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS Glue DataBrew</span> — 노코드 GUI 데이터 정제 도구. 기존 Glue ETL 파이프라인과 별도로 동작해 <strong>추가 DataBrew 작업 비용</strong>이 발생. ETL 파이프라인 내 통합인 C보다 비용 효율 낮음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q20">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q20">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — Glue 데이터 품질 규칙 + 실패 레코드 자동 라우팅</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Glue 관련 데이터 품질 도구 비교</div>
+    <table class="dea-table"><thead><tr><th>도구</th><th>특징</th><th>ETL 통합?</th><th>비용 효율</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Glue 데이터 품질</strong></td><td>DQDL 규칙, 실패 레코드 라우팅</td><td><span class="dea-pill good">✓ 내장</span></td><td><span class="dea-pill good">✓ 최적</span></td></tr>
+      <tr><td>Glue DataBrew</td><td>노코드 GUI 정제 도구</td><td><span class="dea-pill bad">✗ 별도</span></td><td><span class="dea-pill mid">추가 비용</span></td></tr>
+      <tr><td>Athena 쿼리</td><td>분석 쿼리 도구</td><td><span class="dea-pill bad">✗ 별도</span></td><td><span class="dea-pill mid">수동 운영</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"ETL 파이프라인 내 데이터 품질 검사 + 실패 레코드 라우팅"<br>  →  <span class="dea-hl">Glue 데이터 품질(Data Quality)</span><br><br>DataBrew  = 노코드 GUI 정제 (별도 서비스, 추가 비용)<br>Glue DQ   = ETL 파이프라인 내장 (비용 효율적)</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span>
+  <span class="dea-tag">DynamoDB Query vs Scan</span>
+  <span class="dea-tag">DynamoDB DAX</span>
+  <span class="dea-tag">Redshift UNLOAD</span>
+  <span class="dea-tag">STL_ALERT_EVENT_LOG</span>
+  <span class="dea-tag">Glue 데이터 품질</span>
+  <span class="dea-tag">데이터 엔지니어 자격증</span>
+  <span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var questions=[
+    {id:'q16',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Query + 파티션 키'},
+    {id:'q17',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — DynamoDB + DAX'},
+    {id:'q18',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — UNLOAD'},
+    {id:'q19',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — STL_ALERT_EVENT_LOG'},
+    {id:'q20',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Glue 데이터 품질'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

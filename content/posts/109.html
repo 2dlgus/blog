@@ -1,0 +1,289 @@
+<!--
+id: 109
+제목: AWS DEA-C01 각색 문제 Day 12 — Lake Formation, Athena Parquet, Lambda KMS, SageMaker, Step Functions + Glue ETL
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, Lake Formation 데이터 필터, Athena Parquet 파티션, KMS 키 정책, SageMaker Data Wrangler, Step Functions Glue
+날짜: 2026-03-27 23:32
+수정: 2026-03-27 23:32
+형식: html
+썸네일: /img/t/dJMcacvNtd6.webp
+-->
+<style>
+.pb-109 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-109 .dea-wrap *{box-sizing:border-box}
+.pb-109 .dea-post-header{margin-bottom:32px}
+.pb-109 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-109 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-109 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-109 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-109 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-109 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-109 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-109 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-109 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-109 .dea-q-block{margin-bottom:48px}
+.pb-109 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-109 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-109 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-109 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-109 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-109 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-109 .dea-badge.multi{background:var(--r5);color:var(--r60)}
+.pb-109 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-109 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-109 .dea-seo-lead strong{color:var(--p50)}
+.pb-109 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-109 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-109 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-109 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-109 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-109 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-109 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-109 .dea-opt.ok{border-color:var(--s60)}
+.pb-109 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-109 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-109 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-109 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-109 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-109 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-109 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-109 .dea-term{font-weight:700;color:var(--p50)}
+.pb-109 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-109 .dea-btn:hover{background:var(--p60)}
+.pb-109 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-109 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-109 .dea-exp.on{display:flex}
+.pb-109 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-109 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-109 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-109 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-109 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-109 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-109 .dea-table th, .pb-109 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-109 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-109 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-109 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-109 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-109 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-109 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-109 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-109 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-109 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-109 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-109 .dea-hl{color:var(--p50);font-weight:700}
+.pb-109 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-109 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-109 .dea-wrap{padding:14px 6px 52px}
+.pb-109 .dea-post-title{font-size:18px}
+.pb-109 .dea-qcard p{font-size:14px}
+.pb-109 .dea-opt-row{font-size:13px}
+.pb-109 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-109 .dea-table{font-size:11.5px}
+.pb-109 .dea-table th, .pb-109 .dea-table td{padding:8px 9px}
+.pb-109 .dea-ans-main{font-size:14.5px}
+.pb-109 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-109">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 12</h1>
+  <p class="dea-post-desc">Lake Formation 셀수준 접근 제어, Athena Parquet+캠페인 파티션(복수), Lambda KMS 키 정책 오류, SageMaker Data Wrangler, Step Functions + Glue ETL — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 2·4 · 보안·성능·ML·오케스트레이션</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q56"><span class="dea-toc-num">Q56</span> 대학 데이터 — 열·행 수준 접근 제어 구현</a></li>
+    <li><a href="#dea-q57"><span class="dea-toc-num">Q57</span> Athena 비용 최적화 — 파일 형식 + 파티션 (복수 정답)</a></li>
+    <li><a href="#dea-q58"><span class="dea-toc-num">Q58</span> Lambda S3→DynamoDB 액세스 오류 원인</a></li>
+    <li><a href="#dea-q59"><span class="dea-toc-num">Q59</span> SageMaker Studio에서 Glue 카탈로그 테이블 분석</a></li>
+    <li><a href="#dea-q60"><span class="dea-toc-num">Q60</span> 주간 2TB 처리 워크플로 — 가장 비용 효율적 오케스트레이션</a></li>
+  </ul>
+</nav>
+
+<!-- Q56 -->
+<div class="dea-q-block" id="dea-q56">
+  <div class="dea-meta"><span class="dea-badge qnum">Q56</span><span class="dea-badge topic">Lake Formation · 셀수준 보안 · 데이터 필터</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Lake Formation 데이터 필터</strong>는 열(Column) 수준, 행(Row) 수준, 셀(Cell) 수준의 세밀한 접근 제어를 제공합니다. IAM 정책이나 S3 버킷 정책으로는 열·행 수준 제어가 불가능하며, Glue 크롤러로 메타데이터를 등록한 뒤 Lake Formation 권한을 설정합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>대학이 교수·학생 데이터를 Amazon S3에 저장하고 여러 사용자가 Amazon Athena로 필요한 데이터 서브셋을 즉시 조회합니다. 데이터는 민감하여 열 수준 및 행 수준 권한으로 사용자와 애플리케이션의 접근을 제어해야 합니다. 올바른 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q56-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Lake Formation으로 S3 데이터에 대한 Glue 크롤러를 실행합니다. 데이터 필터를 사용하여 검색된 테이블에 열·행·셀 수준 권한을 설정합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Lake Formation 데이터 필터</span> — 열·행·셀 단위 세밀한 접근 제어. <span class="dea-term">Glue 크롤러</span>로 S3 데이터 스키마를 카탈로그에 등록한 뒤, Lake Formation에서 사용자·역할별 접근 가능 열과 행 조건을 데이터 필터로 정의. Athena 쿼리 시 자동 필터 적용.</div></li>
+    <li class="dea-opt" id="q56-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>S3 버킷 정책을 사용하여 객체 수준에서 세밀한 권한을 설정하고 사용자·애플리케이션에 매핑합니다.</span></div><div class="dea-inline-exp">❌ S3 버킷 정책은 버킷·객체(파일) 단위 접근 제어. <strong>열·행 수준의 세밀한 제어 불가</strong>. 파일 전체를 허용하거나 거부할 수 있을 뿐.</div></li>
+    <li class="dea-opt" id="q56-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>IAM 그룹·역할에 세밀한 정책을 연결하여 S3 버킷 데이터 접근을 제어합니다.</span></div><div class="dea-inline-exp">❌ IAM 정책은 API 호출 수준(S3 GetObject 허용/거부). <strong>테이블 내 특정 열·행 수준 접근 제어 불가</strong>. Lake Formation으로만 구현 가능.</div></li>
+    <li class="dea-opt" id="q56-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Batch로 사용자별 접근 가능한 데이터 서브셋을 별도 S3 버킷에 복사하고 S3 버킷 정책으로 보호합니다.</span></div><div class="dea-inline-exp">❌ 데이터를 사용자별 버킷에 복사하는 방식은 데이터 중복 + 동기화 지연(즉시 접근 불가) + 높은 유지보수 부담. 1시간 지연 문제도 있어 즉시 접근 요건 미충족.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q56">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q56">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — Glue 크롤러 + Lake Formation 데이터 필터 (열·행·셀 수준)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 접근 제어 방법별 세밀도 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>최소 제어 단위</th><th>열·행 수준?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Lake Formation 데이터 필터</strong></td><td>셀(Cell) 수준</td><td><span class="dea-pill good">✓ 모두 가능</span></td></tr>
+      <tr><td>IAM 정책</td><td>API 호출 수준</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>S3 버킷 정책</td><td>객체(파일) 수준</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>AWS Batch 복사</td><td>버킷 단위</td><td><span class="dea-pill bad">✗ 복잡·지연</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"열·행·셀 수준 세밀한 접근 제어"<br>  →  <span class="dea-hl">Lake Formation 데이터 필터</span><br><br>IAM / S3 버킷 정책 = 파일·API 단위 (열·행 수준 불가)<br>Lake Formation = 테이블 내 열·행·셀 단위 제어 가능</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q57 -->
+<div class="dea-q-block" id="dea-q57">
+  <div class="dea-meta"><span class="dea-badge qnum">Q57</span><span class="dea-badge topic">Athena · Parquet · 캠페인 파티션 · 비용 최적화</span><span class="dea-badge multi">✌️ 복수 정답</span></div>
+  <p class="dea-seo-lead">Athena 비용 최적화의 두 핵심은 <strong>열 형식(Parquet/ORC)</strong>과 <strong>쿼리 패턴에 맞는 파티셔닝</strong>입니다. 열 형식은 필요한 컬럼만 스캔해 비용을 줄이고, 파티셔닝은 관련 데이터만 스캔해 추가로 절감합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question — 두 가지를 선택하세요</div>
+    <p>마케팅팀이 캠페인별 반응 데이터를 S3에 .csv 파일로 저장합니다. Amazon Athena로 각 캠페인 데이터를 분석할 예정입니다. 일관된 데이터 소스 세트가 각 캠페인 데이터를 생성합니다. 데이터 저장 및 분석 비용을 최적화하는 단계의 조합은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q57-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>.csv 파일을 Apache Parquet 형식으로 변환합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Apache Parquet</span> — 열 기반(Columnar) 형식. Athena는 스캔한 데이터 바이트 기준 과금 → 필요한 열만 스캔하는 Parquet 사용 시 <strong>스캔량과 비용 대폭 감소</strong>. 압축 최적화로 스토리지 비용도 절감.</div></li>
+    <li class="dea-opt" id="q57-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>.csv 파일을 Apache Avro 형식으로 변환합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Apache Avro</span> — 행 기반(Row-oriented) 형식. 모든 필드에 접근할 때 적합. Athena 분석 쿼리는 일부 열만 접근하는 경우가 많아 <strong>열 기반 Parquet이 더 비용 효율적</strong>.</div></li>
+    <li class="dea-opt" id="q57-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>데이터를 캠페인별로 파티셔닝합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">캠페인별 파티셔닝</span> — 분석가가 특정 캠페인 데이터를 쿼리할 때 해당 캠페인 파티션만 스캔 → <strong>스캔 데이터량 감소 → 비용 절감 + 속도 향상</strong>. 분석 패턴(캠페인별)과 파티션 기준이 일치하므로 효과 극대화.</div></li>
+    <li class="dea-opt" id="q57-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>데이터를 소스별로 파티셔닝합니다.</span></div><div class="dea-inline-exp">❌ 분석 쿼리가 캠페인별로 실행됨. 일관된 소스 세트가 모든 캠페인에 데이터를 공급하므로 소스별 파티셔닝은 쿼리 패턴과 맞지 않아 <strong>스캔량 절감 효과 없음</strong>.</div></li>
+    <li class="dea-opt" id="q57-E"><div class="dea-opt-row"><span class="dea-k">E</span><span>.csv 파일을 압축합니다.</span></div><div class="dea-inline-exp">❌ CSV를 압축해도 여전히 행 기반 형식이라 Athena가 필요한 열만 스캔할 수 없음. Parquet으로 변환하는 것이 더 효과적. CSV 압축은 스토리지 비용은 줄이지만 쿼리 비용 절감 효과는 Parquet보다 낮음.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q57">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q57">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A + C — Parquet 변환 + 캠페인별 파티셔닝</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Athena 비용 절감 전략</div>
+    <table class="dea-table"><thead><tr><th>전략</th><th>원리</th><th>비용 절감 효과</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Parquet/ORC 형식</strong></td><td>필요한 열만 스캔</td><td><span class="dea-pill good">✓ 높음</span></td></tr>
+      <tr><td><strong>쿼리 패턴별 파티셔닝</strong></td><td>관련 파티션만 스캔</td><td><span class="dea-pill good">✓ 높음</span></td></tr>
+      <tr><td>CSV 압축</td><td>파일 크기 감소</td><td>낮음 (전체 스캔)</td></tr>
+      <tr><td>Avro 변환</td><td>행 기반 유지</td><td>낮음</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>Athena 비용 최적화 2요소:<br>1. <span class="dea-hl">Parquet/ORC</span>  = 열 형식 (필요 컬럼만 스캔)<br>2. <span class="dea-hl">쿼리 패턴 파티셔닝</span> = 필요 파티션만 스캔<br><br>파티셔닝 기준 = 분석 쿼리의 WHERE 조건과 일치해야 효과적</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q58 -->
+<div class="dea-q-block" id="dea-q58">
+  <div class="dea-meta"><span class="dea-badge qnum">Q58</span><span class="dea-badge topic">Lambda · KMS 키 정책 · 액세스 오류 디버깅</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS KMS 키 정책(Key Policy)</strong>은 IAM 정책과 별개로 KMS 키에 누가 접근할 수 있는지 제어합니다. IAM 정책에 kms:Decrypt 권한이 있어도 KMS 키 정책에 해당 역할이 명시되지 않으면 접근이 거부됩니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>Lambda 함수가 KMS 암호화된 S3 버킷에서 객체를 읽어 DynamoDB 테이블에 적재합니다. Lambda 실행 역할에는 DynamoDB Full Access, Lambda Basic Execution Role, 그리고 KMS Decrypt/Encrypt 및 S3 GetObject 권한이 인라인 정책으로 포함되어 있습니다. 함수 실행 시 액세스 오류가 발생합니다. 가장 가능성 높은 원인은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q58-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Lambda 실행 역할에 Amazon CloudWatch Logs 접근 권한이 없습니다.</span></div><div class="dea-inline-exp">❌ CloudWatch Logs 권한 없어도 함수 실행 자체는 됨. 단지 로그 기록만 안 될 뿐. 액세스 오류의 원인이 아님. AWSLambdaBasicExecutionRole이 이미 포함되어 있어 로그 권한도 있음.</div></li>
+    <li class="dea-opt" id="q58-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>인라인 정책에 KMS 키 접근에 필요한 작업이 누락되었습니다.</span></div><div class="dea-inline-exp">❌ 인라인 정책에 kms:Decrypt, kms:Encrypt, kms:CreateGrant, kms:ListAliases가 모두 포함되어 있어 IAM 측 권한은 충분함. 이것이 원인이 아님.</div></li>
+    <li class="dea-opt" id="q58-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>KMS 키 정책(Key Policy)에 Lambda 함수 실행 역할이 추가되어 있지 않습니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">KMS 키 정책(Key Policy)</span> — KMS 키 자체에 누가 사용할 수 있는지 명시하는 리소스 기반 정책. IAM 정책과 <strong>별개로 키 정책에도 허용이 필요</strong>. Lambda 실행 역할이 IAM 정책에서 kms:Decrypt를 가져도, KMS 키 정책에 해당 역할이 없으면 거부됨.</div></li>
+    <li class="dea-opt" id="q58-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>S3 버킷 리소스 정책에 Lambda 실행 역할이 추가되어 있지 않습니다.</span></div><div class="dea-inline-exp">❌ Lambda 실행 역할에 이미 s3:GetObject 권한이 인라인 정책에 포함되어 있어 S3 접근은 문제없음. S3 버킷 정책에 명시적으로 추가하지 않아도 IAM 정책 기반으로 접근 가능.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q58">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q58">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — KMS 키 정책에 Lambda 실행 역할 미추가</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — IAM 정책 vs KMS 키 정책</div>
+    <table class="dea-table"><thead><tr><th>정책 유형</th><th>제어 대상</th><th>모두 필요?</th></tr></thead>
+    <tbody>
+      <tr><td>IAM 정책 (kms:Decrypt 등)</td><td>IAM 주체의 KMS 사용 권한</td><td rowspan="2"><span class="dea-pill good">✓ 둘 다 필요</span></td></tr>
+      <tr><td><strong>KMS 키 정책</strong></td><td>키 자체에 누가 접근 가능한지</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>KMS 암호화 S3 접근 권한 = <span class="dea-hl">IAM 정책</span> AND <span class="dea-hl">KMS 키 정책</span> 둘 다 필요<br><br>IAM에 kms:Decrypt 있어도 키 정책에 없으면 거부됨<br>→ KMSAccessDeniedException 발생</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q59 -->
+<div class="dea-q-block" id="dea-q59">
+  <div class="dea-meta"><span class="dea-badge qnum">Q59</span><span class="dea-badge topic">SageMaker Data Wrangler · Athena · 데이터 준비</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon SageMaker Data Wrangler</strong>는 Athena·Redshift 등 다양한 소스에서 데이터를 가져와 코드 없이 300+ 내장 변환으로 정리·시각화할 수 있는 통합 데이터 준비 도구입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>SageMaker Studio에서 작업 중인 데이터 엔지니어가 Glue 카탈로그에 등록된 소규모 테이블을 쿼리하고 데이터 정리·시각화를 수행해야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q59-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>SageMaker 파이프라인을 구축하여 데이터를 준비하고 시각화 파라미터를 로깅합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">SageMaker 파이프라인</span> — CI/CD 기반 엔드투엔드 ML 워크플로 자동화 도구. 탐색적 분석이 아닌 반복적 프로덕션 워크플로에 적합. 설정·유지보수 오버헤드가 큼.</div></li>
+    <li class="dea-opt" id="q59-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon Athena로 데이터를 가져오기 위해 SageMaker Data Wrangler를 사용하고, Data Wrangler에서 데이터를 정리·시각화합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">SageMaker Data Wrangler</span> — Athena(Glue 카탈로그 포함) 등 다양한 소스에서 데이터를 직접 연결. 300개 이상 내장 변환으로 코드 없이 데이터 정리·시각화. SageMaker Studio와 완벽 통합으로 <strong>별도 설정 없이 즉시 사용 가능</strong>.</div></li>
+    <li class="dea-opt" id="q59-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>SageMaker 노트북 인스턴스에서 Athena로 테이블을 쿼리하고 데이터 탐색·시각화 함수를 직접 작성합니다.</span></div><div class="dea-inline-exp">❌ 노트북 인스턴스 + 쿼리 코드 + 시각화 함수까지 모두 직접 작성해야 함. Data Wrangler의 내장 기능(코드 없음)을 활용하는 것이 더 효율적.</div></li>
+    <li class="dea-opt" id="q59-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>SageMaker Data Wrangler를 EMR 클러스터에 연결하여 데이터를 쿼리하고 준비합니다.</span></div><div class="dea-inline-exp">❌ 소규모 테이블에 EMR 클러스터 프로비저닝은 과도한 리소스. EMR 연결 설정 추가 오버헤드도 발생. Athena를 직접 Data Wrangler에 연결하는 것이 훨씬 간단.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q59">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q59">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — SageMaker Data Wrangler + Athena 연동</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — SageMaker 데이터 준비 도구 비교</div>
+    <table class="dea-table"><thead><tr><th>도구</th><th>코딩 필요</th><th>내장 변환</th><th>적합 용도</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Data Wrangler</strong></td><td><span class="dea-pill good">없음</span></td><td>300+ 내장</td><td>탐색·정리·시각화</td></tr>
+      <tr><td>노트북 인스턴스</td><td><span class="dea-pill mid">많음</span></td><td>직접 구현</td><td>유연한 커스텀 분석</td></tr>
+      <tr><td>SageMaker 파이프라인</td><td>많음</td><td>일부</td><td>프로덕션 ML 워크플로</td></tr>
+      <tr><td>EMR + Data Wrangler</td><td>중간</td><td>300+ 내장</td><td>대규모 분산 처리</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"SageMaker Studio에서 소규모 테이블 정리·시각화 + 최소 오버헤드"<br>  →  <span class="dea-hl">SageMaker Data Wrangler</span> + Athena 연결<br><br>코드 없이 300+ 내장 변환 사용 가능<br>EMR = 대규모 처리용 (소규모엔 과도)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q60 -->
+<div class="dea-q-block" id="dea-q60">
+  <div class="dea-meta"><span class="dea-badge qnum">Q60</span><span class="dea-badge topic">Step Functions · Glue ETL · 서버리스 오케스트레이션</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Step Functions + AWS Glue</strong>는 서버리스 오케스트레이션 + 서버리스 ETL 조합으로 인프라 관리 없이 복잡한 ETL 워크플로를 비용 효율적으로 실행합니다. 두 서비스 모두 서버리스이므로 사용한 만큼만 과금됩니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>의료 연구 기관이 매주 여러 S3 버킷에 2TB의 환자 데이터를 수신합니다. 주 1회 처리 워크플로를 오케스트레이션해야 합니다. 가장 비용 효율적인 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q60-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Step Functions로 워크플로를 오케스트레이션하고, Amazon EC2 인스턴스에서 ETL 작업을 수행합니다.</span></div><div class="dea-inline-exp">❌ Step Functions는 서버리스로 좋지만 <strong>EC2 인스턴스는 주 1회 사용에도 시간당 비용 발생</strong>. 인스턴스 관리·확장 오버헤드도 추가. 서버리스 Glue보다 비용이 높음.</div></li>
+    <li class="dea-opt" id="q60-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>AWS Step Functions로 처리 워크플로를 오케스트레이션하고, AWS Glue로 ETL 작업을 수행합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Step Functions</span> — 서버리스 워크플로 오케스트레이션. 상태 머신으로 여러 Glue 작업을 순서대로/병렬로 조정. <span class="dea-term">AWS Glue</span> — 서버리스 ETL. 실행 시간만큼만 과금. 두 서비스 모두 서버리스 → <strong>주 1회 실행에 가장 비용 효율적</strong>.</div></li>
+    <li class="dea-opt" id="q60-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>AWS Lambda 함수로 처리 워크플로를 오케스트레이션하고, AWS Glue로 ETL 작업을 수행합니다.</span></div><div class="dea-inline-exp">❌ Lambda는 서버리스 컴퓨팅 서비스이지 <strong>오케스트레이션 서비스가 아님</strong>. 복잡한 다단계 워크플로 조정에는 Step Functions가 적합. Lambda 단독으로 오케스트레이션하면 복잡한 상태 관리 코드를 직접 작성해야 함.</div></li>
+    <li class="dea-opt" id="q60-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon SQS로 처리 워크플로를 오케스트레이션하고, AWS Glue로 ETL 작업을 수행합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon SQS</span> — 메시지 큐 서비스. 분산 시스템 메시지 전달에는 유용하지만 <strong>다단계 ETL 워크플로 오케스트레이션 기능이 없음</strong>. 순서 제어·상태 추적·오류 처리를 별도로 구현해야 함.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q60">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q60">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Step Functions(오케스트레이션) + Glue(ETL) 서버리스 조합</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 오케스트레이션 서비스 비교</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>오케스트레이션?</th><th>서버리스?</th><th>ETL 워크플로 적합?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Step Functions</strong></td><td><span class="dea-pill good">✓ 전용</span></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>Lambda</td><td><span class="dea-pill bad">✗ 컴퓨팅만</span></td><td>✓</td><td>상태 관리 직접 구현</td></tr>
+      <tr><td>Amazon SQS</td><td><span class="dea-pill bad">✗ 메시지 큐</span></td><td>✓</td><td><span class="dea-pill bad">워크플로 제어 없음</span></td></tr>
+      <tr><td>EC2</td><td>구현 필요</td><td><span class="dea-pill bad">✗</span></td><td>비용 과다</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"ETL 워크플로 오케스트레이션 + 비용 효율"<br>  →  <span class="dea-hl">Step Functions</span>(오케스트레이션) + <span class="dea-hl">AWS Glue</span>(ETL)<br><br>두 서비스 모두 서버리스 → 사용한 만큼만 과금<br>Lambda / SQS = 오케스트레이션 서비스 아님</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">Lake Formation 데이터 필터</span><span class="dea-tag">Athena Parquet 파티션</span><span class="dea-tag">KMS 키 정책</span><span class="dea-tag">SageMaker Data Wrangler</span><span class="dea-tag">Step Functions Glue</span><span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var q=[
+    {id:'q56',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — Lake Formation 데이터 필터'},
+    {id:'q57',ans:{'A':true,'C':true},keys:['A','B','C','D','E'],label:'✅ 정답: A+C — Parquet + 캠페인 파티션'},
+    {id:'q58',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — KMS 키 정책 미설정'},
+    {id:'q59',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — SageMaker Data Wrangler'},
+    {id:'q60',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Step Functions + Glue'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

@@ -1,0 +1,152 @@
+<!--
+id: 43
+제목: TQQQ 7년 적립식 백테스트 결과 — 수익률 431%, MDD는 얼마?
+카테고리: Investment
+태그: 주식투자, 레버리지, 7년, 나스닥, 1000만원, 미국주식, 적립식투자, 레버리지etf, 나스닥100, TQQQ
+날짜: 2026-02-28 00:05
+수정: 2026-03-21 23:02
+형식: html
+썸네일: /img/t/dJMcaadkucP.webp
+-->
+
+<style>
+.pb-43 .t-lead{font-size:19px;line-height:1.7;margin:0 0 16px}
+.pb-43 p{margin:0 0 16px;line-height:1.8}
+.pb-43 .t-meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;padding:0;list-style:none}
+.pb-43 .t-meta li{font-size:13px;color:var(--g70);background:var(--g5);border:1px solid var(--g10);border-radius:4px;padding:4px 10px}
+.pb-43 .t-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+.pb-43 .t-kpi{border:1px solid var(--g20);border-radius:8px;padding:16px 20px;background:var(--g0)}
+.pb-43 .t-kpi b{display:block;font-size:28px;line-height:1.4;color:var(--g90)}
+.pb-43 .t-kpi b small{font-size:15px;font-weight:400;color:var(--g70);margin-left:4px}
+.pb-43 .t-kpi b.up{color:var(--r60)}
+.pb-43 .t-kpi span{display:block;font-size:15px;color:var(--g70)}
+.pb-43 .t-kpi em{display:block;font-style:normal;font-size:13px;color:var(--g50);margin-top:4px}
+.pb-43 h2{font-size:24px;margin:48px 0 16px;line-height:1.5}
+.pb-43 .t-chart{position:relative;height:340px;border:1px solid var(--g20);border-radius:10px;padding:16px;background:var(--g0)}
+.pb-43 .t-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+.pb-43 .t-col{border:1px solid var(--g20);border-radius:8px;padding:20px;background:var(--g0)}
+.pb-43 .t-col h3{font-size:17px;margin:0 0 12px;display:flex;gap:8px;align-items:center}
+.pb-43 .t-badge{font-size:13px;font-weight:700;border-radius:4px;padding:2px 8px;border:1px solid}
+.pb-43 .t-badge.ok{background:var(--s5);border-color:var(--s10);color:var(--s60)}
+.pb-43 .t-badge.warn{background:var(--r5);border-color:var(--r10);color:var(--r60)}
+.pb-43 .t-col ul{margin:0;padding-left:20px}
+.pb-43 .t-col li{font-size:15px;line-height:1.7;margin:0 0 8px}
+.pb-43 .t-note{background:var(--g5);border:1px solid var(--g10);border-radius:8px;padding:20px 24px;margin:32px 0;font-size:15px;color:var(--g70)}
+.pb-43 .t-note ul{margin:8px 0;padding-left:20px}
+@media (max-width:767px){.pb-43 .t-kpis,.pb-43 .t-cols{grid-template-columns:1fr}.pb-43 .t-chart{height:260px}}
+</style>
+<div class="pb pb-43">
+<ul class="t-meta"><li>백테스트</li><li>TQQQ</li><li>적립식</li><li>2019~2026</li></ul>
+<p class="t-lead">나스닥 100의 하루 수익률을 3배로 따라가는 레버리지 ETF <b>TQQQ</b>를 7년 동안 매일 적립식으로 샀다면 어떻게 됐을지 계산했다. 초기 1,000만 원에 매 영업일 1만 원(월 약 21만 원)을 넣은 경우다.</p>
+<p>"레버리지는 장기투자하는 게 아니다"라는 말이 있다. 결과만 보면 수익률은 컸지만, 그 과정의 낙폭도 함께 봐야 한다.</p>
+<div class="t-kpis">
+<div class="t-kpi"><span>총 투입 원금</span><b>2,764<small>만 원</small></b><em>초기 1,000 + 적립 약 1,764</em></div>
+<div class="t-kpi"><span>최종 평가 금액</span><b>14,680<small>만 원</small></b><em>환율 1,400원/달러 기준</em></div>
+<div class="t-kpi"><span>누적 수익률</span><b class="up">+431<small>%</small></b><em>연평균 약 26.8%</em></div>
+</div>
+<h2>원금 대비 평가 금액</h2>
+<div class="t-chart"><canvas id="backtestChart"></canvas></div>
+<div class="t-cols">
+<div class="t-col"><h3><span class="t-badge ok">강점</span>수익률이 커진 이유</h3><ul>
+<li><b>기술주 상승장:</b> 코로나 이후 상승장과 AI 흐름이 3배 레버리지로 커졌다.</li>
+<li><b>환율 상승:</b> 1,100원대였던 환율이 1,400원대로 올라 원화 수익률을 더했다.</li>
+<li><b>매일 적립:</b> 하락장에서도 계속 사서 평균 단가가 낮아졌다.</li></ul></div>
+<div class="t-col"><h3><span class="t-badge warn">주의</span>버텨야 했던 위험</h3><ul>
+<li><b>최대 낙폭:</b> 2022년에는 고점 대비 -80% 이상 떨어졌다.</li>
+<li><b>음의 복리:</b> 시장이 횡보만 해도 3배 레버리지는 구조적으로 원금이 줄어든다.</li>
+<li><b>환율 하락:</b> 달러가 약해지면 주가가 올라도 원화 기준 손실이 날 수 있다.</li></ul></div>
+</div>
+<div class="t-note"><b>산출 기준</b><ul>
+<li>출처: Yahoo Finance 수정종가, 한국은행 ECOS 일별 환율</li>
+<li>매 영업일 1만 원을 당일 환율로 환전해 종가로 소수점 매수했다고 가정</li>
+<li>수수료와 양도소득세(22%) 차감 전</li></ul>
+과거 데이터로 계산한 결과이며 미래 수익을 보장하지 않는다.</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+        function renderTQQQChart() {
+            // Chart 객체가 아직 로드되지 않았다면 100ms 후 다시 시도
+            if (typeof Chart === 'undefined') {
+                setTimeout(renderTQQQChart, 100);
+                return;
+            }
+
+            const canvas = document.getElementById('backtestChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            const labels = ['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'];
+            const principalData = [1252, 1504, 1756, 2008, 2260, 2512, 2764, 2764]; 
+            const evaluationData = [1800, 4500, 11000, 4200, 8500, 12000, 14000, 14680]; 
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '평가 금액 (만원)',
+                            data: evaluationData,
+                            borderColor: '#256ef4',
+                            backgroundColor: 'rgba(37,110,244,0.1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#256ef4',
+                            pointRadius: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: '누적 원금 (만원)',
+                            data: principalData,
+                            borderColor: '#8a949e',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: '#8a949e',
+                            pointRadius: 0,
+                            fill: false,
+                            tension: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'top',
+                            labels: { boxWidth: 12, font: { size: 11 } }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('ko-KR').format(context.parsed.y) + '만 원';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { font: { size: 10 } } },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: { size: 10 },
+                                callback: function(value) { return value + '만'; }
+                            }
+                        }
+                    },
+                    interaction: { mode: 'nearest', axis: 'x', intersect: false }
+                }
+            });
+        }
+
+        // 스크립트 즉시 실행
+        renderTQQQChart();
+    </script>

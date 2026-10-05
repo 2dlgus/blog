@@ -1,0 +1,683 @@
+<!--
+id: 91
+제목: AWS DEA-C01 Domain 2 핵심 요약 — S3·Redshift·DynamoDB 언제 쓰나
+카테고리: Stack/AWS
+태그: 자격증, S3, AWS, DEA, Data Engineering, 데이터 엔지니어링, Amazon EBS, Amazon EFS, Domain2, 데이터 스토어
+날짜: 2026-03-20 20:46
+수정: 2026-03-21 22:52
+형식: html
+썸네일: /img/t/dJMcaiJnQ41.webp
+-->
+<style>
+.pb-91 .dea-wrap{background:var(--y5)!important;color:var(--g90)!important;line-height:1.7!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+.pb-91 .dea-wrap *, .pb-91 .dea-wrap *::before, .pb-91 .dea-wrap *::after{box-sizing:border-box!important}
+.pb-91 .dea-hero{background:var(--p70)!important;padding:44px 24px 38px!important;text-align:center!important;position:relative!important;overflow:hidden!important}
+.pb-91 .dea-hero::before{content:''!important;position:absolute!important;inset:0!important;background:radial-gradient(ellipse at 30% 60%,color-mix(in srgb, var(--p50) 20%, transparent) 0%,transparent 65%)!important;pointer-events:none!important}
+.pb-91 .dea-hero-bc{display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex-wrap:wrap!important;margin-bottom:16px!important}
+.pb-91 .dea-hero-bc span{font-family:'JetBrains Mono',monospace!important;font-size:.7rem!important;font-weight:700!important;padding:3px 11px!important;border-radius:20px!important;position:relative!important}
+.pb-91 .dea-bc-exam{background:var(--r50)!important;color:#fff!important}
+.pb-91 .dea-bc-d2{background:var(--p50)!important;color:#fff!important}
+.pb-91 .dea-bc-sep{color:var(--g70)!important}
+.pb-91 .dea-hero h1{font-size:clamp(1.4rem,4.5vw,2rem)!important;font-weight:900!important;color:#fff!important;line-height:1.25!important;margin:0 0 10px!important;position:relative!important;letter-spacing:-.5px!important}
+.pb-91 .dea-hero h1 em{font-style:normal!important;color:var(--p50)!important}
+.pb-91 .dea-hero-sub{color:var(--p50)!important;font-size:.9rem!important;margin:0!important;position:relative!important}
+.pb-91 .dea-task-nav{display:flex!important;flex-wrap:wrap!important;gap:8px!important;padding:14px 20px!important;background:var(--g0)!important;border-bottom:2px solid var(--y10)!important;position:sticky!important;top:0!important;z-index:200!important;box-shadow:0 2px 10px rgba(0,0,0,.06)!important}
+.pb-91 .dea-tn-btn{padding:6px 14px!important;border-radius:20px!important;border:none!important;font-size:.78rem!important;font-weight:600!important;cursor:pointer!important;background:var(--y10)!important;color:var(--g70)!important;transition:all .18s!important;outline:none!important}
+.pb-91 .dea-tn-btn:hover, .pb-91 .dea-tn-btn.dea-active{color:#fff!important}
+.pb-91 .dea-tn-btn[data-t="0"]:hover, .pb-91 .dea-tn-btn[data-t="0"].dea-active{background:var(--p70)!important}
+.pb-91 .dea-tn-btn[data-t="1"]:hover, .pb-91 .dea-tn-btn[data-t="1"].dea-active{background:var(--p50)!important}
+.pb-91 .dea-tn-btn[data-t="2"]:hover, .pb-91 .dea-tn-btn[data-t="2"].dea-active{background:var(--i60)!important}
+.pb-91 .dea-tn-btn[data-t="3"]:hover, .pb-91 .dea-tn-btn[data-t="3"].dea-active{background:var(--y60)!important}
+.pb-91 .dea-tn-btn[data-t="4"]:hover, .pb-91 .dea-tn-btn[data-t="4"].dea-active{background:var(--p50)!important}
+.pb-91 .dea-con{max-width:840px!important;margin:0 auto!important;padding:32px 20px 64px!important}
+.pb-91 .dea-task{margin-bottom:48px!important}
+.pb-91 .dea-task-hd{display:flex!important;align-items:center!important;gap:14px!important;padding:18px 22px!important;border-radius:12px!important;margin-bottom:20px!important}
+.pb-91 .dea-task-hd.t1{background:var(--p50)!important}
+.pb-91 .dea-task-hd.t2{background:var(--i60)!important}
+.pb-91 .dea-task-hd.t3{background:var(--y60)!important}
+.pb-91 .dea-task-hd.t4{background:var(--p50)!important}
+.pb-91 .dea-task-num{font-family:'JetBrains Mono',monospace!important;font-size:1.8rem!important;font-weight:700!important;color:color-mix(in srgb, #fff 30%, transparent)!important;flex-shrink:0!important;line-height:1!important}
+.pb-91 .dea-task-info h2{font-size:clamp(1rem,3vw,1.2rem)!important;font-weight:800!important;color:#fff!important;margin:0 0 3px!important;line-height:1.2!important}
+.pb-91 .dea-task-info p{font-size:.8rem!important;color:color-mix(in srgb, #fff 75%, transparent)!important;margin:0!important}
+.pb-91 .dea-task-pct{margin-left:auto!important;font-family:'JetBrains Mono',monospace!important;font-size:1.4rem!important;font-weight:700!important;color:color-mix(in srgb, #fff 85%, transparent)!important;flex-shrink:0!important}
+.pb-91 .dea-tbl-wrap{overflow-x:auto!important;margin:0 0 16px!important;border-radius:10px!important;border:1px solid var(--y10)!important}
+.pb-91 .dea-tbl{width:100%!important;border-collapse:collapse!important;font-size:.83rem!important;background:var(--g0)!important;min-width:460px!important}
+.pb-91 .dea-tbl thead tr{background:var(--p70)!important}
+.pb-91 .dea-tbl thead th{padding:10px 14px!important;text-align:left!important;font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;letter-spacing:.5px!important;white-space:nowrap!important}
+.pb-91 .dea-tbl tbody tr{border-bottom:1px solid var(--y10)!important}
+.pb-91 .dea-tbl tbody tr:last-child{border-bottom:none!important}
+.pb-91 .dea-tbl tbody tr:nth-child(even){background:var(--y5)!important}
+.pb-91 .dea-tbl tbody td{padding:10px 14px!important;color:var(--p70)!important;vertical-align:top!important;line-height:1.55!important}
+.pb-91 .dea-tbl tbody td strong{color:var(--g90)!important}
+.pb-91 .dea-tbl .mono{font-family:'JetBrains Mono',monospace!important;font-size:.75rem!important;color:var(--p50)!important}
+.pb-91 .dea-tag{display:inline-block!important;font-family:'JetBrains Mono',monospace!important;font-size:.62rem!important;font-weight:700!important;padding:2px 7px!important;border-radius:4px!important;color:#fff!important;white-space:nowrap!important}
+.pb-91 .tag-b{background:var(--p50)!important}
+.pb-91 .tag-t{background:var(--i60)!important}
+.pb-91 .tag-a{background:var(--y60)!important}
+.pb-91 .tag-v{background:var(--p50)!important}
+.pb-91 .tag-g{background:var(--s60)!important}
+.pb-91 .tag-gray{background:var(--g50)!important}
+.pb-91 .dea-co{border-radius:10px!important;padding:14px 18px!important;margin:14px 0!important;font-size:.87rem!important;line-height:1.75!important}
+.pb-91 .dea-co-title{font-weight:700!important;font-size:.75rem!important;letter-spacing:.5px!important;margin-bottom:6px!important;display:block!important}
+.pb-91 .co-blue{background:var(--p5)!important;color:var(--p60)!important}
+.pb-91 .co-teal{background:var(--s5)!important;color:var(--i60)!important}
+.pb-91 .co-amber{background:var(--y5)!important;color:var(--y60)!important}
+.pb-91 .co-purple{background:var(--g0)!important;color:var(--p60)!important}
+.pb-91 .co-red{background:var(--g5)!important;color:var(--r60)!important}
+.pb-91 .co-green{background:var(--s5)!important;color:var(--s60)!important}
+.pb-91 .co-dark{background:var(--p70)!important;border:none!important;color:var(--p10)!important}
+.pb-91 .co-dark .dea-co-title{color:var(--p50)!important}
+.pb-91 .dea-cards2{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;margin:14px 0!important}
+.pb-91 .dea-cards3{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:14px 0!important}
+@media(max-width:600px){.pb-91 .dea-cards2, .pb-91 .dea-cards3{grid-template-columns:1fr!important}}
+.pb-91 .dea-card{background:var(--g0)!important;border:1px solid var(--y10)!important;border-radius:10px!important;padding:14px!important}
+.pb-91 .dea-card h4{font-size:.88rem!important;font-weight:700!important;color:var(--g90)!important;margin:0 0 6px!important}
+.pb-91 .dea-card p{font-size:.8rem!important;color:var(--g50)!important;margin:0!important;line-height:1.6!important}
+.pb-91 .dea-sec-lbl{font-size:.7rem!important;font-weight:700!important;letter-spacing:1.5px!important;text-transform:uppercase!important;color:var(--g40)!important;padding-left:8px!important;margin:22px 0 12px!important;display:block!important}
+.pb-91 .dea-qa{background:var(--p70)!important;border-radius:12px!important;padding:20px!important;margin:16px 0!important}
+.pb-91 .dea-qa-lbl{font-family:'JetBrains Mono',monospace!important;font-size:.65rem!important;font-weight:700!important;letter-spacing:2px!important;color:var(--p50)!important;text-transform:uppercase!important;margin-bottom:10px!important;display:block!important}
+.pb-91 .dea-qa-q{font-size:.9rem!important;font-weight:700!important;color:var(--p10)!important;margin:0 0 12px!important;line-height:1.55!important}
+.pb-91 .dea-qa-a{background:var(--p70)!important;border-radius:0 7px 7px 0!important;padding:10px 14px!important;font-size:.84rem!important;color:var(--p50)!important;line-height:1.7!important}
+.pb-91 .dea-qa-a strong{color:var(--p50)!important}
+.pb-91 .dea-lifecycle{display:flex!important;flex-direction:column!important;gap:0!important;margin:14px 0!important;border:1px solid var(--y10)!important;border-radius:10px!important;overflow:hidden!important}
+.pb-91 .dea-lc-row{display:grid!important;grid-template-columns:120px 1fr 90px 90px!important;gap:0!important;border-bottom:1px solid var(--y10)!important}
+.pb-91 .dea-lc-row:last-child{border-bottom:none!important}
+@media(max-width:560px){.pb-91 .dea-lc-row{grid-template-columns:90px 1fr 70px!important}}
+.pb-91 .dea-lc-head{background:var(--p70)!important}
+.pb-91 .dea-lc-cell{padding:10px 12px!important;font-size:.8rem!important;display:flex!important;align-items:center!important;line-height:1.5!important}
+.pb-91 .dea-lc-head .dea-lc-cell{font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;padding:8px 12px!important}
+.pb-91 .dea-lc-row:not(.dea-lc-head) .dea-lc-cell:first-child{font-weight:700!important;color:var(--g90)!important;background:var(--y5)!important}
+.pb-91 .lc-hot{}
+.pb-91 .lc-warm{}
+.pb-91 .lc-cool{}
+.pb-91 .lc-cold{}
+.pb-91 .lc-archive{}
+.pb-91 .dea-flow{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:4px!important;margin:10px 0!important}
+.pb-91 .dea-fn{border-radius:7px!important;padding:7px 12px!important;font-size:.75rem!important;font-weight:600!important;white-space:nowrap!important}
+.pb-91 .fn-b{background:var(--p5)!important;color:var(--p60)!important;border:1.5px solid var(--p10)!important}
+.pb-91 .fn-o{background:var(--y5)!important;color:var(--r60)!important;border:1.5px solid var(--y50)!important}
+.pb-91 .fn-g{background:var(--s5)!important;color:var(--s60)!important;border:1.5px solid var(--s10)!important}
+.pb-91 .fn-t{background:var(--s5)!important;color:var(--i60)!important;border:1.5px solid var(--s50)!important}
+.pb-91 .fn-a{background:var(--y5)!important;color:var(--y60)!important;border:1.5px solid var(--y50)!important}
+.pb-91 .fn-gray{background:var(--g0)!important;color:var(--p60)!important;border:1.5px solid var(--p10)!important}
+.pb-91 .dea-fn small{display:block!important;font-size:.62rem!important;font-weight:400!important;opacity:.75!important;margin-top:2px!important}
+.pb-91 .dea-arr{color:var(--g40)!important;font-size:1rem!important;flex-shrink:0!important}
+.pb-91 .dea-exam{background:linear-gradient(135deg,var(--p70) 0%,var(--p70) 100%)!important;border-radius:14px!important;padding:24px!important;margin:24px 0!important}
+.pb-91 .dea-exam-ttl{font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;letter-spacing:2px!important;text-transform:uppercase!important;margin:0 0 14px!important;display:block!important}
+.pb-91 .dea-exam ul{margin:0!important;padding:0!important;list-style:none!important}
+.pb-91 .dea-exam li{display:flex!important;gap:10px!important;font-size:.86rem!important;color:var(--p50)!important;margin-bottom:9px!important;line-height:1.6!important}
+.pb-91 .dea-exam li:last-child{margin-bottom:0!important}
+.pb-91 .dea-exam .em{color:var(--p50)!important;flex-shrink:0!important;font-weight:700!important}
+.pb-91 .dea-exam strong{color:var(--p10)!important}
+.pb-91 .dea-div{border:none!important;border-top:1px solid var(--y10)!important;margin:36px 0!important}
+.pb-91 .dea-hidden{display:none!important}
+.pb-91 .dea-ft{text-align:center!important;font-size:.78rem!important;color:var(--g40)!important;padding:20px 0 6px!important;border-top:1px solid var(--y10)!important;margin-top:40px!important}
+.pb-91 .dea-ft a{color:var(--r60)!important;text-decoration:none!important}
+</style>
+<div class="pb pb-91">
+<p data-ke-size="size16">&nbsp;</p>
+<p></p>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AWS DEA-C01 Domain 2 완전 정리","author":{"@type":"Person","name":"hyeonlee","url":"https://hyeonlee.net"},"publisher":{"@type":"Organization","name":"hyeonlee.net"},"datePublished":"2026-03-20","inLanguage":"ko"}</script>
+<p></p>
+<div>
+
+</div>
+<article class="dea-wrap"><header class="dea-hero">
+<div class="dea-hero-bc"><span class="dea-bc-exam">AWS DEA-C01</span> <span class="dea-bc-sep">&rsaquo;</span> <span class="dea-bc-d2">Domain 2 &middot; 전체 압축 정리</span></div>
+<h1>Domain 2 &mdash; <i>데이터 스토어 관리</i><br />핵심만 압축 정리</h1>
+<p class="dea-hero-sub" data-ke-size="size16">스토어 선택 &middot; 데이터 카탈로그 &middot; 수명주기 &middot; 스키마진화 &middot; Task 1~4 한 페이지</p>
+</header><nav class="dea-task-nav" aria-label="Task 필터"><button class="dea-tn-btn dea-active" data-t="0">전체</button> <button class="dea-tn-btn" data-t="1">2.1 스토어 선택</button> <button class="dea-tn-btn" data-t="2">2.2 데이터 카탈로그</button> <button class="dea-tn-btn" data-t="3">2.3 수명주기 관리</button> <button class="dea-tn-btn" data-t="4">2.4 스키마 진화</button></nav>
+<div class="dea-con"><!-- ══ TASK 2.1 스토어 선택 ══ -->
+<section id="dea-t1" class="dea-task">
+<div class="dea-task-hd t1"><span class="dea-task-num">2.1</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">데이터 스토어 선택</h2>
+<p data-ke-size="size16">Task 1 &middot; 용도에 맞는 스토리지 서비스를 고르는 법</p>
+</div>
+<span class="dea-task-pct">26%</span></div>
+<span class="dea-sec-lbl">스토리지 유형 3종 &mdash; 기초 구분</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>유형</th>
+<th>서비스</th>
+<th>비유</th>
+<th>사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="dea-tag tag-b">객체</span></td>
+<td><b>Amazon S3</b></td>
+<td>무한 창고</td>
+<td>데이터 레이크, 백업, 미디어, 정적 콘텐츠</td>
+</tr>
+<tr>
+<td><span class="dea-tag tag-g">파일</span></td>
+<td><b>Amazon EFS</b></td>
+<td>공유 네트워크 드라이브</td>
+<td>여러 EC2 공유 파일, 웹호스팅, 빅데이터</td>
+</tr>
+<tr>
+<td><span class="dea-tag tag-gray">블록</span></td>
+<td><b>Amazon EBS</b></td>
+<td>서버 내부 SSD</td>
+<td>DB 실행, 트랜잭션 앱, 짧은 지연시간 필요</td>
+</tr>
+<tr>
+<td><span class="dea-tag tag-g">파일</span></td>
+<td><b>FSx for Lustre</b></td>
+<td>고속 병렬 드라이브</td>
+<td>HPC, 머신러닝, 대규모 병렬 데이터 처리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">Amazon S3 스토리지 클래스 &mdash; 비용 최적화 핵심</span>
+<div class="dea-lifecycle">
+<div class="dea-lc-row dea-lc-head">
+<div class="dea-lc-cell">클래스</div>
+<div class="dea-lc-cell">비유</div>
+<div class="dea-lc-cell">액세스</div>
+<div class="dea-lc-cell">복원 시간</div>
+</div>
+<div class="dea-lc-row lc-hot">
+<div class="dea-lc-cell"><b>Standard</b></div>
+<div class="dea-lc-cell">냉장고 (자주 꺼냄)</div>
+<div class="dea-lc-cell">자주</div>
+<div class="dea-lc-cell">즉시</div>
+</div>
+<div class="dea-lc-row lc-warm">
+<div class="dea-lc-cell"><b>Intelligent-Tiering</b></div>
+<div class="dea-lc-cell">자동 분류 로봇</div>
+<div class="dea-lc-cell">패턴 자동 감지</div>
+<div class="dea-lc-cell">즉시</div>
+</div>
+<div class="dea-lc-row lc-cool">
+<div class="dea-lc-cell"><b>Standard-IA</b></div>
+<div class="dea-lc-cell">일반 창고</div>
+<div class="dea-lc-cell">가끔</div>
+<div class="dea-lc-cell">즉시</div>
+</div>
+<div class="dea-lc-row lc-cold">
+<div class="dea-lc-cell"><b>Glacier Instant</b></div>
+<div class="dea-lc-cell">지하 창고</div>
+<div class="dea-lc-cell">분기 1회</div>
+<div class="dea-lc-cell">밀리초</div>
+</div>
+<div class="dea-lc-row lc-cold">
+<div class="dea-lc-cell"><b>Glacier Flexible</b></div>
+<div class="dea-lc-cell">외딴 창고</div>
+<div class="dea-lc-cell">연 1회</div>
+<div class="dea-lc-cell">분~시간</div>
+</div>
+<div class="dea-lc-row lc-archive">
+<div class="dea-lc-cell"><b>Deep Archive</b></div>
+<div class="dea-lc-cell">북극 창고</div>
+<div class="dea-lc-cell">거의 안 함</div>
+<div class="dea-lc-cell">최대 12시간</div>
+</div>
+</div>
+<span class="dea-sec-lbl">데이터베이스 서비스 비교</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>유형</th>
+<th>비유</th>
+<th>핵심 특징 / 사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Amazon RDS</b></td>
+<td>관계형</td>
+<td>관리형 파일 캐비닛</td>
+<td>MySQL&middot;PostgreSQL&middot;Oracle&middot;SQL Server. 패치&middot;백업 자동. Multi-AZ 고가용성</td>
+</tr>
+<tr>
+<td><b>Amazon Aurora</b></td>
+<td>관계형</td>
+<td>터보 캐비닛</td>
+<td>MySQL 5배&middot;PostgreSQL 3배 성능. 스토리지 최대 128TB 자동 확장. Serverless v2</td>
+</tr>
+<tr>
+<td><b>Amazon DynamoDB</b></td>
+<td>NoSQL (KV/문서)</td>
+<td>초고속 인덱스 카드함</td>
+<td>1ms 미만. 자동 스케일. 게임&middot;IoT&middot;실시간. TTL로 항목 자동 삭제</td>
+</tr>
+<tr>
+<td><b>Amazon Redshift</b></td>
+<td>데이터 웨어하우스</td>
+<td>대형 분석 연구소</td>
+<td>컬럼 기반. 페타바이트 규모. COPY 명령(S3&rarr;Redshift). Spectrum(S3 직접 조회)</td>
+</tr>
+<tr>
+<td><b>Amazon OpenSearch</b></td>
+<td>검색 엔진</td>
+<td>구글 같은 검색 DB</td>
+<td>전문 검색&middot;로그 분석. Firehose와 연동. OpenSearch Dashboards 내장</td>
+</tr>
+<tr>
+<td><b>Amazon ElastiCache</b></td>
+<td>인메모리 캐시</td>
+<td>책상 위 메모지</td>
+<td>Redis&middot;Memcached. 자주 쓰는 데이터 캐싱. 세션&middot;실시간 리더보드</td>
+</tr>
+<tr>
+<td><b>Amazon Timestream</b></td>
+<td>시계열 DB</td>
+<td>기상 관측 기록지</td>
+<td>IoT 센서&middot;메트릭 특화. 자동 데이터 티어링(최신/과거 분리)</td>
+</tr>
+<tr>
+<td><b>Amazon DocumentDB</b></td>
+<td>문서 DB</td>
+<td>JSON 서류 캐비닛</td>
+<td>MongoDB 호환. 유연한 스키마. 콘텐츠 관리&middot;사용자 프로필</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">AWS Lake Formation &mdash; 데이터 레이크 권한 관리</span>
+<div class="dea-co co-blue"><span class="dea-co-title">🏛️ Lake Formation = S3 + 세밀한 출입증 시스템</span> S3만으로는 누구나 버킷에 접근 가능 &rarr; Lake Formation으로 <b>열(Column) 수준&middot;행(Row Filter) 수준</b> 접근제어 추가.<br />Glue Data Catalog 위에서 동작. <b>LF-Tags 기반 ABAC</b>(속성 기반 접근제어) 지원.<br /><b>교차 계정(Cross-Account)</b> 데이터 공유 가능 &rarr; 4개 AWS 계정 데이터를 중앙 레이크로 통합 관리.</div>
+<div class="dea-qa"><span class="dea-qa-lbl">📝 시험 시나리오 &mdash; Redshift를 선택하는 이유</span>
+<p class="dea-qa-q" data-ke-size="size16">30TB 비압축 데이터, 매일 수천 개 집계 쿼리, 복잡한 조인, 테이블 열의 작은 하위 집합만 쿼리. &rarr; 어떤 서비스?</p>
+<div class="dea-qa-a"><b>Amazon Redshift.</b> 컬럼 기반 아키텍처 &rarr; 열 하위 집합 쿼리 시 I/O 최소화. 열 단위 압축으로 스토리지 절감. 병렬 처리(MPP). SQL 조인 지원. 집계 쿼리에 최적화.</div>
+</div>
+<div class="dea-qa"><span class="dea-qa-lbl">📝 시험 시나리오 &mdash; EMR + Hive + DynamoDB</span>
+<p class="dea-qa-q" data-ke-size="size16">페타바이트 규모 키/값 데이터 저장, 즉시 액세스, SQL 유사 인터페이스 필요. &rarr; 솔루션은?</p>
+<div class="dea-qa-a"><b>EMR + Hive + DynamoDB.</b> Hive = SQL 유사 인터페이스로 페타바이트 읽기&middot;쓰기&middot;관리. DynamoDB = 즉시 액세스(1ms). 단기 작업은 가동/중단하며 초당 과금, 장기는 자동 확장 HA 클러스터.</div>
+</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ TASK 2.2 데이터 카탈로그 ══ -->
+<section id="dea-t2" class="dea-task">
+<div class="dea-task-hd t2"><span class="dea-task-num">2.2</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">데이터 카탈로그 작성 시스템</h2>
+<p data-ke-size="size16">Task 2 &middot; 데이터가 어디 있는지, 어떻게 생겼는지 기록하기</p>
+</div>
+</div>
+<div class="dea-co co-teal"><span class="dea-co-title">📖 데이터 카탈로그란?</span> 데이터의 <b>위치 + 스키마 + 런타임 지표</b>를 저장하는 메타데이터 리포지토리. AWS에서는 <b>AWS Glue Data Catalog</b>가 핵심. Athena&middot;EMR&middot;Redshift Spectrum이 모두 이 카탈로그를 참조해서 쿼리함.</div>
+<span class="dea-sec-lbl">Glue Data Catalog 구성 요소</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>구성 요소</th>
+<th>역할</th>
+<th>비유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Database</b></td>
+<td>논리적 그룹 (테이블 묶음)</td>
+<td>창고 건물</td>
+</tr>
+<tr>
+<td><b>Table</b></td>
+<td>데이터 스키마 + S3 위치 매핑</td>
+<td>창고 구역 목록표</td>
+</tr>
+<tr>
+<td><b>Crawler</b></td>
+<td>데이터 소스 자동 스캔 &rarr; 스키마 추론 &rarr; 테이블 등록</td>
+<td>창고 탐색 자동 로봇</td>
+</tr>
+<tr>
+<td><b>Connection</b></td>
+<td>소스(S3&middot;RDS&middot;Redshift) 접속 정보</td>
+<td>창고 입장 열쇠</td>
+</tr>
+<tr>
+<td><b>Partition</b></td>
+<td>날짜&middot;리전 등 파티션 정보 동기화</td>
+<td>창고 구역 구분 칸막이</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">메타데이터 구성 요소 vs 데이터 카탈로그 구성 요소</span>
+<div class="dea-cards2">
+<div class="dea-card" style="border-color:var(--i60)!important;background:var(--s5)!important">
+<h4 style="color:var(--i60)!important" data-ke-size="size20">📋 메타데이터 구성 요소</h4>
+<p style="color:var(--i60)!important" data-ke-size="size16">&bull; <b>스키마</b> &mdash; 데이터 유형&middot;필드명&middot;관계<br />&bull; <b>데이터 유형</b> &mdash; string, int, timestamp 등<br />&bull; <b>데이터 소스</b> &mdash; DB&middot;레이크&middot;웨어하우스 오리진<br />&bull; <b>타임스탬프</b> &mdash; 생성&middot;수정 시간<br />&bull; <b>데이터 품질 지표</b> &mdash; 정확성&middot;완전성&middot;일관성<br />&bull; <b>소유권&middot;접근제어</b> &mdash; 누가 소유하고 접근 가능한지</p>
+</div>
+<div class="dea-card" style="border-color:var(--i60)!important;background:var(--s5)!important">
+<h4 style="color:var(--i60)!important" data-ke-size="size20">🗂️ 데이터 카탈로그 구성 요소</h4>
+<p style="color:var(--i60)!important" data-ke-size="size16">&bull; <b>테이블 스키마</b> &mdash; 열 이름&middot;데이터 유형&middot;속성<br />&bull; <b>파티셔닝 정보</b> &mdash; 쿼리 효율 향상용<br />&bull; <b>위치/스토리지</b> &mdash; S3 경로&middot;DB 엔드포인트<br />&bull; <b>통계&middot;크롤링 메타데이터</b> &mdash; Crawler 수집 정보<br />&bull; <b>데이터 계보</b> &mdash; 데이터 흐름&middot;변환 추적<br />&bull; <b>태깅&middot;레이블</b> &mdash; 분류&middot;검색 기능<br />&bull; <b>액세스 제어 정책</b> &mdash; 승인된 사용자만 접근</p>
+</div>
+</div>
+<span class="dea-sec-lbl">파티션 &harr; 데이터 카탈로그 동기화 프로세스 (S3 예시)</span>
+<div class="dea-flow">
+<div class="dea-fn fn-t">① Glue DB 생성<small>카탈로그 컨테이너</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-t">② Crawler 생성<small>S3 버킷 대상</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-t">③ 파티션 스키마 정의<small>날짜&middot;리전 등</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-t">④ Crawler 실행<small>스캔&middot;메타데이터 수집</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-t">⑤ 예약 실행<small>주기적 최신화</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-g">⑥ Athena 쿼리<small>파티션 기반 효율적 조회</small></div>
+</div>
+<div class="dea-co co-purple"><span class="dea-co-title">💡 Lake Formation vs Glue Data Catalog 차이</span> <b>Glue Catalog</b> = 테이블 수준에서 키/값 태그 기반 메타데이터<br /><b>Lake Formation</b> = 데이터베이스&middot;테이블&middot;<b>열 수준</b>까지 키/값 속성 추가 + <b>행 필터</b> 접근제어 추가. Lake Formation이 Glue Catalog의 상위 집합.</div>
+<div class="dea-qa"><span class="dea-qa-lbl">📝 시험 시나리오 &mdash; 교차 계정 데이터 레이크</span>
+<p class="dea-qa-q" data-ke-size="size16">4개 AWS 계정의 데이터를 중앙 데이터 레이크로 통합하되, 각 사업부가 관련 데이터에만 접근하도록 역할 기반 접근 제어(RBAC)를 유지해야 한다면?</p>
+<div class="dea-qa-a">① 4개 계정 각각에 데이터 레이크 스토리지(S3) 구성<br />② <b>Lake Formation</b>으로 여러 계정 데이터를 <b>중앙 레이크 계정으로 카탈로그화</b><br />③ Lake Formation 서비스 연결 역할로 각 계정 S3 버킷 정책 업데이트<br />④ <b>Lake Formation 권한</b>으로 열/행 수준 세밀한 접근 제어 부여</div>
+</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ TASK 2.3 수명주기 관리 ══ -->
+<section id="dea-t3" class="dea-task">
+<div class="dea-task-hd t3"><span class="dea-task-num">2.3</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">데이터 수명주기 관리</h2>
+<p data-ke-size="size16">Task 3 &middot; 핫&middot;웜&middot;콜드 데이터, S3 수명주기, 보존&middot;복제</p>
+</div>
+</div>
+<span class="dea-sec-lbl">핫 / 웜 / 콜드 데이터 개념</span>
+<div class="dea-lifecycle">
+<div class="dea-lc-row dea-lc-head">
+<div class="dea-lc-cell">분류</div>
+<div class="dea-lc-cell">특징</div>
+<div class="dea-lc-cell">S3 클래스</div>
+<div class="dea-lc-cell">비용</div>
+</div>
+<div class="dea-lc-row lc-hot">
+<div class="dea-lc-cell"><b>🔥 핫 (Hot)</b></div>
+<div class="dea-lc-cell">자주 액세스. 최신 데이터</div>
+<div class="dea-lc-cell">S3 Standard</div>
+<div class="dea-lc-cell">높음</div>
+</div>
+<div class="dea-lc-row lc-warm">
+<div class="dea-lc-cell"><b>🌡️ 웜 (Warm)</b></div>
+<div class="dea-lc-cell">가끔 액세스. 수개월 이후</div>
+<div class="dea-lc-cell">Standard-IA</div>
+<div class="dea-lc-cell">중간</div>
+</div>
+<div class="dea-lc-row lc-cold">
+<div class="dea-lc-cell"><b>❄️ 콜드 (Cold)</b></div>
+<div class="dea-lc-cell">거의 안 씀. 보관 목적</div>
+<div class="dea-lc-cell">Glacier / Deep Archive</div>
+<div class="dea-lc-cell">낮음</div>
+</div>
+</div>
+<span class="dea-sec-lbl">S3 수명주기 정책 &mdash; 자동 계층 이동 예시</span>
+<div class="dea-flow">
+<div class="dea-fn fn-o">0~6개월<small>S3 Standard</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-a">6개월~2년<small>Standard-IA</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-b">2년 이후<small>S3 Glacier</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-gray">규정 기간 후<small>삭제 또는 Deep Archive</small></div>
+</div>
+<div class="dea-co co-amber"><span class="dea-co-title">💡 Redshift 수명주기 최적화</span> <b>탄력적 크기 조정</b>으로 노드 추가&middot;제거. 노드 유형 변경 가능. 오래된 데이터는 S3로 내보내고 <b>Redshift Spectrum</b>으로 과거 데이터를 현재 데이터와 조인&middot;보고.</div>
+<span class="dea-sec-lbl">데이터 보호 &mdash; 복제&middot;백업&middot;버전관리</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>서비스</th>
+<th>핵심</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>다중 AZ 복제</b></td>
+<td>S3 (자동), RDS Multi-AZ</td>
+<td>가용 영역 장애 시 자동 장애 조치</td>
+</tr>
+<tr>
+<td><b>크로스 리전 복제</b></td>
+<td>S3 CRR, Aurora Global</td>
+<td>리전 전체 장애 대비. DR(재해복구)</td>
+</tr>
+<tr>
+<td><b>백업</b></td>
+<td>AWS Backup, RDS 스냅샷</td>
+<td>일정 기반 자동 백업. 특정 시점 복구(PITR)</td>
+</tr>
+<tr>
+<td><b>버전 관리</b></td>
+<td>S3 Versioning</td>
+<td>객체 여러 버전 보존. 실수 삭제/덮어쓰기 방지</td>
+</tr>
+<tr>
+<td><b>TTL 자동 삭제</b></td>
+<td>DynamoDB TTL</td>
+<td>만료 날짜 기반 항목 자동 삭제. 오래된 데이터 정리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-qa"><span class="dea-qa-lbl">📝 시험 시나리오 &mdash; Redshift 시계열 테이블</span>
+<p class="dea-qa-q" data-ke-size="size16">Redshift 클러스터에 데이터가 쌓이면서 쿼리 성능이 저하. 고정 보존 기간이 있는 경우 어떻게 해결?</p>
+<div class="dea-qa-a">같은 구조, 다른 시간 범위의 데이터를 <b>시계열 테이블</b>로 분리 &rarr; 오래된 테이블에 <b>DROP TABLE</b> 실행.<br /><b>대규모 DELETE 대신 DROP TABLE</b>을 쓰는 이유: DELETE 후 공간 회수를 위한 VACUUM 불필요. 테이블 수 감소로 인덱스&middot;최적화 효율 향상. 비용&middot;시간 절약.</div>
+</div>
+<div class="dea-qa"><span class="dea-qa-lbl">📝 시험 시나리오 &mdash; S3 수명주기 + Athena</span>
+<p class="dea-qa-q" data-ke-size="size16">S3 CSV 데이터. 6개월 후 거의 안 씀. 2년 후 보관 필요. Athena로 쿼리. 비용 최적화 방법은?</p>
+<div class="dea-qa-a">① Glue ETL로 CSV &rarr; <b>Parquet(컬럼 기반) + 압축 + 파티셔닝</b> 변환 (Athena 스캔 비용 절감)<br />② S3 수명주기: 0~6개월 = Standard &rarr; 6개월 후 <b>Standard-IA</b> &rarr; 2년 후 <b>S3 Glacier</b></div>
+</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ TASK 2.4 스키마 진화 ══ -->
+<section id="dea-t4" class="dea-task">
+<div class="dea-task-hd t4"><span class="dea-task-num">2.4</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">데이터 모델 설계 &amp; 스키마 진화</h2>
+<p data-ke-size="size16">Task 4 &middot; 데이터 모델링, 스키마 변경 관리, 마이그레이션 도구</p>
+</div>
+</div>
+<span class="dea-sec-lbl">데이터 유형별 저장 서비스</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>데이터 유형</th>
+<th>적합 서비스</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>정형 (Structured)</b></td>
+<td>RDS, Aurora, Redshift</td>
+<td>SQL 쿼리, 고정 스키마, 트랜잭션 ACID</td>
+</tr>
+<tr>
+<td><b>반정형 (Semi-structured)</b></td>
+<td>DynamoDB, DocumentDB, Athena, S3</td>
+<td>JSON&middot;XML. 유연한 스키마. 읽기 스키마(Schema-on-read)</td>
+</tr>
+<tr>
+<td><b>비정형 (Unstructured)</b></td>
+<td>S3, Rekognition, Transcribe, Comprehend</td>
+<td>이미지&middot;영상&middot;음성&middot;텍스트. ML 서비스로 분석</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">Redshift 데이터 모델링 패턴</span>
+<div class="dea-cards2">
+<div class="dea-card">
+<h4 data-ke-size="size20">⭐ 스타 스키마 (Star Schema)</h4>
+<p data-ke-size="size16">중앙의 팩트 테이블 + 주변의 차원 테이블. 조인 단순. 쿼리 성능 우수. Kimball 방법론. Redshift에서 권장.</p>
+</div>
+<div class="dea-card">
+<h4 data-ke-size="size20">❄️ 눈송이 스키마 (Snowflake Schema)</h4>
+<p data-ke-size="size16">차원 테이블이 추가로 정규화됨. 중복 최소화. 조인 복잡도 증가. 스토리지 절약.</p>
+</div>
+</div>
+<span class="dea-sec-lbl">스키마 진화 &mdash; 서비스별 처리 방법</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>스키마 진화 방식</th>
+<th>주의 사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>DynamoDB</b></td>
+<td>새 속성 자동 수용. 이전 데이터는 그대로 유지</td>
+<td>스키마리스. 가장 유연</td>
+</tr>
+<tr>
+<td><b>S3 (Data Lake)</b></td>
+<td>Schema-on-read. Athena/Glue로 해석 시 스키마 적용</td>
+<td>원시 데이터는 그대로 저장</td>
+</tr>
+<tr>
+<td><b>AWS Glue</b></td>
+<td>스키마 버전 관리. Avro&middot;Parquet&middot;ORC 포맷 스키마 진화 지원</td>
+<td>자동화된 ETL로 스키마 변환</td>
+</tr>
+<tr>
+<td><b>RDS / Aurora</b></td>
+<td>DMS로 무중단 스키마 변경. 저장 프로시저로 제어된 업데이트</td>
+<td>NoSQL 대비 복잡. 충분한 테스트 필요</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">스키마 변환&middot;마이그레이션 도구</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>도구</th>
+<th>역할</th>
+<th>함께 쓰는 서비스</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>AWS SCT (Schema Conversion Tool)</b></td>
+<td>한 DB 엔진 &rarr; 다른 엔진으로 스키마 변환. 데이터 유형 매핑&middot;저장 프로시저&middot;인덱스 자동 변환. 마이그레이션 전 평가 보고서 제공</td>
+<td>AWS DMS와 함께 사용</td>
+</tr>
+<tr>
+<td><b>AWS DMS</b></td>
+<td>이기종 DB 마이그레이션 + CDC(실시간 복제). SCT와 연동해 스키마 변환 포함</td>
+<td>RDS, Aurora, Redshift 대상 지원</td>
+</tr>
+<tr>
+<td><b>AWS Glue</b></td>
+<td>자동화된 ETL로 한 스키마 &rarr; 다른 스키마 변환. 스키마 버전 관리</td>
+<td>S3, Redshift, RDS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">최적화 기술 &mdash; 서비스별 정리</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>기술</th>
+<th>서비스</th>
+<th>방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>인덱싱</b></td>
+<td>RDS</td>
+<td>WHERE&middot;JOIN 자주 사용하는 열에 인덱스 생성</td>
+</tr>
+<tr>
+<td><b>보조 인덱스</b></td>
+<td>DynamoDB</td>
+<td>GSI&middot;LSI로 다양한 쿼리 패턴 지원. 기본 키 선택이 핵심</td>
+</tr>
+<tr>
+<td><b>파티셔닝</b></td>
+<td>S3, Athena, Glue</td>
+<td><code style="font-family:monospace">year=/month=/day=/</code> 경로로 스캔 범위 최소화</td>
+</tr>
+<tr>
+<td><b>배포키&middot;정렬키</b></td>
+<td>Redshift</td>
+<td>노드 전체에 데이터 균등 분산. 쿼리 중 데이터 이동 최소화</td>
+</tr>
+<tr>
+<td><b>압축</b></td>
+<td>S3, Redshift</td>
+<td>gzip/bzip2 (S3). 열 압축 인코딩 (Redshift). Parquet/ORC (Athena)</td>
+</tr>
+<tr>
+<td><b>캐싱</b></td>
+<td>ElastiCache, CloudFront</td>
+<td>자주 읽는 데이터 캐시 &rarr; DB 부하 절감</td>
+</tr>
+<tr>
+<td><b>데이터 아카이빙</b></td>
+<td>S3 Glacier</td>
+<td>자주 안 쓰는 과거 데이터 &rarr; 비용 효율 계층 이동</td>
+</tr>
+<tr>
+<td><b>데이터 계보 추적</b></td>
+<td>SageMaker ML Lineage</td>
+<td>ML 워크플로 입력 데이터&middot;변환&middot;모델 아티팩트 자동 추적</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-co co-purple"><span class="dea-co-title">📌 스키마 진화 사전 대응 기술 &mdash; 시험 포인트</span> <b>스키마 레지스트리 사용</b> (MSK Schema Registry&middot;Glue Schema Registry)<br /><b>스키마 검증&middot;버전 관리</b> 구현<br /><b>배달 못한 편지 대기열(DLQ)</b> &mdash; 처리 실패 메시지 보관<br /><b>스키마 변경 전 백업</b> 수행<br /><b>모니터링&middot;경고 설정</b> &mdash; 스키마 변경 탐지</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ 시험 요약 ══ -->
+<section>
+<div class="dea-exam"><span class="dea-exam-ttl">🎯 Domain 2 시험 핵심 &mdash; 이것만 기억</span>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="em">①</span><span><b>S3 스토리지 클래스 순서</b> &mdash; Standard &rarr; Standard-IA &rarr; Glacier Instant &rarr; Glacier Flexible &rarr; Deep Archive (비용 낮아짐, 복원 시간 길어짐)</span></li>
+<li><span class="em">②</span><span><b>Redshift를 선택하는 이유</b> &mdash; 컬럼 기반 + 병렬 처리 + 열 하위 집합 쿼리 + 페타바이트 집계</span></li>
+<li><span class="em">③</span><span><b>Redshift COPY 명령</b> = S3/EMR에서 테이블로 대량 데이터 로드</span></li>
+<li><span class="em">④</span><span><b>Redshift Spectrum</b> = S3에 있는 데이터를 Redshift에서 직접 쿼리 (현재 데이터 + 과거 S3 데이터 조인)</span></li>
+<li><span class="em">⑤</span><span><b>Lake Formation</b> = Glue Catalog + 열/행 수준 세밀한 접근제어 + 교차 계정 공유</span></li>
+<li><span class="em">⑥</span><span><b>Glue Crawler</b> = 데이터 소스 자동 스캔 &rarr; 스키마 추론 &rarr; 카탈로그 등록. 파티션 동기화 자동화</span></li>
+<li><span class="em">⑦</span><span><b>DynamoDB TTL</b> = 만료 날짜 기반 항목 자동 삭제 (타임스탬프 이후 자동 정리)</span></li>
+<li><span class="em">⑧</span><span><b>DROP TABLE vs DELETE</b> (Redshift 시계열) &mdash; DROP은 VACUUM 불필요, 성능 좋음</span></li>
+<li><span class="em">⑨</span><span><b>스키마 진화 포맷</b> &mdash; Avro&middot;Parquet&middot;ORC = 설계상 스키마 진화 지원 (필드 추가&middot;제거&middot;수정 가능)</span></li>
+<li><span class="em">⑩</span><span><b>AWS SCT + DMS</b> = 이기종 DB 스키마 변환 + 마이그레이션 콤보</span></li>
+<li><span class="em">⑪</span><span><b>FSx for Lustre</b> = 병렬 파일시스템. HPC&middot;ML&middot;대규모 병렬 처리</span></li>
+<li><span class="em">⑫</span><span><b>ElastiCache</b> = 인메모리 캐시(Redis/Memcached). 자주 쓰는 데이터 캐싱&middot;세션</span></li>
+</ul>
+</div>
+</section>
+<footer class="dea-ft">
+<p data-ke-size="size16">AWS DEA-C01 Domain 2 압축 정리 &middot; <a href="https://hyeonlee.net">hyeonlee.net</a></p>
+<p style="margin-top:4px" data-ke-size="size16">Domain 1 정리도 확인해보세요 😊</p>
+</footer></div>
+</article>
+<script>
+(function() {
+  function deaFilt(t) {
+    var bs = document.querySelectorAll('.dea-tn-btn');
+    for (var i = 0; i < bs.length; i++) bs[i].classList.remove('dea-active');
+    var active = document.querySelector('.dea-tn-btn[data-t="' + t + '"]');
+    if (active) active.classList.add('dea-active');
+    for (var n = 1; n <= 4; n++) {
+      var el = document.getElementById('dea-t' + n);
+      if (!el) continue;
+      var show = (t === 0 || t === n);
+      el.style.display = show ? '' : 'none';
+      var hr = el.nextElementSibling;
+      if (hr && hr.tagName === 'HR') hr.style.display = show ? '' : 'none';
+    }
+  }
+  document.querySelectorAll('.dea-tn-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      deaFilt(parseInt(this.getAttribute('data-t'), 10));
+    });
+  });
+})();
+</script>
+</div>

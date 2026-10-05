@@ -1,0 +1,287 @@
+<!--
+id: 117
+제목: AWS DEA-C01 각색 문제 Day 14 — Glue FindMatches, CloudTrail Lake IAM, Lake Formation, Glue 크롤러 + Redshift Serverless + Spectrum, Glue 카탈로그
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, Glue FindMatches, CloudTrail Lake IAM, Lake Formation 행 수준 필터, Redshift Serverless Spectrum, Glue 테이블 버전 한도
+날짜: 2026-04-06 23:39
+수정: 2026-04-06 23:39
+형식: html
+썸네일: /img/t/dJMcaarjMGB.webp
+-->
+<style>
+.pb-117 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-117 .dea-wrap *{box-sizing:border-box}
+.pb-117 .dea-post-header{margin-bottom:32px}
+.pb-117 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-117 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-117 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-117 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-117 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-117 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-117 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-117 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-117 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-117 .dea-q-block{margin-bottom:48px}
+.pb-117 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-117 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-117 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-117 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-117 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-117 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-117 .dea-badge.multi{background:var(--r5);color:var(--r60)}
+.pb-117 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-117 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-117 .dea-seo-lead strong{color:var(--p50)}
+.pb-117 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-117 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-117 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-117 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-117 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-117 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-117 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-117 .dea-opt.ok{border-color:var(--s60)}
+.pb-117 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-117 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-117 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-117 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-117 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-117 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-117 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-117 .dea-term{font-weight:700;color:var(--p50)}
+.pb-117 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-117 .dea-btn:hover{background:var(--p60)}
+.pb-117 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-117 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-117 .dea-exp.on{display:flex}
+.pb-117 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-117 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-117 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-117 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-117 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-117 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-117 .dea-table th, .pb-117 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-117 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-117 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-117 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-117 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-117 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-117 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-117 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-117 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-117 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-117 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-117 .dea-hl{color:var(--p50);font-weight:700}
+.pb-117 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-117 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-117 .dea-wrap{padding:14px 6px 52px}
+.pb-117 .dea-post-title{font-size:18px}
+.pb-117 .dea-qcard p{font-size:14px}
+.pb-117 .dea-opt-row{font-size:13px}
+.pb-117 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-117 .dea-table{font-size:11.5px}
+.pb-117 .dea-table th, .pb-117 .dea-table td{padding:8px 9px}
+.pb-117 .dea-ans-main{font-size:14.5px}
+.pb-117 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-117">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 14</h1>
+  <p class="dea-post-desc">Glue FindMatches 중복 레코드, CloudTrail Lake IAM 역할별 감사, Lake Formation 행 수준 필터, Glue 크롤러 + Redshift Serverless + Spectrum, Glue 카탈로그 테이블 버전 한도(복수) — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1·2·4 · ETL·보안·쿼리</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q66"><span class="dea-toc-num">Q66</span> 여러 DB의 비일관 필드 고객 레코드 연결 — 최소 오버헤드</a></li>
+    <li><a href="#dea-q67"><span class="dea-toc-num">Q67</span> CloudFormation 수명주기 감사 — SQL 쿼리 가능</a></li>
+    <li><a href="#dea-q68"><span class="dea-toc-num">Q68</span> Lake Formation 행 수준 필터로 특정 국가 데이터 차단</a></li>
+    <li><a href="#dea-q69"><span class="dea-toc-num">Q69</span> 파티션·압축 CSV → 최소 오버헤드로 분석 쿼리</a></li>
+    <li><a href="#dea-q70"><span class="dea-toc-num">Q70</span> Glue 카탈로그 테이블 버전 한도 초과 오류 해결 (복수)</a></li>
+  </ul>
+</nav>
+
+<!-- Q66 -->
+<div class="dea-q-block" id="dea-q66">
+  <div class="dea-meta"><span class="dea-badge qnum">Q66</span><span class="dea-badge topic">Glue FindMatches · 중복 레코드 연결 · ML 변환</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS Glue FindMatches 변환</strong>은 필드 이름이 달라도 같은 개념을 나타내는 레코드를 ML 기반으로 연결·식별하는 내장 기능입니다. EMR 클러스터나 SageMaker 모델 없이 Glue ETL 파이프라인에서 바로 사용 가능합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>분석 플랫폼이 여러 Amazon RDS 데이터베이스에서 고객 데이터를 읽습니다. 한 DB는 위치 필드를 <code>place_id</code>로, 다른 DB는 <code>location_id</code>로 저장합니다. 이처럼 필드명이 달라도 여러 DB의 고객 레코드를 연결해야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q66-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>프로비저닝된 Amazon EMR 클러스터를 생성해 Zeppelin 노트북에서 FindMatches 변환으로 중복 레코드를 찾습니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">Amazon EMR</span> 클러스터 프로비저닝·관리 자체가 <strong>상당한 운영 오버헤드</strong>. 서버리스 Glue로 해결 가능한데 불필요하게 복잡함.</div></li>
+    <li class="dea-opt" id="q66-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>AWS Glue 크롤러로 데이터베이스를 크롤링하고, FindMatches 변환을 적용해 중복 레코드를 식별·연결합니다. 성능을 평가하며 변환을 튜닝합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue FindMatches 변환</span> — 필드명이 달라도 같은 실체를 나타내는 레코드를 ML로 연결하는 완전관리형 내장 기능. 크롤러로 메타데이터 등록 후 ETL 작업에서 FindMatches 적용. 별도 ML 모델 개발·인프라 없이 <strong>최소 오버헤드</strong>로 레코드 매칭.</div></li>
+    <li class="dea-opt" id="q66-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>AWS Glue 크롤러로 DB를 크롤링하고, Amazon SageMaker에서 Apache Spark ML 파이프라인을 구성해 중복 레코드를 찾습니다.</span></div><div class="dea-inline-exp">❌ SageMaker ML 모델 훈련 스크립트 작성·훈련 작업 관리까지 필요. FindMatches 내장 기능 대비 <strong>추가 개발·운영 부담</strong>이 큼.</div></li>
+    <li class="dea-opt" id="q66-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>프로비저닝된 Amazon EMR 클러스터에서 Apache Spark ML 모델로 중복 레코드를 찾고 평가·튜닝합니다.</span></div><div class="dea-inline-exp">❌ EMR 클러스터 프로비저닝 + Spark ML 파이프라인 직접 개발 + 모델 튜닝까지 <strong>운영 오버헤드가 가장 큼</strong>. Glue FindMatches로 코드 없이 해결 가능.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q66">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q66">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Glue 크롤러 + FindMatches 변환으로 최소 오버헤드 레코드 연결</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 레코드 매칭·중복 제거 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>ML 개발?</th><th>인프라 관리?</th><th>운영 부담</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Glue FindMatches</strong></td><td><span class="dea-pill good">없음 (내장)</span></td><td><span class="dea-pill good">없음 (서버리스)</span></td><td><span class="dea-pill good">최소</span></td></tr>
+      <tr><td>SageMaker Spark ML</td><td>직접 작성</td><td>모델 관리 필요</td><td>높음</td></tr>
+      <tr><td>EMR + Spark ML</td><td>직접 작성</td><td>클러스터 관리</td><td><span class="dea-pill bad">최대</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"필드명 달라도 같은 레코드 연결 + 최소 오버헤드"<br>  →  <span class="dea-hl">Glue FindMatches 변환</span><br><br>완전관리형 ML 내장 → EMR·SageMaker 불필요<br>튜닝 가능 → 라벨 데이터로 정확도 개선</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q67 -->
+<div class="dea-q-block" id="dea-q67">
+  <div class="dea-meta"><span class="dea-badge qnum">Q67</span><span class="dea-badge topic">CloudTrail Lake · IAM 역할별 감사 · SQL</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>AWS CloudTrail Lake</strong>는 IAM 역할 단위로 이벤트 데이터 스토어를 분리하고 SQL로 쿼리할 수 있습니다. CloudFormation 이벤트는 CloudTrail이 캡처하며, S3 전달 포맷은 JSON(ORC 불가)입니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>페더레이션 IAM 역할을 통해 사용자들이 AWS CloudFormation으로 애플리케이션을 배포·확장·종료합니다. 감사팀이 각 역할의 활동 이력을 SQL 쿼리로 분석할 수 있어야 합니다. 이 요건을 충족하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q67-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>CloudTrail Lake에 여러 이벤트 데이터 스토어를 생성합니다. 각 스토어에 관련 IAM 역할 기반 이벤트 유형을 선택합니다. 감사자가 SQL 쿼리를 실행할 수 있도록 CloudTrail Lake 권한을 설정합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">CloudTrail Lake 이벤트 데이터 스토어</span> — 이벤트 스키마 기반으로 데이터를 집계. IAM 역할별 이벤트를 분리된 데이터 스토어로 관리. SQL로 직접 쿼리 가능. 추가 S3·Glue·Athena 설정 없이 <strong>최소 설정으로 감사 + SQL 분석</strong> 구현.</div></li>
+    <li class="dea-opt" id="q67-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>S3 버킷으로 이벤트를 전송하도록 CloudFormation을 구성하고, Glue로 Apache ORC 형식으로 변환한 뒤 Athena SQL로 쿼리합니다.</span></div><div class="dea-inline-exp">❌ CloudFormation은 이벤트를 S3로 직접 전송하는 기능이 없음. CloudTrail이 API 활동을 캡처해야 함. 또한 CloudTrail S3 전달 형식은 JSON 전용(ORC 불가).</div></li>
+    <li class="dea-opt" id="q67-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>CloudWatch Logs의 CloudFormation 로그 그룹을 특정하고, CloudWatch Logs Insights 쿼리를 실행할 권한을 감사자에게 부여합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">CloudWatch Logs Insights</span>는 자체 쿼리 언어 사용. <strong>SQL을 지원하지 않음</strong>. SQL 쿼리 요건 미충족.</div></li>
+    <li class="dea-opt" id="q67-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>새 CloudTrail 추적을 만들어 Apache ORC 형식으로 S3에 전달하고, Athena SQL로 쿼리합니다.</span></div><div class="dea-inline-exp">❌ CloudTrail은 S3 전달 시 <strong>JSON 행 기반 형식만 지원</strong>. ORC 형식으로 직접 구성 불가. 형식 변환을 위해 Glue ETL이 추가로 필요.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q67">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q67">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — CloudTrail Lake 이벤트 데이터 스토어 + SQL 쿼리</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — CloudTrail 로그 SQL 분석 방법</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>SQL 지원?</th><th>설정 복잡도</th><th>IAM 역할별 분리?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CloudTrail Lake</strong></td><td><span class="dea-pill good">✓ 내장</span></td><td><span class="dea-pill good">최소</span></td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>CloudTrail + S3 + Athena</td><td>✓ (설정 필요)</td><td>중간</td><td>직접 구성 필요</td></tr>
+      <tr><td>CloudWatch Logs Insights</td><td><span class="dea-pill bad">✗ 전용 언어</span></td><td>낮음</td><td>로그 그룹 단위</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"CloudTrail 이벤트 SQL 쿼리 + 최소 설정"  →  <span class="dea-hl">CloudTrail Lake</span><br><br>CloudTrail S3 전달 = JSON 전용 (ORC 불가)<br>CloudWatch Logs Insights = SQL 아님 (전용 쿼리 언어)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q68 -->
+<div class="dea-q-block" id="dea-q68">
+  <div class="dea-meta"><span class="dea-badge qnum">Q68</span><span class="dea-badge topic">Lake Formation · 행 수준 필터 · 규정 준수</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Lake Formation 행 수준 필터(Row-level Filter)</strong>는 특정 컬럼 값을 조건으로 행 전체에 대한 접근을 차단합니다. IAM 정책은 테이블·버킷 단위만 제어하고, Lake Formation 태그(LF-TBAC)는 행에 적용할 수 없습니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>AWS Lake Formation 데이터 레이크에 고객 주소를 포함한 고객 데이터 테이블이 있습니다. 새 규정에 따라 캐나다 고객의 데이터 행에 대한 사용자 접근을 차단해야 합니다. 운영 노력을 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q68-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>행 수준 필터를 설정하여 국가가 캐나다인 행에 대한 사용자 접근을 차단합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Lake Formation 행 수준 필터</span> — 컬럼 값 조건(국가 = 'Canada')으로 해당 행 전체에 대한 접근 차단. 코드 없이 Lake Formation 콘솔에서 필터 조건만 설정하면 Athena 쿼리 시 자동 적용. <strong>최소 설정으로 행 단위 규정 준수</strong>.</div></li>
+    <li class="dea-opt" id="q68-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>국가가 캐나다인 주소에 대한 접근을 제한하는 IAM 역할을 생성합니다.</span></div><div class="dea-inline-exp">❌ IAM은 테이블·버킷·API 호출 단위 접근 제어. <strong>특정 컬럼 값 기반 행 수준 접근 제어 불가</strong>. Lake Formation으로만 구현 가능.</div></li>
+    <li class="dea-opt" id="q68-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>열 수준 필터를 설정하여 국가가 캐나다인 행에 대한 접근을 차단합니다.</span></div><div class="dea-inline-exp">❌ 열 수준 필터는 특정 <strong>컬럼 자체</strong>에 대한 접근 제어. 캐나다 여부에 관계없이 모든 행에서 해당 컬럼이 숨겨짐. 특정 행 차단과 다른 기능.</div></li>
+    <li class="dea-opt" id="q68-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>캐나다 고객 행에 태그를 적용하고 해당 태그의 행 접근을 차단합니다.</span></div><div class="dea-inline-exp">❌ Lake Formation LF-TBAC(태그 기반 접근 제어)는 카탈로그 리소스(데이터베이스·테이블·컬럼)에 태그 적용 가능. <strong>행에는 태그를 연결할 수 없음</strong>. 행 수준 제어는 행 필터를 사용해야 함.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q68">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q68">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — Lake Formation 행 수준 필터로 캐나다 행 차단</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Lake Formation 접근 제어 유형</div>
+    <table class="dea-table"><thead><tr><th>유형</th><th>제어 단위</th><th>행 차단 가능?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>행 수준 필터</strong></td><td>컬럼 값 조건 → 행 전체</td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>열 수준 필터</td><td>특정 컬럼</td><td><span class="dea-pill bad">✗ (컬럼 숨김)</span></td></tr>
+      <tr><td>LF-TBAC (태그)</td><td>카탈로그 리소스</td><td><span class="dea-pill bad">✗ (행 태그 불가)</span></td></tr>
+      <tr><td>IAM 정책</td><td>테이블·버킷·API</td><td><span class="dea-pill bad">✗</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"특정 컬럼 값 기준으로 행 차단"<br>  →  <span class="dea-hl">Lake Formation 행 수준 필터</span><br><br>태그(LF-TBAC) = 행에 적용 불가 (카탈로그 리소스만)<br>열 필터 = 행 차단 아님 (컬럼 숨김)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q69 -->
+<div class="dea-q-block" id="dea-q69">
+  <div class="dea-meta"><span class="dea-badge qnum">Q69</span><span class="dea-badge topic">Glue 크롤러 · Redshift Serverless · Redshift Spectrum</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Glue 크롤러 + Redshift Serverless + Redshift Spectrum</strong> 조합은 파티션·압축된 S3 데이터를 서버리스로 쿼리하는 표준 패턴입니다. 프로비저닝 클러스터나 재파티셔닝 없이 최소 오버헤드로 구현 가능합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question</div>
+    <p>3년치 고객 서비스 데이터가 S3에 CSV 형식으로 저장되어 있습니다. 데이터는 동일 크기 파일로 파티셔닝되고 gzip으로 압축되어 있습니다. 전체 기록 분석이 필요합니다. 운영 오버헤드를 최소화하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q69-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Hive가 설치된 Amazon EMR 클러스터를 만들어 외부 Hive 메타스토어를 설정하고, Athena 데이터 커넥터로 쿼리합니다.</span></div><div class="dea-inline-exp">❌ EMR 클러스터 + Hive 메타스토어 + Athena 데이터 커넥터까지 <strong>여러 구성 요소를 직접 설정·관리</strong>해야 함. 운영 오버헤드 높음.</div></li>
+    <li class="dea-opt" id="q69-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 크롤러를 실행해 파티셔닝된 데이터로 Glue 데이터 카탈로그를 채웁니다. Amazon Redshift Serverless 엔드포인트를 생성하고 데이터 카탈로그 기반 외부 스키마·테이블을 정의합니다. Redshift Spectrum으로 S3 데이터를 쿼리합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Glue 크롤러</span> — 파티션·압축 데이터에서 자동으로 스키마 추출 + 카탈로그 등록. <span class="dea-term">Redshift Serverless</span> — 컴퓨팅 용량 자동 프로비저닝. <span class="dea-term">Redshift Spectrum</span> — S3 데이터를 직접 쿼리. <strong>서버리스 서비스만 사용해 최소 운영 오버헤드</strong>.</div></li>
+    <li class="dea-opt" id="q69-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon Redshift 프로비저닝 클러스터를 만들고 Glue ETL 작업으로 S3 데이터를 Redshift 테이블로 수집합니다.</span></div><div class="dea-inline-exp">❌ 프로비저닝 클러스터 구성 + 수집 ETL 작업 생성까지 <strong>추가 오버헤드</strong>. 데이터를 이동해야 하므로 S3에서 직접 쿼리하는 방법보다 복잡. Serverless가 더 효율적.</div></li>
+    <li class="dea-opt" id="q69-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>데이터를 압축 해제하고 더 큰 파일로 재파티셔닝한 뒤 Glue 크롤러와 Redshift 클러스터 + Spectrum으로 쿼리합니다.</span></div><div class="dea-inline-exp">❌ Glue 크롤러는 압축·파티션 데이터 그대로 처리 가능. <strong>불필요한 재파티셔닝 작업</strong>이 추가 오버헤드. Redshift 프로비저닝 클러스터도 Serverless보다 관리 부담이 큼.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q69">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q69">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Glue 크롤러 + Redshift Serverless + Spectrum</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — S3 데이터 분석 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>데이터 이동?</th><th>서버리스?</th><th>운영 부담</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Glue 크롤러 + Redshift Serverless + Spectrum</strong></td><td><span class="dea-pill good">✗ S3 직접</span></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">최소</span></td></tr>
+      <tr><td>EMR + Hive + Athena</td><td>✗ 직접</td><td><span class="dea-pill bad">✗ 클러스터</span></td><td>높음</td></tr>
+      <tr><td>Glue ETL → Redshift 클러스터</td><td><span class="dea-pill bad">✓ 이동 필요</span></td><td>부분</td><td>중간</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"S3 파티션·압축 데이터 최소 오버헤드 쿼리"<br>  →  <span class="dea-hl">Glue 크롤러</span> + <span class="dea-hl">Redshift Serverless</span> + <span class="dea-hl">Spectrum</span><br><br>재파티셔닝·압축 해제 불필요 → 크롤러가 그대로 처리<br>Serverless = 클러스터 관리 없음</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q70 -->
+<div class="dea-q-block" id="dea-q70">
+  <div class="dea-meta"><span class="dea-badge qnum">Q70</span><span class="dea-badge topic">Glue 카탈로그 · 테이블 버전 한도 · 서비스 할당량</span><span class="dea-badge multi">✌️ 복수 정답</span></div>
+  <p class="dea-seo-lead"><strong>ResourceNumberLimitExceededException</strong>은 Glue 데이터 카탈로그의 테이블당 최대 테이블 버전 수를 초과했을 때 발생합니다. 해결 방법은 <strong>서비스 할당량 증가 요청</strong>이나 <strong>오래된 테이블 버전 삭제</strong>입니다. 테이블 수·스키마와는 무관합니다.</p>
+  <div class="dea-qcard"><div class="dea-stitle">📋 Question — 두 가지를 선택하세요</div>
+    <p>데이터 엔지니어가 AWS Glue 데이터 카탈로그의 테이블 버전을 업데이트하려다 <code>ResourceNumberLimitExceededException</code> 오류를 받았습니다. 테이블 버전 리소스 수가 테이블당 허용 최대치를 초과했다고 표시됩니다. 이 오류를 해결하는 방법 두 가지는 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q70-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>데이터 카탈로그가 실행되는 AWS 리전에서 테이블당 최대 테이블 버전 수 할당량을 늘립니다(AWS Support 티켓).</span></div><div class="dea-inline-exp">✅ <span class="dea-term">서비스 할당량(Soft Limit) 증가</span> — 테이블당 최대 버전 수는 소프트 한도로 AWS Support 티켓으로 증가 요청 가능. <strong>근본 한도 자체를 높여</strong> 오류 해결. 버전이 계속 쌓이는 환경에서 지속 가능한 해결책.</div></li>
+    <li class="dea-opt" id="q70-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>AWS 리전에 허용되는 최대 테이블 수 할당량을 늘립니다.</span></div><div class="dea-inline-exp">❌ 오류는 <strong>테이블 수</strong>가 아닌 <strong>테이블 버전 수</strong>와 관련. 테이블 수 할당량을 늘려도 이 오류는 해결되지 않음.</div></li>
+    <li class="dea-opt" id="q70-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>스키마에서 오래된 테이블을 검색하고 삭제합니다.</span></div><div class="dea-inline-exp">❌ 오류는 테이블 수가 아닌 <strong>테이블 버전 수</strong> 초과. 테이블 자체를 삭제해도 버전 수 문제가 해결되지 않음.</div></li>
+    <li class="dea-opt" id="q70-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>오래된 테이블 스키마 버전을 검색하고 삭제합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">테이블 버전 삭제</span> — Glue 카탈로그 테이블의 이전 버전 메타데이터를 삭제하면 버전 수가 줄어 한도 이하로 낮아짐. <strong>즉각적인 오류 해결</strong>. BatchDeleteTableVersion API 또는 콘솔 사용.</div></li>
+    <li class="dea-opt" id="q70-E"><div class="dea-opt-row"><span class="dea-k">E</span><span>AWS 계정에서 오래된 스키마를 검색하고 삭제합니다.</span></div><div class="dea-inline-exp">❌ 오류는 스키마 수가 아닌 <strong>테이블 버전 수</strong>와 관련. 스키마 삭제는 이 오류 해결과 무관.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q70">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q70">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A + D — 할당량 증가 요청 또는 오래된 테이블 버전 삭제</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Glue 카탈로그 할당량 관련 오류</div>
+    <table class="dea-table"><thead><tr><th>오류 원인</th><th>해결 방법</th></tr></thead>
+    <tbody>
+      <tr><td>테이블당 버전 수 초과</td><td>할당량 증가 요청 또는 오래된 버전 삭제</td></tr>
+      <tr><td>리전당 테이블 수 초과</td><td>테이블 수 할당량 증가 요청</td></tr>
+      <tr><td>리전당 DB 수 초과</td><td>DB 수 할당량 증가 요청</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>ResourceNumberLimitExceededException (테이블 버전)<br>  →  <span class="dea-hl">할당량 증가 요청</span>  OR  <span class="dea-hl">오래된 테이블 버전 삭제</span><br><br>테이블 수/스키마 수와는 무관 → 버전(Version)이 핵심 키워드</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">Glue FindMatches</span><span class="dea-tag">CloudTrail Lake IAM</span><span class="dea-tag">Lake Formation 행 수준 필터</span><span class="dea-tag">Redshift Serverless Spectrum</span><span class="dea-tag">Glue 테이블 버전 한도</span><span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var q=[
+    {id:'q66',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue FindMatches'},
+    {id:'q67',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — CloudTrail Lake'},
+    {id:'q68',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — 행 수준 필터'},
+    {id:'q69',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue 크롤러 + Redshift Serverless'},
+    {id:'q70',ans:{'A':true,'D':true},keys:['A','B','C','D','E'],label:'✅ 정답: A+D — 할당량 증가 + 버전 삭제'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

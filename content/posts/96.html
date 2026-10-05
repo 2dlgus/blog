@@ -1,0 +1,421 @@
+<!--
+id: 96
+제목: AWS DEA-C01 각색 문제 Day 02 — Glue Workflow·Redshift Data API·Athena Workgroup 등 5문제
+카테고리: Stack/AWS
+태그: 자격증, AWS, DEA, Data Engineering, 데이터 엔지니어링, Glue Workflow, Redshift Data API, Athena Workgroup, FLEX 실행 클래스, ObjectCreated + .csv 필터
+날짜: 2026-03-22 19:47
+수정: 2026-03-25 16:27
+형식: html
+썸네일: /img/t/dJMcagrjuhl.webp
+-->
+<style>
+.pb-96 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-96 .dea-wrap *{box-sizing:border-box}
+.pb-96 .dea-post-header{margin-bottom:32px}
+.pb-96 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-96 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-96 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-96 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-96 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-96 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-96 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-96 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-96 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-96 .dea-q-block{margin-bottom:48px}
+.pb-96 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-96 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-96 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-96 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-96 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-96 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-96 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-96 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-96 .dea-seo-lead strong{color:var(--p50)}
+.pb-96 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-96 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-96 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-96 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-96 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-96 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-96 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-96 .dea-opt.ok{border-color:var(--s60)}
+.pb-96 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-96 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-96 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-96 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-96 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-96 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-96 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-96 .dea-term{font-weight:700;color:var(--p50)}
+.pb-96 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-96 .dea-btn:hover{background:var(--p60)}
+.pb-96 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-96 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-96 .dea-exp.on{display:flex}
+.pb-96 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-96 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-96 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-96 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-96 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-96 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-96 .dea-table th, .pb-96 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-96 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-96 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-96 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-96 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-96 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-96 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-96 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-96 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-96 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-96 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-96 .dea-hl{color:var(--p50);font-weight:700}
+.pb-96 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-96 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-96 .dea-wrap{padding:14px 6px 52px}
+.pb-96 .dea-post-title{font-size:18px}
+.pb-96 .dea-qcard p{font-size:14px}
+.pb-96 .dea-opt-row{font-size:13px}
+.pb-96 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-96 .dea-table{font-size:11.5px}
+.pb-96 .dea-table th, .pb-96 .dea-table td{padding:8px 9px}
+.pb-96 .dea-ans-main{font-size:14.5px}
+.pb-96 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-96">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 02</h1>
+  <p class="dea-post-desc">Glue 워크플로, Redshift Data API, Athena 작업 그룹, FLEX 실행 클래스, S3 이벤트 알림까지 — 5문제로 Domain 1 심화 개념을 정리합니다.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1 · 오케스트레이션·쿼리·이벤트</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q6"><span class="dea-toc-num">Q6</span> Glue 크롤러·ETL·S3 적재 파이프라인 오케스트레이션</a></li>
+    <li><a href="#dea-q7"><span class="dea-toc-num">Q7</span> 웹 애플리케이션에서 Redshift 실시간 쿼리 실행</a></li>
+    <li><a href="#dea-q8"><span class="dea-toc-num">Q8</span> Athena 쿼리 실행·이력 팀별 격리</a></li>
+    <li><a href="#dea-q9"><span class="dea-toc-num">Q9</span> 비긴급 Glue 배치 작업 비용 절감 설정</a></li>
+    <li><a href="#dea-q10"><span class="dea-toc-num">Q10</span> CSV 업로드 시에만 Lambda 자동 실행</a></li>
+  </ul>
+</nav>
+
+<!-- Q6 -->
+<div class="dea-q-block" id="dea-q6">
+  <div class="dea-meta">
+    <span class="dea-badge qnum">Q6</span>
+    <span class="dea-badge topic">Glue · 오케스트레이션 · 비용</span>
+    <span class="dea-badge diff">⭐ 자주 출제</span>
+  </div>
+  <p class="dea-seo-lead"><strong>AWS Glue 워크플로(Workflow)</strong>는 Glue 크롤러·ETL 작업·트리거를 하나의 파이프라인으로 묶어 오케스트레이션하는 기능입니다. Step Functions이나 MWAA 없이 <strong>Glue 안에서 모든 것을 해결</strong>할 수 있어 비용과 운영 부담이 가장 낮습니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>데이터 엔지니어링 팀이 AWS Glue를 기반으로 ETL 파이프라인을 구축하고 있습니다. 이 파이프라인은 온프레미스 SQL Server 데이터베이스를 크롤링하여 스키마를 탐색하고, 추출한 데이터를 변환한 후 Amazon S3에 적재해야 합니다. 팀은 이 일련의 단계를 자동화하여 순서대로 실행되도록 관리하는 솔루션도 필요합니다. 가장 비용 효율적인 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q6-A">
+      <div class="dea-opt-row"><span class="dea-k">A</span><span>AWS Step Functions 상태 머신을 생성하여 Glue 크롤러와 ETL 작업의 실행 순서를 제어합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">AWS Step Functions</span> — 상태 머신(State Machine) 기반 워크플로 서비스. 요리 레시피 관리자. Lambda·EMR·Glue 등 다양한 서비스를 연결하는 범용 오케스트레이터. 기능은 강력하지만 <strong>Glue 전용이 아니라 추가 비용과 설정 부담</strong> 발생. Glue만 쓰는 파이프라인엔 과함.</div>
+    </li>
+    <li class="dea-opt" id="q6-B">
+      <div class="dea-opt-row"><span class="dea-k">B</span><span>AWS Glue 워크플로를 구성하여 크롤러, ETL 작업, 트리거를 하나의 파이프라인으로 묶어 관리합니다.</span></div>
+      <div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue 워크플로(Workflow)</span> — Glue 크롤러·ETL 작업·트리거를 하나의 DAG(방향 비순환 그래프)로 묶는 내장 오케스트레이션 기능. 공장 라인 전체를 한 콘솔에서 관리. <strong>별도 서비스 없이 Glue 내에서 완결</strong>되므로 추가 비용 없음.</div>
+    </li>
+    <li class="dea-opt" id="q6-C">
+      <div class="dea-opt-row"><span class="dea-k">C</span><span>AWS Glue Studio의 시각적 편집기로 크롤러와 ETL 작업 흐름을 디자인하고 실행합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">AWS Glue Studio</span> — 드래그앤드롭 GUI로 ETL 작업을 시각적으로 만드는 <strong>작업 편집기</strong>. ETL 작업을 만들 때 쓰는 것이지, 여러 작업을 순서대로 실행하는 오케스트레이션 도구가 아님.</div>
+    </li>
+    <li class="dea-opt" id="q6-D">
+      <div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon MWAA(Managed Workflows for Apache Airflow)를 사용해 Glue 작업 실행 순서를 DAG로 정의합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">Amazon MWAA</span> — 완전 관리형 Apache Airflow. 강력하지만 <strong>환경 구성 비용 + 시간당 요금</strong>이 발생. Glue만 오케스트레이션하는 단순 케이스엔 비용 대비 과도한 선택.</div>
+    </li>
+  </ul>
+  <button class="dea-btn" id="btn-q6">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q6">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — AWS Glue 워크플로로 Glue 파이프라인 내장 오케스트레이션</div></div></div>
+    <div>
+      <div class="dea-stitle">🔑 핵심 개념 — Glue 오케스트레이션 옵션 비교</div>
+      <table class="dea-table">
+        <thead><tr><th>서비스</th><th>비유</th><th>Glue 전용?</th><th>추가 비용</th><th>적합도</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Glue Workflow</strong></td><td>🏭 공장 내장 라인 컨트롤러</td><td>✓ 전용</td><td>없음</td><td><span class="dea-pill good">✓ 최적</span></td></tr>
+          <tr><td>Step Functions</td><td>📋 범용 레시피 관리자</td><td>범용</td><td>상태 전환당 요금</td><td><span class="dea-pill mid">과함</span></td></tr>
+          <tr><td>MWAA (Airflow)</td><td>🏗️ 대형 현장 소장</td><td>범용</td><td>시간당 환경 요금</td><td><span class="dea-pill bad">비용 과다</span></td></tr>
+          <tr><td>Glue Studio</td><td>🎨 ETL 작업 편집기</td><td>편집 도구</td><td>없음(오케스트레이션 아님)</td><td><span class="dea-pill bad">용도 다름</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dea-memory">
+      <div class="dea-mem-label">💡 이것만 기억하자</div>
+      <code>Glue 파이프라인만 오케스트레이션  →  <span class="dea-hl">Glue Workflow</span>  (무료, 내장)<br>멀티 서비스 복잡한 워크플로     →  <span class="dea-hl">Step Functions</span><br>대규모 Python DAG 관리          →  <span class="dea-hl">MWAA (Airflow)</span><br><br>Glue Studio = 작업 만드는 편집기 ≠ 오케스트레이션</code>
+    </div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q7 -->
+<div class="dea-q-block" id="dea-q7">
+  <div class="dea-meta">
+    <span class="dea-badge qnum">Q7</span>
+    <span class="dea-badge topic">Redshift · Data API · 웹 앱 연동</span>
+    <span class="dea-badge diff">⭐ 자주 출제</span>
+  </div>
+  <p class="dea-seo-lead"><strong>Amazon Redshift Data API</strong>는 JDBC/ODBC 드라이버 없이 HTTP 요청만으로 Redshift에 쿼리를 실행할 수 있는 서비스입니다. 웹·모바일 앱처럼 <strong>비동기·단기 연결이 필요한 환경</strong>에서 운영 부담 없이 Redshift와 연동할 수 있어 DEA-C01에서 자주 출제됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>한 핀테크 기업이 금융 데이터를 Amazon Redshift에 저장하고 있습니다. 트레이더들이 사용하는 웹 기반 거래 플랫폼은 이 데이터에 대해 실시간 쿼리를 실행해야 하며, 애플리케이션 내에서 직접 Redshift를 조회할 수 있어야 합니다. 운영 오버헤드를 최소화하는 가장 적합한 연결 방식은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q7-A">
+      <div class="dea-opt-row"><span class="dea-k">A</span><span>웹 애플리케이션과 Amazon Redshift 간에 WebSocket 연결을 구성합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">WebSocket</span> — 클라이언트-서버 간 양방향 실시간 통신 프로토콜. Redshift는 WebSocket 연결을 네이티브로 지원하지 않음. 별도 중간 서버(예: API Gateway + Lambda)가 필요해 <strong>운영 오버헤드가 증가</strong>.</div>
+    </li>
+    <li class="dea-opt" id="q7-B">
+      <div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon Redshift Data API를 사용하여 애플리케이션에서 HTTP 기반으로 쿼리를 실행합니다.</span></div>
+      <div class="dea-inline-exp">✅ <span class="dea-term">Amazon Redshift Data API</span> — HTTP 기반 비동기 쿼리 실행 API. 카페 무인 주문기처럼 앱에서 버튼 누르면 주문(쿼리)이 접수되고 결과를 나중에 가져오는 방식. <strong>JDBC 드라이버·영구 DB 연결·VPC 설정 없이</strong> AWS SDK/HTTP 호출만으로 Redshift 쿼리 가능. 웹앱 연동에 최적.</div>
+    </li>
+    <li class="dea-opt" id="q7-C">
+      <div class="dea-opt-row"><span class="dea-k">C</span><span>JDBC(Java Database Connectivity) 드라이버를 사용하여 애플리케이션과 Redshift 간 영구 연결을 설정합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">JDBC(Java Database Connectivity)</span> — Java 애플리케이션이 DB에 연결하는 표준 드라이버 인터페이스. 영구적인 DB 커넥션이 필요해 웹앱에서 연결 관리·풀링·VPC 설정 등 <strong>운영 오버헤드가 높음</strong>.</div>
+    </li>
+    <li class="dea-opt" id="q7-D">
+      <div class="dea-opt-row"><span class="dea-k">D</span><span>자주 조회되는 데이터를 Amazon S3로 내보내고, Amazon S3 Select로 실시간 쿼리를 처리합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">Amazon S3 Select</span> — S3 객체 내에서 SQL로 원하는 데이터만 필터링해 가져오는 기능. 데이터를 Redshift에서 S3로 복사해야 하고 <strong>실시간성이 낮고 데이터 이중화</strong> 문제 발생.</div>
+    </li>
+  </ul>
+  <button class="dea-btn" id="btn-q7">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q7">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Amazon Redshift Data API로 HTTP 기반 쿼리 실행</div></div></div>
+    <div>
+      <div class="dea-stitle">🔑 핵심 개념 — Redshift 연결 방식 비교</div>
+      <table class="dea-table">
+        <thead><tr><th>방식</th><th>비유</th><th>연결 방식</th><th>웹앱 적합?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Redshift Data API</strong></td><td>☕ 무인 주문기</td><td>HTTP 비동기, 드라이버 불필요</td><td><span class="dea-pill good">✓ 최적</span></td></tr>
+          <tr><td>JDBC</td><td>🔌 유선 직통 전화</td><td>영구 TCP 연결, 드라이버 필요</td><td><span class="dea-pill bad">✗ 오버헤드 큼</span></td></tr>
+          <tr><td>ODBC</td><td>🔌 유선 직통 전화(범용)</td><td>영구 TCP 연결, 드라이버 필요</td><td><span class="dea-pill bad">✗ 오버헤드 큼</span></td></tr>
+          <tr><td>WebSocket</td><td>📡 양방향 무전기</td><td>Redshift 미지원, 중간 서버 필요</td><td><span class="dea-pill bad">✗ 지원 안 함</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dea-memory">
+      <div class="dea-mem-label">💡 이것만 기억하자</div>
+      <code>"웹앱 + Redshift + 운영 최소화"  →  <span class="dea-hl">Redshift Data API</span><br><br>JDBC / ODBC  = 드라이버·영구연결 필요  →  서버 백엔드에 적합<br>Data API     = HTTP 비동기, 드라이버 없음 →  웹앱·Lambda·서버리스에 적합</code>
+    </div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q8 -->
+<div class="dea-q-block" id="dea-q8">
+  <div class="dea-meta">
+    <span class="dea-badge qnum">Q8</span>
+    <span class="dea-badge topic">Athena · 작업 그룹 · 접근 제어</span>
+    <span class="dea-badge diff">⭐ 자주 출제</span>
+  </div>
+  <p class="dea-seo-lead"><strong>Amazon Athena 작업 그룹(Workgroup)</strong>은 사용자·팀·애플리케이션별로 쿼리 실행과 쿼리 이력을 격리하는 기능입니다. IAM 정책과 태그를 조합해 <strong>쿼리 프로세스와 이력 접근 권한을 세밀하게 분리</strong>할 수 있어 DEA-C01 거버넌스·보안 도메인에서 자주 출제됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>한 기업이 Amazon Athena를 사용해 S3에 저장된 데이터를 임시 분석합니다. 여러 팀과 애플리케이션이 동일한 AWS 계정 내에서 Athena를 사용하고 있으며, 각 팀의 쿼리 실행 기록과 쿼리 이력이 서로 노출되지 않도록 격리해야 합니다. 이 요구 사항을 가장 잘 충족하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q8-A">
+      <div class="dea-opt-row"><span class="dea-k">A</span><span>팀별로 S3 버킷을 생성하고, 각 IAM 사용자에게 해당 버킷에 대한 접근 권한을 버킷 정책으로 부여합니다.</span></div>
+      <div class="dea-inline-exp">❌ S3 버킷 정책은 <strong>데이터 파일 접근</strong>을 제어하는 것. 쿼리 프로세스 분리나 <strong>쿼리 이력(Query History) 격리</strong>는 불가능. 문제 요건의 절반만 해결함.</div>
+    </li>
+    <li class="dea-opt" id="q8-B">
+      <div class="dea-opt-row"><span class="dea-k">B</span><span>각 팀별로 Athena 작업 그룹을 생성하고, 태그 기반 IAM 정책으로 작업 그룹 접근 권한을 제어합니다.</span></div>
+      <div class="dea-inline-exp">✅ <span class="dea-term">Athena 작업 그룹(Workgroup)</span> — 도서관의 개별 열람실. 팀마다 열람실이 달라 서로의 대출 이력(쿼리 이력)을 못 봄. 작업 그룹별로 <strong>쿼리 실행 격리 + 쿼리 이력 분리 + 결과 저장 위치 분리 + 비용 추적</strong>이 모두 가능. 태그 기반 IAM 정책으로 그룹별 접근 권한 세밀하게 제어.</div>
+    </li>
+    <li class="dea-opt" id="q8-C">
+      <div class="dea-opt-row"><span class="dea-k">C</span><span>팀별 IAM 역할을 생성하고, 각 역할에 Athena 접근 권한을 부여합니다.</span></div>
+      <div class="dea-inline-exp">❌ IAM 역할로 데이터 접근 권한은 제어 가능하지만 <strong>쿼리 이력 격리는 불가능</strong>. 같은 Athena 환경에서 실행하면 이력이 공유됨. 작업 그룹 없이는 완전한 분리가 안 됨.</div>
+    </li>
+    <li class="dea-opt" id="q8-D">
+      <div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Glue 데이터 카탈로그 리소스 정책을 생성하여 Athena에서 접근 가능한 테이블을 팀별로 제한합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">Glue Data Catalog 리소스 정책</span> — 메타데이터 카탈로그(테이블·데이터베이스 정의)에 대한 접근 제어. 데이터 카탈로그 접근은 제한 가능하지만 <strong>Athena 쿼리 프로세스와 이력 분리</strong>는 해결 안 됨.</div>
+    </li>
+  </ul>
+  <button class="dea-btn" id="btn-q8">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q8">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Athena 작업 그룹 + 태그 기반 IAM 정책</div></div></div>
+    <div>
+      <div class="dea-stitle">🔑 핵심 개념 — Athena Workgroup이 격리하는 것</div>
+      <table class="dea-table">
+        <thead><tr><th>격리 대상</th><th>Workgroup으로 가능?</th><th>S3 버킷 정책으로?</th><th>IAM 역할만으로?</th></tr></thead>
+        <tbody>
+          <tr><td>데이터 파일 접근</td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill good">✓</span></td></tr>
+          <tr><td>쿼리 실행 격리</td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill bad">✗</span></td><td><span class="dea-pill bad">✗</span></td></tr>
+          <tr><td><strong>쿼리 이력 분리</strong></td><td><span class="dea-pill good">✓ 핵심</span></td><td><span class="dea-pill bad">✗</span></td><td><span class="dea-pill bad">✗</span></td></tr>
+          <tr><td>결과 저장 위치 분리</td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill mid">부분</span></td><td><span class="dea-pill bad">✗</span></td></tr>
+          <tr><td>팀별 비용 추적</td><td><span class="dea-pill good">✓</span></td><td><span class="dea-pill bad">✗</span></td><td><span class="dea-pill bad">✗</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dea-memory">
+      <div class="dea-mem-label">💡 이것만 기억하자</div>
+      <code>"Athena 쿼리 프로세스 + 이력 격리"  →  <span class="dea-hl">Athena Workgroup</span><br><br>S3 버킷 정책  = 데이터 파일 접근만 제어<br>IAM 역할      = 권한 제어, 이력 격리 안 됨<br>Workgroup     = 쿼리 실행 + 이력 + 결과 위치 + 비용 모두 격리</code>
+    </div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q9 -->
+<div class="dea-q-block" id="dea-q9">
+  <div class="dea-meta">
+    <span class="dea-badge qnum">Q9</span>
+    <span class="dea-badge topic">Glue · 비용 최적화 · FLEX</span>
+    <span class="dea-badge diff">⭐ 자주 출제</span>
+  </div>
+  <p class="dea-seo-lead"><strong>AWS Glue FLEX 실행 클래스</strong>는 유휴 AWS 인프라를 활용해 표준 요금보다 저렴하게 Glue 작업을 실행하는 옵션입니다. 특정 완료 시각이 중요하지 않은 <strong>비긴급 배치 작업</strong>에 적합하며, DEA-C01에서 "Glue 비용 절감" 키워드와 함께 자주 출제됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>데이터 엔지니어가 AWS Glue 작업 묶음을 매일 실행하는 파이프라인을 구성해야 합니다. 이 작업들은 정해진 시간에 완료되어야 하는 SLA(서비스 수준 계약)가 없으며, 완료 시각에 유연성이 있습니다. Glue 컴퓨팅 비용을 가장 효과적으로 줄일 수 있는 설정은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q9-A">
+      <div class="dea-opt-row"><span class="dea-k">A</span><span>Glue 작업 속성에서 실행 클래스를 FLEX로 설정합니다.</span></div>
+      <div class="dea-inline-exp">✅ <span class="dea-term">FLEX 실행 클래스(FLEX Execution Class)</span> — AWS의 여유 컴퓨팅 자원(스팟처럼)을 활용해 실행되는 Glue 전용 절약 옵션. 심야 할인 택시처럼 언제 배차될지 정확하지 않지만 요금이 저렴. <strong>STANDARD 대비 약 34% 저렴</strong>. "완료 시각에 유연성이 있다"는 조건과 완벽하게 부합.</div>
+    </li>
+    <li class="dea-opt" id="q9-B">
+      <div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 작업에 EC2 스팟 인스턴스 유형을 지정하여 비용을 절감합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">스팟 인스턴스(Spot Instance)</span> — EC2 유휴 용량을 저렴하게 사용하는 옵션. <strong>Glue 작업 속성에 스팟 인스턴스 유형 선택 항목은 없음</strong>. 스팟 인스턴스는 EMR 클러스터 구성에서 선택하는 것. 존재하지 않는 옵션을 고르는 함정 보기.</div>
+    </li>
+    <li class="dea-opt" id="q9-C">
+      <div class="dea-opt-row"><span class="dea-k">C</span><span>Glue 작업 속성에서 실행 클래스를 STANDARD로 유지합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">STANDARD 실행 클래스</span> — Glue의 기본(정가) 실행 옵션. 예측 가능한 실행 시간과 성능이 보장되지만 <strong>가장 비쌈</strong>. "비용 절감"이라는 조건과 반대.</div>
+    </li>
+    <li class="dea-opt" id="q9-D">
+      <div class="dea-opt-row"><span class="dea-k">D</span><span>Glue 작업의 GlueVersion 필드를 최신 버전으로 설정하여 성능과 비용 효율을 높입니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">GlueVersion</span> — Glue 런타임 버전(예: 4.0). 최신 버전을 쓰면 성능이 향상될 수 있지만 <strong>비용을 직접 절감하는 옵션이 아님</strong>. 버전 선택은 비용 최적화와 무관.</div>
+    </li>
+  </ul>
+  <button class="dea-btn" id="btn-q9">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q9">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — FLEX 실행 클래스로 비긴급 작업 비용 절감</div></div></div>
+    <div>
+      <div class="dea-stitle">🔑 핵심 개념 — Glue 실행 클래스 비교</div>
+      <table class="dea-table">
+        <thead><tr><th>실행 클래스</th><th>비유</th><th>비용</th><th>실행 시간 보장</th><th>적합 워크로드</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FLEX</strong></td><td>🌙 심야 할인 택시</td><td><span class="dea-pill good">저렴 (~34%↓)</span></td><td>보장 안 됨</td><td>비긴급 배치, 야간 처리</td></tr>
+          <tr><td>STANDARD</td><td>🚕 일반 택시</td><td><span class="dea-pill bad">정가</span></td><td>보장됨</td><td>시간 민감한 작업</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dea-memory">
+      <div class="dea-mem-label">💡 이것만 기억하자</div>
+      <code>"Glue 비용 절감 + 완료 시각 무관"  →  <span class="dea-hl">FLEX 실행 클래스</span><br><br>FLEX     = 심야 할인 택시  (저렴, 언제 올지 모름)<br>STANDARD = 일반 택시      (정가, 예측 가능)<br><br>Glue에 스팟 인스턴스 옵션은 없음 → EMR에서 쓰는 개념!</code>
+    </div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q10 -->
+<div class="dea-q-block" id="dea-q10">
+  <div class="dea-meta">
+    <span class="dea-badge qnum">Q10</span>
+    <span class="dea-badge topic">S3 이벤트 알림 · Lambda · 트리거</span>
+    <span class="dea-badge diff">⭐ 자주 출제</span>
+  </div>
+  <p class="dea-seo-lead"><strong>S3 이벤트 알림(Event Notification)</strong>은 객체 업로드·삭제 등 이벤트 발생 시 Lambda·SNS·SQS를 자동으로 실행하는 기능입니다. 이벤트 유형과 접미사 필터를 조합하면 <strong>.csv 파일 업로드 시에만 Lambda를 직접 트리거</strong>할 수 있으며, DEA-C01 이벤트 기반 처리 유형에서 자주 출제됩니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>팀에서 CSV 파일을 Apache Parquet 형식으로 자동 변환하는 AWS Lambda 함수를 배포했습니다. 이 함수는 사용자가 특정 S3 버킷에 CSV 파일을 업로드할 때만 실행되어야 하며, 다른 파일 형식이나 이벤트에는 반응하지 않아야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q10-A">
+      <div class="dea-opt-row"><span class="dea-k">A</span><span>이벤트 유형을 s3:ObjectCreated:*로, 접미사 필터를 .csv로 설정한 S3 이벤트 알림을 생성하고, 대상으로 Lambda 함수의 ARN을 지정합니다.</span></div>
+      <div class="dea-inline-exp">✅ <span class="dea-term">s3:ObjectCreated:*</span> — PUT·POST·COPY·멀티파트 업로드 완료 등 객체 생성 이벤트 전체를 포함. <span class="dea-term">접미사 필터(.csv)</span> — 확장자로 이벤트를 걸러내는 규칙. <span class="dea-term">ARN(Amazon Resource Name)</span> — AWS 리소스의 고유 식별자. S3 → Lambda <strong>직접 연결</strong>로 중간 서비스 없이 운영 오버헤드 최소화.</div>
+    </li>
+    <li class="dea-opt" id="q10-B">
+      <div class="dea-opt-row"><span class="dea-k">B</span><span>s3:ObjectTagging:* 이벤트 유형으로 알림을 설정하고, .csv 태그가 지정된 객체에 대해서만 Lambda 함수를 실행합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">s3:ObjectTagging:*</span> — 객체에 태그를 붙이는 이벤트. 파일 업로드(ObjectCreated)와 완전히 다른 이벤트. 사용자가 .csv를 업로드해도 자동으로 태그가 붙지 않으면 Lambda가 실행되지 않음. <strong>업로드 감지 자체가 안 됨</strong>.</div>
+    </li>
+    <li class="dea-opt" id="q10-C">
+      <div class="dea-opt-row"><span class="dea-k">C</span><span>이벤트 유형을 s3:*로 설정하고, 접미사 필터를 .csv로 지정하여 Lambda 함수와 연결합니다.</span></div>
+      <div class="dea-inline-exp">❌ <span class="dea-term">s3:*</span> — S3의 모든 이벤트(업로드, 삭제, 복사, 태그 변경 등 전부). 접미사 필터로 .csv는 걸러지지만 <strong>삭제·복사 등 불필요한 이벤트에도 Lambda가 실행될 수 있음</strong>. 정확한 이벤트 유형(ObjectCreated)을 지정하는 A보다 범위가 너무 넓음.</div>
+    </li>
+    <li class="dea-opt" id="q10-D">
+      <div class="dea-opt-row"><span class="dea-k">D</span><span>이벤트 유형을 s3:ObjectCreated:*, 접미사 필터를 .csv로 설정한 알림을 생성하되, 대상을 Amazon SNS 토픽으로 지정하고 SNS에 Lambda 함수를 구독시킵니다.</span></div>
+      <div class="dea-inline-exp">❌ S3 → SNS → Lambda 경로는 기술적으로 작동하지만, <span class="dea-term">Amazon SNS(Simple Notification Service)</span> — 방송 스피커(Pub/Sub) 서비스 — 를 중간에 끼면 <strong>불필요한 레이어 추가 = 운영 오버헤드 증가</strong>. 단일 Lambda 트리거엔 직접 연결(A)이 최적.</div>
+    </li>
+  </ul>
+  <button class="dea-btn" id="btn-q10">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q10">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">A — ObjectCreated + .csv 필터 → Lambda 직접 연결</div></div></div>
+    <div>
+      <div class="dea-stitle">🔑 핵심 개념 — S3 이벤트 유형 & 대상 비교</div>
+      <table class="dea-table">
+        <thead><tr><th>선택지</th><th>이벤트 유형</th><th>필터</th><th>대상</th><th>문제점</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A (정답)</strong></td><td>ObjectCreated:*</td><td>.csv 접미사</td><td>Lambda 직접</td><td><span class="dea-pill good">✓ 완벽</span></td></tr>
+          <tr><td>B</td><td>ObjectTagging:*</td><td>태그</td><td>Lambda 직접</td><td><span class="dea-pill bad">업로드 감지 안 됨</span></td></tr>
+          <tr><td>C</td><td>s3:* (전체)</td><td>.csv 접미사</td><td>Lambda 직접</td><td><span class="dea-pill mid">이벤트 범위 과다</span></td></tr>
+          <tr><td>D</td><td>ObjectCreated:*</td><td>.csv 접미사</td><td>SNS → Lambda</td><td><span class="dea-pill mid">불필요한 SNS 레이어</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dea-memory">
+      <div class="dea-mem-label">💡 이것만 기억하자</div>
+      <code>"파일 업로드 감지"     →  <span class="dea-hl">s3:ObjectCreated:*</span><br>"확장자 필터"          →  접미사(suffix) 필터 .csv<br>"단일 Lambda 트리거"  →  S3 → Lambda <span class="dea-hl">직접 연결</span> (SNS 불필요)<br><br>S3 → SNS → Lambda = 여러 곳에 동시 팬아웃(fan-out)할 때만 사용</code>
+    </div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span>
+  <span class="dea-tag">Glue Workflow</span>
+  <span class="dea-tag">Redshift Data API</span>
+  <span class="dea-tag">Athena Workgroup</span>
+  <span class="dea-tag">FLEX 실행 클래스</span>
+  <span class="dea-tag">S3 이벤트 알림</span>
+  <span class="dea-tag">Lambda 트리거</span>
+  <span class="dea-tag">데이터 엔지니어 자격증</span>
+  <span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var questions=[
+    {id:'q6',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue 워크플로'},
+    {id:'q7',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Redshift Data API'},
+    {id:'q8',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Athena 작업 그룹'},
+    {id:'q9',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — FLEX 실행 클래스'},
+    {id:'q10',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — ObjectCreated + .csv → Lambda 직접 연결'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

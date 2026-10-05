@@ -1,0 +1,67 @@
+<!--
+id: 33
+제목: [Mendix] Spotfire 연동 2탄: 배치 스케줄링 & 데이터 중복 방지 (feat. Full Refresh)
+카테고리: Stack/Lowcode
+태그: 스케쥴링, lowcode, mendix, 멘딕스, scheduled event
+날짜: 2026-02-14 02:16
+수정: 2026-03-07 22:22
+형식: legacy
+썸네일: /img/t/dJMcahDjTf0.webp
+-->
+<p><figure class="tt-img center"><img src="/img/dJMcaiWvWIV.webp" alt="" width="1000" height="600" loading="lazy" decoding="async"></figure></p>
+<p data-path-to-node="3" data-ke-size="size16">&nbsp;</p>
+<p data-path-to-node="3" data-ke-size="size16">지난 포스팅에서 복잡한 Join 문제를 해결하기 위해 <b>Reporting Entity(납작한 통계 테이블)</b>를 만들고, ETL Microflow까지 구현했습니다. 이제 남은 건 이 로직을 <b data-index-in-node="107" data-path-to-node="3">"자동으로"</b> 돌리는 것뿐이었죠.</p>
+<p data-path-to-node="4" data-ke-size="size16">하지만 역시나 Mendix, 호락호락하지 않았습니다. 두 가지 난관이 기다리고 있었는데요.</p>
+<ol style="list-style-type: decimal;" data-path-to-node="5" data-ke-list-type="decimal">
+<li><b data-index-in-node="0" data-path-to-node="5,0,0">스케줄러 버튼이 없다?</b> (Runtime vs Studio Pro)</li>
+<li><b data-index-in-node="0" data-path-to-node="5,1,0">데이터가 계속 쌓인다?</b> (Duplicate Issue)</li>
+</ol>
+<h3 data-path-to-node="6" data-ke-size="size23">1. Mendix 스케줄러: "버튼이 왜 없어?"</h3>
+<p data-path-to-node="7" data-ke-size="size16">일단 매일 밤 데이터를 갱신해야 하니 스케줄러를 찾아봤습니다. 웹 런타임 화면(ScheduledEvents)에 들어갔는데... <b data-index-in-node="71" data-path-to-node="7">[Add] 버튼이 없습니다.</b></p>
+<p data-path-to-node="8" data-ke-size="size16">알고 보니 Mendix의 Scheduled Event는 런타임에서 설정하는 게 아니라, <b data-index-in-node="49" data-path-to-node="8">Studio Pro(개발 툴)에서 코딩하듯이 객체를 생성</b>해야 하는 것이었습니다. 런타임 화면은 그저 "잘 돌고 있나?" 감시(Monitoring)하는 용도였던 거죠.</p>
+<p data-path-to-node="9" data-ke-size="size16">&nbsp;</p>
+<p data-path-to-node="9" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="9">🚀 해결: Studio Pro에서 스케줄 객체 생성</b></p>
+<p data-path-to-node="10" data-ke-size="size16">[Image Prompt: A screenshot of Mendix Studio Pro Project Explorer. Context menu is open on a module named 'Inspection'. The path 'Add &gt; Other &gt; Scheduled event' is highlighted.]</p>
+<ol style="list-style-type: decimal;" data-path-to-node="11" data-ke-list-type="decimal">
+<li><b data-index-in-node="0" data-path-to-node="11,0,0">생성:</b> Project Explorer에서 모듈 우클릭 &gt; Add &gt; Other &gt; Scheduled event 선택.</li>
+<li><b data-index-in-node="0" data-path-to-node="11,1,0">설정:</b>
+<ul style="list-style-type: disc;" data-path-to-node="11,1,1" data-ke-list-type="disc">
+<li><b data-index-in-node="0" data-path-to-node="11,1,1,0,0">Frequency:</b> Day (매일), Interval: 1</li>
+<li><b data-index-in-node="0" data-path-to-node="11,1,1,1,0">Start date/time:</b> UTC 기준 설정 (한국 밤 12시 = UTC 15:00)</li>
+<li><b data-index-in-node="0" data-path-to-node="11,1,1,2,0">Microflow:</b> 지난번에 만든 ETL 로직(SUB_Sync_DashboardData) 연결.</li>
+</ul>
+</li>
+</ol>
+<p data-path-to-node="12" data-ke-size="size16">설정만 해주니 바로 해결되었습니다. 아주 간단하죠?</p>
+<h3 data-path-to-node="13" data-ke-size="size23">2. 데이터 중복 이슈: "계속 쌓이기만 하네..."</h3>
+<p data-path-to-node="14" data-ke-size="size16">스케줄러 테스트를 위해 수동으로 마이크로플로우를 몇 번 돌려봤는데, 문제가 발생했습니다. Create Object만 해놓으니 기존 데이터 위에 새 데이터가 쌓여서 1만 건이 2만 건, 3만 건으로 늘어나는 것이었습니다.</p>
+<p data-path-to-node="15" data-ke-size="size16">대시보드는 최신 현황을 보여줘야 하는데, 중복 데이터가 생기면 안 되죠. 여기서 두 가지 전략을 고민했습니다.</p>
+<ul style="list-style-type: disc;" data-path-to-node="16" data-ke-list-type="disc">
+<li><b data-index-in-node="0" data-path-to-node="16,0,0">전략 A: Upsert (Update or Insert)</b>
+<ul style="list-style-type: disc;" data-path-to-node="16,0,1" data-ke-list-type="disc">
+<li>ID를 비교해서 있으면 수정, 없으면 생성.</li>
+<li>히스토리가 남지만 로직이 복잡함.</li>
+</ul>
+</li>
+<li><b data-index-in-node="0" data-path-to-node="16,1,0">전략 B: Full Refresh (Delete All &amp; Create All)</b>
+<ul style="list-style-type: disc;" data-path-to-node="16,1,1" data-ke-list-type="disc">
+<li>기존 테이블을 싹 비우고 새로 채워 넣기.</li>
+<li>구현이 단순하고, 원본에서 삭제된 데이터도 깔끔하게 반영됨.</li>
+</ul>
+</li>
+</ul>
+<h3 data-path-to-node="17" data-ke-size="size23">3. 결론: 정신건강을 위해 Full Refresh 선택</h3>
+<p data-path-to-node="18" data-ke-size="size16">데이터가 약 1만 건 수준이고, Insert 양이 많지 않은 상황이었습니다. 굳이 복잡하게 비교 로직을 짤 필요가 없었죠.</p>
+<p data-path-to-node="19" data-ke-size="size16">무엇보다... 예전에 데이터 포털 개발할 때 Upsert 방식을 써봤는데, <b data-index-in-node="42" data-path-to-node="19">Mendix Microflow로 그 분기 처리(Decision)와 비교 로직을 구현하는 게 정말 끔찍했던 기억</b>이 있습니다. (이건 비밀입니다 ㅎㅎ)</p>
+<p data-path-to-node="20" data-ke-size="size16">그래서 <b data-index-in-node="4" data-path-to-node="20">Full Refresh</b> 방식으로 결정했습니다. 로직은 다음과 같이 수정했습니다.</p>
+<p data-path-to-node="21" data-ke-size="size16">[Image Prompt: A diagram of a Mendix Microflow logic for Full Refresh. Start -&gt; Retrieve All (Dashboard Entity) -&gt; Delete Object(s) -&gt; Retrieve All (Source Entity) -&gt; Loop (Source) -&gt; Create Object (Dashboard) -&gt; Add to List -&gt; End Loop -&gt; Commit List -&gt; End.]</p>
+<p data-path-to-node="22" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="22">🛠️ Full Refresh 구현 로직:</b></p>
+<ol style="list-style-type: decimal;" data-path-to-node="23" data-ke-list-type="decimal">
+<li><b data-index-in-node="0" data-path-to-node="23,0,0">Clean Up:</b> Dashboard_ExternalInspection의 모든 데이터를 가져와서(Retrieve All) &rarr; 삭제(Delete)합니다.</li>
+<li><b data-index-in-node="0" data-path-to-node="23,1,0">Load:</b> 원본 데이터를 가져옵니다.</li>
+<li><b data-index-in-node="0" data-path-to-node="23,2,0">Create:</b> Loop를 돌며 대시보드 데이터를 새로 생성합니다.</li>
+<li><b data-index-in-node="0" data-path-to-node="23,3,0">Commit:</b> (중요!) Loop 안에서 커밋하지 않고, 다 만든 뒤 <b data-index-in-node="39" data-path-to-node="23,3,0">마지막에 한 방에 Commit</b> 합니다. (성능 최적화)</li>
+</ol>
+<h3 data-path-to-node="24" data-ke-size="size23">4. 마무리: 개꿀따리!</h3>
+<p data-path-to-node="25" data-ke-size="size16">주어진 시간도 부족했는데, Full Refresh 방식을 택하니 Retrieve -&gt; Delete All 액션만 추가해서 아주 손쉽게 해결했습니다.</p>
+<p data-path-to-node="26" data-ke-size="size16">Spotfire 연동을 위한 Mendix 데이터 처리, 고민하지 말고 **"납작한 테이블(Flat Table)"**과 <b data-index-in-node="66" data-path-to-node="26">"Full Refresh"</b> 조합으로 가세요. 개발 속도와 정신건강 모두 챙길 수 있습니다!</p>

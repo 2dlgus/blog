@@ -1,0 +1,483 @@
+<!--
+id: 90
+제목: AWS DEA-C01 Domain 1 핵심 요약 — Kinesis·Glue·MSK 한 번에 정리
+카테고리: Stack/AWS
+태그: 자격증, AWS, 데이터 수집, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, 데이터 변환, Domain 1, 데이터 오케스트레이션
+날짜: 2026-03-20 20:44
+수정: 2026-03-21 22:52
+형식: html
+썸네일: /img/t/dJMcagriwU2.webp
+-->
+<style>
+.pb-90 .dea-wrap{background:var(--y5)!important;color:var(--g90)!important;line-height:1.7!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+.pb-90 .dea-wrap *, .pb-90 .dea-wrap *::before, .pb-90 .dea-wrap *::after{box-sizing:border-box!important}
+.pb-90 .dea-hero{background:var(--p70)!important;padding:44px 24px 38px!important;text-align:center!important;position:relative!important;overflow:hidden!important}
+.pb-90 .dea-hero::before{content:''!important;position:absolute!important;inset:0!important;background:radial-gradient(ellipse at 70% 30%,color-mix(in srgb, var(--y50) 18%, transparent) 0%,transparent 65%)!important;pointer-events:none!important}
+.pb-90 .dea-hero-bc{display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex-wrap:wrap!important;margin-bottom:16px!important}
+.pb-90 .dea-hero-bc span{font-family:'JetBrains Mono',monospace!important;font-size:.7rem!important;font-weight:700!important;padding:3px 11px!important;border-radius:20px!important;position:relative!important}
+.pb-90 .dea-bc-exam{background:var(--r50)!important;color:#fff!important}
+.pb-90 .dea-bc-d1{background:var(--p60)!important;color:#fff!important}
+.pb-90 .dea-bc-sep{color:var(--g70)!important}
+.pb-90 .dea-hero h1{font-size:clamp(1.4rem,4.5vw,2rem)!important;font-weight:900!important;color:#fff!important;line-height:1.25!important;margin:0 0 10px!important;position:relative!important;letter-spacing:-.5px!important}
+.pb-90 .dea-hero h1 em{font-style:normal!important;color:var(--y60)!important}
+.pb-90 .dea-hero-sub{color:var(--p50)!important;font-size:.9rem!important;margin:0!important;position:relative!important}
+.pb-90 .dea-pct-bar{display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;margin-top:20px!important;flex-wrap:wrap!important;position:relative!important}
+.pb-90 .dea-pct-item{background:color-mix(in srgb, var(--g0) 8%, transparent)!important;border-radius:8px!important;padding:8px 14px!important;text-align:center!important;font-size:.75rem!important;color:var(--p10)!important}
+.pb-90 .dea-pct-item strong{display:block!important;font-family:'JetBrains Mono',monospace!important;font-size:1.1rem!important;font-weight:700!important;margin-bottom:2px!important}
+.pb-90 .dea-pct-item.p1 strong{color:var(--y60)!important}
+.pb-90 .dea-pct-item.p2 strong{color:var(--p50)!important}
+.pb-90 .dea-pct-item.p3 strong{color:var(--s60)!important}
+.pb-90 .dea-pct-item.p4 strong{color:var(--p50)!important}
+.pb-90 .dea-con{max-width:840px!important;margin:0 auto!important;padding:32px 20px 64px!important}
+.pb-90 .dea-task{margin-bottom:48px!important}
+.pb-90 .dea-task-hd{display:flex!important;align-items:center!important;gap:14px!important;padding:18px 22px!important;border-radius:12px!important;margin-bottom:20px!important}
+.pb-90 .dea-task-hd.t1{background:var(--y50)!important}
+.pb-90 .dea-task-hd.t2{background:var(--p50)!important}
+.pb-90 .dea-task-hd.t3{background:var(--s60)!important}
+.pb-90 .dea-task-hd.t4{background:var(--p50)!important}
+.pb-90 .dea-task-num{font-family:'JetBrains Mono',monospace!important;font-size:1.8rem!important;font-weight:700!important;color:color-mix(in srgb, #fff 30%, transparent)!important;flex-shrink:0!important;line-height:1!important}
+.pb-90 .dea-task-info h2{font-size:clamp(1rem,3vw,1.2rem)!important;font-weight:800!important;color:#fff!important;margin:0 0 3px!important;line-height:1.2!important}
+.pb-90 .dea-task-info p{font-size:.8rem!important;color:color-mix(in srgb, #fff 75%, transparent)!important;margin:0!important}
+.pb-90 .dea-task-pct{margin-left:auto!important;font-family:'JetBrains Mono',monospace!important;font-size:1.4rem!important;font-weight:700!important;color:color-mix(in srgb, #fff 85%, transparent)!important;flex-shrink:0!important}
+.pb-90 .dea-tbl-wrap{overflow-x:auto!important;margin:0 0 18px!important;border-radius:10px!important;border:1px solid var(--y10)!important}
+.pb-90 .dea-tbl{width:100%!important;border-collapse:collapse!important;font-size:.83rem!important;background:var(--g0)!important;min-width:480px!important}
+.pb-90 .dea-tbl thead tr{background:var(--p70)!important}
+.pb-90 .dea-tbl thead th{padding:10px 14px!important;text-align:left!important;font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;letter-spacing:.5px!important;white-space:nowrap!important}
+.pb-90 .dea-tbl tbody tr{border-bottom:1px solid var(--y10)!important}
+.pb-90 .dea-tbl tbody tr:last-child{border-bottom:none!important}
+.pb-90 .dea-tbl tbody tr:nth-child(even){background:var(--y5)!important}
+.pb-90 .dea-tbl tbody td{padding:10px 14px!important;color:var(--p70)!important;vertical-align:top!important;line-height:1.55!important}
+.pb-90 .dea-tbl tbody td strong{color:var(--g90)!important}
+.pb-90 .dea-tbl .mono{font-family:'JetBrains Mono',monospace!important;font-size:.75rem!important;color:var(--p50)!important}
+.pb-90 .dea-tag{display:inline-block!important;font-family:'JetBrains Mono',monospace!important;font-size:.62rem!important;font-weight:700!important;padding:2px 7px!important;border-radius:4px!important;color:#fff!important;white-space:nowrap!important}
+.pb-90 .tag-o{background:var(--y50)!important}
+.pb-90 .tag-b{background:var(--p50)!important}
+.pb-90 .tag-g{background:var(--s60)!important}
+.pb-90 .tag-v{background:var(--p50)!important}
+.pb-90 .tag-gray{background:var(--g50)!important}
+.pb-90 .dea-co{border-radius:10px!important;padding:14px 18px!important;margin:14px 0!important;font-size:.87rem!important;line-height:1.75!important}
+.pb-90 .dea-co-title{font-weight:700!important;font-size:.75rem!important;letter-spacing:.5px!important;margin-bottom:6px!important;display:block!important}
+.pb-90 .co-blue{background:var(--p5)!important;color:var(--p60)!important}
+.pb-90 .co-orange{background:var(--y5)!important;color:var(--r60)!important}
+.pb-90 .co-green{background:var(--s5)!important;color:var(--s60)!important}
+.pb-90 .co-purple{background:var(--g0)!important;color:var(--p60)!important}
+.pb-90 .co-red{background:var(--g5)!important;color:var(--r60)!important}
+.pb-90 .co-dark{background:var(--p70)!important;border:none!important;color:var(--p10)!important}
+.pb-90 .co-dark .dea-co-title{color:var(--p50)!important}
+.pb-90 .dea-cards2{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;margin:14px 0!important}
+.pb-90 .dea-cards3{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:14px 0!important}
+@media(max-width:600px){.pb-90 .dea-cards2, .pb-90 .dea-cards3{grid-template-columns:1fr!important}}
+.pb-90 .dea-card{background:var(--g0)!important;border:1px solid var(--y10)!important;border-radius:10px!important;padding:14px!important}
+.pb-90 .dea-card h4{font-size:.88rem!important;font-weight:700!important;color:var(--g90)!important;margin:0 0 6px!important}
+.pb-90 .dea-card p{font-size:.8rem!important;color:var(--g50)!important;margin:0!important;line-height:1.6!important}
+.pb-90 .dea-ck{margin:12px 0!important;padding:0!important;list-style:none!important}
+.pb-90 .dea-ck li{display:flex!important;gap:8px!important;font-size:.86rem!important;color:var(--p70)!important;margin-bottom:8px!important;line-height:1.6!important}
+.pb-90 .dea-ck li:last-child{margin-bottom:0!important}
+.pb-90 .dea-ck .ci{flex-shrink:0!important;margin-top:1px!important}
+.pb-90 .dea-sec-lbl{font-size:.7rem!important;font-weight:700!important;letter-spacing:1.5px!important;text-transform:uppercase!important;color:var(--g40)!important;padding-left:8px!important;margin:22px 0 12px!important;display:block!important}
+.pb-90 .dea-qa{background:var(--p70)!important;border-radius:12px!important;padding:20px!important;margin:16px 0!important}
+.pb-90 .dea-qa-lbl{font-family:'JetBrains Mono',monospace!important;font-size:.65rem!important;font-weight:700!important;letter-spacing:2px!important;color:var(--p50)!important;text-transform:uppercase!important;margin-bottom:10px!important;display:block!important}
+.pb-90 .dea-qa-q{font-size:.9rem!important;font-weight:700!important;color:var(--p10)!important;margin:0 0 12px!important;line-height:1.55!important}
+.pb-90 .dea-qa-a{background:var(--p70)!important;border-radius:0 7px 7px 0!important;padding:10px 14px!important;font-size:.84rem!important;color:var(--p50)!important;line-height:1.7!important}
+.pb-90 .dea-qa-a strong{color:var(--p50)!important}
+.pb-90 .dea-exam{background:linear-gradient(135deg,var(--p70) 0%,var(--p70) 100%)!important;border-radius:14px!important;padding:24px!important;margin:24px 0!important}
+.pb-90 .dea-exam-ttl{font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;letter-spacing:2px!important;text-transform:uppercase!important;margin:0 0 14px!important;display:block!important}
+.pb-90 .dea-exam ul{margin:0!important;padding:0!important;list-style:none!important}
+.pb-90 .dea-exam li{display:flex!important;gap:10px!important;font-size:.86rem!important;color:var(--p50)!important;margin-bottom:9px!important;line-height:1.6!important}
+.pb-90 .dea-exam li:last-child{margin-bottom:0!important}
+.pb-90 .dea-exam .em{color:var(--p50)!important;flex-shrink:0!important;font-weight:700!important}
+.pb-90 .dea-exam strong{color:var(--p10)!important}
+.pb-90 .dea-div{border:none!important;border-top:1px solid var(--y10)!important;margin:36px 0!important}
+.pb-90 .dea-flow{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:4px!important;margin:12px 0!important}
+.pb-90 .dea-fn{border-radius:7px!important;padding:7px 12px!important;font-size:.75rem!important;font-weight:600!important;white-space:nowrap!important}
+.pb-90 .fn-o{background:var(--y5)!important;color:var(--r60)!important;border:1.5px solid var(--y50)!important}
+.pb-90 .fn-b{background:var(--p5)!important;color:var(--p60)!important;border:1.5px solid var(--p10)!important}
+.pb-90 .fn-g{background:var(--s5)!important;color:var(--s60)!important;border:1.5px solid var(--s10)!important}
+.pb-90 .fn-v{background:var(--g0)!important;color:var(--p50)!important;border:1.5px solid var(--p10)!important}
+.pb-90 .fn-gray{background:var(--g0)!important;color:var(--p60)!important;border:1.5px solid var(--p10)!important}
+.pb-90 .dea-fn small{display:block!important;font-size:.62rem!important;font-weight:400!important;opacity:.75!important;margin-top:2px!important}
+.pb-90 .dea-arr{color:var(--g40)!important;font-size:1rem!important;flex-shrink:0!important}
+.pb-90 .dea-ft{text-align:center!important;font-size:.78rem!important;color:var(--g40)!important;padding:20px 0 6px!important;border-top:1px solid var(--y10)!important;margin-top:40px!important}
+.pb-90 .dea-ft a{color:var(--r60)!important;text-decoration:none!important}
+</style>
+<div class="pb pb-90">
+<p data-ke-size="size16">&nbsp;</p>
+<p></p>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AWS DEA-C01 Domain 1 완전 정리","author":{"@type":"Person","name":"hyeonlee","url":"https://hyeonlee.net"},"publisher":{"@type":"Organization","name":"hyeonlee.net"},"datePublished":"2026-03-20","inLanguage":"ko"}</script>
+<p></p>
+<div>
+
+</div>
+<article class="dea-wrap"><header class="dea-hero">
+<div class="dea-hero-bc"><span class="dea-bc-exam">AWS DEA-C01</span> <span class="dea-bc-sep">&rsaquo;</span> <span class="dea-bc-d1">Domain 1 &middot; 전체 압축 정리</span></div>
+<h1>Domain 1 &mdash; <i>데이터 수집&middot;변환&middot;오케스트레이션</i><br />핵심만 압축 정리</h1>
+<p class="dea-hero-sub" data-ke-size="size16">Task 1~4 &middot; 시험에 나오는 것만 &middot; 비유 &amp; 비교표 중심</p>
+<div class="dea-pct-bar">
+<div class="dea-pct-item p1"><b>34%</b>Domain 1</div>
+<div class="dea-pct-item p2"><b>26%</b>Domain 2</div>
+<div class="dea-pct-item p3"><b>22%</b>Domain 3</div>
+<div class="dea-pct-item p4"><b>18%</b>Domain 4</div>
+</div>
+</header>
+<div class="dea-con"><!-- ══ TASK 1.1 수집 ══ -->
+<section id="dea-t1" class="dea-task">
+<div class="dea-task-hd t1"><span class="dea-task-num">1.1</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">데이터 수집 (Ingestion)</h2>
+<p data-ke-size="size16">Task 1 &middot; 어떤 서비스로 데이터를 가져올 것인가</p>
+</div>
+<span class="dea-task-pct">34%</span></div>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>한 줄 비유</th>
+<th>핵심 특징</th>
+<th>온프렘 대응</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Kinesis Data Streams</b></td>
+<td>실시간 컨베이어 벨트</td>
+<td>직접 Pull. 샤드 단위 처리량. 기본 24시간 보존</td>
+<td class="mono">Apache Kafka</td>
+</tr>
+<tr>
+<td><b>Kinesis Data Firehose</b></td>
+<td>자동 배달 트럭</td>
+<td>완전 서버리스. S3/Redshift/OpenSearch 자동 전달. 변환&middot;압축 내장</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><b>Amazon MSK</b></td>
+<td>대형 우체국</td>
+<td>완전관리형 Kafka. 기존 Kafka 코드 그대로. 오프셋 보존</td>
+<td class="mono">Kafka 그대로</td>
+</tr>
+<tr>
+<td><b>AWS IoT Core</b></td>
+<td>스마트홈 허브</td>
+<td>수십억 IoT 디바이스. MQTT. 규칙 엔진 &rarr; Kinesis/Lambda</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><b>AWS DMS</b></td>
+<td>무중단 이사 업체</td>
+<td>이기종 DB 마이그레이션. CDC 실시간 복제</td>
+<td>온프렘 Oracle &rarr; RDS</td>
+</tr>
+<tr>
+<td><b>Amazon AppFlow</b></td>
+<td>SaaS 자동 동기화</td>
+<td>코드 없이 Salesforce&middot;Slack &rarr; S3/Redshift</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><b>AWS DataSync</b></td>
+<td>창고 간 동기화 트럭</td>
+<td>온프렘 NAS &harr; S3/EFS. 암호화&middot;검증 포함</td>
+<td>NFS/SMB &rarr; S3</td>
+</tr>
+<tr>
+<td><b>AWS Transfer Family</b></td>
+<td>구식 우편배달부</td>
+<td>FTP/SFTP/FTPS 수신 &rarr; S3 저장</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><b>Amazon SQS</b></td>
+<td>대기표 번호 기계</td>
+<td>메시지 큐. FIFO(순서 보장) vs Standard. 시스템 디커플링</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><b>Amazon SNS</b></td>
+<td>방송 스피커</td>
+<td>Pub/Sub. 1:N 발송. 이메일&middot;Lambda&middot;SQS 동시 전달</td>
+<td>&mdash;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-co co-orange"><span class="dea-co-title">⚠️ Kinesis Streams vs Firehose 시험 구분 포인트</span> <b>Streams</b> = 소비자가 직접 Pull, 샤드 관리 필요, 실시간 처리 가능 (Lambda/KCL로 소비)<br /><b>Firehose</b> = 완전 서버리스, 목적지까지 자동 Push, 최소 60초 버퍼링 (완전 실시간 X)</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ TASK 1.2 변환 ══ -->
+<section id="dea-t2" class="dea-task">
+<div class="dea-task-hd t2"><span class="dea-task-num">1.2</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">데이터 변환 (Transformation)</h2>
+<p data-ke-size="size16">Task 2 &middot; SQL? Spark? 어디서 변환할 것인가</p>
+</div>
+</div>
+<span class="dea-sec-lbl">SQL vs Spark &mdash; 변환 방식 선택 기준</span>
+<div class="dea-cards2">
+<div class="dea-card" style="border-color:var(--p50)!important;background:var(--p5)!important">
+<h4 style="color:var(--p60)!important" data-ke-size="size20">🗄️ SQL 선택</h4>
+<p style="color:var(--p60)!important" data-ke-size="size16">&bull; 팀이 SQL에 익숙한 환경<br />&bull; 대상이 Redshift (ELT)<br />&bull; 단순 집계&middot;조인 위주<br />&bull; Athena, Redshift, Glue Studio</p>
+</div>
+<div class="dea-card" style="border-color:var(--y50)!important;background:var(--y5)!important">
+<h4 style="color:var(--r60)!important" data-ke-size="size20">⚡ Spark 선택</h4>
+<p style="color:var(--r60)!important" data-ke-size="size16">&bull; 복잡한 커스텀 변환 로직<br />&bull; 지연시간&middot;처리량 요구 엄격<br />&bull; ML 파이프라인(Spark ML) 포함<br />&bull; AWS Glue(서버리스) / EMR(클러스터)</p>
+</div>
+</div>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>방식</th>
+<th>관리</th>
+<th>핵심 특징</th>
+<th>온프렘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>AWS Glue ETL</b></td>
+<td>PySpark</td>
+<td>서버리스</td>
+<td>Glue Studio(GUI), DataBrew(노코드). 스키마 진화 지원</td>
+<td class="mono">Spark ETL</td>
+</tr>
+<tr>
+<td><b>AWS Glue Crawler</b></td>
+<td>자동 스캔</td>
+<td>서버리스</td>
+<td>S3/RDS 스캔 &rarr; 스키마 자동 추론 &rarr; Data Catalog 등록</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><b>Amazon EMR</b></td>
+<td>Spark/Hive/Flink</td>
+<td>EC2 클러스터</td>
+<td>최고 제어권. Spot Instance 비용절감. 대규모 복잡 처리</td>
+<td class="mono">Spark 클러스터</td>
+</tr>
+<tr>
+<td><b>Kinesis Data Analytics</b></td>
+<td>SQL / Flink</td>
+<td>서버리스</td>
+<td>Streams/MSK 위에서 실시간 스트림 분석. 윈도우 집계</td>
+<td class="mono">Apache Flink</td>
+</tr>
+<tr>
+<td><b>AWS Lambda</b></td>
+<td>코드(Python 등)</td>
+<td>서버리스</td>
+<td>이벤트 기반. 최대 15분. 간단한 변환&middot;라우팅</td>
+<td>&mdash;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">ETL vs ELT 흐름 비교</span>
+<div class="dea-cards2">
+<div class="dea-card">
+<h4 data-ke-size="size20">🔧 ETL (변환 먼저)</h4>
+<div class="dea-flow" style="margin:8px 0!important">
+<div class="dea-fn fn-gray">원본<small>S3/DB</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-o">변환<small>Glue/EMR</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-b">S3 Staging</div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-g">Redshift</div>
+</div>
+<p data-ke-size="size16">Redshift 부하 &darr;, 복잡한 변환 가능, 중간 스토리지 비용 발생</p>
+</div>
+<div class="dea-card">
+<h4 data-ke-size="size20">🔁 ELT (적재 먼저)</h4>
+<div class="dea-flow" style="margin:8px 0!important">
+<div class="dea-fn fn-gray">원본<small>S3/DB</small></div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-b">Redshift(Raw)</div>
+<span class="dea-arr">&rarr;</span>
+<div class="dea-fn fn-g">SQL 변환<small>내부 처리</small></div>
+</div>
+<p data-ke-size="size16">파이프라인 단순, SQL 기반, Redshift 부하 증가</p>
+</div>
+</div>
+<div class="dea-co co-red"><span class="dea-co-title">⚠️ Athena 열 이름 규칙 &mdash; 시험 출제</span> Athena는 <b>영숫자 + 밑줄(_)만</b> 허용. <code style="font-family:monospace;background:color-mix(in srgb, var(--g90) 8%, transparent);padding:1px 5px;border-radius:3px">/var/log</code> &rarr; <code style="font-family:monospace;background:color-mix(in srgb, var(--g90) 8%, transparent);padding:1px 5px;border-radius:3px">var_log</code> 으로 변환 필요. 슬래시&middot;공백&middot;마침표 불가.</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ TASK 1.3 오케스트레이션 ══ -->
+<section id="dea-t3" class="dea-task">
+<div class="dea-task-hd t3"><span class="dea-task-num">1.3</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">파이프라인 오케스트레이션</h2>
+<p data-ke-size="size16">Task 3 &middot; 어떤 순서로, 어떻게 자동으로 실행할 것인가</p>
+</div>
+</div>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>한 줄 비유</th>
+<th>핵심 특징</th>
+<th>선택 시나리오</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>AWS Step Functions</b></td>
+<td>요리 레시피 관리자</td>
+<td>상태 머신(ASL). Lambda&middot;Glue&middot;EMR 연결. 재시도&middot;에러처리 내장. 시각적 편집</td>
+<td>서버리스 워크플로, 단계별 에러 제어</td>
+</tr>
+<tr>
+<td><b>Amazon MWAA</b></td>
+<td>공사 현장 일정 관리자</td>
+<td>완전관리형 Airflow. DAG Python 코드 &rarr; S3 저장. 의존성 기반 스케줄</td>
+<td>기존 Airflow 코드 그대로 클라우드 이전</td>
+</tr>
+<tr>
+<td><b>Amazon EventBridge</b></td>
+<td>자동 반응 알람 시스템</td>
+<td>이벤트 버스. AWS 이벤트 + cron 스케줄 &rarr; Lambda/Step Functions 트리거</td>
+<td>이벤트 기반 자동 트리거</td>
+</tr>
+<tr>
+<td><b>AWS Batch</b></td>
+<td>야간 대량 생산 라인</td>
+<td>EC2/Spot/Fargate 위 컨테이너 배치. 작업 큐&middot;의존성 관리. 수시간 이상 처리</td>
+<td>Lambda 15분 초과하는 대규모 배치</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-co co-blue"><span class="dea-co-title">💡 Step Functions vs MWAA 선택 기준</span> <b>Step Functions</b> = 서버리스&middot;간결한 워크플로&middot;AWS 서비스 직접 연동 우선일 때<br /><b>MWAA</b> = 기존 Airflow DAG 코드 재사용, Python 생태계(Operator/Hook) 활용 필요할 때</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ TASK 1.4 프로그래밍 ══ -->
+<section id="dea-t4" class="dea-task">
+<div class="dea-task-hd t4"><span class="dea-task-num">1.4</span>
+<div class="dea-task-info">
+<h2 data-ke-size="size26">프로그래밍 개념 적용</h2>
+<p data-ke-size="size16">Task 4 &middot; 코드 최적화, IaC/CI/CD, 알고리즘</p>
+</div>
+</div>
+<span class="dea-sec-lbl">코드 최적화 &mdash; 런타임 단축 8대 전략</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>#</th>
+<th>전략</th>
+<th>핵심 포인트</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="mono">01</td>
+<td><b>병렬 처리</b></td>
+<td>Glue/EMR &rarr; Spark 파티션별 병렬 실행</td>
+</tr>
+<tr>
+<td class="mono">02</td>
+<td><b>배치 처리</b></td>
+<td>오버헤드 감소. Glue&middot;EMR 배치 처리 내장</td>
+</tr>
+<tr>
+<td class="mono">03</td>
+<td><b>컬럼 기반 포맷</b></td>
+<td><b>Parquet / ORC</b> &rarr; 압축률 우수, 스캔 범위 최소화. Athena 비용 대폭 절감</td>
+</tr>
+<tr>
+<td class="mono">04</td>
+<td><b>조기 필터링</b></td>
+<td>WHERE 조건을 소스 레벨에서 처리 (Predicate Pushdown)</td>
+</tr>
+<tr>
+<td class="mono">05</td>
+<td><b>파티셔닝</b></td>
+<td>날짜/리전 기준 분할. S3 경로: <code style="font-family:monospace">year=2024/month=03/</code></td>
+</tr>
+<tr>
+<td class="mono">06</td>
+<td><b>데이터 압축</b></td>
+<td>Gzip&middot;Snappy. 스토리지 비용&darr; + 전송 속도&uarr;</td>
+</tr>
+<tr>
+<td class="mono">07</td>
+<td><b>메모리&middot;리소스 최적화</b></td>
+<td>Spark executor 메모리&middot;코어 수 조정. 병목 방지</td>
+</tr>
+<tr>
+<td class="mono">08</td>
+<td><b>증분 처리 (Incremental)</b></td>
+<td>마지막 실행 이후 델타만 처리. 전체 재처리 X</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sec-lbl">Lambda 최적화 체크리스트</span>
+<ul class="dea-ck" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="ci">✅</span><span><b>메모리 = CPU 비례</b> &mdash; 메모리 늘리면 CPU도 함께 증가 &rarr; 처리 빨라져 총비용 절감 가능</span></li>
+<li><span class="ci">✅</span><span><b>프로비저닝된 동시성</b> &mdash; 콜드 스타트 방지 (지연시간 민감 파이프라인 필수)</span></li>
+<li><span class="ci">✅</span><span><b>타임아웃 설정</b> &mdash; 예상 실행 시간 기준. 너무 짧으면 조기 종료, 너무 길면 비용 낭비</span></li>
+<li><span class="ci">✅</span><span><b>비동기 호출</b> &mdash; 즉각 응답 불필요 시 사용 (처리량 향상)</span></li>
+<li><span class="ci">⚠️</span><span><b>VPC 배치 시 지연 추가</b> &mdash; 동일 VPC에 배치 + ElastiCache 캐시 활용으로 지연 최소화</span></li>
+</ul>
+<span class="dea-sec-lbl">IaC / CI/CD 도구 구분</span>
+<div class="dea-tbl-wrap">
+<table class="dea-tbl" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>도구</th>
+<th>방식</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>CloudFormation</b></td>
+<td>YAML/JSON 템플릿</td>
+<td>인프라 전체 정의&middot;배포. 스택 단위 관리</td>
+</tr>
+<tr>
+<td><b>AWS CDK</b></td>
+<td>Python&middot;TypeScript 등 실제 언어</td>
+<td>코드로 인프라 정의. 재사용 가능한 Construct 패턴</td>
+</tr>
+<tr>
+<td><b>AWS SAM</b></td>
+<td>CloudFormation 확장</td>
+<td>Lambda&middot;Step Functions&middot;DynamoDB 서버리스 파이프라인 전용 배포</td>
+</tr>
+<tr>
+<td><b>CodeCommit/GitHub</b></td>
+<td>소스 코드 저장소</td>
+<td>템플릿&middot;스크립트 버전 관리 &rarr; 커밋 시 CI/CD 자동 트리거</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-qa"><span class="dea-qa-lbl">📝 시험 시나리오 &mdash; 데이터 손실 복구</span>
+<p class="dea-qa-q" data-ke-size="size16">Kinesis &rarr; Java 앱 &rarr; OpenSearch 파이프라인에서 데이터 손실 발생. 코드로 복구할 수 있나?</p>
+<div class="dea-qa-a"><b>멱등성 처리(Idempotent Processing)</b> 적용 + <b>샤드 반복기(Shard Iterator)</b>가 오류 발생 전 샤드 위치를 가리키도록 수정. 같은 메시지를 여러 번 처리해도 결과가 동일하므로 재처리 시 중복 없음.</div>
+</div>
+</section>
+<hr class="dea-div" data-ke-style="style1" /><!-- ══ 시험 요약 ══ -->
+<section>
+<div class="dea-exam"><span class="dea-exam-ttl">🎯 Domain 1 시험 핵심 &mdash; 이것만 기억</span>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="em">①</span><span><b>Kinesis Streams vs Firehose</b> &mdash; Streams=Pull(직접 소비), Firehose=Push(자동 전달&middot;서버리스)</span></li>
+<li><span class="em">②</span><span><b>MSK vs Kinesis</b> &mdash; MSK=기존 Kafka 코드 그대로, Kinesis=AWS 네이티브&middot;샤드 관리</span></li>
+<li><span class="em">③</span><span><b>Glue vs EMR</b> &mdash; Glue=서버리스 Spark, EMR=클러스터 직접 관리(Spot 비용절감)</span></li>
+<li><span class="em">④</span><span><b>ETL vs ELT</b> &mdash; ETL=Redshift 부하&darr;(Spark 선처리), ELT=Redshift 내부 SQL 변환(단순)</span></li>
+<li><span class="em">⑤</span><span><b>Step Functions vs MWAA</b> &mdash; Step=서버리스 AWS 연동, MWAA=기존 Airflow 코드 이전</span></li>
+<li><span class="em">⑥</span><span><b>최적화 3대 포인트</b> &mdash; Parquet/ORC 포맷 + 파티셔닝 + 증분 처리</span></li>
+<li><span class="em">⑦</span><span><b>Lambda 콜드스타트</b> &rarr; 프로비저닝된 동시성으로 해결</span></li>
+<li><span class="em">⑧</span><span><b>서버리스 IaC</b> = AWS SAM, <b>전체 인프라</b> = CloudFormation/CDK</span></li>
+<li><span class="em">⑨</span><span><b>멱등성 + 샤드 반복기</b> = Kinesis 데이터 손실 복구 방법</span></li>
+<li><span class="em">⑩</span><span><b>Athena 열 이름</b> = 영숫자 + 밑줄만. 특수문자 불가</span></li>
+</ul>
+</div>
+</section>
+<footer class="dea-ft">
+<p data-ke-size="size16">AWS DEA-C01 Domain 1 압축 정리 &middot; <a href="https://hyeonlee.net">hyeonlee.net</a></p>
+<p style="margin-top:4px" data-ke-size="size16">Domain 2 정리도 확인해보세요 😊</p>
+</footer></div>
+</article>
+</div>

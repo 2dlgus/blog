@@ -1,0 +1,342 @@
+<!--
+id: 51
+제목: AWS DEA-C01 공식 샘플 문제 — Lambda · EFS 실전 문제 + 정답 해설
+카테고리: Stack/AWS
+태그: 자격증, Ebs, LAMBDA, efs, AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer
+날짜: 2026-03-09 22:03
+수정: 2026-03-24 22:27
+형식: html
+썸네일: /img/t/dJMcahDzWHv.webp
+-->
+<style>
+.pb-51 *, .pb-51, .pb-51 *::before, .pb-51 *::after{box-sizing:border-box;margin:0;padding:0}
+.pb-51{--bg:var(--g0);--card:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--blue:var(--p50);--blue-light:var(--p5);--green:var(--s60);--green-light:var(--s5);--green-border:var(--s10);--red:var(--r50);--red-light:var(--g5);--red-border:var(--r10);--orange:var(--y50);--purple:var(--p50);--shadow:0 1px 3px color-mix(in srgb, var(--g90) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--g90) 4%, transparent)}
+.pb-51{background:var(--bg);color:var(--text);line-height:1.6}
+.pb-51 .wrap{max-width:740px;margin:0 auto;padding:36px 20px 60px}
+.pb-51 .post-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pb-51 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.pb-51 .badge-blue{background:var(--blue-light);color:var(--blue);border:1px solid var(--p10)}
+.pb-51 .badge-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-51 .badge-orange{background:var(--y5);color:var(--orange);border:1px solid var(--y50)}
+.pb-51 .badge-purple{background:var(--g5);color:var(--purple);border:1px solid var(--p10)}
+.pb-51 h1.post-title{font-size:clamp(20px, 4vw, 26px);font-weight:900;line-height:1.4;color:var(--text);margin-bottom:10px}
+.pb-51 .post-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+.pb-51 h2.section-title{font-size:16px;font-weight:700;color:var(--text);margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.pb-51 h2.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-51 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pb-51 .question-box{background:linear-gradient(135deg, var(--p5), var(--g5));border:1.5px solid var(--p10);border-radius:14px;padding:20px 22px;margin-bottom:24px}
+.pb-51 .question-box p{font-size:15px;line-height:1.85;color:var(--text)}
+.pb-51 .hl-blue{color:var(--blue);font-weight:700}
+.pb-51 .hl-orange{color:var(--orange);font-weight:700}
+.pb-51 .hl-purple{color:var(--purple);font-weight:700}
+.pb-51 .hl-green{color:var(--green);font-weight:700}
+.pb-51 .hl-bold{font-weight:900}
+.pb-51 .migrate-flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;margin-bottom:20px}
+.pb-51 .migrate-node{flex:1;min-width:0;background:var(--g0);border-radius:12px;padding:14px 10px;text-align:center;border:2px solid var(--border);box-shadow:var(--shadow)}
+.pb-51 .migrate-node .mn-icon{font-size:26px;margin-bottom:6px}
+.pb-51 .migrate-node .mn-label{font-size:12px;font-weight:700;color:var(--text)}
+.pb-51 .migrate-node .mn-sub{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4}
+.pb-51 .migrate-node.highlight{border-color:var(--green);background:var(--green-light)}
+.pb-51 .migrate-node.highlight .mn-label{color:var(--green)}
+.pb-51 .migrate-arrow{flex-shrink:0;width:36px;text-align:center;font-size:18px;color:var(--muted)}
+@media (max-width: 500px){.pb-51 .migrate-flow{flex-direction:column;gap:4px}
+.pb-51 .migrate-arrow{transform:rotate(90deg)}
+.pb-51 .migrate-node{width:100%}}
+.pb-51 .req-list{list-style:none;padding:0}
+.pb-51 .req-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pb-51 .req-list li:last-child{border-bottom:none}
+.pb-51 .req-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.pb-51 .storage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width: 500px){.pb-51 .storage-grid{grid-template-columns:1fr}}
+.pb-51 .storage-card{border-radius:12px;padding:16px 14px;border:1.5px solid var(--border)}
+.pb-51 .storage-card.ok{background:var(--green-light);border-color:var(--green-border)}
+.pb-51 .storage-card.bad{background:var(--red-light);border-color:var(--red-border)}
+.pb-51 .storage-card .sc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pb-51 .storage-card .sc-icon{font-size:20px}
+.pb-51 .storage-card .sc-name{font-weight:700;font-size:14px}
+.pb-51 .storage-card.ok  .sc-name{color:var(--green)}
+.pb-51 .storage-card.bad .sc-name{color:var(--red)}
+.pb-51 .storage-card .sc-type{font-size:11px;color:var(--muted)}
+.pb-51 .sc-props{list-style:none;padding:0}
+.pb-51 .sc-props li{font-size:12px;color:var(--text);padding:4px 0;border-bottom:1px solid color-mix(in srgb, var(--g90) 6%, transparent);line-height:1.5}
+.pb-51 .sc-props li:last-child{border-bottom:none}
+.pb-51 .sc-props li::before{content:'• ';color:var(--muted)}
+.pb-51 .sc-result{margin-top:10px;padding:7px 10px;border-radius:7px;font-size:12px;font-weight:700;text-align:center}
+.pb-51 .storage-card.ok  .sc-result{background:var(--s10);color:var(--green)}
+.pb-51 .storage-card.bad .sc-result{background:var(--r5);color:var(--red)}
+.pb-51 .options-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.pb-51 .option{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:10px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:border-color 0.15s, background 0.15s;box-shadow:var(--shadow)}
+.pb-51 .option:hover{border-color:var(--p50)}
+.pb-51 .option.active-ok{border-color:var(--green);background:var(--green-light)}
+.pb-51 .option.active-bad{border-color:var(--red);background:var(--red-light)}
+.pb-51 .opt-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;border:2px solid currentColor}
+.pb-51 .opt-badge.ok{color:var(--green);background:var(--green-light)}
+.pb-51 .opt-badge.bad{color:var(--red);background:var(--red-light)}
+.pb-51 .opt-body{flex:1;min-width:0}
+.pb-51 .opt-main{font-weight:700;font-size:14px;color:var(--text)}
+.pb-51 .opt-main.correct{color:var(--green)}
+.pb-51 .opt-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pb-51 .opt-why{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.75;color:var(--text)}
+.pb-51 .opt-why.show{display:block}
+.pb-51 .opt-why.ok-why{background:var(--s10)}
+.pb-51 .opt-why.bad-why{background:var(--r5)}
+.pb-51 .answer-toggle{border:2px solid var(--border);border-radius:14px;background:var(--card);padding:16px 20px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.pb-51 .answer-toggle.open{border-color:var(--green);background:var(--green-light)}
+.pb-51 .answer-toggle-label{font-weight:700;font-size:15px;color:var(--green)}
+.pb-51 .answer-body{display:none;margin-top:14px}
+.pb-51 .answer-body.show{display:block}
+.pb-51 .answer-body p{font-size:14px;line-height:1.85;color:var(--text)}
+.pb-51 .answer-body strong{color:var(--orange)}
+.pb-51 .code-block{margin-top:12px;padding:14px 16px;background:var(--p70);border-radius:10px;font-family:'JetBrains Mono', monospace;font-size:12px;color:var(--i60);line-height:1.8;overflow-x:auto;white-space:pre}
+.pb-51 .summary-table{width:100%;border-collapse:collapse;font-size:13px}
+.pb-51 .summary-table th{background:var(--p5);color:var(--muted);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+.pb-51 .summary-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.pb-51 .summary-table tr:last-child td{border-bottom:none}
+.pb-51 .summary-table tr:hover td{background:var(--g0)}
+.pb-51 .ok-text{color:var(--green);font-weight:700}
+.pb-51 .bad-text{color:var(--red);font-weight:700}
+.pb-51 .seo-tags{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+.pb-51 .seo-tag{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--p5);color:var(--muted);border:1px solid var(--border)}
+@media (max-width: 480px){.pb-51 .wrap{padding:20px 14px 50px}
+.pb-51 h1.post-title{font-size:19px}
+.pb-51 .question-box p{font-size:14px}
+.pb-51 .opt-main{font-size:13px}
+.pb-51 .code-block{font-size:11px}}
+.pb-51 .opt-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-51 .opt-wrap{border:2px solid var(--border, var(--p10));border-radius:12px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:10px;overflow:hidden}
+.pb-51 .opt-label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;margin:0}
+.pb-51 .opt-detail{display:none;font-size:13px;line-height:1.8;border-top:1px solid var(--border, var(--p10))}
+.pb-51 .opt-detail.ok-why{background:var(--s10);padding:12px 16px 14px}
+.pb-51 .opt-detail.bad-why{background:var(--r5);padding:12px 16px 14px}
+.pb-51 .opt-chk:checked ~ .opt-label{background:color-mix(in srgb, var(--g90) 2%, transparent)}
+.pb-51 .opt-chk:checked ~ .opt-detail{display:block}
+.pb-51 .opt-expand{font-size:11px;color:var(--p50);margin-top:4px;font-weight:600}
+.pb-51 .opt-chk:checked ~ .opt-label .opt-expand::before{content:'▲ 접기'}
+.pb-51 .opt-chk:not(:checked) ~ .opt-label .opt-expand::before{content:'▼ 해설 보기'}
+.pb-51 .ans-chk{position:absolute !important;opacity:0 !important;width:0 !important;height:0 !important;pointer-events:none !important}
+.pb-51 .ans-wrap{border:2px solid var(--border, var(--p10));border-radius:14px;background:var(--g0);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-top:8px;overflow:hidden}
+.pb-51 .ans-label{display:block;padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;color:var(--s60);user-select:none;margin:0}
+.pb-51 .ans-label::before{content:'🎯 '}
+.pb-51 .ans-body-wrap{display:none;padding:4px 20px 16px}
+.pb-51 .ans-chk:checked ~ .ans-label{background:var(--s5)}
+.pb-51 .ans-chk:checked ~ .ans-label::before{content:'✅ '}
+.pb-51 .ans-chk:checked ~ .ans-body-wrap{display:block}
+.pb-51 .ans-wrap{border-color:var(--border, var(--p10))}
+.pb-51 .ans-chk:checked ~ .ans-label{border-bottom:1px solid var(--s10)}
+</style>
+<div class="pb pb-51">
+<p data-ke-size="size16">&nbsp;</p>
+<!-- SEO -->
+<p data-ke-size="size16">&nbsp;</p>
+<div>
+
+</div>
+<article class="wrap"><!-- 헤더 --><header>
+<div class="post-meta"><span class="badge badge-blue">AWS DEA-C01</span> <span class="badge badge-green">데이터 엔지니어</span> <span class="badge badge-orange">스토리지 마이그레이션</span> <span class="badge badge-purple">Lambda &middot; EFS</span></div>
+<h1 class="post-title">온프레미스 NFS &rarr; AWS 마이그레이션 &mdash; Lambda에서 EFS를 써야 하는 이유</h1>
+<p class="post-desc" data-ke-size="size16">AWS DEA-C01 시험에 자주 나오는 스토리지 마이그레이션 문제 유형입니다. <b>온프레미스 NFS 파일 공유</b>를 AWS로 이전하면서 <b>Lambda 함수가 NFS 프로토콜로 데이터를 공유</b>해야 할 때, EFS / EBS / DynamoDB / Lambda 로컬 스토리지 중 무엇을 선택해야 하는지 도식과 함께 비교 정리합니다.</p>
+</header><!-- 문제 -->
+<h2 class="section-title" data-ke-size="size26">📋 문제</h2>
+<div class="question-box">
+<p data-ke-size="size16">회사의 데이터가 <span class="hl-orange">온프레미스 NFS 파일 공유</span>에 있다. 회사는 <span class="hl-blue">AWS로 마이그레이션</span>할 계획이며, 데이터 분석에 데이터가 사용된다. 이 회사는 <span class="hl-purple">AWS Lambda 함수</span>를 작성해 데이터를 분석한다. 그리고 Lambda가 액세스하는 파일 시스템에 <span class="hl-bold">NFS를 계속 사용</span>하고자 한다. <span class="hl-bold">동시에 실행되는 모든 Lambda 함수 전반에서 데이터가 공유</span>되어야 한다. <br /><br />다음 중 회사가 이 데이터 마이그레이션에 사용해야 할 솔루션은 무엇인가?</p>
+</div>
+<!-- 핵심 요구사항 -->
+<h2 class="section-title" data-ke-size="size26">✅ 핵심 요구사항 체크</h2>
+<div class="card">
+<ul class="req-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="req-icon">🔌</span>
+<div><b>NFS 프로토콜 유지</b><br /><span style="font-size:13px;color:var(--muted)">온프레미스에서 쓰던 NFS(Network File System) 방식을 AWS에서도 그대로 사용해야 함</span></div>
+</li>
+<li><span class="req-icon">🔗</span>
+<div><b>Lambda 함수에서 직접 마운트 가능</b><br /><span style="font-size:13px;color:var(--muted)">Lambda가 파일 시스템을 마운트하여 파일처럼 데이터에 접근해야 함</span></div>
+</li>
+<li><span class="req-icon">🤝</span>
+<div><b>동시 실행 Lambda 간 데이터 공유</b><br /><span style="font-size:13px;color:var(--muted)">여러 Lambda 인스턴스가 동시에 실행되어도 하나의 공유 스토리지에서 같은 데이터를 읽고 써야 함</span></div>
+</li>
+</ul>
+</div>
+<!-- 마이그레이션 흐름 도식 -->
+<h2 class="section-title" data-ke-size="size26">📐 마이그레이션 흐름</h2>
+<div class="card">
+<div class="migrate-flow">
+<div class="migrate-node">
+<div class="mn-icon">🏢</div>
+<div class="mn-label">온프레미스</div>
+<div class="mn-sub">NFS 파일 공유<br />(데이터 저장)</div>
+</div>
+<div class="migrate-arrow">&rarr;</div>
+<div class="migrate-node highlight">
+<div class="mn-icon">📁</div>
+<div class="mn-label">Amazon EFS</div>
+<div class="mn-sub">NFS 지원<br />공유 파일 시스템</div>
+</div>
+<div class="migrate-arrow">&larr;</div>
+<div class="migrate-node">
+<div class="mn-icon">&lambda;</div>
+<div class="mn-label">AWS Lambda</div>
+<div class="mn-sub">EFS 마운트<br />동시 접근 ✅</div>
+</div>
+</div>
+<p style="font-size:12px;color:var(--muted);text-align:center;margin-top:4px" data-ke-size="size16">EFS는 NFS v4 프로토콜을 지원 &rarr; Lambda가 파일 시스템처럼 마운트해서 사용 가능</p>
+<!-- 스토리지 방식별 비교 -->
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+<p style="font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:12px" data-ke-size="size16">🗄️ AWS 스토리지 종류 비교</p>
+<div class="storage-grid">
+<div class="storage-card ok">
+<div class="sc-header"><span class="sc-icon">📁</span>
+<div>
+<div class="sc-name">Amazon EFS</div>
+<div class="sc-type">파일 스토리지 (File Storage)</div>
+</div>
+</div>
+<ul class="sc-props" style="list-style-type:disc" data-ke-list-type="disc">
+<li>NFS 프로토콜 지원 (v4.0, v4.1)</li>
+<li>Lambda에서 마운트 포인트로 직접 연결</li>
+<li>동시에 수천 개 연결 지원</li>
+<li>자동 확장 &middot; 고가용성</li>
+</ul>
+<div class="sc-result">✅ 모든 요구사항 충족</div>
+</div>
+<div class="storage-card bad">
+<div class="sc-header"><span class="sc-icon">💽</span>
+<div>
+<div class="sc-name">Amazon EBS</div>
+<div class="sc-type">블록 스토리지 (Block Storage)</div>
+</div>
+</div>
+<ul class="sc-props" style="list-style-type:disc" data-ke-list-type="disc">
+<li>EC2 인스턴스 전용 블록 디스크</li>
+<li>Lambda에서 직접 연결 불가</li>
+<li>단일 AZ, 단일 인스턴스에만 연결</li>
+<li>NFS 프로토콜 미지원</li>
+</ul>
+<div class="sc-result">❌ Lambda 연결 불가</div>
+</div>
+<div class="storage-card bad">
+<div class="sc-header"><span class="sc-icon">🗃️</span>
+<div>
+<div class="sc-name">Amazon DynamoDB</div>
+<div class="sc-type">NoSQL 데이터베이스</div>
+</div>
+</div>
+<ul class="sc-props" style="list-style-type:disc" data-ke-list-type="disc">
+<li>키-값 / 문서 형태 데이터베이스</li>
+<li>API(SDK) 방식으로만 접근</li>
+<li>NFS 프로토콜 미지원</li>
+<li>파일 시스템이 아닌 DB 서비스</li>
+</ul>
+<div class="sc-result">❌ NFS 미지원</div>
+</div>
+<div class="storage-card bad">
+<div class="sc-header"><span class="sc-icon">⚡</span>
+<div>
+<div class="sc-name">Lambda 로컬 스토리지</div>
+<div class="sc-type">/tmp 임시 디렉토리</div>
+</div>
+</div>
+<ul class="sc-props" style="list-style-type:disc" data-ke-list-type="disc">
+<li>각 Lambda 인스턴스에만 독립 존재</li>
+<li>인스턴스 간 데이터 공유 불가</li>
+<li>최대 512MB~10GB (비영구적)</li>
+<li>NFS 프로토콜 미지원</li>
+</ul>
+<div class="sc-result">❌ 공유 불가 + NFS 미지원</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 선택지 -->
+<h2 class="section-title" data-ke-size="size26">📝 선택지 해설</h2>
+<p style="font-size:12px;color:var(--muted);margin-bottom:12px" data-ke-size="size16">각 항목을 클릭하면 해설이 펼쳐집니다.</p>
+<div class="opt-wrap"><input id="opt-1" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">A</div>
+<div class="opt-body">
+<div class="opt-main">❌ Lambda 로컬 스토리지 &mdash; 각 함수의 /tmp 로컬 스토리지로 마이그레이션</div>
+<div class="opt-sub">Lambda Local Storage (/tmp)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 Lambda의 로컬 스토리지(/tmp)는 해당 Lambda 인스턴스에만 존재하는 <b>임시 격리 공간</b>입니다. 동시에 실행 중인 다른 Lambda 인스턴스와 데이터를 공유할 수 없으며, NFS 프로토콜도 지원하지 않습니다. 두 요구사항을 모두 충족하지 못합니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-2" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">B</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon EBS &mdash; 블록 스토리지 볼륨으로 마이그레이션</div>
+<div class="opt-sub">Amazon Elastic Block Store</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 EBS는 <b>EC2 전용 블록 스토리지</b>입니다. Lambda 함수는 EBS 볼륨에 직접 연결할 수 없습니다. 또한 기본적으로 단일 EC2 인스턴스에만 연결되는 구조라 공유 파일 시스템으로 사용하기 어렵고, NFS 프로토콜도 지원하지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-3" class="opt-chk" type="checkbox" />
+<div class="opt-badge bad">C</div>
+<div class="opt-body">
+<div class="opt-main">❌ Amazon DynamoDB &mdash; NoSQL 데이터베이스로 마이그레이션</div>
+<div class="opt-sub">Amazon DynamoDB (서버리스 NoSQL DB)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail bad-why">💡 DynamoDB는 <b>키-값 구조의 NoSQL 데이터베이스</b>로, AWS SDK/API를 통해서만 접근합니다. NFS 프로토콜을 지원하지 않으며, 파일 시스템 마운트도 불가합니다. 데이터 구조 자체가 NFS 파일 공유와 맞지 않습니다.</div>
+</div>
+<div class="opt-wrap"><input id="opt-4" class="opt-chk" type="checkbox" />
+<div class="opt-badge ok">D</div>
+<div class="opt-body">
+<div class="opt-main correct">✅ Amazon EFS &mdash; 확장 가능한 공유 파일 시스템으로 마이그레이션 후 Lambda에 마운트</div>
+<div class="opt-sub">Amazon Elastic File System (NFS v4 지원)</div>
+<div class="opt-expand">&nbsp;</div>
+</div>
+<div class="opt-detail ok-why">💡 <b>정답.</b> Amazon EFS는 <b>NFS v4 프로토콜을 지원하는 완전관리형 공유 파일 시스템</b>입니다. Lambda 함수 설정에서 EFS 마운트 포인트를 지정하면, 파일 시스템처럼 데이터에 접근할 수 있습니다. 동시에 실행되는 수천 개의 Lambda 인스턴스가 같은 EFS를 마운트하여 데이터를 공유할 수 있어 세 가지 요구사항(NFS 유지, Lambda 접근, 동시 공유)을 모두 충족합니다.</div>
+</div>
+<!-- 정답 -->
+<div class="ans-wrap"><input id="ans-1" class="ans-chk" type="checkbox" /><label class="ans-label" for="ans-1">정답 및 핵심 정리 (클릭)</label>
+<div class="ans-body-wrap">
+<p data-ke-size="size16"><b>정답: D &mdash; Amazon EFS</b><br /><br />Amazon EFS는 <b>NFS v4 프로토콜을 기본 지원</b>하며, Lambda가 파일 시스템 마운트 포인트로 직접 연결할 수 있습니다. 수천 개의 Lambda 인스턴스가 동시에 같은 EFS를 마운트하여 데이터를 읽고 쓸 수 있어 온프레미스 NFS 공유 환경을 AWS에서 그대로 재현합니다.</p>
+<div class="code-block"># 흐름 요약 온프레미스 NFS 파일 공유 └─ AWS DataSync / Direct Connect 로 이전 └─ Amazon EFS (NFS v4 지원) └─ Lambda 함수 (마운트 포인트: /mnt/efs) ├─ Lambda 인스턴스 #1 ─┐ ├─ Lambda 인스턴스 #2 ─┼─ 동일 EFS 동시 접근 ✅ └─ Lambda 인스턴스 #N ─┘</div>
+</div>
+</div>
+<!-- 요약 비교표 -->
+<h2 class="section-title" data-ke-size="size26">📊 스토리지 옵션 비교 요약</h2>
+<div class="card" style="overflow-x:auto;padding:0">
+<table class="summary-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>스토리지</th>
+<th>유형</th>
+<th>NFS 지원</th>
+<th>Lambda 연결</th>
+<th>동시 공유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Amazon EFS ⭐</b></td>
+<td>파일 스토리지</td>
+<td class="ok-text">✅ v4.0/4.1</td>
+<td class="ok-text">✅ 마운트 가능</td>
+<td class="ok-text">✅ 수천 개</td>
+</tr>
+<tr>
+<td><b>Amazon EBS</b></td>
+<td>블록 스토리지</td>
+<td class="bad-text">❌</td>
+<td class="bad-text">❌ EC2 전용</td>
+<td class="bad-text">❌ 단일 연결</td>
+</tr>
+<tr>
+<td><b>Amazon DynamoDB</b></td>
+<td>NoSQL DB</td>
+<td class="bad-text">❌</td>
+<td style="color:var(--orange);font-weight:bold">⚠️ SDK만 가능</td>
+<td class="ok-text">✅ API로는 가능</td>
+</tr>
+<tr>
+<td><b>Lambda /tmp</b></td>
+<td>임시 로컬 저장소</td>
+<td class="bad-text">❌</td>
+<td class="ok-text">✅ 기본 제공</td>
+<td class="bad-text">❌ 인스턴스 격리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- SEO 태그 -->
+<div class="seo-tags" aria-label="관련 태그"><span class="seo-tag">#AWS_DEA-C01</span> <span class="seo-tag">#AWS데이터엔지니어</span> <span class="seo-tag">#NFS마이그레이션</span> <span class="seo-tag">#AmazonEFS</span> <span class="seo-tag">#LambdaEFS</span> <span class="seo-tag">#EFS마운트</span> <span class="seo-tag">#EBSvsEFS</span> <span class="seo-tag">#Lambda파일시스템</span> <span class="seo-tag">#온프레미스마이그레이션</span> <span class="seo-tag">#서버리스스토리지</span> <span class="seo-tag">#AWS자격증</span> <span class="seo-tag">#클라우드스토리지</span></div>
+</article>
+</div>

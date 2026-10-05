@@ -1,0 +1,313 @@
+<!--
+id: 105
+제목: AWS DEA-C01 각색 문제 Day 08 — Redshift IdP 페더레이션, VPC Lambda → S3 Gateway Endpoint, DynamoDB TTL, IoT 데이터 레이크 파이프라인, Redshift ROW_NUMBER
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, Redshift IdP 페더레이션, S3 Gateway Endpoint, DynamoDB TTL, IoT 데이터 파이프라인, ROW_NUMBER 윈도우 함수
+날짜: 2026-03-27 00:00
+수정: 2026-03-27 00:00
+형식: html
+썸네일: /img/t/dJMcacid66S.webp
+-->
+<style>
+.pb-105 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-105 .dea-wrap *{box-sizing:border-box}
+.pb-105 .dea-post-header{margin-bottom:32px}
+.pb-105 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-105 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-105 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-105 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-105 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-105 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-105 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-105 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-105 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-105 .dea-q-block{margin-bottom:48px}
+.pb-105 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-105 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-105 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-105 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-105 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-105 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-105 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-105 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-105 .dea-seo-lead strong{color:var(--p50)}
+.pb-105 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-105 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-105 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-105 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-105 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-105 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-105 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-105 .dea-opt.ok{border-color:var(--s60)}
+.pb-105 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-105 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-105 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-105 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-105 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-105 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-105 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-105 .dea-term{font-weight:700;color:var(--p50)}
+.pb-105 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-105 .dea-btn:hover{background:var(--p60)}
+.pb-105 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-105 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-105 .dea-exp.on{display:flex}
+.pb-105 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-105 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-105 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-105 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-105 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-105 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-105 .dea-table th, .pb-105 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-105 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-105 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-105 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-105 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-105 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-105 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-105 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-105 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-105 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-105 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-105 .dea-hl{color:var(--p50);font-weight:700}
+.pb-105 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-105 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-105 .dea-wrap{padding:14px 6px 52px}
+.pb-105 .dea-post-title{font-size:18px}
+.pb-105 .dea-qcard p{font-size:14px}
+.pb-105 .dea-opt-row{font-size:13px}
+.pb-105 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-105 .dea-table{font-size:11.5px}
+.pb-105 .dea-table th, .pb-105 .dea-table td{padding:8px 9px}
+.pb-105 .dea-ans-main{font-size:14.5px}
+.pb-105 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-105">
+<article class="dea-wrap">
+
+
+<div class="dea-post-header">
+  <h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 — Day 08</h1>
+  <p class="dea-post-desc">Redshift IdP 페더레이션, VPC Lambda → S3 Gateway Endpoint, DynamoDB TTL, IoT 데이터 레이크 파이프라인, Redshift ROW_NUMBER 윈도우 함수 — 5문제 핵심 정리.</p>
+  <div class="dea-post-meta">
+    <span class="dea-badge exam">AWS DEA-C01</span>
+    <span class="dea-badge topic">Domain 1·2·4 · 보안 · 네트워킹 · SQL</span>
+    <span class="dea-badge diff">5문제</span>
+  </div>
+</div>
+
+<nav class="dea-toc">
+  <div class="dea-toc-title">📋 목차</div>
+  <ul class="dea-toc-list">
+    <li><a href="#dea-q36"><span class="dea-toc-num">Q36</span> Redshift에서 서드파티 IdP 인증 첫 번째 단계</a></li>
+    <li><a href="#dea-q37"><span class="dea-toc-num">Q37</span> VPC 내 Lambda → S3 타임아웃 오류 해결 (비용 효율)</a></li>
+    <li><a href="#dea-q38"><span class="dea-toc-num">Q38</span> DynamoDB 30일 프로모션 데이터 자동 삭제</a></li>
+    <li><a href="#dea-q39"><span class="dea-toc-num">Q39</span> IoT 다형식 데이터 → 데이터 레이크 + 시각화</a></li>
+    <li><a href="#dea-q40"><span class="dea-toc-num">Q40</span> Redshift 중복 없는 가격 기준 제품 순위 SQL</a></li>
+  </ul>
+</nav>
+
+<!-- Q36 -->
+<div class="dea-q-block" id="dea-q36">
+  <div class="dea-meta"><span class="dea-badge qnum">Q36</span><span class="dea-badge topic">Redshift · IdP 페더레이션 · 인증</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>Amazon Redshift 네이티브 IdP 페더레이션</strong>은 Okta·Azure AD 같은 서드파티 자격증명 공급자(IdP)를 통해 Redshift에 인증할 수 있도록 지원합니다. 첫 번째 단계는 <strong>Redshift에 IdP를 등록</strong>하는 것입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>Amazon Redshift 레이크하우스 아키텍처에서 사용자들이 사내 SSO(Single Sign-On) 시스템을 통해 Redshift 쿼리 편집기에서 인증할 수 있도록 해야 합니다. 데이터 엔지니어가 가장 먼저 해야 할 단계는 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q36-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>Redshift 개별 클러스터의 구성 설정 화면에서 SSO 시스템을 자격증명 공급자로 등록합니다.</span></div><div class="dea-inline-exp">❌ IdP는 개별 클러스터가 아닌 <strong>Amazon Redshift 서비스 전체 레벨</strong>에서 등록해야 함. 클러스터 설정 화면에 IdP 등록 기능이 없음.</div></li>
+    <li class="dea-opt" id="q36-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon Redshift 내에서 SSO 시스템을 자격증명 공급자(IdP)로 등록합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Redshift 네이티브 IdP 페더레이션</span> — Amazon Redshift 서비스 레벨에서 IdP를 등록하면 Redshift가 해당 IdP를 인증 소스로 신뢰. 등록 후에는 클러스터별로 해당 IdP 인증을 사용하도록 구성 가능. <strong>첫 번째 단계: Redshift에 IdP 등록</strong>.</div></li>
+    <li class="dea-opt" id="q36-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>SSO 시스템을 AWS Secrets Manager에 자격증명 공급자로 등록하고, Secrets Manager를 통해 자격증명을 관리하도록 Redshift를 구성합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS Secrets Manager</span> — 자격증명(ID/PW) 저장·교체 서비스. <strong>인증(Authentication) 또는 IdP 페더레이션 기능이 없음</strong>. Secrets Manager로는 SSO 인증 구현 불가.</div></li>
+    <li class="dea-opt" id="q36-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>SSO 시스템을 AWS Certificate Manager(ACM)에 등록하고 ACM으로 사용자 자격증명을 관리하도록 Redshift를 구성합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">AWS ACM(Certificate Manager)</span> — SSL/TLS 인증서 관리 서비스. <strong>ID 페더레이션 기능이 없음</strong>. 인증서와 사용자 인증(IdP)은 완전히 다른 개념.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q36">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q36">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — Redshift에 서드파티 IdP를 자격증명 공급자로 등록</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — Redshift IdP 페더레이션 설정 순서</div>
+    <table class="dea-table"><thead><tr><th>단계</th><th>작업</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1단계</strong></td><td><strong>Amazon Redshift에 IdP 등록</strong> (서비스 레벨)</td></tr>
+      <tr><td>2단계</td><td>Redshift 클러스터에서 IdP 인증 사용 설정</td></tr>
+      <tr><td>3단계</td><td>IdP에서 Redshift 애플리케이션 구성</td></tr>
+      <tr><td>4단계</td><td>사용자·그룹 매핑 설정</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>Redshift IdP 페더레이션 첫 번째 단계<br>  →  <span class="dea-hl">Amazon Redshift에 IdP 등록</span> (클러스터가 아닌 서비스 레벨)<br><br>Secrets Manager = 자격증명 저장 (IdP 페더레이션 아님)<br>ACM = SSL/TLS 인증서 (사용자 인증 아님)</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q37 -->
+<div class="dea-q-block" id="dea-q37">
+  <div class="dea-meta"><span class="dea-badge qnum">Q37</span><span class="dea-badge topic">VPC · Gateway Endpoint · Lambda · 비용 효율</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>S3 VPC Gateway Endpoint</strong>는 VPC 내에서 인터넷 게이트웨이나 NAT 없이 S3에 안전하게 연결하는 무료 기능입니다. VPC 내 Lambda 함수가 S3에 업로드할 때 타임아웃이 발생하면 Gateway Endpoint와 라우팅 테이블을 확인해야 합니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>VPC를 지원하는 Lambda 함수가 레거시 SFTP 서버에서 파일을 가져와 S3 버킷에 업로드하는 역할을 합니다. SFTP 연결은 정상이지만 S3 업로드 시 타임아웃 오류가 반복됩니다. 가장 비용 효율적으로 이 문제를 해결하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q37-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>VPC 퍼블릭 서브넷에 NAT 게이트웨이를 생성하고 네트워크 트래픽을 NAT 게이트웨이로 라우팅합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">NAT 게이트웨이</span> — 프라이빗 서브넷에서 인터넷으로 나가는 통로. 시간당 요금 + 처리 데이터 GB당 요금이 발생. S3 접근에 NAT를 사용하면 <strong>불필요한 비용 발생</strong>. Gateway Endpoint를 쓰면 무료.</div></li>
+    <li class="dea-opt" id="q37-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon S3용 VPC Gateway Endpoint를 생성하고, 네트워크 트래픽이 Gateway Endpoint를 경유하도록 라우팅 테이블을 업데이트합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">S3 VPC Gateway Endpoint</span> — S3로 향하는 트래픽을 AWS 내부 네트워크로 라우팅하는 무료 엔드포인트. 인터넷 게이트웨이나 NAT 없이도 S3 접근 가능. <strong>추가 비용 없음</strong>. 라우팅 테이블에 엔드포인트 경로만 추가하면 타임아웃 해결.</div></li>
+    <li class="dea-opt" id="q37-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon S3용 VPC Interface Endpoint를 생성하고 네트워크 트래픽을 Interface Endpoint로 라우팅합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">VPC Interface Endpoint</span> — ENI(네트워크 인터페이스) 기반으로 시간당 요금이 발생. 기술적으로 동작하지만 S3는 <strong>무료인 Gateway Endpoint</strong>가 있어 Interface Endpoint를 쓸 이유가 없음.</div></li>
+    <li class="dea-opt" id="q37-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>VPC 인터넷 게이트웨이를 사용하여 인터넷으로 연결하고 네트워크 트래픽을 인터넷 게이트웨이로 라우팅합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">인터넷 게이트웨이</span> — 퍼블릭 IP가 있는 리소스에서만 작동. VPC 지원 Lambda는 탄력적 네트워크 인터페이스(프라이빗 IP)를 사용하므로 인터넷 게이트웨이를 <strong>직접 사용할 수 없음</strong>.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q37">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q37">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">B — S3 VPC Gateway Endpoint + 라우팅 테이블 업데이트 (무료)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — VPC에서 S3 접근 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>비용</th><th>보안</th><th>VPC Lambda 적합?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>S3 Gateway Endpoint</strong></td><td><span class="dea-pill good">무료</span></td><td>AWS 내부 네트워크</td><td><span class="dea-pill good">✓ 최적</span></td></tr>
+      <tr><td>S3 Interface Endpoint</td><td>시간당 요금</td><td>AWS 내부 네트워크</td><td>비용 과다</td></tr>
+      <tr><td>NAT 게이트웨이</td><td>시간당 + GB당 요금</td><td>인터넷 경유</td><td><span class="dea-pill bad">비용 과다</span></td></tr>
+      <tr><td>인터넷 게이트웨이</td><td>무료</td><td>인터넷 경유</td><td><span class="dea-pill bad">프라이빗 IP 불가</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"VPC 내 Lambda → S3 타임아웃 + 비용 효율"<br>  →  <span class="dea-hl">S3 VPC Gateway Endpoint</span> (무료!)<br><br>S3 / DynamoDB = Gateway Endpoint (무료)<br>그 외 서비스 = Interface Endpoint (유료)<br>NAT = 불필요한 비용 발생</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q38 -->
+<div class="dea-q-block" id="dea-q38">
+  <div class="dea-meta"><span class="dea-badge qnum">Q38</span><span class="dea-badge topic">DynamoDB TTL · 자동 만료 · 운영 최소화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>DynamoDB TTL(Time to Live)</strong>은 항목별로 만료 시각을 타임스탬프로 지정하면 해당 시각이 지난 후 DynamoDB가 자동으로 삭제하는 기능입니다. Lambda나 Glue 없이 내장 기능만으로 데이터 수명주기를 관리할 수 있습니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>신규 회원 대상 30일 프로모션 기간 동안의 거래를 DynamoDB에 저장하고 Lambda로 처리합니다. 프로모션 기간이 지난 거래 데이터는 스토리지 비용 절감과 분석 정확도 유지를 위해 자동으로 삭제되어야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q38-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>매일 DynamoDB 데이터를 S3로 전송하는 Lambda 함수를 구현하고 S3 수명주기 정책으로 30일 후 삭제합니다.</span></div><div class="dea-inline-exp">❌ DynamoDB → S3 전송 로직을 직접 코딩해야 하고, 원본 DynamoDB 데이터는 삭제되지 않음. 데이터 이동 코딩 + 두 스토리지 관리라는 <strong>불필요한 오버헤드</strong> 발생.</div></li>
+    <li class="dea-opt" id="q38-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>매일 DynamoDB 테이블을 전체 스캔하여 30일이 지난 항목을 찾아 삭제하는 Lambda 함수를 구현합니다.</span></div><div class="dea-inline-exp">❌ Lambda 함수 개발 + 매일 전체 스캔(RCU 비용 증가) + 유지보수. DynamoDB 기본 TTL 기능으로 훨씬 간단하게 해결 가능한데 <strong>불필요하게 복잡</strong>한 방법.</div></li>
+    <li class="dea-opt" id="q38-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>DynamoDB 항목에 TTL(Time to Live) 속성을 설정하여 거래 생성일로부터 30일 후에 자동으로 만료·삭제되도록 합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">DynamoDB TTL(Time to Live)</span> — 각 항목에 Unix 타임스탬프로 만료 시각을 설정하면 DynamoDB가 자동으로 삭제. 마치 식품 유통기한처럼 날짜를 찍어두면 지나면 자동 폐기. <strong>추가 코드·서비스 없이</strong> 내장 기능만으로 구현. 삭제 비용도 없음.</div></li>
+    <li class="dea-opt" id="q38-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>Glue ETL 작업으로 30일 후 데이터를 별도 아카이브 DynamoDB 테이블로 이동합니다.</span></div><div class="dea-inline-exp">❌ Glue ETL 구성 + DynamoDB 간 데이터 이동 로직 + 아카이브 테이블 관리까지 추가. 데이터를 삭제하는 것이 아니라 이동하는 것이므로 <strong>스토리지 비용 절감 효과도 없음</strong>. 과도한 복잡도.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q38">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q38">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">C — DynamoDB TTL로 30일 후 자동 만료·삭제</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — DynamoDB 데이터 자동 삭제 방법 비교</div>
+    <table class="dea-table"><thead><tr><th>방법</th><th>코딩 필요</th><th>추가 비용</th><th>운영 부담</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DynamoDB TTL</strong></td><td><span class="dea-pill good">없음</span></td><td><span class="dea-pill good">없음</span></td><td><span class="dea-pill good">최소</span></td></tr>
+      <tr><td>Lambda 스캔·삭제</td><td><span class="dea-pill bad">필요</span></td><td>Lambda + RCU 비용</td><td>중간</td></tr>
+      <tr><td>S3 수명주기 + 이동</td><td><span class="dea-pill bad">필요</span></td><td>이동 + S3 비용</td><td>높음</td></tr>
+      <tr><td>Glue ETL 이동</td><td><span class="dea-pill bad">필요</span></td><td>Glue DPU 비용</td><td>높음</td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"DynamoDB 항목 일정 기간 후 자동 삭제"  →  <span class="dea-hl">TTL(Time to Live)</span><br><br>Unix 타임스탬프로 만료 시각 설정 → DynamoDB가 자동 삭제<br>추가 코드·서비스·비용 없음 = 내장 기능</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q39 -->
+<div class="dea-q-block" id="dea-q39">
+  <div class="dea-meta"><span class="dea-badge qnum">Q39</span><span class="dea-badge topic">IoT · Glue ETL · S3 데이터 레이크 · QuickSight</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead">IoT 데이터 파이프라인의 표준 패턴은 <strong>S3(데이터 레이크) + Glue(완전관리형 ETL) + QuickSight(시각화)</strong>입니다. Athena는 쿼리 도구이지 시각화 도구가 아님을 반드시 구분해야 합니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>공장에서 매시간 IoT 센서 데이터를 수신합니다. 센서는 장비 출력과 오류 정보를 다양한 형식으로 전송합니다. 이 데이터를 데이터 레이크로 통합하고, 완전관리형 ETL로 일관된 형식으로 변환한 뒤 시각화 대시보드로 분석하려 합니다. 이 요건을 모두 충족하는 솔루션은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q39-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>데이터를 Amazon Redshift에 저장하고, AWS Glue로 형식을 통일하고, Amazon Athena로 시각화합니다.</span></div><div class="dea-inline-exp">❌ Redshift는 데이터 웨어하우스로 데이터 레이크가 아님. <span class="dea-term">Amazon Athena</span>는 쿼리 서비스이지 <strong>시각화 도구가 아님</strong>. 시각화는 QuickSight가 담당.</div></li>
+    <li class="dea-opt" id="q39-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>데이터를 Amazon S3에 저장하고, AWS Glue로 형식을 통일하고, Amazon Athena로 시각화합니다.</span></div><div class="dea-inline-exp">❌ S3 + Glue는 맞지만 <strong>Athena는 시각화 도구가 아님</strong>. Athena는 SQL 쿼리 서비스. 시각화를 위해서는 QuickSight가 필요.</div></li>
+    <li class="dea-opt" id="q39-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>데이터를 Amazon Redshift에 저장하고, Amazon EMR 클러스터를 프로비저닝하여 형식을 통일하고, Amazon QuickSight로 시각화합니다.</span></div><div class="dea-inline-exp">❌ Redshift는 데이터 레이크가 아닌 웨어하우스. <span class="dea-term">Amazon EMR</span> — EC2 기반 클러스터로 <strong>완전관리형 ETL이 아님</strong>. 클러스터 프로비저닝·관리 부담 존재. QuickSight는 맞음.</div></li>
+    <li class="dea-opt" id="q39-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>데이터를 Amazon S3에 저장하고, AWS Glue로 형식을 통일하고, Amazon QuickSight로 시각화합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">Amazon S3</span> — 데이터 레이크 표준 스토리지. <span class="dea-term">AWS Glue</span> — 완전 서버리스 관리형 ETL, 다양한 형식을 일관된 형식으로 변환. <span class="dea-term">Amazon QuickSight</span> — BI 시각화 서비스. 세 요건(데이터 레이크 + 완전관리형 ETL + 시각화) 모두 정확히 충족.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q39">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q39">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — S3(데이터 레이크) + Glue(ETL) + QuickSight(시각화)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 분석·시각화 서비스 역할 구분</div>
+    <table class="dea-table"><thead><tr><th>서비스</th><th>역할</th><th>시각화 가능?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Amazon QuickSight</strong></td><td>BI 시각화 대시보드</td><td><span class="dea-pill good">✓ 전용</span></td></tr>
+      <tr><td>Amazon Athena</td><td>S3 위 SQL 쿼리</td><td><span class="dea-pill bad">✗ 쿼리만</span></td></tr>
+      <tr><td>AWS Glue</td><td>완전관리형 ETL</td><td><span class="dea-pill bad">✗ ETL만</span></td></tr>
+      <tr><td>Amazon EMR</td><td>관리형 클러스터 (비완전관리)</td><td><span class="dea-pill bad">✗</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>데이터 레이크  →  <span class="dea-hl">Amazon S3</span><br>완전관리형 ETL →  <span class="dea-hl">AWS Glue</span>  (서버리스)<br>시각화         →  <span class="dea-hl">Amazon QuickSight</span><br><br>Athena = 쿼리 도구 (시각화 아님!) → 자주 나오는 함정</code></div>
+  </div>
+</div>
+
+<hr class="dea-q-divider">
+
+<!-- Q40 -->
+<div class="dea-q-block" id="dea-q40">
+  <div class="dea-meta"><span class="dea-badge qnum">Q40</span><span class="dea-badge topic">Redshift SQL · ROW_NUMBER · 윈도우 함수</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+  <p class="dea-seo-lead"><strong>ROW_NUMBER()</strong>는 동일한 값이 있더라도 항상 연속적인 고유 번호를 부여하는 윈도우 함수입니다. 반면 RANK()는 동점 항목에 같은 순위를 부여하고 다음 순위를 건너뜁니다. "중복 없는 순위"가 요건이라면 ROW_NUMBER가 정답입니다.</p>
+  <div class="dea-qcard">
+    <div class="dea-stitle">📋 Question</div>
+    <p>제품 테이블(product_id, name, price, category)에서 가격 기준으로 제품을 정렬하되, 가격이 동일하더라도 각 제품에 고유한 순위 번호(1, 2, 3...)를 부여하고 싶습니다. 아래는 원하는 출력 예시입니다.<br><br>
+    product_1, 제품A, 100, 카테고리1 → 1<br>
+    product_2, 제품B, 90, 카테고리2 → 2<br>
+    product_3, 제품C, 90, 카테고리3 → 3<br><br>
+    이 결과를 만드는 SQL은 무엇일까요?</p>
+  </div>
+  <ul class="dea-opts">
+    <li class="dea-opt" id="q40-A"><div class="dea-opt-row"><span class="dea-k">A</span><span>COUNT(DISTINCT product_id) AS product_rank를 사용하여 가격 기준으로 정렬합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">COUNT(DISTINCT ...)</span> — 집계 함수로 중복 제거 후 개수를 반환. 순위 번호를 만드는 함수가 아님. GROUP BY 없이 개별 행 순위 부여 불가.</div></li>
+    <li class="dea-opt" id="q40-B"><div class="dea-opt-row"><span class="dea-k">B</span><span>RANK() OVER (ORDER BY price) AS product_rank를 사용합니다.</span></div><div class="dea-inline-exp">❌ <span class="dea-term">RANK()</span> — 동일 가격(90)이면 같은 순위(2)를 부여하고 다음 순위(3)는 건너뜀(4로 이동). 예시 출력처럼 <strong>2, 3 연속 번호가 나오지 않음</strong>. 2, 2, 4가 됨.</div></li>
+    <li class="dea-opt" id="q40-C"><div class="dea-opt-row"><span class="dea-k">C</span><span>COUNT(product_id) AS product_rank를 사용하여 가격 기준으로 정렬합니다.</span></div><div class="dea-inline-exp">❌ COUNT(product_id)는 집계 함수로 전체 행 수를 반환. 개별 행에 순서대로 번호를 부여하는 기능이 없음.</div></li>
+    <li class="dea-opt" id="q40-D"><div class="dea-opt-row"><span class="dea-k">D</span><span>ROW_NUMBER() OVER (ORDER BY price DESC) AS product_rank를 사용합니다.</span></div><div class="dea-inline-exp">✅ <span class="dea-term">ROW_NUMBER()</span> — 동일 값이 있어도 항상 연속적인 고유 번호(1, 2, 3...)를 부여하는 윈도우 함수. 가격 90짜리 두 제품도 2번, 3번으로 다른 번호 부여. 예시 출력 결과와 정확히 일치. <code>ORDER BY price DESC</code>로 높은 가격이 1위.</div></li>
+  </ul>
+  <button class="dea-btn" id="btn-q40">✅ 정답 확인하기</button>
+  <div class="dea-exp" id="exp-q40">
+    <div class="dea-ans-banner"><div class="dea-ans-icon">🎯</div><div><div class="dea-ans-sub">정답</div><div class="dea-ans-main">D — ROW_NUMBER() OVER (ORDER BY price DESC)</div></div></div>
+    <div><div class="dea-stitle">🔑 핵심 개념 — 윈도우 순위 함수 비교</div>
+    <table class="dea-table"><thead><tr><th>함수</th><th>동점 처리</th><th>예시 (100, 90, 90)</th><th>중복 없는 순위?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ROW_NUMBER()</strong></td><td>고유 번호 부여</td><td>1, 2, 3</td><td><span class="dea-pill good">✓</span></td></tr>
+      <tr><td>RANK()</td><td>동점 같은 순위 + 건너뜀</td><td>1, 2, 2, 4</td><td><span class="dea-pill bad">✗</span></td></tr>
+      <tr><td>DENSE_RANK()</td><td>동점 같은 순위 + 연속</td><td>1, 2, 2, 3</td><td><span class="dea-pill bad">✗</span></td></tr>
+    </tbody></table></div>
+    <div class="dea-memory"><div class="dea-mem-label">💡 이것만 기억하자</div>
+    <code>"중복 없는 연속 순위 번호"  →  <span class="dea-hl">ROW_NUMBER()</span><br><br>ROW_NUMBER  = 항상 1, 2, 3, 4...  (동점도 다른 번호)<br>RANK        = 동점 시 같은 번호 + 건너뜀 (1, 2, 2, 4)<br>DENSE_RANK  = 동점 시 같은 번호 + 연속  (1, 2, 2, 3)</code></div>
+  </div>
+</div>
+
+<div class="dea-tags">
+  <span class="dea-tag">AWS DEA-C01</span>
+  <span class="dea-tag">Redshift IdP 페더레이션</span>
+  <span class="dea-tag">S3 Gateway Endpoint</span>
+  <span class="dea-tag">DynamoDB TTL</span>
+  <span class="dea-tag">IoT 데이터 파이프라인</span>
+  <span class="dea-tag">ROW_NUMBER 윈도우 함수</span>
+  <span class="dea-tag">AWS 자격증</span>
+</div>
+
+<script>
+(function(){
+  var questions=[
+    {id:'q36',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Redshift에 IdP 등록'},
+    {id:'q37',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — S3 Gateway Endpoint (무료)'},
+    {id:'q38',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — DynamoDB TTL'},
+    {id:'q39',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — S3 + Glue + QuickSight'},
+    {id:'q40',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — ROW_NUMBER()'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

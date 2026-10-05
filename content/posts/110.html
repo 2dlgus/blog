@@ -1,0 +1,507 @@
+<!--
+id: 110
+제목: AWS DEA-C01 각색 문제 Day 13 — S3 객체 잠금 규정, QuickSight Athena+SPICE, DMS, S3 Lambda, Athena Parquet+Snappy
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, S3 객체 잠금, QuickSight SPICE, DMS CDCLatencySource, S3 Lambda 루프, Parquet Snappy
+날짜: 2026-03-27 23:34
+수정: 2026-03-27 23:35
+형식: html
+썸네일: /img/t/dJMcagdSThE.webp
+-->
+<style>
+.pb-110 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-110 .dea-wrap *{box-sizing:border-box}
+.pb-110 .dea-post-header{margin-bottom:32px}
+.pb-110 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-110 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-110 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-110 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-110 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-110 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-110 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-110 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-110 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-110 .dea-q-block{margin-bottom:48px}
+.pb-110 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-110 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-110 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-110 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-110 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-110 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-110 .dea-badge.multi{background:var(--r5);color:var(--r60)}
+.pb-110 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-110 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-110 .dea-seo-lead strong{color:var(--p50)}
+.pb-110 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-110 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-110 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-110 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-110 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden}
+.pb-110 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-110 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pb-110 .dea-opt.ok{border-color:var(--s60)}
+.pb-110 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-110 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-110 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-110 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-110 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-110 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-110 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-110 .dea-term{font-weight:700;color:var(--p50)}
+.pb-110 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-110 .dea-btn:hover{background:var(--p60)}
+.pb-110 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-110 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-110 .dea-exp.on{display:flex}
+.pb-110 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-110 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-110 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-110 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-110 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-110 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-110 .dea-table th, .pb-110 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-110 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-110 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-110 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-110 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-110 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-110 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-110 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-110 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-110 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-110 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-110 .dea-hl{color:var(--p50);font-weight:700}
+.pb-110 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-110 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-110 .dea-wrap{padding:14px 6px 52px}
+.pb-110 .dea-post-title{font-size:18px}
+.pb-110 .dea-qcard p{font-size:14px}
+.pb-110 .dea-opt-row{font-size:13px}
+.pb-110 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-110 .dea-table{font-size:11.5px}
+.pb-110 .dea-table th, .pb-110 .dea-table td{padding:8px 9px}
+.pb-110 .dea-ans-main{font-size:14.5px}
+.pb-110 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-110">
+<article class="dea-wrap">
+<div>
+
+</div>
+<div class="dea-post-header">
+<h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 &mdash; Day 13</h1>
+<p class="dea-post-desc" data-ke-size="size16">S3 객체 잠금 규정 준수 모드, QuickSight Athena+SPICE(복수), DMS CDCLatencySource 지표, S3 Lambda 무한루프 버킷 분리, Athena Parquet+Snappy &mdash; 5문제 핵심 정리.</p>
+<div class="dea-post-meta"><span class="dea-badge exam">AWS DEA-C01</span> <span class="dea-badge topic">Domain 1&middot;2&middot;4 &middot; 거버넌스&middot;BI&middot;모니터링</span> <span class="dea-badge diff">5문제</span></div>
+</div>
+<nav class="dea-toc">
+<div class="dea-toc-title">📋 목차</div>
+<ul class="dea-toc-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><a href="#dea-q61"><span class="dea-toc-num">Q61</span> S3 파일 최소 2년 삭제 방지 &mdash; 법적 요건 충족</a></li>
+<li><a href="#dea-q62"><span class="dea-toc-num">Q62</span> QuickSight 대시보드 &mdash; 비용 효율적 클릭스트림 분석 (복수)</a></li>
+<li><a href="#dea-q63"><span class="dea-toc-num">Q63</span> DMS CDC 지연 시간 원인 &mdash; 소스 DB 확인 지표</a></li>
+<li><a href="#dea-q64"><span class="dea-toc-num">Q64</span> S3&rarr;Lambda 인벤토리 무한루프 방지</a></li>
+<li><a href="#dea-q65"><span class="dea-toc-num">Q65</span> Athena 쿼리 런타임&middot;스토리지 최적화 &mdash; 파일 형식&middot;압축</a></li>
+</ul>
+</nav><!-- Q61 -->
+<div id="dea-q61" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q61</span><span class="dea-badge topic">S3 객체 잠금 &middot; 규정 준수 모드 &middot; WORM</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>S3 객체 잠금 규정 준수 모드(Compliance Mode)</b>는 루트 사용자를 포함한 누구도 보존 기간 동안 파일을 삭제하거나 잠금을 해제할 수 없습니다. 버킷 정책이나 MFA 삭제는 권한이 있는 사용자가 우회할 수 있어 완벽한 법적 요건 충족이 어렵습니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">기업이 비즈니스 크리티컬 데이터를 S3 버킷에 저장합니다. 법적 요건에 따라 파일을 최소 2년간 보관해야 하며, 보존 기간 동안 누구도 파일을 삭제할 수 없어야 합니다. 이 요건을 충족하는 구성은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q61-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>규정 준수(Compliance) 모드에서 S3 객체 잠금을 구성하고 보존 기간을 2년으로 설정합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">S3 객체 잠금 규정 준수 모드(Compliance Mode)</span> &mdash; WORM(Write Once, Read Many) 방식. AWS 계정 루트 사용자를 포함한 <b>그 누구도</b> 보존 기간 내 파일 삭제&middot;잠금 해제 불가. 가장 엄격한 불변성 보장.</div>
+</li>
+<li id="q61-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>모든 IAM 사용자&middot;역할에 대해 삭제 권한을 명시적으로 거부하는 S3 버킷 정책을 구성합니다.</span></div>
+<div class="dea-inline-exp">❌ 버킷 정책은 권한이 있는 사용자(예: 버킷 정책 관리자)가 정책 자체를 수정하여 삭제 허용으로 변경할 수 있음. <b>완전한 삭제 방지를 보장하지 못함</b>.</div>
+</li>
+<li id="q61-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>S3 Glacier Deep Archive로 전환하는 수명주기 정책을 구성합니다.</span></div>
+<div class="dea-inline-exp">❌ S3 수명주기 정책은 스토리지 클래스를 전환하거나 객체를 삭제하는 기능. <b>파일 삭제를 방지하지 않음</b>. Glacier로 이동해도 권한이 있으면 삭제 가능.</div>
+</li>
+<li id="q61-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>실수로 파일을 삭제하지 못하도록 MFA 삭제를 구성합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">MFA 삭제</span> &mdash; 추가 인증 단계를 요구하지만 MFA를 보유한 사용자는 여전히 삭제 가능. <b>삭제 방지가 아닌 실수 방지</b>만 제공. 법적 요건 완전 충족 불가.</div>
+</li>
+</ul>
+<button id="btn-q61" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q61" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">A &mdash; S3 객체 잠금 규정 준수 모드 + 2년 보존 기간</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; S3 객체 잠금 모드 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>모드</th>
+<th>삭제 방지 대상</th>
+<th>루트 포함?</th>
+<th>법적 요건 충족?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>규정 준수(Compliance)</b></td>
+<td>모든 사용자</td>
+<td><span class="dea-pill good">✓ 포함</span></td>
+<td><span class="dea-pill good">✓ 완벽</span></td>
+</tr>
+<tr>
+<td>거버넌스(Governance)</td>
+<td>일반 사용자</td>
+<td>루트&middot;관리자 예외 가능</td>
+<td>조건부</td>
+</tr>
+<tr>
+<td>버킷 정책</td>
+<td>IAM 정책 기반</td>
+<td>정책 수정으로 우회 가능</td>
+<td><span class="dea-pill bad">✗ 불완전</span></td>
+</tr>
+<tr>
+<td>MFA 삭제</td>
+<td>실수만 방지</td>
+<td>MFA 소지자 삭제 가능</td>
+<td><span class="dea-pill bad">✗</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"법적 요건 + 누구도 삭제 불가"<br />  &rarr;  <span class="dea-hl">S3 객체 잠금 규정 준수(Compliance) 모드</span><br /><br />Compliance = 루트도 삭제 불가, 보존 기간 동안 절대 불변<br />Governance = 관리자는 해제 가능 (법적 요건에는 부족)</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q62 -->
+<div id="dea-q62" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q62</span><span class="dea-badge topic">QuickSight &middot; Athena &middot; SPICE &middot; 대시보드</span><span class="dea-badge multi">✌️ 복수 정답</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Amazon QuickSight + Athena + SPICE</b> 조합은 S3 클릭스트림 데이터를 비용 효율적으로 대시보드화하는 표준 패턴입니다. SPICE(인메모리 엔진)는 데이터를 캐시해 빠른 대시보드 조회와 Athena 과금 절감을 동시에 달성합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question &mdash; 두 가지를 선택하세요</div>
+<p data-ke-size="size16">마케팅 회사가 Firehose로 수집한 클릭스트림 데이터를 S3에 저장합니다. 수백 명의 사용자가 사용할 대시보드를 QuickSight로 개발하려 합니다. 클릭스트림 활동의 일별 업데이트를 제공하고 확장 가능하면서 비용 효율적인 단계의 조합은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q62-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon Redshift를 사용하여 클릭스트림 데이터를 저장하고 쿼리합니다.</span></div>
+<div class="dea-inline-exp">❌ 데이터가 이미 S3에 있는데 Redshift 클러스터를 별도로 운영하면 <b>불필요한 비용 발생</b>. 클러스터 유지 비용 + 데이터 수집 작업까지 추가. S3에서 직접 쿼리하는 방법이 더 효율적.</div>
+</li>
+<li id="q62-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon Athena를 사용하여 S3 클릭스트림 데이터를 쿼리합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Amazon Athena</span> &mdash; 서버리스, S3 데이터를 직접 SQL 쿼리. 쿼리할 때만 과금. QuickSight 데이터셋 소스로 직접 연결 가능. 클러스터 운영 비용 없음.</div>
+</li>
+<li id="q62-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Amazon S3 분석을 사용하여 클릭스트림 데이터를 쿼리합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Amazon S3 분석</span> &mdash; 데이터 접근 패턴을 관찰하여 스토리지 클래스 전환 시점을 결정하는 기능. <b>데이터 쿼리 기능이 없음</b>. 비용 최적화 분석 도구이지 쿼리 도구가 아님.</div>
+</li>
+<li id="q62-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>QuickSight 다이렉트 SQL 쿼리로 대시보드 데이터에 접근합니다.</span></div>
+<div class="dea-inline-exp">❌ 다이렉트 SQL 쿼리는 대시보드 접근 시마다 소스에서 실시간 쿼리 실행 &rarr; <b>Athena 과금이 사용자 수&middot;접근 횟수에 비례하여 증가</b>. 수백 명이 자주 접근하면 비용 급증. SPICE 캐시 사용이 더 비용 효율적.</div>
+</li>
+<li id="q62-E" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">E</span><span>QuickSight SPICE(인메모리 엔진)를 사용하여 데이터를 캐시하고 일별 데이터셋 새로 고침을 구성합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">QuickSight SPICE</span> &mdash; 인메모리 캐시 엔진. 데이터를 SPICE에 가져와두면 대시보드 조회 시 Athena를 재실행하지 않음 &rarr; <b>Athena 과금 최소화 + 빠른 응답</b>. 일별 새로 고침으로 최신 데이터 유지. 수백 명 동시 접근에도 확장 가능.</div>
+</li>
+</ul>
+<button id="btn-q62" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q62" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B + E &mdash; Athena(쿼리) + QuickSight SPICE(캐시&middot;대시보드)</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; QuickSight 데이터 접근 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>조회 시 Athena 과금?</th>
+<th>속도</th>
+<th>비용 효율</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>SPICE + 일별 새로고침</b></td>
+<td><span class="dea-pill good">새로고침 시만</span></td>
+<td><span class="dea-pill good">빠름</span></td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+</tr>
+<tr>
+<td>다이렉트 SQL 쿼리</td>
+<td><span class="dea-pill bad">매 조회마다</span></td>
+<td>느림</td>
+<td><span class="dea-pill bad">비용 증가</span></td>
+</tr>
+<tr>
+<td>Redshift 연결</td>
+<td>없음 (클러스터 비용)</td>
+<td>빠름</td>
+<td>클러스터 유지 비용</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"S3 클릭스트림 &rarr; QuickSight 대시보드 + 비용 효율"<br />  &rarr;  <span class="dea-hl">Athena</span>(쿼리) + <span class="dea-hl">SPICE</span>(일별 캐시)<br /><br />SPICE = 인메모리 캐시 &rarr; 대시보드 조회 시 Athena 재실행 안 함<br />다이렉트 SQL = 매 조회마다 Athena 과금 &rarr; 비용 급증</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q63 -->
+<div id="dea-q63" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q63</span><span class="dea-badge topic">DMS &middot; CDCLatencySource &middot; 모니터링</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>CDCLatencySource</b>는 DMS가 소스 DB(PostgreSQL 등)에서 변경 사항을 캡처하는 데 걸리는 지연을 측정합니다. 소스 DB가 CDC 지연의 원인인지 확인할 때 가장 직접적인 지표입니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">AWS DMS 지속 복제 작업이 온프레미스 PostgreSQL DB의 변경 사항을 Amazon Redshift로 거의 실시간으로 전송합니다. CDC 중 지연 시간 문제가 발견되었고 PostgreSQL 소스 DB가 원인으로 의심됩니다. 소스 DB가 지연의 원인임을 확인하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q63-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>Amazon CloudWatch에서 DMS 작업의 CDCIncomingChanges 지표를 검사합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">CDCIncomingChanges</span> &mdash; 특정 시점에 대상에 적용 대기 중인 변경 이벤트 수. 소스 DB의 변경 캡처 지연을 측정하지 않음. 대상 적용 병목을 나타내는 지표.</div>
+</li>
+<li id="q63-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>postgresql.conf 파일에서 소스 DB의 논리적 복제 설정을 확인합니다.</span></div>
+<div class="dea-inline-exp">❌ 논리적 복제 설정은 DMS 작업 시작 전제 조건. 이미 복제가 실행 중이므로 설정이 되어 있다는 뜻. 현재 발생하는 지연의 원인 분석과 무관.</div>
+</li>
+<li id="q63-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>소스 DB DMS 엔드포인트에 대한 CloudWatch Logs를 확인하고 오류 메시지를 검사합니다.</span></div>
+<div class="dea-inline-exp">❌ CloudWatch Logs는 오류&middot;경고 이벤트 기록. 소스 지연이 얼마나 심한지 정량적으로 측정하지 않음. 지연 원인 확인에 직접적이지 않음.</div>
+</li>
+<li id="q63-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Amazon CloudWatch에서 DMS 작업의 CDCLatencySource 지표를 검사합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">CDCLatencySource</span> &mdash; 소스 엔드포인트에서 캡처한 마지막 이벤트와 DMS 인스턴스 현재 시각의 차이(초 단위). 이 값이 크면 <b>소스 DB에서 변경 사항 캡처 자체가 지연</b>됨을 의미. 소스 DB를 원인으로 특정하는 가장 직접적인 지표.</div>
+</li>
+</ul>
+<button id="btn-q63" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q63" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">D &mdash; CDCLatencySource로 소스 DB 지연 확인</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; DMS CDC 지연 관련 지표 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>지표</th>
+<th>의미</th>
+<th>소스 지연 확인?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>CDCLatencySource</b></td>
+<td>소스 캡처 지연 (초)</td>
+<td><span class="dea-pill good">✓ 직접</span></td>
+</tr>
+<tr>
+<td>CDCLatencyTarget</td>
+<td>대상 적용 지연 (초)</td>
+<td>대상 지연 측정</td>
+</tr>
+<tr>
+<td>CDCIncomingChanges</td>
+<td>대기 중인 변경 이벤트 수</td>
+<td><span class="dea-pill bad">✗ 간접</span></td>
+</tr>
+<tr>
+<td>CloudWatch Logs</td>
+<td>오류&middot;경고 로그</td>
+<td><span class="dea-pill bad">✗ 정량 측정 아님</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"DMS 소스 DB 지연 확인"  &rarr;  <span class="dea-hl">CDCLatencySource</span><br />"DMS 대상 DB 지연 확인"  &rarr;  <span class="dea-hl">CDCLatencyTarget</span><br /><br />Source = 소스에서 캡처 지연<br />Target = 대상에 적용 지연</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q64 -->
+<div id="dea-q64" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q64</span><span class="dea-badge topic">S3 이벤트 &middot; Lambda 루프 &middot; 버킷 분리</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16">Lambda 함수가 <b>결과물을 트리거 소스 버킷에 다시 쓰면</b> S3 이벤트가 재발생해 무한 루프가 됩니다. 입력 버킷과 출력 버킷을 분리하면 루프가 차단됩니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">S3 PUT 이벤트가 Lambda 함수를 트리거하여 인벤토리 측정 프로세스를 실행합니다. 이 프로세스의 결과물을 동일한 S3 버킷에 저장하도록 구성되어 있어 프로세스가 무한 반복됩니다. 새 객체 업로드 시 프로세스가 한 번만 실행되도록 하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q64-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>S3 PUT 이벤트 트리거 대신 AWS CloudTrail 이벤트를 사용하여 Lambda 함수를 호출합니다.</span></div>
+<div class="dea-inline-exp">❌ CloudTrail 이벤트로 트리거를 변경해도 인벤토리 결과가 같은 버킷에 저장되면 새 PutObject 이벤트가 발생 &rarr; 다시 CloudTrail 이벤트 생성 &rarr; <b>루프 계속</b>. 근본 원인(같은 버킷 쓰기)을 해결하지 않음.</div>
+</li>
+<li id="q64-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Amazon SQS FIFO 대기열을 호출하도록 S3 이벤트를 구성하여 한 번만 처리합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">SQS FIFO</span> &mdash; 중복 없는 메시지 처리를 지원하지만 S3 이벤트 알림의 직접 대상으로 FIFO 큐를 사용할 수 없음. S3 이벤트 알림은 SQS 표준 큐, SNS, Lambda만 지원.</div>
+</li>
+<li id="q64-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>서비스 제어 정책(SCP)을 사용하여 S3 버킷에 대한 지속적인 일일 쓰기를 방지합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">SCP(서비스 제어 정책)</span> &mdash; AWS Organizations 단위 최대 권한 정책. 지속적 반복 쓰기 패턴을 감지하고 방지하는 기능이 없음. 쓰기 권한 자체를 제거하면 정상 업로드도 차단됨.</div>
+</li>
+<li id="q64-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>판매 데이터 입력 버킷과 인벤토리 프로세스 결과 출력 버킷을 분리합니다.</span></div>
+<div class="dea-inline-exp">✅ 핵심 해결책. 입력 S3 버킷(판매 데이터 업로드) &rarr; Lambda 트리거 &rarr; 인벤토리 처리 &rarr; 결과를 <b>별도 출력 S3 버킷에 저장</b>. 출력 버킷에는 S3 이벤트 트리거가 없으므로 Lambda가 다시 호출되지 않음. <b>루프 차단</b>.</div>
+</li>
+</ul>
+<button id="btn-q64" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q64" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">D &mdash; 입력&middot;출력 S3 버킷 분리로 무한루프 차단</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; S3 이벤트 Lambda 루프 방지 아키텍처</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>구성</th>
+<th>루프 발생?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>입력 버킷 = 출력 버킷 (현재 문제)</td>
+<td><span class="dea-pill bad">✓ 무한루프</span></td>
+</tr>
+<tr>
+<td><b>입력 버킷 &ne; 출력 버킷 (해결책)</b></td>
+<td><span class="dea-pill good">✗ 루프 없음</span></td>
+</tr>
+<tr>
+<td>이벤트 소스 변경(CloudTrail)</td>
+<td><span class="dea-pill bad">✓ 여전히 루프</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"S3 &rarr; Lambda &rarr; 같은 S3 쓰기"  =  <span class="dea-hl">무한루프!</span><br /><br />해결책: <span class="dea-hl">입력 버킷(트리거)</span>과 <span class="dea-hl">출력 버킷(결과)</span>을 분리<br />&rarr; 출력 버킷에 S3 이벤트 트리거 없음 &rarr; 루프 차단</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q65 -->
+<div id="dea-q65" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q65</span><span class="dea-badge topic">Athena &middot; Parquet &middot; Snappy 압축 &middot; 쿼리 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Apache Parquet + Snappy 압축</b>은 Athena 쿼리 런타임과 스토리지 비용을 동시에 최적화하는 최선의 조합입니다. Parquet은 열 기반 스캔을, Snappy는 빠른 압축&middot;해제를 제공합니다. Athena는 ZIP 압축을 지원하지 않습니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">Amazon Athena를 사용하여 10~15TB의 비압축 .csv 파일을 분석하려 합니다. 쿼리 런타임과 스토리지 비용 모두를 최적화하기 위해 데이터를 변환해야 합니다. 가장 적합한 파일 형식과 압축 방식의 조합은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q65-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>.csv 형식 + ZIP 압축</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">ZIP 압축</span> &mdash; Athena에서 <b>지원하지 않음</b>. Athena는 Snappy, Gzip, Zlib, LZO, Zstd 등 오픈소스 형식만 지원. 또한 CSV 형식 자체가 열 기반이 아니어서 쿼리 성능 개선 제한적.</div>
+</li>
+<li id="q65-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>JSON 형식 + bzip2 압축</span></div>
+<div class="dea-inline-exp">❌ bzip2는 Athena 지원 형식이지만 JSON은 행 기반 형식. 필요한 열만 읽는 열 기반 최적화 불가. 쿼리 런타임 최적화 요건 미충족.</div>
+</li>
+<li id="q65-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Apache Parquet 형식 + Snappy 압축</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Apache Parquet</span> &mdash; 열 기반 형식. 필요한 열만 스캔 &rarr; Athena 스캔량&middot;비용 대폭 감소. <span class="dea-term">Snappy 압축</span> &mdash; 빠른 압축&middot;해제 속도로 쿼리 런타임 최적화. 파일 크기 감소로 스토리지 비용 절감. Athena에서 Parquet+Snappy가 <b>쿼리 런타임과 비용 모두 최적화하는 표준 조합</b>.</div>
+</li>
+<li id="q65-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Apache Avro 형식 + LZO 압축</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Apache Avro</span> &mdash; 행 기반 형식. 실시간 처리&middot;전체 필드 접근에 적합하지 열 기반 분석 쿼리 최적화에 부적합. LZO는 압축률이 낮아 비용 절감 효과 낮음.</div>
+</li>
+</ul>
+<button id="btn-q65" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q65" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">C &mdash; Apache Parquet + Snappy 압축 (표준 최적화 조합)</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Athena 지원 형식&middot;압축 조합 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>조합</th>
+<th>열 기반?</th>
+<th>Athena 지원?</th>
+<th>쿼리 성능</th>
+<th>스토리지 비용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Parquet + Snappy</b></td>
+<td><span class="dea-pill good">✓</span></td>
+<td><span class="dea-pill good">✓</span></td>
+<td><span class="dea-pill good">최고</span></td>
+<td><span class="dea-pill good">최저</span></td>
+</tr>
+<tr>
+<td>ORC + Snappy/Zlib</td>
+<td><span class="dea-pill good">✓</span></td>
+<td><span class="dea-pill good">✓</span></td>
+<td>높음</td>
+<td>낮음</td>
+</tr>
+<tr>
+<td>JSON + bzip2</td>
+<td><span class="dea-pill bad">✗ 행 기반</span></td>
+<td>✓</td>
+<td>낮음</td>
+<td>중간</td>
+</tr>
+<tr>
+<td>CSV + ZIP</td>
+<td><span class="dea-pill bad">✗</span></td>
+<td><span class="dea-pill bad">✗ ZIP 미지원</span></td>
+<td>최저</td>
+<td>높음</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"Athena 쿼리 런타임 + 스토리지 비용 최적화"<br />  &rarr;  <span class="dea-hl">Apache Parquet</span> + <span class="dea-hl">Snappy 압축</span><br /><br />ZIP = Athena 미지원 (오답 함정!)<br />Avro / JSON = 행 기반 &rarr; 열 스캔 최적화 불가</code></div>
+</div>
+</div>
+<div class="dea-tags"><span class="dea-tag">AWS DEA-C01</span><span class="dea-tag">S3 객체 잠금</span><span class="dea-tag">QuickSight SPICE</span><span class="dea-tag">DMS CDCLatencySource</span><span class="dea-tag">S3 Lambda 루프</span><span class="dea-tag">Parquet Snappy</span><span class="dea-tag">AWS 자격증</span></div>
+<script>
+(function(){
+  var q=[
+    {id:'q61',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — S3 객체 잠금 규정 준수 모드'},
+    {id:'q62',ans:{'B':true,'E':true},keys:['A','B','C','D','E'],label:'✅ 정답: B+E — Athena + QuickSight SPICE'},
+    {id:'q63',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — CDCLatencySource'},
+    {id:'q64',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — 버킷 분리'},
+    {id:'q65',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — Parquet + Snappy'}
+  ];
+  for(var i=0;i<q.length;i++){(function(q){
+    var btn=document.getElementById('btn-'+q.id);if(!btn)return;
+    btn.addEventListener('click',function(){
+      for(var j=0;j<q.keys.length;j++){var el=document.getElementById(q.id+'-'+q.keys[j]);if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');}
+      var exp=document.getElementById('exp-'+q.id);if(exp)exp.className='dea-exp on';
+      btn.textContent=q.label;btn.disabled=true;
+      setTimeout(function(){var f=document.getElementById(q.id+'-'+q.keys[0]);if(f)f.scrollIntoView({behavior:'smooth',block:'start'});},120);
+    });
+  })(q[i]);}
+})();
+</script>
+</article>
+</div>

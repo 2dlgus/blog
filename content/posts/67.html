@@ -1,0 +1,214 @@
+<!--
+id: 67
+제목: AWS DEA-C01 시험 합격을 위한 완전 가이드 (feat.Gemini Pro 3.1)
+카테고리: Stack/AWS
+태그: AWS, DEA, Data Engineering, 데이터 엔지니어, 데이터 엔지니어링, Data Engineer, 합격 가이드
+날짜: 2026-03-11 21:01
+수정: 2026-03-21 23:46
+형식: html
+썸네일: /img/t/dJMcaiidV3r.webp
+-->
+<style>
+.pb-67 #aws-dea-post-wrapper{color:var(--p70);line-height:1.6;word-break:keep-all;width:100%;margin:0;padding:0;box-sizing:border-box}
+.pb-67 #aws-dea-post-wrapper *{box-sizing:border-box}
+.pb-67 #aws-dea-post-wrapper h2{font-size:1.5rem;font-weight:700;color:var(--p70);margin:2.5rem 0 1.2rem;padding-bottom:0.5rem;border-bottom:2px solid var(--y50);display:flex;align-items:center;gap:8px}
+.pb-67 #aws-dea-post-wrapper p{margin-bottom:1rem;color:var(--p70)}
+.pb-67 #aws-dea-post-wrapper .badge{display:inline-block;background:var(--y5);color:var(--r60);padding:4px 12px;border-radius:999px;font-size:0.85rem;font-weight:700;border:1px solid var(--y10);margin-bottom:1rem}
+.pb-67 #aws-dea-post-wrapper .highlight-box{background:var(--g0);padding:1.2rem;border-radius:0 8px 8px 0;margin:1.5rem 0}
+.pb-67 #aws-dea-post-wrapper .table-responsive{width:100%;overflow-x:auto;margin-bottom:2rem;border-radius:8px;border:1px solid var(--p10);-webkit-overflow-scrolling:touch}
+.pb-67 #aws-dea-post-wrapper table{width:100%;min-width:500px;border-collapse:collapse;text-align:left}
+.pb-67 #aws-dea-post-wrapper th{background:var(--p5);padding:12px 14px;font-weight:600;color:var(--p70);font-size:0.95rem;border-bottom:2px solid var(--p10);white-space:nowrap}
+.pb-67 #aws-dea-post-wrapper td{padding:12px 14px;border-bottom:1px solid var(--p10);font-size:0.95rem;color:var(--p60);vertical-align:top}
+.pb-67 #aws-dea-post-wrapper td strong{color:var(--p70)}
+.pb-67 #aws-dea-post-wrapper .grid-container{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1rem;margin-bottom:2rem}
+.pb-67 #aws-dea-post-wrapper .card{background:var(--g0);border:1px solid var(--p10);border-radius:12px;padding:1.2rem;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
+.pb-67 #aws-dea-post-wrapper .card-title{font-size:1.1rem;font-weight:700;color:var(--p70);margin-bottom:0.8rem}
+.pb-67 #aws-dea-post-wrapper .card ul{list-style-type:none;padding-left:0;margin:0}
+.pb-67 #aws-dea-post-wrapper .card li{position:relative;padding-left:14px;margin-bottom:0.4rem;font-size:0.9rem;color:var(--p60)}
+.pb-67 #aws-dea-post-wrapper .card li::before{content:'•';position:absolute;left:0;color:var(--y60);font-weight:bold}
+.pb-67 #aws-dea-post-wrapper .check-list{list-style:none;padding:0;margin:0}
+.pb-67 #aws-dea-post-wrapper .check-list li{padding:0.5rem 0 0.5rem 1.2rem;position:relative;border-bottom:1px dashed var(--p10)}
+.pb-67 #aws-dea-post-wrapper .check-list li:last-child{border-bottom:none}
+.pb-67 #aws-dea-post-wrapper .check-list li::before{content:'✔';position:absolute;left:0;color:var(--s60);font-size:0.9rem}
+@media (max-width: 768px){.pb-67 #aws-dea-post-wrapper h1{font-size:1.5rem !important}
+.pb-67 #aws-dea-post-wrapper h2{font-size:1.3rem;margin:2rem 0 1rem}
+.pb-67 #aws-dea-post-wrapper th, .pb-67 #aws-dea-post-wrapper td{padding:10px 6px;font-size:0.85rem}
+.pb-67 #aws-dea-post-wrapper .card{padding:1rem 0.8rem}
+.pb-67 #aws-dea-post-wrapper .highlight-box{padding:1rem 0.8rem}
+.pb-67 #aws-dea-post-wrapper .grid-container{gap:0.8rem}}
+</style>
+<div class="pb pb-67">
+<div id="aws-dea-post-wrapper">
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "AWS DEA 시험 완전정복 | 용어 비유·서비스 60개 지도·문제 패턴·3일 합격 전략",
+    "description": "AWS Data Engineer Associate(DEA-C01) 시험을 쉽게 이해하도록 핵심 용어를 실생활 비유로 정리하고, 핵심 AWS 서비스 60개 구조 지도, 문제 유형 30개 패턴, 3일 압축 합격 공부법까지 한 번에 담은 가이드.",
+    "author": { "@type": "Person", "name": "이현" },
+    "keywords": ["AWS DEA", "DEA-C01", "AWS Data Engineer", "데이터 엔지니어", "AWS 자격증"]
+  }
+  </script>
+
+<div style="text-align:center;margin:1.5rem 0 2.5rem"><span class="badge">AWS DEA-C01 완벽 대비</span>
+<h1 style="font-size:2.2rem;font-weight:800;color:var(--p70);margin-bottom:1rem;line-height:1.3">AWS Data Engineer Associate 시험<br />핵심 서비스와 문제 패턴으로 합격하는 가이드</h1>
+<p style="font-size:1.05rem;color:var(--p60);max-width:700px;margin:0 auto" data-ke-size="size16">AWS Data Engineer Associate(DEA-C01) 시험을 준비하는 분들을 위해 핵심 데이터를 실생활 비유로 설명하고, 시험에 자주 등장하는 문제 패턴과 아키텍처 흐름을 한 번에 정리했습니다.</p>
+</div>
+<div class="highlight-box">
+<h3 style="margin-top:0;color:var(--p60);font-size:1.15rem;font-weight:bold;margin-bottom:0.8rem" data-ke-size="size23">💡 합격 관점 핵심 프레임</h3>
+<ul class="check-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li>데이터가 들어온다 &rarr; 저장한다 &rarr; 정제한다 &rarr; 분석한다 &rarr; 보호한다.</li>
+<li>서비스 이름보다 &ldquo;언제 무엇을 고르는가&rdquo;가 더 중요합니다.</li>
+<li>문제는 대부분 성능&middot;비용&middot;운영성&middot;보안의 균형을 묻습니다.</li>
+</ul>
+</div>
+<h2 data-ke-size="size26">1️⃣ AWS DEA 핵심 용어 정리 (실생활 비유)</h2>
+<p data-ke-size="size16">시험에서 서비스 이름을 보고 바로 기능이 떠오르지 않으면 선택지가 흔들립니다. 자주 나오는 서비스를 &ldquo;현실 세계 역할&rdquo;로 연결했습니다.</p>
+<div class="table-responsive">
+<table data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스/개념</th>
+<th>실생활 비유</th>
+<th>시험 핵심 포인트</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Amazon S3</b></td>
+<td>모든 박스를 쌓아두는 초대형 창고</td>
+<td>데이터 레이크 기본 저장소. 싸고 확장 용이</td>
+</tr>
+<tr>
+<td><b>S3 Glacier</b></td>
+<td>오래된 서류를 넣는 외곽 보관 창고</td>
+<td>즉시 안 쓰는 장기보관 데이터</td>
+</tr>
+<tr>
+<td><b>Amazon Athena</b></td>
+<td>창고 안가고 재고 목록만 보는 직원</td>
+<td>S3 데이터 SQL 즉시 조회. 서버 운영 없음</td>
+</tr>
+<tr>
+<td><b>AWS Glue</b></td>
+<td>물건을 분류&middot;세척하는 자동 정리팀</td>
+<td>ETL, 크롤러, 데이터 카탈로그의 핵심</td>
+</tr>
+<tr>
+<td><b>Amazon EMR</b></td>
+<td>공장을 빌려 대용량 작업을 돌리는 라인</td>
+<td>Spark/Hadoop 등 빅데이터 프레임워크 필요시</td>
+</tr>
+<tr>
+<td><b>Amazon Redshift</b></td>
+<td>분석가 전용 초고속 자료실</td>
+<td>대규모 분석용 데이터 웨어하우스(DW)</td>
+</tr>
+<tr>
+<td><b>Kinesis Streams</b></td>
+<td>실시간 데이터 전용 고속도로</td>
+<td>실시간 수집. 샤드 및 처리량 제어</td>
+</tr>
+<tr>
+<td><b>Kinesis Firehose</b></td>
+<td>목적지로 배송해주는 자동 택배 라인</td>
+<td>스트리밍 데이터를 S3/Redshift에 자동 적재</td>
+</tr>
+<tr>
+<td><b>AWS Lambda</b></td>
+<td>이벤트가 생기면 튀어나오는 로봇</td>
+<td>서버리스 짧은 작업. 이벤트 기반 파이프라인</td>
+</tr>
+<tr>
+<td><b>Lake Formation</b></td>
+<td>구역을 관리하는 중앙 보안팀장</td>
+<td>데이터 레이크 권한 및 거버넌스 제어</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 data-ke-size="size26">2️⃣ 자주 등장하는 AWS 서비스 60개 구조</h2>
+<p data-ke-size="size16">합격 효율 관점에서는 서비스를 흐름상의 역할로 묶어 이해하는 것이 좋습니다.</p>
+<div class="grid-container">
+<div class="card">
+<div class="card-title">📥 수집 및 스트리밍</div>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>Kinesis (Streams, Firehose, Analytics)</li>
+<li>Amazon MSK (Kafka)</li>
+<li>AWS DMS, SCT (마이그레이션)</li>
+<li>DataSync, Transfer Family</li>
+<li>Amazon AppFlow, API Gateway</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">💾 저장 및 데이터베이스</div>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>Amazon S3, Glacier, EBS, EFS</li>
+<li>DynamoDB (NoSQL)</li>
+<li>RDS, Aurora (관계형)</li>
+<li>Neptune (그래프), DocumentDB</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">⚙️ 처리 (ETL) 및 컴퓨트</div>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>AWS Glue (Data Catalog, Crawler)</li>
+<li>Amazon EMR (Hadoop, Spark)</li>
+<li>AWS Lambda, Batch</li>
+<li>EC2, ECS, EKS</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">📊 분석 및 시각화</div>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>Amazon Athena</li>
+<li>Amazon Redshift (Spectrum, RA3)</li>
+<li>OpenSearch Service</li>
+<li>Amazon QuickSight</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">🎼 오케스트레이션</div>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>AWS Step Functions</li>
+<li>Amazon MWAA (Airflow)</li>
+<li>EventBridge, SQS, SNS</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">🔒 보안 및 거버넌스</div>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li>AWS Lake Formation, IAM</li>
+<li>KMS, Secrets Manager</li>
+<li>Amazon Macie, CloudTrail</li>
+<li>CloudWatch, AWS Config</li>
+</ul>
+</div>
+</div>
+<h2 data-ke-size="size26">3️⃣ 반드시 숙지해야 할 오답 제거 팁</h2>
+<div class="grid-container">
+<div class="card">
+<div class="card-title">핵심 판단 기준</div>
+<ul class="check-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><b>실시간 vs 배치:</b> 즉시 반응(Kinesis/Lambda) vs 모아서 처리(S3/Glue)</li>
+<li><b>운영 부담 최소화:</b> 서버리스가 강세 (Athena, Glue, Firehose)</li>
+<li><b>비용 최적화:</b> Parquet/ORC 압축 + 날짜 파티션 조합 단골 출제</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">자주 틀리는 함정</div>
+<ul class="check-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li>단순 S3 SQL 조회인데 굳이 EMR을 고르는 경우 (정답: Athena)</li>
+<li>실시간 자동 적재에 Streams를 고르는 경우 (정답: Firehose)</li>
+<li>데이터 레이크 세밀 권한에서 IAM만 보고 Lake Formation을 놓치는 경우</li>
+</ul>
+</div>
+</div>
+<h2 data-ke-size="size26">4️⃣ 3일 합격 공부 전략</h2>
+<div class="highlight-box" style="border-left-color:var(--s60)">
+<p data-ke-size="size16"><b>DAY 1. 뼈대 잡기 (핵심 서비스 15개)</b><br />S3, Athena, Glue, Redshift, Kinesis(Streams/Firehose), Lambda, Lake Formation의 역할을 우선 장악하세요.</p>
+<p data-ke-size="size16"><b>DAY 2. 확장과 함정 정리</b><br />EMR, DMS, Macie, Secrets Manager 등을 정리하고, Parquet/ORC 변환 및 파티셔닝 전략을 집중적으로 외우세요.</p>
+<p style="margin-bottom:0" data-ke-size="size16"><b>DAY 3. 시험형 사고 만들기</b><br />"왜 정답이 아닌가" 기준으로 오답 노트를 작성하세요. 최소한 4개 보기 중 2개를 빠르게 지우는 논리를 연습해야 합니다.</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,597 @@
+<!--
+id: 97
+제목: 글로벌 머니플로우 트래커 — 2026년 3월 3주차
+카테고리: Investment
+태그: 주식투자, 원유가격, 에너지주, 미국주식, VIX, 돈의흐름, 이란전쟁, 섹터분석, 글로벌 머니플로우
+날짜: 2026-03-22 23:26
+수정: 2026-03-22 23:32
+형식: html
+썸네일: /img/t/dJMcafzcofW.webp
+-->
+<style>
+.pb-97 *, .pb-97{box-sizing:border-box;margin:0;padding:0}
+.pb-97{background:var(--g0);color:var(--g90);line-height:1.75}
+.pb-97 article.mf-wrap{max-width:100%;margin:0;padding:0 0 40px}
+.pb-97 .mf-lead{background:var(--g5);padding:16px 20px;border-radius:0 6px 6px 0;margin-bottom:28px;font-size:0.95rem;color:var(--g90)}
+.pb-97 .mf-wrap h1{font-size:1.55rem;font-weight:800;color:var(--g90);margin-bottom:8px;line-height:1.3}
+.pb-97 .mf-wrap h2{font-size:1.15rem;font-weight:700;color:var(--p60);margin:32px 0 12px;border-bottom:2px solid var(--p5);padding-bottom:6px}
+.pb-97 .mf-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.pb-97 .mf-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:600}
+.pb-97 .mf-badge.blue{background:var(--p5);color:var(--p60)}
+.pb-97 .mf-badge.red{background:var(--r5);color:var(--r60)}
+.pb-97 .mf-badge.green{background:var(--s10);color:var(--s60)}
+.pb-97 .mf-badge.gray{background:var(--p5);color:var(--p60)}
+.pb-97 .summary-box{background:var(--y5);border:1px solid var(--y50);border-radius:8px;padding:16px 20px;margin-bottom:28px}
+.pb-97 .summary-box .s-title{font-size:0.8rem;font-weight:700;color:var(--r60);margin-bottom:6px}
+.pb-97 .summary-box .s-text{font-size:0.95rem;color:var(--r60);line-height:1.7}
+.pb-97 .gauge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px}
+.pb-97 .gauge{background:var(--g0);border:1px solid var(--p10);border-radius:8px;padding:14px 12px}
+.pb-97 .gauge .g-icon{font-size:1.3rem;margin-bottom:4px}
+.pb-97 .gauge .g-name{font-size:0.78rem;font-weight:700;color:var(--g90)}
+.pb-97 .gauge .g-desc{font-size:0.7rem;color:var(--g50);margin:2px 0 8px;line-height:1.4}
+.pb-97 .gauge .g-val{font-size:1.25rem;font-weight:800}
+.pb-97 .gauge .g-chg{font-size:0.72rem;margin-top:3px}
+.pb-97 .gauge .g-tag{display:inline-block;font-size:0.68rem;padding:2px 8px;border-radius:10px;margin-top:6px;font-weight:700}
+.pb-97 .tag-r{background:var(--r5);color:var(--r60)}
+.pb-97 .tag-g{background:var(--s10);color:var(--s60)}
+.pb-97 .tag-b{background:var(--p5);color:var(--p60)}
+.pb-97 .tag-y{background:var(--y10);color:var(--y60)}
+.pb-97 .up{color:var(--s60)}
+.pb-97 .dn{color:var(--r60)}
+.pb-97 .neu{color:var(--g50)}
+.pb-97 .chart-section{margin:24px 0}
+.pb-97 .chart-toggle{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pb-97 .ct-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--p10);border-radius:20px;font-size:0.75rem;cursor:pointer;background:var(--g0);color:var(--p60);transition:all .15s}
+.pb-97 .ct-btn.off{opacity:.3}
+.pb-97 .ct-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pb-97 .chart-wrap{position:relative;width:100%;height:260px}
+.pb-97 .chart-note{font-size:0.72rem;color:var(--p50);margin-top:8px;line-height:1.5}
+.pb-97 .flow-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:8px}
+.pb-97 .flow-card{background:var(--g0);border:1px solid var(--p10);border-radius:8px;padding:14px}
+.pb-97 .flow-card-title{font-size:0.78rem;font-weight:700;color:var(--p60);margin-bottom:12px}
+.pb-97 .flow-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--p5)}
+.pb-97 .flow-item:last-child{border-bottom:none}
+.pb-97 .flow-arr{font-size:0.9rem;width:16px;text-align:center;flex-shrink:0}
+.pb-97 .flow-info{flex:1}
+.pb-97 .flow-name{font-size:0.82rem;font-weight:600;color:var(--g90)}
+.pb-97 .flow-why{font-size:0.7rem;color:var(--p50);margin-top:1px}
+.pb-97 .flow-num{font-size:0.82rem;font-weight:700;min-width:52px;text-align:right}
+.pb-97 .event-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--p5)}
+.pb-97 .event-item:last-child{border-bottom:none}
+.pb-97 .ev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.pb-97 .ev-name{font-size:0.82rem;font-weight:600;color:var(--g90)}
+.pb-97 .ev-effect{font-size:0.75rem;color:var(--g50);margin-top:2px;line-height:1.4}
+.pb-97 .ev-date{font-size:0.68rem;color:var(--p50);margin-top:2px}
+.pb-97 .hm-section{margin-top:8px;overflow-x:auto}
+.pb-97 .hm-grid{display:grid;grid-template-columns:68px repeat(5,1fr);gap:3px;min-width:340px;font-size:0.72rem}
+.pb-97 .hm-head{color:var(--p50);text-align:center;padding:4px 2px;font-size:0.68rem;line-height:1.3}
+.pb-97 .hm-label{color:var(--g50);display:flex;align-items:center;padding-right:4px;font-size:0.72rem}
+.pb-97 .hm-cell{border-radius:4px;padding:8px 2px;text-align:center;font-size:0.72rem;font-weight:700}
+.pb-97 .glossary{background:var(--g0);border:1px solid var(--p10);border-radius:8px;padding:16px 20px;margin-top:8px}
+.pb-97 .glos-title{font-size:0.82rem;font-weight:700;color:var(--p60);margin-bottom:12px}
+.pb-97 .glos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 24px}
+.pb-97 .glos-item{display:flex;gap:8px;align-items:flex-start}
+.pb-97 .glos-ticker{font-size:0.75rem;font-weight:700;color:var(--p60);min-width:44px;padding-top:1px}
+.pb-97 .glos-desc{font-size:0.75rem;color:var(--g50);line-height:1.5}
+.pb-97 .disclaimer{font-size:0.72rem;color:var(--p50);margin-top:28px;padding-top:16px;border-top:1px solid var(--p5);line-height:1.6}
+.pb-97 .mf-tags{margin-top:32px;padding-top:16px;border-top:1px solid var(--p5);display:flex;flex-wrap:wrap;gap:8px}
+.pb-97 .mf-tag{background:var(--p5);color:var(--p60);padding:4px 12px;border-radius:4px;font-size:0.75rem}
+.pb-97 .source-note{font-size:0.72rem;color:var(--p50);margin-top:6px}
+@media(max-width:600px){.pb-97 .gauge-grid{grid-template-columns:repeat(2,1fr)}
+.pb-97 .flow-grid{grid-template-columns:1fr}
+.pb-97 .glos-grid{grid-template-columns:1fr}
+.pb-97 article.mf-wrap{padding:0}
+.pb-97 .flow-card, .pb-97 .glossary, .pb-97 .chart-section{margin-left:0;margin-right:0}}
+</style>
+<div class="pb pb-97">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글로벌 머니플로우 트래커 — 2026년 3월 3주차 돈의 흐름 분석</title>
+
+</head>
+<body>
+<article class="mf-wrap">
+
+<div class="mf-lead">
+  미-이란 전쟁 발발 이후 전 세계 자금 흐름이 어떻게 변했는지 매주 추적합니다. VIX·DXY·WTI·금 등 핵심 지표와 섹터별 자금 이동을 한눈에 정리했습니다.
+</div>
+
+<h1>글로벌 머니플로우 트래커 — 2026년 3월 3주차</h1>
+<div class="mf-meta">
+  <span class="mf-badge blue">투자분석</span>
+  <span class="mf-badge red">미-이란 전쟁</span>
+  <span class="mf-badge gray">2026.03.21 기준</span>
+  <span class="mf-badge green">매주 업데이트</span>
+</div>
+
+<div class="summary-box">
+  <div class="s-title">이번 주 한 줄 요약</div>
+  <div class="s-text">
+    미-이란 전쟁 지속 속 원유 급등(WTI $98) → <strong>에너지주가 2026년 최강 섹터</strong>로 등극.
+    금은 $5,419까지 치솟았다가 $4,491로 급락. 달러는 약세(DXY 99.4), VIX는 26.8로 불안 지속.
+    전형적인 <strong>"전쟁 스태그플레이션" 우려 패턴</strong>입니다.
+  </div>
+</div>
+
+<h2>시장 온도계</h2>
+<div class="gauge-grid">
+  <div class="gauge">
+    <div class="g-icon">😰</div>
+    <div class="g-name">공포 지수</div>
+    <div class="g-desc">VIX — 투자자들이 얼마나 불안한지. 20 이하=안정, 30↑=공포</div>
+    <div class="g-val dn">26.78</div>
+    <div class="g-chg dn">▲ 2.72 (+11.3%)</div>
+    <div class="g-tag tag-r">불안 고조</div>
+  </div>
+  <div class="gauge">
+    <div class="g-icon">💵</div>
+    <div class="g-name">달러 강도</div>
+    <div class="g-desc">DXY — 달러가 유로·엔 등 대비 강한지. 높을수록 원화 약세</div>
+    <div class="g-val neu">99.46</div>
+    <div class="g-chg up">▲ 0.40 (+0.4%)</div>
+    <div class="g-tag tag-y">약달러 구간</div>
+  </div>
+  <div class="gauge">
+    <div class="g-icon">🛢</div>
+    <div class="g-name">원유 가격</div>
+    <div class="g-desc">WTI — 미국산 원유 기준가. 12월 $65 → 현재 $98 (50%↑)</div>
+    <div class="g-val up">$98.32</div>
+    <div class="g-chg up">▲ $2.18 (+2.3%)</div>
+    <div class="g-tag tag-r">전쟁 공급 차질</div>
+  </div>
+  <div class="gauge">
+    <div class="g-icon">🥇</div>
+    <div class="g-name">금 가격</div>
+    <div class="g-desc">Gold — 위기 때 피난처. 고점 $5,419 → 현재 $4,491 (급락)</div>
+    <div class="g-val dn">$4,491</div>
+    <div class="g-chg dn">▼ -10% 고점 대비</div>
+    <div class="g-tag tag-y">차익실현 매도</div>
+  </div>
+</div>
+<div class="source-note">출처: CBOE(VIX), Investing.com(DXY·WTI·Gold) — 2026.03.21 종가 기준</div>
+
+<h2>섹터별 추세 (라인차트)</h2>
+<div class="chart-section">
+  <div class="chart-toggle" id="toggleBtns">
+    <button class="ct-btn on" data-idx="0"><div class="ct-dot" style="background:var(--r50)"></div>에너지 XLE</button>
+    <button class="ct-btn on" data-idx="1"><div class="ct-dot" style="background:var(--p50)"></div>기술주 XLK</button>
+    <button class="ct-btn on" data-idx="2"><div class="ct-dot" style="background:var(--y60)"></div>금 GLD</button>
+    <button class="ct-btn on" data-idx="3"><div class="ct-dot" style="background:var(--g50)"></div>장기채 TLT</button>
+    <button class="ct-btn on" data-idx="4"><div class="ct-dot" style="background:var(--s60)"></div>신흥국 EEM</button>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="lineChart"></canvas>
+  </div>
+  <div class="chart-note">
+    세로 점선: 주요 이벤트 발생일 &nbsp;|&nbsp;
+    3/1 미-이란 전쟁 개전 &nbsp;/&nbsp; 3/7 미국 고용 -9.2만명 충격 &nbsp;/&nbsp; 3/12 WTI $95 &nbsp;/&nbsp; 3/19 FOMC 금리 동결<br>
+    * 수치는 2026.02.24 기준 100으로 정규화한 상대 수익률. 실제 ETF 가격 아님.
+  </div>
+</div>
+
+<h2>돈의 흐름 KPI</h2>
+<div class="flow-grid">
+  <div class="flow-card">
+    <div class="flow-card-title">어디서 돈이 들어오고 나갔나</div>
+    <div class="flow-item">
+      <div class="flow-arr up">▲</div>
+      <div class="flow-info">
+        <div class="flow-name">에너지 (정유·가스)</div>
+        <div class="flow-why">원유 50%↑ → 정유사 이익 폭발 기대</div>
+      </div>
+      <div class="flow-num up">강한 유입</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-arr up">▲</div>
+      <div class="flow-info">
+        <div class="flow-name">방위산업</div>
+        <div class="flow-why">전쟁 수혜 섹터 직접 수혜</div>
+      </div>
+      <div class="flow-num up">유입</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-arr up">▲</div>
+      <div class="flow-info">
+        <div class="flow-name">금 (단기 차익 후 조정)</div>
+        <div class="flow-why">고점 $5,419 → $4,491 차익실현 매도</div>
+      </div>
+      <div class="flow-num neu">혼조</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-arr dn">▼</div>
+      <div class="flow-info">
+        <div class="flow-name">기술주 (나스닥)</div>
+        <div class="flow-why">AI 지출 우려 + 스태그플레이션 부담</div>
+      </div>
+      <div class="flow-num dn">유출</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-arr dn">▼</div>
+      <div class="flow-info">
+        <div class="flow-name">신흥국 (한국 포함)</div>
+        <div class="flow-why">글로벌 불안 → 안전자산으로 이탈</div>
+      </div>
+      <div class="flow-num dn">유출</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-arr dn">▼</div>
+      <div class="flow-info">
+        <div class="flow-name">장기 국채</div>
+        <div class="flow-why">물가 재상승 우려 → 채권 매력 감소</div>
+      </div>
+      <div class="flow-num dn">유출</div>
+    </div>
+  </div>
+
+  <div class="flow-card">
+    <div class="flow-card-title">3월 주요 이벤트</div>
+    <div class="event-item">
+      <div class="ev-dot" style="background:var(--r50)"></div>
+      <div>
+        <div class="ev-name">미국·이스라엘 이란 공습</div>
+        <div class="ev-effect">→ WTI 급등, 에너지주 강세 시작</div>
+        <div class="ev-date">03.01 ~</div>
+      </div>
+    </div>
+    <div class="event-item">
+      <div class="ev-dot" style="background:var(--r50)"></div>
+      <div>
+        <div class="ev-name">미국 고용 -9.2만명 (쇼크)</div>
+        <div class="ev-effect">→ 경기 침체 우려 + 스태그플레이션 공포</div>
+        <div class="ev-date">03.07</div>
+      </div>
+    </div>
+    <div class="event-item">
+      <div class="ev-dot" style="background:var(--y60)"></div>
+      <div>
+        <div class="ev-name">WTI $95 돌파</div>
+        <div class="ev-effect">→ 인플레이션 우려 재점화, 채권 매도</div>
+        <div class="ev-date">03.12</div>
+      </div>
+    </div>
+    <div class="event-item">
+      <div class="ev-dot" style="background:var(--p50)"></div>
+      <div>
+        <div class="ev-name">FOMC 금리 동결 유지</div>
+        <div class="ev-effect">→ 기술주 단기 반등, 달러 약세</div>
+        <div class="ev-date">03.19</div>
+      </div>
+    </div>
+    <div class="event-item">
+      <div class="ev-dot" style="background:var(--g50)"></div>
+      <div>
+        <div class="ev-name">금 -10% 급락</div>
+        <div class="ev-effect">→ 차익실현 + 달러 강세 압박</div>
+        <div class="ev-date">03.21</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>4주 흐름 지도</h2>
+<div class="hm-section">
+  <div class="hm-grid">
+    <div class="hm-head"></div>
+    <div class="hm-head">에너지</div>
+    <div class="hm-head">기술주</div>
+    <div class="hm-head">금</div>
+    <div class="hm-head">국채</div>
+    <div class="hm-head">신흥국</div>
+    <div class="hm-label">이번주(3/3)</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+2.1</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-3.4</div>
+    <div class="hm-cell" style="background:var(--r10);color:var(--r60)">-9.8</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-1.2</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-2.1</div>
+    <div class="hm-label">1주전(2/4)</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+5.8</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-2.1</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+8.2</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-2.8</div>
+    <div class="hm-cell" style="background:var(--y10);color:var(--y60)">-0.8</div>
+    <div class="hm-label">2주전(2/3)</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+9.3</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-4.2</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+3.1</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-1.9</div>
+    <div class="hm-cell" style="background:var(--r5);color:var(--r60)">-3.2</div>
+    <div class="hm-label">3주전(2/2)</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+3.4</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+1.8</div>
+    <div class="hm-cell" style="background:var(--s10);color:var(--s60)">+2.4</div>
+    <div class="hm-cell" style="background:var(--y10);color:var(--y60)">+0.3</div>
+    <div class="hm-cell" style="background:var(--y10);color:var(--y60)">-0.4</div>
+  </div>
+</div>
+<div class="source-note" style="margin-top:6px">* 주간 수익률은 실제 ETF(XLE, XLK, GLD, TLT, EEM) 근사값 기반. 정확한 수치는 각 ETF 제공사 확인 필요.</div>
+
+<h2>용어 설명</h2>
+<div class="glossary">
+  <div class="glos-title">처음 보는 용어 쉽게 정리</div>
+  <div class="glos-grid">
+    <div class="glos-item"><div class="glos-ticker">VIX</div><div class="glos-desc">공포지수. S&P 500 옵션 가격에서 추출한 시장 불안도. 20↓ 안정 / 30↑ 공포</div></div>
+    <div class="glos-item"><div class="glos-ticker">DXY</div><div class="glos-desc">달러인덱스. 유로·엔·파운드 등 6개 통화 대비 달러 강도. 높을수록 원화 약세</div></div>
+    <div class="glos-item"><div class="glos-ticker">WTI</div><div class="glos-desc">서부 텍사스산 원유. 미국 원유 기준가. 전쟁·공급 차질 시 급등</div></div>
+    <div class="glos-item"><div class="glos-ticker">XLE</div><div class="glos-desc">미국 에너지 섹터 ETF. 엑슨모빌·셰브론 등 정유·가스회사 묶음</div></div>
+    <div class="glos-item"><div class="glos-ticker">XLK</div><div class="glos-desc">미국 기술주 ETF. 애플·엔비디아·마이크로소프트 등 빅테크 묶음</div></div>
+    <div class="glos-item"><div class="glos-ticker">GLD</div><div class="glos-desc">금 ETF. 금 현물 가격 추종. 전쟁·달러 약세 시 상승</div></div>
+    <div class="glos-item"><div class="glos-ticker">TLT</div><div class="glos-desc">미국 20년 장기 국채 ETF. 금리 오르면 가격 하락</div></div>
+    <div class="glos-item"><div class="glos-ticker">EEM</div><div class="glos-desc">신흥국 ETF. 한국·브라질·인도·중국 등 포함. 달러 강세·전쟁 시 약세</div></div>
+    <div class="glos-item"><div class="glos-ticker">FOMC</div><div class="glos-desc">미 연준 금리 결정 회의. 연 8회 개최, 전 세계 자금 흐름에 가장 큰 영향</div></div>
+    <div class="glos-item"><div class="glos-ticker">스태그</div><div class="glos-desc">스태그플레이션. 경기침체(고용↓) + 물가상승(원유↑)이 동시에 오는 최악의 조합</div></div>
+  </div>
+</div>
+
+<h2>인사이트 — 그래서 나는 지금 무엇을 보고 있나</h2>
+
+<div style="background:var(--s5);border:1px solid var(--s50);border-radius:8px;padding:16px 20px;margin-bottom:20px">
+  <div style="font-size:0.78rem;font-weight:700;color:var(--s60);margin-bottom:8px">💡 이 섹션은 종목 추천이 아닙니다. 과거 패턴과 현재 흐름을 비교해 스스로 판단하기 위한 참고 자료입니다.</div>
+  <div style="font-size:0.88rem;color:var(--s60);line-height:1.7">
+    데이터를 계속 보다 보면 <strong>"아, 이 패턴 전에도 봤는데"</strong> 하는 순간이 옵니다.<br>
+    러우전쟁 때 에너지주 올라가는 거 보면서 그냥 지나쳤던 기억, 지금 이란전 보면서 다시 떠올랐습니다.
+  </div>
+</div>
+
+<!-- 역사 비교 -->
+<div style="margin-bottom:20px">
+  <div style="font-size:1rem;font-weight:700;color:var(--g90);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--p10)">📚 과거 전쟁 때 돈은 어떻게 움직였나</div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+    <div style="background:var(--g0);border:1px solid var(--p10);border-radius:8px;padding:14px">
+      <div style="font-size:0.72rem;color:var(--g50);margin-bottom:4px">이라크 전쟁 (2003)</div>
+      <div style="font-size:0.82rem;font-weight:700;color:var(--g90);margin-bottom:8px">예고된 전쟁의 함정</div>
+      <div style="font-size:0.75rem;color:var(--p60);line-height:1.5">
+        개전 전 방산주 이미 폭등<br>
+        → 실제 개전 후 차익실현 급락<br>
+        1년 후: 방산 +29%, S&P +27%<br>
+        <span style="color:var(--s60);font-weight:600">결국 둘 다 올랐다</span>
+      </div>
+    </div>
+    <div style="background:var(--y5);border:1px solid var(--y50);border-radius:8px;padding:14px">
+      <div style="font-size:0.72rem;color:var(--y60);margin-bottom:4px">러우전쟁 (2022)</div>
+      <div style="font-size:0.82rem;font-weight:700;color:var(--g90);margin-bottom:8px">에너지가 독보적 승자</div>
+      <div style="font-size:0.75rem;color:var(--p60);line-height:1.5">
+        개전 직후 유가 폭등<br>
+        XLE 1년 +65% (역대급)<br>
+        방산 +9%, S&P -8%<br>
+        <span style="color:var(--r60);font-weight:600">에너지만 살아남았다</span>
+      </div>
+    </div>
+    <div style="background:var(--g5);border:1px solid var(--r10);border-radius:8px;padding:14px">
+      <div style="font-size:0.72rem;color:var(--r60);margin-bottom:4px">이스라엘-하마스 (2023)</div>
+      <div style="font-size:0.82rem;font-weight:700;color:var(--g90);margin-bottom:8px">방산 단기 급등</div>
+      <div style="font-size:0.75rem;color:var(--p60);line-height:1.5">
+        1개월 후 방산 +10%<br>
+        S&P +1%에 그침<br>
+        XOM 6일간 +10.1%<br>
+        <span style="color:var(--r60);font-weight:600">에너지+방산 동시 강세</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--p5);border-radius:8px;padding:14px;font-size:0.82rem;color:var(--p70);line-height:1.7">
+    <strong>패턴 요약:</strong> 전쟁 나면 단기적으로 에너지주가 가장 빠르게 반응한다.
+    방산주는 "소문에 사서 뉴스에 판다" — 이미 오른 걸 뒤늦게 사면 손실 위험.
+    전쟁이 길어질수록 에너지 수혜는 지속되고, 1년 뒤엔 결국 방산도 따라온다.
+  </div>
+</div>
+
+<!-- 현재 상황 분석 -->
+<div style="margin-bottom:20px">
+  <div style="font-size:1rem;font-weight:700;color:var(--g90);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--p10)">🔍 지금 미-이란전이 러우전쟁과 다른 점</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div style="background:var(--g0);border:1px solid var(--p10);border-radius:8px;padding:14px">
+      <div style="font-size:0.75rem;font-weight:700;color:var(--g50);margin-bottom:8px">비슷한 점</div>
+      <div style="font-size:0.78rem;color:var(--p60);line-height:1.8">
+        ✓ 원유 공급 차질 우려<br>
+        ✓ 에너지주 강세 (XLE +27%)<br>
+        ✓ 신흥국 자금 이탈<br>
+        ✓ 금 초기 급등 후 차익실현
+      </div>
+    </div>
+    <div style="background:var(--y5);border:1px solid var(--y50);border-radius:8px;padding:14px">
+      <div style="font-size:0.75rem;font-weight:700;color:var(--y60);margin-bottom:8px">결정적으로 다른 점</div>
+      <div style="font-size:0.78rem;color:var(--y60);line-height:1.8">
+        ✗ 고용 -9.2만명 (경기침체 신호)<br>
+        ✗ 스태그플레이션 우려 동시 발생<br>
+        ✗ 전통 방산주 오히려 하락<br>
+        ✗ AI 드론·무인기 = 뉴 디펜스 부상
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--y5);border:1px solid var(--y50);border-radius:8px;padding:14px;font-size:0.82rem;color:var(--y60);line-height:1.7">
+    <strong>주목할 변화:</strong> 이번 전쟁에서 방산 비용의 불균형이 드러났다.
+    미사일 1발 요격 비용 vs 드론 공격 비용의 압도적 차이 →
+    록히드마틴·노스럽 같은 전통 방산이 아닌 <strong>드론·AI 방어 기업</strong>이 새로운 수혜주로 부상 중.
+    팔란티어(PLTR)가 실시간 작전 분석으로 주목받은 것도 같은 맥락.
+  </div>
+</div>
+
+<!-- 시나리오별 돈의 흐름 -->
+<div style="margin-bottom:20px">
+  <div style="font-size:1rem;font-weight:700;color:var(--g90);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--p10)">🗺️ 앞으로 시나리오별 돈의 흐름</div>
+
+  <div style="display:grid;gap:10px">
+    <div style="background:var(--g0);border-radius:0 8px 8px 0;padding:14px">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--r60);margin-bottom:6px">시나리오 A — 전쟁 장기화</div>
+      <div style="font-size:0.78rem;color:var(--p60);line-height:1.6">
+        원유 공급 차질 지속 → <strong>에너지주 강세 유지</strong> / 금 재상승 가능성
+        스태그플레이션 심화 → 소비주·기술주 추가 약세 / 신흥국 계속 유출
+        <span style="color:var(--r60)">→ 현재 에너지 비중 유지가 유리</span>
+      </div>
+    </div>
+    <div style="background:var(--g0);border-radius:0 8px 8px 0;padding:14px">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--s60);margin-bottom:6px">시나리오 B — 휴전·종전 합의</div>
+      <div style="font-size:0.78rem;color:var(--p60);line-height:1.6">
+        유가 급락 → 에너지주 차익실현 매도 / 인플레 압력 완화
+        금리 인하 기대 재부상 → <strong>기술주·신흥국 반등</strong> / 채권 강세 전환
+        <span style="color:var(--s60)">→ 러우전쟁 종전 때 기술주가 폭등한 패턴 반복 가능</span>
+      </div>
+    </div>
+    <div style="background:var(--g0);border-radius:0 8px 8px 0;padding:14px">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--y60);margin-bottom:6px">시나리오 C — 확전 (호르무즈 봉쇄)</div>
+      <div style="font-size:0.78rem;color:var(--p60);line-height:1.6">
+        WTI $120+ → 글로벌 경기침체 트리거 / VIX 40+ 공황
+        전 자산군 동반 하락 후 금·달러만 생존 / S&P 급락
+        <span style="color:var(--y60)">→ 확률 낮지만 헤지 필요 구간 (금 일부 보유 이유)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 내가 보는 것 -->
+<div style="margin-bottom:20px">
+  <div style="font-size:1rem;font-weight:700;color:var(--g90);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--p10)">💭 내가 이 차트를 보면서 주목하는 것</div>
+  <div style="background:var(--g5);border:1px solid var(--p10);border-radius:8px;padding:16px 20px">
+    <div style="font-size:0.88rem;color:var(--p60);line-height:1.9">
+      <strong>지금 당장 에너지주 추격 매수? NO.</strong><br>
+      XLE는 이미 개전 이후 27% 올랐다. 러우전쟁 패턴에서 배운 교훈 — 에너지주는 전쟁 초기가 기회지 지금은 아니다.<br><br>
+      <strong>내가 주목하는 건 기술주 타이밍이다.</strong><br>
+      XLK가 현재 고점 대비 -9% 눌려있다. 휴전 시그널이 보이는 순간 원유 내리고 금리 인하 기대 살아나면서 기술주로 돈이 쏠린다. 러우전쟁 종전 협상 때 나스닥이 폭등했던 그 패턴.<br><br>
+      <strong>체크할 지표 2가지</strong><br>
+      ① WTI가 $90 아래로 내려오기 시작하면 → 에너지 매도 + 기술주 매수 타이밍 검토<br>
+      ② VIX가 20 아래로 복귀하면 → 리스크 자산 전반 반등 신호
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  ※ 본 포스팅은 투자 권유가 아닌 정보 제공 목적입니다. 실제 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.<br>
+  데이터 출처: CBOE, Investing.com, Canadian Mining Report, Fortune, ZeroHedge (2026.03.21 기준)
+</div>
+
+<div class="mf-tags">
+  <span class="mf-tag">글로벌 머니플로우</span>
+  <span class="mf-tag">미이란전쟁</span>
+  <span class="mf-tag">원유가격</span>
+  <span class="mf-tag">VIX</span>
+  <span class="mf-tag">에너지주</span>
+  <span class="mf-tag">섹터분석</span>
+  <span class="mf-tag">돈의흐름</span>
+  <span class="mf-tag">주식투자</span>
+  <span class="mf-tag">미국주식</span>
+</div>
+
+</article>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+window.addEventListener('load', function(){
+(function(){
+  var labels = ['2/24','3/3','3/7','3/10','3/12','3/15','3/17','3/19','3/21'];
+
+  /* 실제 흐름 근사값 (2/24=100 정규화) */
+  var allData = [
+    { label:'에너지 XLE',  color:'#e24b4a', data:[100,108,114,118,122,124,125,126,127] },
+    { label:'기술주 XLK',  color:'#378add', data:[100,97, 92, 91, 89, 90, 91, 93, 91] },
+    { label:'금 GLD',      color:'#ba7517', data:[100,104,112,117,115,113,110,108,102] },
+    { label:'장기채 TLT',  color:'#888780', data:[100,98, 96, 95, 93, 94, 94, 95, 94] },
+    { label:'신흥국 EEM',  color:'#639922', data:[100,98, 95, 94, 92, 92, 91, 92, 91] }
+  ];
+
+  var events = [
+    { x:'3/3',  color:'#e24b4a' },
+    { x:'3/7',  color:'#dc2626' },
+    { x:'3/12', color:'#ba7517' },
+    { x:'3/19', color:'#378add' }
+  ];
+
+  var visible = [true,true,true,true,true];
+
+  var eventPlugin = {
+    id:'evLines',
+    afterDraw: function(chart){
+      var ctx = chart.ctx;
+      var xAxis = chart.scales.x;
+      var yAxis = chart.scales.y;
+      events.forEach(function(ev){
+        var idx = labels.indexOf(ev.x);
+        if(idx < 0) return;
+        var x = xAxis.getPixelForValue(idx);
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([4,3]);
+        ctx.strokeStyle = ev.color;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.6;
+        ctx.moveTo(x, yAxis.top);
+        ctx.lineTo(x, yAxis.bottom);
+        ctx.stroke();
+        ctx.restore();
+      });
+    }
+  };
+
+  function makeDatasets(){
+    return allData.map(function(d,i){
+      return {
+        label: d.label,
+        data: d.data,
+        borderColor: d.color,
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        tension: 0.3,
+        hidden: !visible[i]
+      };
+    });
+  }
+
+  var chart = new Chart(document.getElementById('lineChart'),{
+    type:'line',
+    data:{ labels:labels, datasets:makeDatasets() },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          callbacks:{
+            title:function(items){ return labels[items[0].dataIndex]; },
+            label:function(c){
+              if(c.dataset.hidden) return null;
+              var v = c.raw - 100;
+              return c.dataset.label+': '+(v>=0?'+':'')+v.toFixed(1)+'%';
+            }
+          }
+        }
+      },
+      scales:{
+        x:{
+          grid:{ display:false },
+          ticks:{ font:{size:11}, color:'#94a3b8', maxRotation:0 }
+        },
+        y:{
+          grid:{ color:'rgba(148,163,184,0.15)' },
+          ticks:{
+            font:{size:11}, color:'#94a3b8',
+            callback:function(v){ return (v-100>=0?'+':'')+(v-100).toFixed(0)+'%'; }
+          }
+        }
+      }
+    },
+    plugins:[eventPlugin]
+  });
+
+  document.querySelectorAll('.ct-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      visible[idx] = !visible[idx];
+      btn.classList.toggle('off', !visible[idx]);
+      chart.data.datasets[idx].hidden = !visible[idx];
+      chart.update();
+    });
+  });
+})();
+});
+</script>
+</body>
+</html>
+</div>

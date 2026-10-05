@@ -1,0 +1,102 @@
+<!--
+id: 36
+제목: [Mendix] 자동 메일 발송 기능 개발기: Logic 에러부터 HTML 테이블까지 (feat. 회사 API)
+카테고리: Stack/Lowcode
+태그: HTML, css, 자동화, If-THEN-ELSE, 객체 연결, mendix, 자동 메일 발송, 멘딕스
+날짜: 2026-02-14 02:35
+수정: 2026-03-07 22:22
+형식: legacy
+썸네일: /img/t/dJMcagYQ8BI.webp
+-->
+<p><figure class="tt-img center"><img src="/img/dJMcagYQ8BI.webp" alt="" width="1000" height="600" loading="lazy" decoding="async"></figure></p>
+<p data-path-to-node="3" data-ke-size="size16">지난 포스팅에서 제가 개발 중인 시스템의 데이터를 적재하는 것까지는 성공했습니다. 이제 남은 건 <b>"조치 기한이 임박하거나 지난 건들에 대해 담당자에게 메일을 쏘는 것"</b>이었죠.</p>
+<p data-path-to-node="4" data-ke-size="size16">간단하게 루프(Loop) 돌려서 API 호출하면 끝날 줄 알았는데... 역시나 Mendix는 호락호락하지 않았습니다. (제발 한 번에 좀 돼라 😭)</p>
+<p data-path-to-node="5" data-ke-size="size16">오늘의 삽질 기록은 크게 세 가지입니다.</p>
+<ol style="list-style-type: decimal;" data-path-to-node="6" data-ke-list-type="decimal">
+<li>날짜 계산 로직의 함정 (trimToDays)</li>
+<li>사내 메일 API 연동 (Invalid Address)</li>
+<li>이메일 본문 예쁘게 만들기 (HTML 노가다)</li>
+</ol>
+<hr data-path-to-node="7" data-ke-style="style1" />
+<h3 data-path-to-node="8" data-ke-size="size23">1. 날짜 계산 에러: "값이 없는데 어떻게 계산해요?"</h3>
+<p data-path-to-node="9" data-ke-size="size16">조치 기한(DueDate)을 기준으로 3일 전(Upcoming), 1일 지남(Overdue1), 7일 이상 지남(Overdue7) 조건을 걸어 분기 처리를 하려고 했습니다.</p>
+<div data-ved="0CAAQhtANahgKEwii1oqE89aSAxUAAAAAHQAAAAAQxg4" data-hveid="0">
+<div><span>JavaScript</span></div>
+<div>
+<div>
+<pre class="stylus"><code>trimToDays($Iterator/IssueClearDueDate) = $Target_Upcoming3
+OR
+trimToDays($Iterator/IssueClearDueDate) = $Target_Overdue1
+</code></pre>
+</div>
+</div>
+</div>
+<p data-path-to-node="11" data-ke-size="size16">그런데 코드를 돌리자마자 빨간 맛 에러가 뜹니다. Caused by: com.mendix.modules.microflowengine.MicroflowException: Failed to evaluate expression...</p>
+<p data-path-to-node="12" data-ke-size="size16">알고 보니 Mendix의 trimToDays() 함수는 <b data-index-in-node="31" data-path-to-node="12">NULL(Empty) 값을 처리하지 못해서</b> 뻗어버린 것이었습니다. 조치 기한이 미정인 데이터가 들어오니 계산을 못하고 누워버린 거죠.</p>
+<h4 data-path-to-node="13" data-ke-size="size20">🚀 해결: 방어 로직 추가 (Guard Clause)</h4>
+<p data-path-to-node="14" data-ke-size="size16">가장 확실한 방법은 <b data-index-in-node="11" data-path-to-node="14">데이터를 가져올 때(Retrieve)부터</b> 날짜 없는 녀석들을 쳐내는 것이었습니다.</p>
+<p data-path-to-node="15" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="15">[Image Prompt: A screenshot of Mendix Studio Pro Retrieve Action properties. The XPath constraint section highlights '[IssueClearDueDate != empty]'.]</b></p>
+<ul style="list-style-type: disc;" data-path-to-node="16" data-ke-list-type="disc">
+<li><b data-index-in-node="0" data-path-to-node="16,0,0">Retrieve 단계:</b> XPath Constraint에 [IssueClearDueDate != empty] 추가.</li>
+<li><b data-index-in-node="0" data-path-to-node="16,1,0">Expression 단계:</b> 혹시 몰라 조건식 앞단에도 방어 로직 추가. $Iterator/IssueClearDueDate != empty AND ( ... )</li>
+</ul>
+<p data-path-to-node="17" data-ke-size="size16">이렇게 하니 빈 값 때문에 멈추는 일 없이 루프가 아주 잘 돕니다. (편안-)</p>
+<hr data-path-to-node="18" data-ke-style="style1" />
+<h3 data-path-to-node="19" data-ke-size="size23">2. API 연동 이슈: "주소를 줬는데 왜 못 받니"</h3>
+<p data-path-to-node="20" data-ke-size="size16">로직은 통과했는데, 이번엔 메일 서버가 뱉어냅니다. "errorCode":"ML641", "errorMessage":"Failed to send mail due to invalid address."</p>
+<p data-path-to-node="21" data-ke-size="size16">hyeonlee.net@xxx.com... 분명 맞는 주소인데 왜 Invalid라고 할까요?</p>
+<h4 data-path-to-node="22" data-ke-size="size20">🕵️&zwj;♂️ 범인 1: 보이지 않는 공백</h4>
+<p data-path-to-node="23" data-ke-size="size16">DB에서 가져온 사번/ID 뒤에 공백(Space)이 숨어있을 수 있습니다. trim($Iterator/UserID) + '@xxx.com' 처럼 <b data-index-in-node="85" data-path-to-node="23">trim()</b> 함수로 공백을 싹 날려줘야 안전합니다.</p>
+<h4 data-path-to-node="24" data-ke-size="size20">🕵️&zwj;♂️ 범인 2: 객체 연결 (Association) 누락 (★핵심)</h4>
+<p data-path-to-node="25" data-ke-size="size16">이게 진짜 문제였습니다. 사내 공통 모듈은 단순히 MailMain(메일 본체)만 만들어서 되는 게 아니었습니다. <b data-index-in-node="63" data-path-to-node="25">MailReceiver(받는 사람 명단)</b> 객체를 따로 만들어서 본체에 **연결(Association)**해줘야 했던 거죠.</p>
+<p data-path-to-node="26" data-ke-size="size16">저는 본체에만 주소를 텍스트로 박아넣고 "왜 안 가!" 하고 있었던 겁니다.</p>
+<p data-path-to-node="27" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="27">[Image Prompt: A diagram showing the relationship between Mendix Entities. 'MailMain' entity is on the left, 'MailReceiver' entity is on the right, connected by an association line. An arrow points to the MailReceiver with text "Must create this object!".]</b></p>
+<h4 data-path-to-node="28" data-ke-size="size20">🚀 해결: MailReceiver 객체 생성 및 매핑</h4>
+<ol style="list-style-type: decimal;" data-path-to-node="29" data-ke-list-type="decimal">
+<li>Create Object로 <b data-index-in-node="15" data-path-to-node="29,0,0">MailReceiver</b> 생성.</li>
+<li>Email, RecipientType(To/CC) 속성 설정.</li>
+<li><b data-index-in-node="0" data-path-to-node="29,2,0">가장 중요:</b> MailReceiver_MailMain 관계(Association)에 방금 만든 메일 본체 객체(NewMailMain)를 연결!</li>
+</ol>
+<p data-path-to-node="30" data-ke-size="size16">이렇게 "본체 + 수신자 명단" 세트를 맞춰주니 그제야 메일이 정상 발송되었습니다.</p>
+<hr data-path-to-node="31" data-ke-style="style1" />
+<h3 data-path-to-node="32" data-ke-size="size23">3. HTML 본문: "텍스트 말고 표(Table)로 보여줘"</h3>
+<p data-path-to-node="33" data-ke-size="size16">메일은 가는데, 텍스트가 줄글로 쭉 나열되니 가독성이 최악이었습니다. <i data-index-in-node="39" data-path-to-node="33">"깔끔하게 표 안에 넣어서, 중요 내용은 빨간색으로 보여주세요."</i> 라는 요청 사항 반영을 위해 HTML 태그를 깎기 시작했습니다.</p>
+<p data-path-to-node="34" data-ke-size="size16">여기서 또 두 가지 난관이 있었는데요.</p>
+<ol style="list-style-type: decimal;" data-path-to-node="35" data-ke-list-type="decimal">
+<li><b data-index-in-node="0" data-path-to-node="35,0,0">줄바꿈:</b> \n을 써도 메일에서는 무시됨 &rarr; &lt;br&gt; 태그 필수.</li>
+<li><b data-index-in-node="0" data-path-to-node="35,1,0">날짜 포맷:</b> toString()은 못생김 &rarr; formatDateTime() 써야 함.</li>
+</ol>
+<h4 data-path-to-node="36" data-ke-size="size20">🚀 해결: Inline CSS &amp; Null Safety 적용</h4>
+<p data-path-to-node="37" data-ke-size="size16">이메일 클라이언트는 최신 CSS를 잘 안 먹기 때문에, 옛날 방식인 &lt;table&gt; 태그와 인라인 스타일(style="...")을 써야 가장 안전합니다. 그리고 여기서도 <b data-index-in-node="94" data-path-to-node="37">값이 없으면 에러가 나므로 if-then-else 처리가 필수</b>입니다.</p>
+<div data-ved="0CAAQhtANahgKEwii1oqE89aSAxUAAAAAHQAAAAAQxw4" data-hveid="0">
+<div><span>JavaScript</span></div>
+<div>
+<div>
+<pre class="php"><code>// 실제 적용한 HTML 생성 코드 일부
+'&lt;table style="border-collapse: collapse; border: 1px solid #ddd;"&gt;' +
+  '&lt;tr&gt;' +
+    '&lt;td style="background-color: #f9f9f9; font-weight: bold;"&gt;조치기한&lt;/td&gt;' +
+    '&lt;td style="color: #d9534f; font-weight: bold;"&gt;' +
+      // 값이 있을 때만 포맷팅, 없으면 '미정' 출력
+      (if $Iterator/DueDate != empty
+       then formatDateTime($Iterator/DueDate, 'yyyy-MM-dd')
+       else '미정') +
+    '&lt;/td&gt;' +
+  '&lt;/tr&gt;' +
+'&lt;/table&gt;'
+</code></pre>
+</div>
+</div>
+</div>
+<p data-path-to-node="39" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="39">[Image Prompt: A visual representation of an email body. It shows a neat HTML table with fields like 'Issue Date', 'Category', and 'Details'. The 'Due Date' field is highlighted in red text.]</b></p>
+<p data-path-to-node="40" data-ke-size="size16">이렇게 문자열 변수(Body_text)에 HTML 코드를 담아서 API의 Content 파라미터로 넘겨주니, 아웃룩에서 아주 깔끔한 표 형태로 메일이 도착했습니다.</p>
+<hr data-path-to-node="41" data-ke-style="style1" />
+<h3 data-path-to-node="42" data-ke-size="size23">4. 결론: 자동화의 맛!</h3>
+<p data-path-to-node="43" data-ke-size="size16">이제 매일 아침 시스템이 알아서:</p>
+<ol style="list-style-type: decimal;" data-path-to-node="44" data-ke-list-type="decimal">
+<li>날짜 계산해서 대상자 추려내고 (guard clause)</li>
+<li>수신자 객체 딱딱 만들어서 (Association)</li>
+<li>HTML로 예쁘게 포장해 (Inline CSS) 메일을 쏴줍니다.</li>
+</ol>
+<p data-path-to-node="45" data-ke-size="size16"><b data-index-in-node="0" data-path-to-node="45">"시스템 바로가기"</b> 버튼을 눌러서 해당 게시글로 바로 이동하는 <b data-index-in-node="35" data-path-to-node="45">DeepLink</b> 기능도 개발 중인데, 이건 StackOverflow 에러와의 전쟁 중이라... 해결되면 다음 포스팅에서 다뤄보겠습니다. (무한 루프의 늪... 🤮)</p>
+<p data-path-to-node="46" data-ke-size="size16">Mendix로 이메일 기능 구현하시는 분들, <b data-index-in-node="25" data-path-to-node="46">꼭 MailReceiver 객체 따로 챙기시고 HTML엔 if-then-else 방어 로직 잊지 마세요!</b></p>

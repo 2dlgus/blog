@@ -1,0 +1,486 @@
+<!--
+id: 116
+제목: [Mendix] Datagrid2 버리고 HTML+JS 위젯으로 갈아탄 삽질기
+카테고리: Stack/Lowcode
+태그: lowcode, mendix, 멘딕스, HTMLSnippet, HTML위젯, JavaAction, Datagrid2, 권한분기
+날짜: 2026-03-31 23:27
+수정: 2026-03-31 23:27
+형식: html
+썸네일: /img/t/dJMcajn57n5.webp
+-->
+<style>
+.pb-116{--primary:var(--p70);--accent:var(--p50);--accent2:var(--p50);--bg:var(--g0);--surface:var(--g0);--border:var(--p10);--text:var(--p70);--muted:var(--g50);--code-bg:var(--p70);--code-text:var(--p10);--success:var(--s60);--warn:var(--y50);--danger:var(--r50);--tip-bg:var(--p5);--tip-border:var(--p50)}
+.pb-116 *, .pb-116{box-sizing:border-box;margin:0;padding:0}
+.pb-116{background:var(--bg);color:var(--text);font-size:15px;line-height:1.8}
+.pb-116 .post-wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+.pb-116 .post-badge{display:inline-block;background:var(--primary);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 10px;border-radius:3px;margin-bottom:16px}
+.pb-116 .post-title{font-size:28px;font-weight:800;color:var(--primary);line-height:1.35;margin-bottom:10px}
+.pb-116 .post-subtitle{font-size:14px;color:var(--muted);margin-bottom:6px}
+.pb-116 .post-tags-top{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:32px;margin-top:10px}
+.pb-116 .post-tags-top span{background:var(--p5);color:var(--accent);font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;border:1px solid var(--p10)}
+.pb-116 .post-divider{border:none;margin:28px 0}
+.pb-116 .toc{background:var(--p5);border-radius:6px;padding:18px 20px;margin-bottom:36px}
+.pb-116 .toc-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;letter-spacing:0.5px}
+.pb-116 .toc ol{padding-left:18px}
+.pb-116 .toc li{font-size:13.5px;color:var(--muted);margin-bottom:3px}
+.pb-116 .toc a{color:var(--accent);text-decoration:none}
+.pb-116 .toc a:hover{text-decoration:underline}
+.pb-116 h2{font-size:20px;font-weight:800;color:var(--primary);margin:44px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--border);scroll-margin-top:80px}
+.pb-116 h3{font-size:16px;font-weight:700;color:var(--text);margin:24px 0 10px}
+.pb-116 p{margin-bottom:14px}
+.pb-116 .table-wrap{overflow-x:auto;margin:16px 0 24px}
+.pb-116 table{width:100%;border-collapse:collapse;font-size:13.5px}
+.pb-116 th{background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:600;font-size:13px}
+.pb-116 td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.pb-116 tr:nth-child(even) td{background:var(--g0)}
+.pb-116 .badge-ok{color:var(--success);font-weight:700}
+.pb-116 .badge-fail{color:var(--danger);font-weight:700}
+.pb-116 .badge-warn{color:var(--warn);font-weight:700}
+.pb-116 pre{background:var(--code-bg);color:var(--code-text);border-radius:8px;padding:18px 20px;overflow-x:auto;font-size:13px;line-height:1.65;margin:14px 0 22px}
+.pb-116 code{font-family:'JetBrains Mono', 'Fira Code', 'Consolas', monospace}
+.pb-116 p code, .pb-116 li code{background:var(--p10);color:var(--p70);padding:1px 5px;border-radius:3px;font-size:13px}
+.pb-116 .callout{background:var(--tip-bg);border-radius:0 6px 6px 0;padding:12px 16px;margin:16px 0;font-size:14px}
+.pb-116 .callout.warn{border-color:var(--warn);background:var(--y5)}
+.pb-116 .callout.success{border-color:var(--success);background:var(--s5)}
+.pb-116 .callout strong{display:block;margin-bottom:3px;font-size:13px}
+.pb-116 .lesson-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:14px;margin:18px 0}
+.pb-116 .lesson-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative}
+.pb-116 .lesson-num{font-size:28px;font-weight:900;color:var(--p10);position:absolute;top:10px;right:14px;line-height:1}
+.pb-116 .lesson-card h4{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:6px;padding-right:30px}
+.pb-116 .lesson-card p{font-size:13px;color:var(--muted);margin:0;line-height:1.6}
+.pb-116 .post-tags-bottom{display:flex;flex-wrap:wrap;gap:8px;margin-top:48px;padding-top:20px;border-top:1px solid var(--border)}
+.pb-116 .post-tags-bottom a{background:var(--p5);color:var(--muted);font-size:12px;padding:4px 10px;border-radius:4px;text-decoration:none;border:1px solid var(--border)}
+.pb-116 .flow{background:var(--code-bg);color:var(--p50);border-radius:8px;padding:18px 24px;font-family:monospace;font-size:13px;line-height:2;margin:14px 0 22px}
+.pb-116 .flow .hl{color:var(--i60);font-weight:700}
+.pb-116 .flow .arrow{color:var(--p60)}
+@media (max-width: 600px){.pb-116 .post-title{font-size:21px}
+.pb-116 .lesson-grid{grid-template-columns:1fr}
+.pb-116 pre{font-size:12px;padding:14px}}
+</style>
+<div class="pb pb-116">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Mendix] Datagrid2 버리고 HTML+JS 위젯으로 갈아탄 삽질기</title>
+
+</head>
+<body>
+<div class="post-wrap">
+
+  <!-- ── 헤더 ── -->
+  <div class="post-badge">MENDIX TROUBLESHOOTING</div>
+  <h1 class="post-title">[Mendix] Datagrid2 버리고 HTML+JS 위젯으로 갈아탄 삽질기</h1>
+  <p class="post-subtitle">
+    Mendix 기본 위젯의 한계를 넘기 위해 Java Action + HTML Snippet 조합으로 커스텀 목록 위젯을 만들면서
+    만난 7가지 에러와 해결 과정을 정리합니다.
+  </p>
+  <div class="post-tags-top">
+    <span>Mendix 10.12</span>
+    <span>HTML Widget</span>
+    <span>Java Action</span>
+    <span>mx.data.action</span>
+    <span>Datagrid2</span>
+    <span>Permission</span>
+  </div>
+
+  <!-- ── 목차 ── -->
+  <div class="toc">
+    <div class="toc-title">📋 목차</div>
+    <ol>
+      <li><a href="#s1">목표 — 왜 Datagrid2를 버리려 했나</a></li>
+      <li><a href="#s2">설계한 아키텍처</a></li>
+      <li><a href="#s3">마주친 문제들 한눈에 보기</a></li>
+      <li><a href="#s4">문제별 상세 해결법</a></li>
+      <li><a href="#s5">핵심 코드 구조</a></li>
+      <li><a href="#s6">교훈 — 삽질에서 배운 것</a></li>
+    </ol>
+  </div>
+
+  <hr class="post-divider">
+
+  <!-- ── 1. 목표 ── -->
+  <h2 id="s1">1. 목표 — 왜 Datagrid2를 버리려 했나</h2>
+
+  <p>
+    점검 결과를 관리하는 페이지에서 Mendix 기본 제공 <code>Datagrid2</code>를 사용하고 있었다.
+    그런데 요구사항이 쌓일수록 기본 위젯만으로 구현하기 어려운 것들이 늘어났다.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>요구사항</th><th>Datagrid2로 가능?</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>행 클릭 → 커스텀 팝업 상세보기</td><td class="badge-warn">△ 제한적</td><td>기본 팝업 레이아웃 자유도 부족</td></tr>
+        <tr><td>역할별 편집 권한 분기 (3단계)</td><td class="badge-fail">✗</td><td>Admin / 담당자 / 일반 구분 필요</td></tr>
+        <tr><td>행 확장 — 요약 + 상세 컬럼 토글</td><td class="badge-fail">✗</td><td>행 내 ▶ 클릭으로 펼치기</td></tr>
+        <tr><td>상태 탭 필터 (조치예정 / 지연 / 완료)</td><td class="badge-warn">△</td><td>MF 호출 매번 필요</td></tr>
+        <tr><td>조치기한 지난 행 색상 강조</td><td class="badge-fail">✗</td><td>조건부 스타일 지원 없음</td></tr>
+        <tr><td>사진 필드 Ctrl+V 붙여넣기</td><td class="badge-fail">✗</td><td>CKEditor HTML을 그대로 표시 필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>결국 Datagrid2를 걷어내고 <strong>HTML/JavaScript Snippet 위젯 2개</strong>로 전체 목록+팝업을 직접 구현하기로 했다.</p>
+
+  <!-- ── 2. 아키텍처 ── -->
+  <h2 id="s2">2. 설계한 아키텍처</h2>
+
+  <h3>전체 데이터 흐름</h3>
+  <div class="flow">
+<span class="hl">[Java Action]</span> SRC_GetIssueList_JSON<br>
+<span class="arrow">  └→ Mendix DB XPath 조회 → StringBuilder로 JSON 직렬화 → String 반환</span><br>
+<br>
+<span class="hl">[Microflow Wrapper]</span> MF_SRC_GetIssueList_JSON<br>
+<span class="arrow">  └→ Call JA → Return $ReturnValue</span><br>
+<br>
+<span class="hl">[Browser]</span> mx.data.action("Inspection.MF_SRC_GetIssueList_JSON")<br>
+<span class="arrow">  └→ JSON.parse → DOM 렌더링</span><br>
+<br>
+<span class="hl">[HTML Snippet #1]</span>  &lt;style&gt; + HTML 마크업<br>
+<span class="hl">[HTML Snippet #2]</span>  JavaScript 로직 (태그 없이 순수 JS)
+  </div>
+
+  <div class="callout">
+    <strong>💡 Widget 배치 순서가 중요</strong>
+    HTML Snippet #1(마크업)이 반드시 #2(JS) <em>위</em>에 있어야 한다.
+    JS에서 <code>getElementById</code>로 DOM을 참조하기 때문에 마크업이 먼저 렌더링되어야 한다.
+  </div>
+
+  <h3>권한 분기 구조</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>역할</th><th>점검정보 탭</th><th>이슈정보 탭</th><th>이슈조치 탭</th><th>저장 버튼</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>관리자</strong></td><td class="badge-ok">✏ 편집</td><td class="badge-ok">✏ 편집</td><td class="badge-ok">✏ 편집</td><td>표시</td></tr>
+        <tr><td><strong>조치담당자</strong></td><td>👁 읽기전용</td><td>👁 읽기전용</td><td class="badge-ok">✏ 편집</td><td>표시</td></tr>
+        <tr><td><strong>일반</strong></td><td>👁 읽기전용</td><td>👁 읽기전용</td><td>👁 읽기전용</td><td>숨김</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 3. 문제 목록 ── -->
+  <h2 id="s3">3. 마주친 문제들 한눈에 보기</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>에러 / 증상</th><th>원인</th><th>해결</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><code>package org.json does not exist</code></td>
+          <td>Mendix 런타임에 org.json 라이브러리 없음</td>
+          <td class="badge-ok">StringBuilder 직접 JSON 구성</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><code>retrieveXPathQuery</code> 시그니처 불일치</td>
+          <td>Mendix 버전별 오버로드 차이</td>
+          <td class="badge-ok">5-arg → 4-arg 시그니처로 교체</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><code>SyntaxError: Unexpected token '&lt;'</code></td>
+          <td>HTML Snippet에 <code>&lt;script&gt;</code> 태그 포함</td>
+          <td class="badge-ok">태그 제거, 순수 JS만 붙여넣기</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><code>does not exist</code> — mx.data.action이 JA 직접 호출 불가</td>
+          <td>mx.data.action은 Microflow만 호출 가능</td>
+          <td class="badge-ok">JA 감싸는 Microflow Wrapper 추가</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Association 필드 값이 전부 undefined</td>
+          <td>연결 엔티티 속성명 <code>'Name'</code> 불일치 (<code>'column1'</code>이 실제명)</td>
+          <td class="badge-ok">속성명을 Studio Pro에서 직접 확인 후 교체</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>정렬 시 <code>Can't find attribute</code> 에러</td>
+          <td>오타: <code>InspectionDetectionDate</code> → 실제명은 <code>IssueDetectionDate</code></td>
+          <td class="badge-ok">실제 Attribute명으로 수정</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>팝업 상단이 Mendix 내비바에 가려짐</td>
+          <td>모달 <code>position:fixed; top:0</code>이 내비바 뒤로 들어감</td>
+          <td class="badge-ok">JS로 내비바 높이 동적 측정 → padding-top 적용</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 4. 상세 해결 ── -->
+  <h2 id="s4">4. 문제별 상세 해결법</h2>
+
+  <h3>① org.json 라이브러리 없음</h3>
+  <p>Mendix 런타임에 <code>org.json</code>이 없어서 <code>JSONArray</code>, <code>JSONObject</code> import가 전부 실패했다.</p>
+
+  <div class="callout warn">
+    <strong>⚠️ 외부 라이브러리를 추가하지 말 것</strong>
+    Mendix 프로젝트에 JAR을 임의로 추가하면 배포 환경에서 ClassPath 충돌이 발생할 수 있다.
+    JDK 기본 라이브러리만 사용하는 것이 안전하다.
+  </div>
+
+  <p>해결: <code>StringBuilder</code>로 JSON을 직접 조립하고, 특수문자 처리용 헬퍼를 추가했다.</p>
+
+<pre><code>// org.json 대체: StringBuilder 직접 JSON 구성
+private String escapeJson(String s) {
+    if (s == null) return "";
+    return s.replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r");
+}
+
+private void appendStr(StringBuilder sb, String key, String val, boolean last) {
+    sb.append("\"").append(key).append("\":\"")
+      .append(escapeJson(val)).append("\"");
+    if (!last) sb.append(",");
+}</code></pre>
+
+  <h3>② retrieveXPathQuery 시그니처 불일치</h3>
+  <p>작성한 코드가 7-arg 오버로드를 사용했는데, Mendix 10.x에는 해당 시그니처가 없다.</p>
+
+<pre><code>// ❌ 잘못된 시그니처 (Mendix 10에 없음)
+Core.retrieveXPathQuery(ctx, xpath, -1, 0, new HashMap&lt;&gt;(), "attr", false);
+
+// ✅ 올바른 시그니처
+Map&lt;String, String&gt; sortMap = new HashMap&lt;&gt;();
+sortMap.put("IssueDetectionDate", "desc");
+List&lt;IMendixObject&gt; issues = Core.retrieveXPathQuery(ctx, xpath, -1, 0, sortMap);</code></pre>
+
+  <h3>③ HTML Snippet에서 &lt;script&gt; 태그 오류</h3>
+  <p>
+    Mendix HTML/JavaScript Snippet 위젯은 Content Type을 <code>HTML</code>로 설정하면
+    <code>&lt;script&gt;</code> 태그를 그대로 문자열로 파싱하려 해서 Syntax Error가 발생한다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>위젯</th><th>Content Type</th><th>&lt;style&gt;</th><th>&lt;script&gt;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Widget #1 (HTML)</td><td>HTML</td><td>✅ 포함</td><td>❌ 없어야 함</td></tr>
+        <tr><td>Widget #2 (JS)</td><td>JavaScript</td><td>❌</td><td>❌ 태그 없이 JS 코드만</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>④ mx.data.action이 Java Action 직접 호출 불가</h3>
+  <p>
+    <code>mx.data.action("Inspection.SRC_GetIssueList_JSON", ...)</code>을 호출했더니
+    <em>"does not exist"</em> 에러. <code>mx.data.action</code>은 <strong>Microflow만</strong> 호출한다.
+  </p>
+  <p>해결: JA를 감싸는 얇은 Microflow Wrapper 하나를 만들면 끝.</p>
+
+  <div class="flow">
+<span class="hl">[Microflow]</span> MF_SRC_GetIssueList_JSON<br>
+  Return type: String<br>
+  <span class="arrow">  └→ [Call Java Action] SRC_GetIssueList_JSON → $ReturnValue</span><br>
+  <span class="arrow">  └→ [End Event] Return: $ReturnValue</span>
+  </div>
+
+  <div class="callout success">
+    <strong>✅ 빠른 연결 테스트 팁</strong>
+    JA 작성 전에 Microflow에서 하드코딩 JSON 문자열을 return해서
+    JS → MF 연결 자체가 동작하는지 먼저 확인하면 문제 격리가 쉽다.
+  </div>
+
+  <h3>⑤ Association 속성명 불일치</h3>
+  <p>
+    JA에서 연결 엔티티의 표시값을 읽을 때 <code>"Name"</code>으로 썼는데,
+    실제 엔티티 Attribute명이 <code>"column1"</code>이었다.
+  </p>
+
+<pre><code>// ❌ 엔티티에 'Name' 속성이 없어서 에러
+getAssocValue(ctx, obj, "...R_InspectionRegulation", "Inspection.R_InspectionRegulation", "Name");
+
+// ✅ Studio Pro에서 실제 속성명 확인 후 적용
+getAssocValue(ctx, obj, "...R_InspectionRegulation", "Inspection.R_InspectionRegulation", "column1");</code></pre>
+
+  <div class="callout warn">
+    <strong>⚠️ 확인 방법</strong>
+    Studio Pro → Domain Model → 해당 엔티티 더블클릭 → Attributes 탭에서 String 타입 속성명 확인.
+    Mendix 기준정보(Reference) 엔티티는 대부분 <code>column1</code>을 쓰는 경우가 많다.
+  </div>
+
+  <h3>⑥ Attribute 오타 (정렬 키)</h3>
+  <p>
+    정렬 키로 <code>"InspectionDetectionDate"</code>를 썼는데 실제 엔티티 속성명은
+    <code>"IssueDetectionDate"</code>였다. 런타임에서 정렬 시점에 터짐.
+  </p>
+
+<pre><code>// ❌
+sortMap.put("InspectionDetectionDate", "desc");
+
+// ✅ 실제 Attribute 물리명 확인 후
+sortMap.put("IssueDetectionDate", "desc");</code></pre>
+
+  <h3>⑦ 팝업 모달이 Mendix 내비바에 가려짐</h3>
+  <p>
+    모달 backdrop을 <code>position: fixed; top: 0; inset: 0</code>으로 설정했더니
+    Mendix 상단 내비바(높이 약 60px)가 모달 위에 올라와 헤더가 가려졌다.
+  </p>
+
+<pre><code>// JS에서 내비바 실제 높이를 동적으로 읽어 padding-top 적용
+function getNavbarHeight() {
+  const selectors = ['.mx-navbar', 'nav.navbar', 'header'];
+  for (const sel of selectors) {
+    const el = document.querySelector(sel);
+    if (el) return Math.ceil(el.getBoundingClientRect().bottom);
+  }
+  return 60; // fallback
+}
+
+// 모달 열 때
+document.getElementById('eil-backdrop').style.paddingTop
+  = getNavbarHeight() + 'px';</code></pre>
+
+  <div class="callout">
+    <strong>💡 z-index도 같이 올릴 것</strong>
+    backdrop z-index를 <code>9999</code> 이상으로 설정해야 Mendix 내부 요소들 위에 표시된다.
+  </div>
+
+  <!-- ── 5. 핵심 코드 ── -->
+  <h2 id="s5">5. 핵심 코드 구조</h2>
+
+  <h3>JA — Association 값 읽기 헬퍼</h3>
+
+<pre><code>private String getAssocValue(IContext ctx, IMendixObject obj,
+    String assocName, String targetEntity, String attrName) {
+  try {
+    IMendixIdentifier id = (IMendixIdentifier) obj.getValue(ctx, assocName);
+    if (id == null) return "";
+    IMendixObject ref = Core.retrieveId(ctx, id);
+    if (ref == null) return "";
+    Object val = ref.getValue(ctx, attrName);
+    return val == null ? "" : val.toString();
+  } catch (Exception e) {
+    return "";
+  }
+}</code></pre>
+
+  <h3>JS — Microflow 호출 (mock fallback 포함)</h3>
+
+<pre><code>function loadIssues() {
+  if (typeof mx !== 'undefined') {
+    mx.data.action({
+      params: { actionname: 'Inspection.MF_SRC_GetIssueList_JSON' },
+      callback: function(result) {
+        try {
+          allData = JSON.parse(result);
+          renderTable();
+        } catch(e) {
+          console.error('JSON 파싱 실패', e);
+          loadMock(); // fallback
+        }
+      },
+      error: function(e) {
+        console.error('MF 호출 실패', e);
+        loadMock();
+      }
+    });
+  } else {
+    loadMock(); // Mendix 런타임 외부 (개발 미리보기)
+  }
+}</code></pre>
+
+  <h3>JS — 권한 분기 로직</h3>
+
+<pre><code>function getCurrentUserRole() {
+  if (typeof mx === 'undefined') return 'admin'; // 개발 모드 → 관리자
+  const user = mx.session.getUserName ? mx.session.getUserName() : '';
+  if (user === 'MxAdmin') return 'admin';
+  const roles = mx.session.getUserRoles ? mx.session.getUserRoles() : [];
+  if (roles.some(r => r.includes('Administrator') || r.includes('Admin'))) return 'admin';
+  return 'user'; // 일반 유저; 조치담당자 판단은 IssueClearPersonId 비교로
+}
+
+function openModal(row) {
+  const role = getCurrentUserRole();
+  const isMyTask = (row.IssueClearPersonId === currentUser);
+  const canEditAll   = (role === 'admin');
+  const canEditClear = (role === 'admin' || isMyTask);
+  // ...탭별 readonly 속성 토글
+}</code></pre>
+
+  <h3>JS — 사진 필드 (contenteditable — CKEditor HTML 렌더링)</h3>
+
+<pre><code>// 저장된 HTML을 innerHTML로 바로 렌더링 (이미지 포함)
+function setPhotoArea(fieldId, htmlContent, readonly) {
+  const el = document.getElementById(fieldId);
+  if (!el) return;
+  el.innerHTML = htmlContent || '';
+  el.contentEditable = readonly ? 'false' : 'true';
+}
+
+// 저장 시 HTML 추출
+function getPhotoHtml(fieldId) {
+  const el = document.getElementById(fieldId);
+  return el ? el.innerHTML : '';
+}</code></pre>
+
+  <!-- ── 6. 교훈 ── -->
+  <h2 id="s6">6. 교훈 — 삽질에서 배운 것</h2>
+
+  <div class="lesson-grid">
+    <div class="lesson-card">
+      <div class="lesson-num">1</div>
+      <h4>mx.data.action은 Microflow만 호출한다</h4>
+      <p>Java Action은 직접 호출 불가. 반드시 Microflow Wrapper로 감싸야 한다. 문서에 명시가 약하다.</p>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">2</div>
+      <h4>HTML Snippet에 &lt;script&gt; 태그 넣지 말 것</h4>
+      <p>Content Type이 JavaScript인 위젯에는 태그 없이 JS 코드만 붙여야 한다. 태그가 들어가면 Syntax Error.</p>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">3</div>
+      <h4>라이브러리 의존 없이 JDK만 써라</h4>
+      <p>Mendix 런타임에 외부 JSON 라이브러리가 없다. StringBuilder로 직접 구성하면 의존성 문제 없이 깔끔하다.</p>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">4</div>
+      <h4>Association 속성명은 반드시 Studio Pro에서 확인</h4>
+      <p>관행적으로 'Name'을 쓰면 십중팔구 에러. Domain Model 열고 Attributes 탭에서 실제 String 속성명을 확인해야 한다.</p>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">5</div>
+      <h4>모달과 내비바는 반드시 높이 동적 측정</h4>
+      <p>고정 px로 내비바 높이를 때려 넣으면 환경마다 다르다. JS로 <code>getBoundingClientRect().bottom</code>을 읽어서 적용해야 정확하다.</p>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">6</div>
+      <h4>mock fallback 먼저 붙이고 개발하라</h4>
+      <p>Mendix 없는 환경에서도 <code>typeof mx === 'undefined'</code> 분기로 목업 데이터로 fallback되게 해두면 프론트 개발 속도가 훨씬 빠르다.</p>
+    </div>
+  </div>
+
+  <!-- ── 태그 ── -->
+  <div class="post-tags-bottom">
+    <a href="#">mendix</a>
+    <a href="#">멘딕스</a>
+    <a href="#">HTML위젯</a>
+    <a href="#">JavaAction</a>
+    <a href="#">Datagrid2</a>
+    <a href="#">mx.data.action</a>
+    <a href="#">lowcode</a>
+    <a href="#">HTMLSnippet</a>
+    <a href="#">권한분기</a>
+    <a href="#">삽질기</a>
+  </div>
+
+</div>
+</body>
+</html>
+</div>

@@ -1,0 +1,80 @@
+<!--
+id: 152
+제목: 비개발자에게 웹 구조 보여주기: 화면·서버·DB를 따라가는 데모
+카테고리: Stack/VibeCoding
+태그: 웹기초, Frontend, Backend, DB, Flask, SQLite, sqljs, 세미나, 사내교육
+날짜: 2026-10-05 18:00
+형식: pc
+-->
+<div class="pc">
+<ul class="pc-meta"><li>사내 교육</li><li>Flask</li><li>SQLite</li><li>sql.js</li></ul>
+<p class="pc-lead">비개발자 동료들에게 웹이 어떻게 돌아가는지 설명하는 세미나를 준비했다. 말로 "화면이 서버에 요청하고, 서버가 DB에 물어본다"고 하면 대부분 '서버'라는 단어에서 막힌다. 그래서 요청이 오가는 장면을 눈으로 따라가는 데모를 만들었다.</p>
+
+<h2>직접 눌러보기</h2>
+<p>아래 화면에서 <b>따라하기 시작</b>을 누르면 20단계로 진행된다. 데이터 200건은 전부 만든 가짜 데이터이고, 서버와 DB는 브라우저 안에서 흉내 낸다.</p>
+<div class="pc-demo">
+<iframe src="/demo/web-layers/" title="화면·서버·DB 데모" loading="lazy"></iframe>
+<div class="bar"><span>새로고침하면 처음 데이터로 돌아갑니다</span><a href="/demo/web-layers/" target="_blank" rel="noopener">새 창에서 크게 보기</a></div>
+</div>
+
+<h2>한 화면에 세 영역</h2>
+<div class="pc-table"><table>
+<thead><tr><th>영역</th><th>모양</th><th>실행 위치</th></tr></thead>
+<tbody>
+<tr><td>화면 Frontend</td><td>윈도우 브라우저 창</td><td>사용자 PC</td></tr>
+<tr><td>서버 Backend</td><td>서버 픽토그램과 처리 단계 4칸</td><td>서버 컴퓨터</td></tr>
+<tr><td>DB Database</td><td>원통</td><td>DB 서버</td></tr>
+</tbody></table></div>
+<p>영역 사이 화살표로 요청과 응답이 이동한다. 화살표 위 알약에는 <code>GET</code>, <code>SQL</code>, <code>JSON</code>처럼 실제로 오가는 내용이 표시된다.</p>
+
+<h2>세미나에서 짚은 네 장면</h2>
+<h3>1. 고르기만 해서는 아무 일도 없다</h3>
+<p>공장 드롭다운에서 값을 골라도 서버와 DB는 흐려진 채 '요청 없음'이다. 드롭다운을 펼치고 고르는 건 전부 화면 안의 일이고, <b>검색 버튼이 요청을 보내는 방아쇠</b>라는 걸 먼저 보여준다.</p>
+
+<h3>2. 검색 한 번</h3>
+<p>검색을 누르면 화면 → 서버 → DB → 서버 → 화면 순서로 화살표가 움직인다. DB 영역에는 실제로 실행된 SQL이 줄마다 뜻과 함께 나온다.</p>
+<div class="pc-table"><table>
+<thead><tr><th>SQL</th><th>뜻</th></tr></thead>
+<tbody>
+<tr><td><code>SELECT ...</code></td><td>보여줄 칸 이름들</td></tr>
+<tr><td><code>FROM issue</code></td><td>조회할 테이블. 화면의 'issue 테이블'과 같은 이름</td></tr>
+<tr><td><code>WHERE / AND</code></td><td>고른 조건</td></tr>
+<tr><td><code>ORDER BY found_date DESC</code></td><td>발견일 최신순</td></tr>
+<tr><td><code>LIMIT 100</code></td><td>최대 몇 건</td></tr>
+</tbody></table></div>
+<p>조건을 전부 '전체'로 두고 다시 검색하면 <code>WHERE</code> 줄이 통째로 사라진다. 결과가 100건에서 멈추는 이유도 SQL에서 바로 보인다.</p>
+
+<h3>3. 같은 "간단한 요청", 다른 계층</h3>
+<p>현업이 보기엔 비슷한 요청이 어디를 고쳐야 하느냐에 따라 걸리는 시간이 크게 다르다. 코드를 직접 열어 차례로 고쳐 보였다.</p>
+<div class="pc-table"><table>
+<thead><tr><th>요청</th><th>고치는 곳</th><th>반영까지</th></tr></thead>
+<tbody>
+<tr><td>"발견일을 '점검일'로 바꿔주세요"</td><td>화면 코드의 라벨</td><td>새로고침 즉시</td></tr>
+<tr><td>"담당자 이름으로도 검색되게요"</td><td>서버의 SQL 조건</td><td>서버 재시작</td></tr>
+<tr><td>"담당자 연락처도 보여주세요"</td><td>DB에 칸 자체가 없음</td><td>구조 변경과 데이터 확보</td></tr>
+</tbody></table></div>
+<p>그래서 요건을 협의할 때 데이터 구조부터 확인한다는 얘기로 이어진다. 서버에서 담당자 칸을 일부러 빼고 검색해 보이면, 화면 코드는 그대로인데 열이 사라진다. "화면이 이상해요"가 화면 문제가 아닐 수 있다는 걸 보여주는 장면이다.</p>
+
+<h3>4. "이거 HTML로 뽑아주면 되는 거 아냐?"</h3>
+<p>요즘은 AI로 화면 HTML을 금방 만든다. 그런데 그렇게 만든 화면은 조회만 된다. 데모의 DB 영역에는 <code>C 등록</code> <code>R 조회</code> <code>U 수정</code> <code>D 삭제</code> 표시가 있고, 지금까지는 R만 켜졌다.</p>
+<ol class="pc-steps">
+<li>줄을 눌러 편집 창을 열고 값을 바꾸다가 <b>취소</b>하면 서버와 DB는 '요청 없음'이다.</li>
+<li>다시 열어 상태를 바꾸면 바뀐 칸에 '변경' 표시가 붙고 그때서야 저장 버튼이 눌린다.</li>
+<li>저장하면 요청이 <code>GET</code>이 아니라 <code>POST</code>, SQL이 <code>SELECT</code>가 아니라 <code>UPDATE</code>로 바뀌고 U에 불이 들어온다.</li>
+<li>새로고침하고 다시 검색해도 바뀐 값이 남아 있다. 값이 DB에 저장됐기 때문이다.</li>
+</ol>
+<div class="pc-quote">HTML은 요건을 맞추는 도구, 웹앱은 그 요건을 여러 사람이 실제로 쓰게 만드는 것</div>
+<p>대체 관계가 아니라 순서다. 파워포인트 화면은 상상해야 하지만 HTML은 눌러보며 요건을 확정할 수 있다. 그다음 등록·수정·삭제가 필요해지면 서버와 DB가 있는 웹앱으로 간다.</p>
+
+<h2>만들 때 정한 것</h2>
+<div class="pc-cols">
+<div class="pc-col"><h3>시연판</h3><p>Flask 서버와 SQLite 파일. 발표자가 코드를 고쳐 보이는 용도. 저장한 값은 새로고침해도 남는다.</p></div>
+<div class="pc-col"><h3>연습판 (위 데모)</h3><p>HTML 파일 하나. sql.js로 SQLite를 브라우저 안에서 돌린다. 설치 없이 열리고, 새로고침하면 처음 상태로 돌아간다.</p></div>
+</div>
+<ul>
+<li>두 판은 화면과 동작이 같고 DB가 어디 있는지만 다르다. 화면 코드는 그대로 두고 요청을 보내는 부분만 바꿔 끼웠다.</li>
+<li>실제 SQL은 값 자리를 <code>?</code>로 비우고 값은 따로 보낸다. '코드' 보기로 바꾸면 그 모습이 그대로 나온다.</li>
+<li>편집 창의 담당자는 자유 입력이 아니라 목록이다. 서버도 한 번 더 확인해서 목록에 없는 이름은 거절한다. 화면만 막는 건 막은 게 아니기 때문이다.</li>
+</ul>
+<div class="pc-note"><b>운영 구조는 다르다</b> — 실제 서비스는 여러 사용자 PC가 같은 서버와 같은 DB를 본다. 이 데모는 그 셋을 한 화면, 한 대에서 전부 보여주기 위한 것이다.</div>
+</div>

@@ -1,0 +1,511 @@
+<!--
+id: 106
+제목: AWS DEA-C01 각색 문제 Day 09 — Redshift CALL, Glue 작업 북마크 증분 처리, Redshift 페더레이션 쿼리, Firehose → Splunk 실시간 로그 전송, VPC 흐름 로그 + Parquet + Athena
+카테고리: Stack/AWS
+태그: AWS 자격증, AWS DEA-C01, Redshift CALL, Glue 작업 북마크, Redshift 페더레이션 쿼리, Firehose Splunk, VPC 흐름 로그, S3 Parquet Athena
+날짜: 2026-03-27 00:01
+수정: 2026-03-27 00:02
+형식: html
+썸네일: /img/t/dJMcadnRmrr.webp
+-->
+<style>
+.pb-106 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-106 .dea-wrap *{box-sizing:border-box}
+.pb-106 .dea-post-header{margin-bottom:32px}
+.pb-106 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-106 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-106 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-106 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-106 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-106 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-106 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-106 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-106 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-106 .dea-q-block{margin-bottom:48px}
+.pb-106 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-106 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-106 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-106 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-106 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-106 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-106 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-106 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-106 .dea-seo-lead strong{color:var(--p50)}
+.pb-106 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-106 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-106 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-106 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-106 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-106 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-106 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-106 .dea-opt.ok{border-color:var(--s60)}
+.pb-106 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-106 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-106 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-106 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-106 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-106 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-106 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-106 .dea-term{font-weight:700;color:var(--p50)}
+.pb-106 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-106 .dea-btn:hover{background:var(--p60)}
+.pb-106 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-106 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-106 .dea-exp.on{display:flex}
+.pb-106 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-106 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-106 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-106 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-106 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-106 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-106 .dea-table th, .pb-106 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-106 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-106 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-106 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-106 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-106 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-106 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-106 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-106 .dea-code-block{background:var(--g0);border:1.5px solid var(--p10);border-radius:8px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:var(--p70);overflow-x:auto;white-space:pre}
+.pb-106 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-106 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-106 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-106 .dea-hl{color:var(--p50);font-weight:700}
+.pb-106 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-106 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-106 .dea-wrap{padding:14px 6px 52px}
+.pb-106 .dea-post-title{font-size:18px}
+.pb-106 .dea-qcard p{font-size:14px}
+.pb-106 .dea-opt-row{font-size:13px}
+.pb-106 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-106 .dea-table{font-size:11.5px}
+.pb-106 .dea-table th, .pb-106 .dea-table td{padding:8px 9px}
+.pb-106 .dea-ans-main{font-size:14.5px}
+.pb-106 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-106">
+<article class="dea-wrap">
+<div>
+
+</div>
+<div class="dea-post-header">
+<h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 &mdash; Day 09</h1>
+<p class="dea-post-desc" data-ke-size="size16">Redshift CALL 문법, Glue 작업 북마크 증분 처리, Redshift 페더레이션 쿼리, Firehose &rarr; Splunk 실시간 로그 전송, VPC 흐름 로그 + Parquet + Athena &mdash; 5문제 핵심 정리.</p>
+<div class="dea-post-meta"><span class="dea-badge exam">AWS DEA-C01</span> <span class="dea-badge topic">Domain 1&middot;2 &middot; SQL &middot; 네트워킹 &middot; 스트리밍</span> <span class="dea-badge diff">5문제</span></div>
+</div>
+<nav class="dea-toc">
+<div class="dea-toc-title">📋 목차</div>
+<ul class="dea-toc-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><a href="#dea-q41"><span class="dea-toc-num">Q41</span> Redshift 저장 프로시저 실행 SQL 명령어</a></li>
+<li><a href="#dea-q42"><span class="dea-toc-num">Q42</span> Glue ETL 작업 &mdash; 일별 증분 데이터만 처리하기</a></li>
+<li><a href="#dea-q43"><span class="dea-toc-num">Q43</span> Aurora 운영 DB 데이터를 Redshift에서 실시간 분석</a></li>
+<li><a href="#dea-q44"><span class="dea-toc-num">Q44</span> VPC 흐름 로그를 Splunk로 실시간 전송</a></li>
+<li><a href="#dea-q45"><span class="dea-toc-num">Q45</span> VPC 흐름 로그 수집&middot;분석 &mdash; 가장 비용 효율적</a></li>
+</ul>
+</nav><!-- Q41 -->
+<div id="dea-q41" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q41</span><span class="dea-badge topic">Redshift SQL &middot; 저장 프로시저 &middot; CALL</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16">Amazon Redshift에서 저장 프로시저(Stored Procedure)를 실행하는 SQL 명령어는 <b>CALL</b>입니다. SELECT&middot;FETCH&middot;SHOW는 저장 프로시저 실행에 사용하지 않습니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">Amazon Redshift에 <code>Daily_Aggr_SP</code>라는 저장 프로시저(Stored Procedure)가 있습니다. 이 프로시저는 날짜를 입력받아 일별 집계 데이터를 프로덕션 테이블에 삽입합니다. 이 저장 프로시저를 실행하는 올바른 SQL 명령문은 무엇인가요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q41-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>CALL Daily_Aggr_SP('2024-01-01')</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">CALL</span> &mdash; SQL 표준 저장 프로시저 실행 명령어. Redshift, PostgreSQL, MySQL 모두 동일. 괄호 안에 입력 파라미터를 전달. 저장 프로시저를 호출하는 유일한 올바른 방법.</div>
+</li>
+<li id="q41-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>FETCH Daily_Aggr_SP('2024-01-01')</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">FETCH</span> &mdash; 커서(Cursor)에서 행을 가져오는 명령어. 저장 프로시저 실행 명령이 아님.</div>
+</li>
+<li id="q41-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>SHOW PROCEDURE Daily_Aggr_SP('2024-01-01')</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">SHOW</span> &mdash; 시스템 설정&middot;객체 정보를 조회하는 명령어. 저장 프로시저를 실행하는 명령이 아님.</div>
+</li>
+<li id="q41-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>SELECT Daily_Aggr_SP('2024-01-01')</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">SELECT</span> &mdash; 데이터 조회 명령어. 함수(Function)는 SELECT로 호출하지만 저장 프로시저(Procedure)는 CALL을 사용해야 함. 저장 프로시저와 함수는 다른 객체.</div>
+</li>
+</ul>
+<button id="btn-q41" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q41" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">A &mdash; CALL 명령어로 저장 프로시저 실행</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Redshift 함수 vs 저장 프로시저 실행 방법</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>객체 유형</th>
+<th>실행 명령어</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>저장 프로시저(Procedure)</b></td>
+<td><b>CALL</b></td>
+<td>CALL proc_name(param)</td>
+</tr>
+<tr>
+<td>사용자 정의 함수(Function)</td>
+<td>SELECT</td>
+<td>SELECT func_name(param)</td>
+</tr>
+<tr>
+<td>커서(Cursor)</td>
+<td>FETCH</td>
+<td>FETCH cursor_name</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>저장 프로시저 실행  &rarr;  <span class="dea-hl">CALL</span> proc_name(파라미터)<br />사용자 정의 함수    &rarr;  <span class="dea-hl">SELECT</span> func_name(파라미터)<br /><br />Procedure &ne; Function &rarr; 실행 방법이 다름!</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q42 -->
+<div id="dea-q42" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q42</span><span class="dea-badge topic">Glue 작업 북마크 &middot; 증분 처리 &middot; 최소 코딩</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>AWS Glue 작업 북마크(Job Bookmark)</b>는 마지막으로 처리한 데이터의 체크포인트를 자동으로 관리해 다음 실행 시 새로운 데이터만 처리하는 기능입니다. 코드 변경 없이 구성만으로 증분 처리를 구현할 수 있습니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">S3에서 데이터를 검증&middot;변환하여 RDS MySQL에 배치로 적재하는 Glue ETL 작업이 있습니다. 현재 매 실행마다 S3의 모든 데이터를 처리하는데, 일별 신규 데이터만 처리하도록 변경하고 싶습니다. 코딩 작업을 최소화하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q42-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>S3 파일 상태를 읽고 처리 상태를 DynamoDB에 기록하는 별도 ETL 작업을 만들어 처리된 파일을 추적합니다.</span></div>
+<div class="dea-inline-exp">❌ 파일 메타데이터 읽기 + DynamoDB 상태 관리 + 메인 ETL에서 상태 확인까지 <b>상당한 코딩 작업</b> 필요. 작업 북마크를 쓰면 코드 없이 해결 가능.</div>
+</li>
+<li id="q42-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Glue 작업 설정에서 작업 북마크(Job Bookmark)를 활성화하여 이전에 처리된 데이터를 자동으로 추적합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue 작업 북마크(Job Bookmark)</span> &mdash; 마지막 처리 지점(체크포인트)을 자동 기록해 다음 실행 시 새 데이터만 읽는 기능. 소설책에 책갈피를 끼워두면 다음에 이어 읽을 수 있는 것처럼. <b>코드 변경 없이 Glue 작업 구성에서 활성화</b>만 하면 즉시 증분 처리 동작.</div>
+</li>
+<li id="q42-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Glue 작업 지표를 사용하여 CloudWatch에서 처리된 객체를 추적합니다.</span></div>
+<div class="dea-inline-exp">❌ CloudWatch 지표는 모니터링&middot;알람용. <b>처리된 객체를 추적하거나 증분 처리를 제어하는 기능이 없음</b>. 관측(Observability) 도구와 처리 제어는 다름.</div>
+</li>
+<li id="q42-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>각 실행 후 처리된 S3 객체를 삭제하도록 ETL 작업을 수정합니다.</span></div>
+<div class="dea-inline-exp">❌ 처리된 데이터 삭제는 <b>데이터 손실 위험</b>이 있고 재처리가 불가능해짐. 삭제 로직 추가 코딩도 필요. 잘못된 접근.</div>
+</li>
+</ul>
+<button id="btn-q42" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q42" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; Glue 작업 북마크 활성화로 코드 없이 증분 처리</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Glue 증분 처리 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>코딩 필요</th>
+<th>재처리 가능</th>
+<th>적합성</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>작업 북마크(Job Bookmark)</b></td>
+<td><span class="dea-pill good">없음 (구성만)</span></td>
+<td>✓</td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+</tr>
+<tr>
+<td>DynamoDB 상태 추적</td>
+<td><span class="dea-pill bad">많음</span></td>
+<td>✓</td>
+<td>복잡도 높음</td>
+</tr>
+<tr>
+<td>처리 후 S3 삭제</td>
+<td><span class="dea-pill mid">필요</span></td>
+<td><span class="dea-pill bad">✗</span></td>
+<td>위험함</td>
+</tr>
+<tr>
+<td>CloudWatch 지표</td>
+<td>없음</td>
+<td>-</td>
+<td><span class="dea-pill bad">모니터링용</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"Glue ETL 증분 처리 + 최소 코딩"  &rarr;  <span class="dea-hl">작업 북마크(Job Bookmark)</span><br /><br />코드 변경 없이 구성에서 활성화만 하면 됨<br />체크포인트 자동 관리 &rarr; 다음 실행 시 새 데이터만 처리</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q43 -->
+<div id="dea-q43" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q43</span><span class="dea-badge topic">Redshift 페더레이션 쿼리 &middot; Aurora &middot; 실시간 분석</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Redshift 페더레이션 쿼리(Federated Query)</b>는 데이터를 복제하지 않고 Aurora PostgreSQL 등 외부 DB에서 직접 데이터를 쿼리하는 기능입니다. 실시간에 가까운 분석이 필요할 때 가장 적은 운영 오버헤드로 구현 가능합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">Amazon Redshift 데이터 웨어하우스에서 과거 분석 데이터를 관리하고, 공급망 앱의 실시간 재고 데이터는 Amazon Aurora PostgreSQL에 있습니다. 분석팀이 재고 데이터를 거의 실시간으로 분석해야 하며 데이터 업데이트도 추적해야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q43-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>AWS DMS를 사용하여 Aurora와 Redshift 데이터를 지속적으로 동기화하고 Redshift에서 분석합니다.</span></div>
+<div class="dea-inline-exp">❌ DMS 지속 복제는 설정&middot;모니터링 오버헤드가 있고, Aurora &rarr; Redshift 반영 지연이 발생할 수 있어 <b>실시간에 가까운 접근 요건을 보장하기 어려움</b>.</div>
+</li>
+<li id="q43-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Redshift에서 페더레이션 쿼리를 사용하여 Aurora PostgreSQL 데이터를 직접 쿼리합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Redshift 페더레이션 쿼리(Federated Query)</span> &mdash; 데이터 복제 없이 Redshift SQL에서 Aurora 데이터를 직접 조회. 마치 원격 도서관 책을 가져오지 않고 그 자리에서 바로 읽는 것. <b>항상 최신 데이터 접근(실시간)</b> + 설정만으로 구성 가능 + 운영 오버헤드 최소.</div>
+</li>
+<li id="q43-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Aurora 데이터를 S3로 내보내고 Redshift Spectrum으로 쿼리합니다.</span></div>
+<div class="dea-inline-exp">❌ Aurora &rarr; S3 내보내기 작업이 추가되고 내보내기 주기만큼 데이터 지연 발생. <b>실시간 접근 요건 미충족</b> + 운영 오버헤드 증가.</div>
+</li>
+<li id="q43-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Glue ETL로 시간별 Aurora &rarr; Redshift 데이터 전송 작업을 구성하고 Redshift에서 분석합니다.</span></div>
+<div class="dea-inline-exp">❌ 시간별 배치 = 최대 1시간 데이터 지연. <b>실시간에 가까운 접근 요건 미충족</b>. Glue 작업 관리 오버헤드도 추가.</div>
+</li>
+</ul>
+<button id="btn-q43" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q43" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; Redshift 페더레이션 쿼리로 Aurora 실시간 분석</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Aurora 데이터 Redshift에서 분석 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>실시간성</th>
+<th>데이터 복제</th>
+<th>운영 부담</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>페더레이션 쿼리</b></td>
+<td><span class="dea-pill good">실시간</span></td>
+<td>없음</td>
+<td><span class="dea-pill good">최소</span></td>
+</tr>
+<tr>
+<td>DMS 지속 복제</td>
+<td>준실시간</td>
+<td>있음</td>
+<td>중간</td>
+</tr>
+<tr>
+<td>Glue ETL (시간별)</td>
+<td>최대 1시간 지연</td>
+<td>있음</td>
+<td>중간</td>
+</tr>
+<tr>
+<td>Aurora &rarr; S3 내보내기</td>
+<td>지연 있음</td>
+<td>있음</td>
+<td>높음</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"Redshift에서 외부 DB 실시간 쿼리 + 운영 최소화"<br />  &rarr;  <span class="dea-hl">Redshift 페더레이션 쿼리</span><br /><br />데이터 복제 없음 &rarr; 항상 최신 데이터<br />Aurora PostgreSQL, RDS 등 외부 DB를 직접 쿼리</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q44 -->
+<div id="dea-q44" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q44</span><span class="dea-badge topic">Firehose &middot; CloudWatch Logs &middot; Splunk &middot; 실시간 스트리밍</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Amazon Data Firehose</b>는 Splunk를 네이티브 대상으로 지원하는 완전관리형 스트리밍 서비스입니다. CloudWatch Logs 구독 필터로 로그를 Firehose에 직접 전달하면 Lambda 없이 최소 운영으로 Splunk 연동이 가능합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">VPC 흐름 로그를 Amazon CloudWatch Logs에 게시하도록 설정했습니다. 추가 분석을 위해 흐름 로그를 거의 실시간으로 Splunk로 전송해야 합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q44-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>Splunk를 대상으로 하는 Kinesis Data Streams를 구성하고, CloudWatch Logs 구독 필터로 Kinesis로 로그를 전송합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">Kinesis Data Streams</span>는 Splunk를 네이티브 대상으로 <b>지원하지 않음</b>. Splunk로 전달하려면 Firehose가 필요.</div>
+</li>
+<li id="q44-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Splunk를 대상으로 하는 Amazon Data Firehose 전송 스트림을 생성하고, CloudWatch Logs 구독 필터로 로그를 Firehose에 전송합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Amazon Data Firehose</span> &mdash; 완전관리형 스트리밍 서비스로 Splunk를 네이티브 대상으로 지원. <span class="dea-term">CloudWatch Logs 구독 필터</span> &mdash; Lambda 없이 로그를 Firehose에 직접 스트리밍. <b>추가 코드 없이</b> CloudWatch Logs &rarr; Firehose &rarr; Splunk 파이프라인 구성 가능.</div>
+</li>
+<li id="q44-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Splunk를 대상으로 하는 Firehose 전송 스트림을 생성하고, Lambda 함수를 만들어 CloudWatch Logs에서 Firehose로 로그를 전송합니다.</span></div>
+<div class="dea-inline-exp">❌ Firehose가 Splunk를 지원하는 건 맞지만, <b>Lambda 함수를 추가로 개발&middot;관리</b>해야 함. CloudWatch Logs 구독 필터를 사용하면 Lambda 없이 직접 연결 가능. 불필요한 오버헤드.</div>
+</li>
+<li id="q44-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Splunk를 대상으로 하는 Kinesis Data Streams를 구성하고, Lambda 함수로 CloudWatch Logs에서 Kinesis로 로그를 전송합니다.</span></div>
+<div class="dea-inline-exp">❌ Kinesis Data Streams는 Splunk 직접 연동 불가 + Lambda 개발 부담 2가지 문제. 최악의 오버헤드 조합.</div>
+</li>
+</ul>
+<button id="btn-q44" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q44" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; CloudWatch Logs 구독 필터 &rarr; Firehose &rarr; Splunk</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Splunk 연동 서비스 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>Splunk 네이티브 지원</th>
+<th>CloudWatch Logs 직접 구독</th>
+<th>Lambda 필요?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Amazon Data Firehose</b></td>
+<td><span class="dea-pill good">✓</span></td>
+<td><span class="dea-pill good">✓</span></td>
+<td><span class="dea-pill good">불필요</span></td>
+</tr>
+<tr>
+<td>Kinesis Data Streams</td>
+<td><span class="dea-pill bad">✗</span></td>
+<td>구독 가능</td>
+<td>필요</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"CloudWatch Logs &rarr; Splunk 실시간 전송"<br />  &rarr;  구독 필터 &rarr; <span class="dea-hl">Firehose</span> &rarr; Splunk<br /><br />Kinesis Data Streams = Splunk 직접 연동 불가<br />Lambda 추가 = 불필요한 오버헤드</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q45 -->
+<div id="dea-q45" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q45</span><span class="dea-badge topic">VPC 흐름 로그 &middot; S3 Parquet &middot; Athena &middot; 비용 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16">VPC 흐름 로그 분석의 가장 비용 효율적인 패턴은 <b>S3에 Parquet 형식으로 저장 + Athena 분석</b>입니다. Parquet은 열 형식(Columnar)으로 압축&middot;인코딩 최적화가 되어 있어 텍스트보다 Athena 스캔 비용이 크게 줄어듭니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">VPC의 EC2 인스턴스에서 발생하는 네트워크 트래픽을 수집하고 분석하려 합니다. 가장 비용 효율적인 솔루션은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q45-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>흐름 로그를 Amazon CloudWatch Logs에 게시하고, Amazon Athena로 분석합니다.</span></div>
+<div class="dea-inline-exp">❌ CloudWatch Logs 저장 비용이 S3보다 높음. Athena는 S3를 쿼리하는 서비스라 CloudWatch Logs를 직접 쿼리 불가. <b>추가 연동 설정</b>이 필요하고 비용도 높음.</div>
+</li>
+<li id="q45-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>흐름 로그를 Amazon CloudWatch Logs에 게시하고, Amazon OpenSearch Service 클러스터로 분석합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">OpenSearch Service</span> &mdash; 클러스터를 항시 운영해야 하므로 <b>시간당 인스턴스 비용</b>이 발생. Athena(서버리스 온디맨드)보다 비용이 훨씬 높음.</div>
+</li>
+<li id="q45-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>흐름 로그를 Amazon S3에 텍스트 형식으로 게시하고, Amazon Athena로 분석합니다.</span></div>
+<div class="dea-inline-exp">❌ S3 저장은 맞지만 <b>텍스트 형식은 Athena 스캔 비용이 높음</b>. Athena는 스캔한 데이터 바이트 단위로 과금되므로 Parquet 같은 압축 컬럼 형식 대비 비용이 크게 증가.</div>
+</li>
+<li id="q45-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>흐름 로그를 Amazon S3에 Apache Parquet 형식으로 게시하고, Amazon Athena로 분석합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Apache Parquet</span> &mdash; 열 기반(Columnar) 압축 포맷. 필요한 컬럼만 스캔하므로 Athena 과금 기준인 스캔 데이터량이 크게 감소(텍스트 대비 최대 90% 절감). S3 저장 비용도 압축으로 절약. <span class="dea-term">Athena</span> &mdash; 서버리스, 사용한 만큼만 과금. 클러스터 상시 운영 비용 없음.</div>
+</li>
+</ul>
+<button id="btn-q45" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q45" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">D &mdash; S3 Parquet 형식 + Athena 분석 (최저 비용)</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; 로그 분석 방법 비용 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>스토리지 비용</th>
+<th>분석 비용</th>
+<th>서버리스?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>S3 Parquet + Athena</b></td>
+<td><span class="dea-pill good">낮음(압축)</span></td>
+<td><span class="dea-pill good">낮음(컬럼 스캔)</span></td>
+<td><span class="dea-pill good">✓</span></td>
+</tr>
+<tr>
+<td>S3 텍스트 + Athena</td>
+<td>낮음</td>
+<td><span class="dea-pill mid">높음(전체 스캔)</span></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>CW Logs + Athena</td>
+<td><span class="dea-pill bad">높음</span></td>
+<td>연동 복잡</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>CW Logs + OpenSearch</td>
+<td><span class="dea-pill bad">높음</span></td>
+<td><span class="dea-pill bad">클러스터 상시 과금</span></td>
+<td><span class="dea-pill bad">✗</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"로그 분석 + 비용 최적화"  &rarr;  <span class="dea-hl">S3 Parquet</span> + <span class="dea-hl">Athena</span><br /><br />Parquet = 열 형식 압축 &rarr; Athena 스캔량 최소화 &rarr; 비용&darr;<br />텍스트 형식 = 전체 스캔 &rarr; 비용&uarr;<br />OpenSearch = 클러스터 상시 운영 비용 &rarr; 비용&uarr;&uarr;</code></div>
+</div>
+</div>
+<div class="dea-tags"><span class="dea-tag">AWS DEA-C01</span> <span class="dea-tag">Redshift CALL</span> <span class="dea-tag">Glue 작업 북마크</span> <span class="dea-tag">Redshift 페더레이션 쿼리</span> <span class="dea-tag">Firehose Splunk</span> <span class="dea-tag">VPC 흐름 로그</span> <span class="dea-tag">S3 Parquet Athena</span> <span class="dea-tag">AWS 자격증</span></div>
+<script>
+(function(){
+  var questions=[
+    {id:'q41',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — CALL'},
+    {id:'q42',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue 작업 북마크'},
+    {id:'q43',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — 페더레이션 쿼리'},
+    {id:'q44',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Firehose → Splunk'},
+    {id:'q45',ans:{'D':true},keys:['A','B','C','D'],label:'✅ 정답: D — S3 Parquet + Athena'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

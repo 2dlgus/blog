@@ -1,0 +1,521 @@
+<!--
+id: 104
+제목: AWS DEA-C01 각색 문제 Day 07 — Athena 파티셔닝, S3 DSSE-KMS, EventBridge + Glue Workflow, Redshift, EMR
+카테고리: Stack/AWS
+태그: EMR, Redshift, AWS 자격증, eventbridge, glue crawler, athena 파티셔닝, AWS DEA-C01, DSSE-KMS
+날짜: 2026-03-26 23:58
+수정: 2026-03-26 23:58
+형식: html
+썸네일: /img/t/dJMcadH9AvB.webp
+-->
+<style>
+.pb-104 500;700;900&family=JetBrains+Mono:wght@500&display=swap');
+.dea-wrap{max-width:740px;margin:0 auto;padding:28px 16px 64px;color:var(--p70);background:var(--g0);line-height:1.75;box-sizing:border-box}
+.pb-104 .dea-wrap *{box-sizing:border-box}
+.pb-104 .dea-post-header{margin-bottom:32px}
+.pb-104 .dea-post-title{font-size:22px;font-weight:900;color:var(--p70);margin:0 0 10px;line-height:1.4}
+.pb-104 .dea-post-desc{font-size:13.5px;color:var(--g70);line-height:1.8;margin:0 0 14px}
+.pb-104 .dea-post-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pb-104 .dea-toc{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:18px 20px;margin-bottom:32px}
+.pb-104 .dea-toc-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:12px}
+.pb-104 .dea-toc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.pb-104 .dea-toc-list li a{font-size:13.5px;color:var(--p50);text-decoration:none;display:flex;align-items:center;gap:8px}
+.pb-104 .dea-toc-list li a:hover{text-decoration:underline}
+.pb-104 .dea-toc-num{font-size:11px;font-weight:700;background:var(--p5);color:var(--p50);padding:2px 7px;border-radius:4px}
+.pb-104 .dea-q-block{margin-bottom:48px}
+.pb-104 .dea-q-divider{border:none;margin:0 0 32px}
+.pb-104 .dea-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pb-104 .dea-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.pb-104 .dea-badge.exam{background:var(--p5);color:var(--p50)}
+.pb-104 .dea-badge.topic{background:var(--p5);color:var(--p50)}
+.pb-104 .dea-badge.diff{background:var(--y5);color:var(--y60)}
+.pb-104 .dea-badge.qnum{background:var(--p70);color:#fff}
+.pb-104 .dea-seo-lead{font-size:13.5px;color:var(--g70);background:var(--g0);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;line-height:1.8}
+.pb-104 .dea-seo-lead strong{color:var(--p50)}
+.pb-104 .dea-stitle{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--p50);margin-bottom:10px}
+.pb-104 .dea-qcard{background:var(--g0);border:1.5px solid var(--p10);border-radius:12px;padding:20px 18px;margin-bottom:14px}
+.pb-104 .dea-qcard p{font-size:15px;font-weight:500;color:var(--p70);margin:0;line-height:1.8}
+.pb-104 .dea-opts{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.pb-104 .dea-opt{border:1.5px solid var(--g10);border-radius:10px;background:var(--g0);overflow:hidden;transition:border-color .18s}
+.pb-104 .dea-opt-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:14px;color:var(--g90)}
+.pb-104 .dea-opt .dea-k{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p5);color:var(--p50);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.pb-104 .dea-opt.ok{border-color:var(--s60)}
+.pb-104 .dea-opt.ok .dea-opt-row{background:var(--s5)}
+.pb-104 .dea-opt.ok .dea-k{background:var(--s60);color:#fff}
+.pb-104 .dea-opt.no .dea-opt-row{background:var(--g0);opacity:.6}
+.pb-104 .dea-opt.no .dea-k{background:var(--g30);color:#fff}
+.pb-104 .dea-inline-exp{display:none;padding:10px 14px 12px 52px;font-size:13px;line-height:1.75;border-top:1px dashed var(--g10)}
+.pb-104 .dea-opt.ok .dea-inline-exp{display:block;background:var(--s5);color:var(--s60);border-top-color:var(--s10)}
+.pb-104 .dea-opt.no .dea-inline-exp{display:block;background:var(--g0);color:var(--g70)}
+.pb-104 .dea-term{font-weight:700;color:var(--p50)}
+.pb-104 .dea-btn{display:block;width:100%;padding:13px;background:var(--p50);color:#fff;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:background .18s}
+.pb-104 .dea-btn:hover{background:var(--p60)}
+.pb-104 .dea-btn:disabled{background:var(--p50);cursor:default}
+.pb-104 .dea-exp{display:none;flex-direction:column;gap:20px}
+.pb-104 .dea-exp.on{display:flex}
+.pb-104 .dea-ans-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--s60),var(--s60));color:#fff;border-radius:12px;padding:18px 22px}
+.pb-104 .dea-ans-icon{font-size:26px;flex-shrink:0}
+.pb-104 .dea-ans-sub{font-size:11px;opacity:.8;margin-bottom:2px}
+.pb-104 .dea-ans-main{font-size:17px;font-weight:900}
+.pb-104 .dea-table{display:block;width:100%;border-collapse:collapse;font-size:13px;border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.pb-104 .dea-table thead tr{background:var(--p50);color:#fff}
+.pb-104 .dea-table th, .pb-104 .dea-table td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--p5);white-space:nowrap}
+.pb-104 .dea-table tbody tr:last-child td{border-bottom:none}
+.pb-104 .dea-table tbody tr:nth-child(odd){background:var(--g0)}
+.pb-104 .dea-table tbody tr:nth-child(even){background:var(--g0)}
+.pb-104 .dea-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11.5px;font-weight:700}
+.pb-104 .dea-pill.good{background:var(--s5);color:var(--s60)}
+.pb-104 .dea-pill.bad{background:var(--r5);color:var(--r60)}
+.pb-104 .dea-pill.mid{background:var(--y5);color:var(--y60)}
+.pb-104 .dea-memory{background:var(--y5);border-radius:0 10px 10px 0;padding:16px 18px}
+.pb-104 .dea-memory .dea-mem-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--y60);margin-bottom:10px}
+.pb-104 .dea-memory code{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.1;color:var(--p70);background:none}
+.pb-104 .dea-hl{color:var(--p50);font-weight:700}
+.pb-104 .dea-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pb-104 .dea-tag{font-size:11.5px;color:var(--p50);background:var(--p5);padding:3px 9px;border-radius:20px}
+@media(max-width:600px){.pb-104 .dea-wrap{padding:14px 6px 52px}
+.pb-104 .dea-post-title{font-size:18px}
+.pb-104 .dea-qcard p{font-size:14px}
+.pb-104 .dea-opt-row{font-size:13px}
+.pb-104 .dea-inline-exp{padding-left:38px;font-size:12.5px}
+.pb-104 .dea-table{font-size:11.5px}
+.pb-104 .dea-table th, .pb-104 .dea-table td{padding:8px 9px}
+.pb-104 .dea-ans-main{font-size:14.5px}
+.pb-104 .dea-memory code{font-size:12px}}
+</style>
+<div class="pb pb-104">
+<article class="dea-wrap">
+<div>
+
+</div>
+<div class="dea-post-header">
+<h1 class="dea-post-title">AWS DEA-C01 문제로 공부하기 &mdash; Day 07</h1>
+<p class="dea-post-desc" data-ke-size="size16">Athena 파티셔닝 성능, S3 이중 계층 암호화(DSSE-KMS), EventBridge + Glue Workflow 자동 트리거, Redshift 쿼리 편집기 예약, EMR 비용 최적화 모범 사례 &mdash; 5문제 핵심 정리.</p>
+<div class="dea-post-meta"><span class="dea-badge exam">AWS DEA-C01</span> <span class="dea-badge topic">Domain 1&middot;2&middot;4 &middot; 쿼리 성능 &middot; 보안 &middot; 오케스트레이션</span> <span class="dea-badge diff">5문제</span></div>
+</div>
+<nav class="dea-toc">
+<div class="dea-toc-title">📋 목차</div>
+<ul class="dea-toc-list" style="list-style-type:disc" data-ke-list-type="disc">
+<li><a href="#dea-q31"><span class="dea-toc-num">Q31</span> Athena 쿼리 성능 저하 &mdash; 파티션 메타데이터 자동 등록</a></li>
+<li><a href="#dea-q32"><span class="dea-toc-num">Q32</span> S3 버킷 두 계층 서버 측 암호화 구현</a></li>
+<li><a href="#dea-q33"><span class="dea-toc-num">Q33</span> 파일 전송 완료 시 Glue 워크플로 자동 시작</a></li>
+<li><a href="#dea-q34"><span class="dea-toc-num">Q34</span> Redshift 저장 프로시저 일별 자동 실행 &mdash; 가장 비용 효율적</a></li>
+<li><a href="#dea-q35"><span class="dea-toc-num">Q35</span> EMR 고성능 + 영구 스토리지 + 비용 최적화 구성</a></li>
+</ul>
+</nav><!-- Q31 -->
+<div id="dea-q31" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q31</span><span class="dea-badge topic">Athena &middot; Glue 크롤러 &middot; 파티셔닝</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Glue 크롤러(Crawler)</b>는 S3 데이터의 스키마를 자동 탐지하고 파티션 메타데이터를 Glue 데이터 카탈로그에 등록합니다. Athena는 이 카탈로그를 기반으로 파티션 프루닝을 수행해 쿼리 속도를 크게 개선합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">웹 서버 액세스 로그를 S3에 저장하고 Amazon Athena로 트래픽 패턴을 분석하고 있습니다. 파티셔닝되지 않은 테이블로 시작했는데, 데이터가 쌓일수록 쿼리 응답 시간이 점점 길어집니다. 운영 노력을 최소화하면서 Athena 쿼리 성능을 개선하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q31-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>모든 로그의 스키마를 분석하고 파티션 메타데이터를 Glue 데이터 카탈로그에 기록하는 AWS Glue ETL 작업을 생성합니다.</span></div>
+<div class="dea-inline-exp">❌ ETL 작업으로 파티션 메타데이터를 관리하는 것은 가능하지만, <b>직접 코딩이 필요</b>하고 크롤러보다 설정이 복잡함. 최소 운영 노력 요건에 미달.</div>
+</li>
+<li id="q31-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>로그 스키마를 자동 감지하고 파티션 메타데이터를 Glue 데이터 카탈로그에 등록하는 분류자 포함 AWS Glue 크롤러를 생성합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">AWS Glue 크롤러(Crawler)</span> &mdash; S3를 자동 탐색해 스키마 추론 + 파티션 감지 + 카탈로그 등록을 한 번에 처리. 코딩 없이 설정만으로 구성 가능. Athena는 등록된 파티션 정보를 이용해 <b>관련 파티션만 스캔 &rarr; 쿼리 속도 향상</b>.</div>
+</li>
+<li id="q31-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Lambda 함수를 생성하여 모든 로그를 Parquet 형식으로 변환하고 파티션 메타데이터를 포함해 S3에 저장합니다.</span></div>
+<div class="dea-inline-exp">❌ Lambda로 형식 변환 + 파티션 관리 로직을 직접 작성해야 해 <b>운영 부담이 높음</b>. Parquet 변환 효과는 있지만 최소 운영 노력 기준 미달.</div>
+</li>
+<li id="q31-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>Apache Hive를 사용하여 버킷화된 테이블을 생성하고 Lambda로 로그를 변환합니다.</span></div>
+<div class="dea-inline-exp">❌ Hive 버킷팅은 Athena에서 제한적으로만 지원되며 설정이 복잡. Lambda 변환 로직도 추가 개발 필요. 불필요하게 복잡한 솔루션.</div>
+</li>
+</ul>
+<button id="btn-q31" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q31" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; Glue 크롤러로 파티션 메타데이터 자동 등록</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Athena 쿼리 성능 개선 방법</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>효과</th>
+<th>운영 부담</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Glue 크롤러 + 파티셔닝</b></td>
+<td>파티션 프루닝으로 스캔량 대폭 감소</td>
+<td><span class="dea-pill good">최소</span></td>
+</tr>
+<tr>
+<td>Parquet 형식 변환</td>
+<td>컬럼 단위 스캔, 압축 효과</td>
+<td>중간 (변환 필요)</td>
+</tr>
+<tr>
+<td>파티셔닝 없는 Parquet</td>
+<td>형식 효율은 있지만 전체 스캔</td>
+<td>중간</td>
+</tr>
+<tr>
+<td>현 상태 유지 (텍스트 무파티션)</td>
+<td>개선 없음</td>
+<td>낮음</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"Athena 쿼리 느림 + 운영 최소화"  &rarr;  <span class="dea-hl">Glue 크롤러</span> + 파티션 메타데이터 등록<br /><br />크롤러 = 스키마 자동 탐지 + 파티션 자동 등록 (코딩 불필요)<br />파티셔닝 = Athena가 관련 파티션만 스캔 &rarr; 속도&uarr; 비용&darr;</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q32 -->
+<div id="dea-q32" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q32</span><span class="dea-badge topic">S3 암호화 &middot; DSSE-KMS &middot; 이중 계층</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>DSSE-KMS(Dual-layer Server-Side Encryption with KMS)</b>는 S3에서 두 계층의 서버 측 암호화를 단일 설정으로 적용하는 기능입니다. 규정 요건으로 이중 암호화가 필요할 때 가장 간단한 구현 방법입니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">규제 요건에 따라 S3 버킷에 업로드되는 모든 파일에 두 계층의 서버 측 암호화를 적용해야 합니다. Lambda 함수를 통해 암호화를 적용하려 합니다. 이 요건을 충족하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q32-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>SSE-KMS(AWS KMS 키를 통한 서버 측 암호화)와 S3 암호화 클라이언트를 모두 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ SSE-KMS는 서버 측 1계층 암호화. S3 암호화 클라이언트는 클라이언트 측 암호화. 두 개를 조합하면 기술적으로 2계층이지만 관리가 복잡하고, <b>공식적인 "두 계층 서버 측 암호화"가 아님</b>.</div>
+</li>
+<li id="q32-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>DSSE-KMS(AWS KMS 키를 통한 이중 계층 서버 측 암호화)를 사용합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">DSSE-KMS(Dual-layer Server-Side Encryption with KMS)</span> &mdash; S3가 공식 지원하는 두 계층 서버 측 암호화. 첫 번째 계층은 S3 관리 키, 두 번째 계층은 KMS 고객 관리 키를 사용. Lambda 업로드 시 헤더 설정만으로 적용 가능. <b>가장 간단하고 명확한 이중 암호화 방법</b>.</div>
+</li>
+<li id="q32-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>파일이 업로드되기 전에 고객 제공 키(SSE-C)를 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">SSE-C(Customer-Provided Keys)</span> &mdash; 고객이 직접 암호화 키를 관리하는 1계층 서버 측 암호화. 두 계층 암호화가 아님. 키 관리 부담도 추가.</div>
+</li>
+<li id="q32-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>SSE-KMS(AWS KMS 키를 통한 서버 측 암호화)만 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ SSE-KMS는 1계층 암호화. 두 계층 요건 미충족.</div>
+</li>
+</ul>
+<button id="btn-q32" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q32" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; DSSE-KMS로 두 계층 서버 측 암호화</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; S3 암호화 옵션 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>옵션</th>
+<th>계층 수</th>
+<th>키 관리</th>
+<th>이중 암호화?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSE-S3</td>
+<td>1</td>
+<td>S3 관리</td>
+<td><span class="dea-pill bad">✗</span></td>
+</tr>
+<tr>
+<td>SSE-KMS</td>
+<td>1</td>
+<td>KMS 관리</td>
+<td><span class="dea-pill bad">✗</span></td>
+</tr>
+<tr>
+<td><b>DSSE-KMS</b></td>
+<td><b>2</b></td>
+<td>KMS 관리</td>
+<td><span class="dea-pill good">✓</span></td>
+</tr>
+<tr>
+<td>SSE-C</td>
+<td>1</td>
+<td>고객 제공</td>
+<td><span class="dea-pill bad">✗</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"S3 두 계층 서버 측 암호화"  &rarr;  <span class="dea-hl">DSSE-KMS</span><br /><br />D = Dual (이중) + SSE-KMS<br />SSE-KMS 혼자 쓰면 1계층 &rarr; 이중 요건 미충족</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q33 -->
+<div id="dea-q33" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q33</span><span class="dea-badge topic">EventBridge &middot; Glue Workflow &middot; 이벤트 트리거</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Amazon EventBridge</b>는 AWS 서비스 이벤트를 감지해 자동으로 대응하는 이벤트 버스입니다. Storage Gateway 파일 전송 완료 이벤트를 감지해 Glue Workflow를 자동 시작할 수 있어 추가 인프라 없이 이벤트 기반 자동화를 구현합니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">BI 플랫폼에서 AWS Storage Gateway S3 File Gateway를 통해 온프레미스 파일을 S3 버킷으로 전송하고 있습니다. 각 파일 전송이 성공적으로 완료될 때마다 자동으로 일련의 Glue 작업(Glue Workflow)을 시작하는 프로세스가 필요합니다. 운영 오버헤드를 최소화하는 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q33-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>과거 전송 이력을 분석하여 파일 전송이 주로 완료되는 시간대를 파악하고, 해당 시간에 Glue 작업을 시작하도록 EventBridge 예약 이벤트를 설정합니다.</span></div>
+<div class="dea-inline-exp">❌ 예약 기반 트리거는 전송 완료와 무관하게 실행됨. 전송이 늦어지거나 빨라지면 <b>타이밍이 맞지 않아</b> 데이터 처리 누락 또는 오류 발생 가능. 이벤트 기반이 아님.</div>
+</li>
+<li id="q33-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Storage Gateway 파일 전송 완료 이벤트를 감지하여 Glue 워크플로를 시작하는 Amazon EventBridge 이벤트 규칙을 설정합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Amazon EventBridge</span> &mdash; 자동 반응 알람 시스템. Storage Gateway는 파일 전송 완료 이벤트를 EventBridge로 전송하며, EventBridge 규칙이 이를 감지해 <b>Glue Workflow를 자동 시작</b>. 코딩 없이 콘솔에서 규칙 설정만으로 구현 가능. 추가 인프라 불필요.</div>
+</li>
+<li id="q33-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>온디맨드 Glue 워크플로를 설정하여 엔지니어가 파일 전송 완료를 확인한 후 수동으로 시작합니다.</span></div>
+<div class="dea-inline-exp">❌ 수동 시작은 <b>운영 오버헤드가 가장 큼</b>. 사람이 개입해야 하므로 24/7 자동화 불가.</div>
+</li>
+<li id="q33-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>S3 객체 생성 이벤트를 트리거로 사용하는 Lambda 함수를 만들어 Glue 워크플로를 호출합니다.</span></div>
+<div class="dea-inline-exp">❌ 기술적으로 작동하지만 Lambda 함수 코드 작성&middot;배포&middot;유지보수가 추가됨. EventBridge 규칙 직접 연결(B)보다 <b>운영 오버헤드가 더 높음</b>. 불필요한 중간 레이어.</div>
+</li>
+</ul>
+<button id="btn-q33" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q33" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">B &mdash; EventBridge로 Storage Gateway 완료 이벤트 &rarr; Glue Workflow 자동 시작</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; 이벤트 기반 트리거 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>실제 완료 시점 감지</th>
+<th>코딩 필요</th>
+<th>운영 부담</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>EventBridge 이벤트 규칙</b></td>
+<td><span class="dea-pill good">✓ 정확</span></td>
+<td><span class="dea-pill good">없음</span></td>
+<td><span class="dea-pill good">최소</span></td>
+</tr>
+<tr>
+<td>EventBridge 예약</td>
+<td><span class="dea-pill bad">✗ 시간 기반</span></td>
+<td>없음</td>
+<td>낮음</td>
+</tr>
+<tr>
+<td>Lambda + S3 이벤트</td>
+<td>✓ (파일 단위)</td>
+<td><span class="dea-pill mid">필요</span></td>
+<td>중간</td>
+</tr>
+<tr>
+<td>수동 시작</td>
+<td>수동 확인</td>
+<td>없음</td>
+<td><span class="dea-pill bad">최대</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"AWS 서비스 이벤트 완료 시 자동 트리거"  &rarr;  <span class="dea-hl">EventBridge 이벤트 규칙</span><br /><br />예약(Cron) &ne; 이벤트 기반 &rarr; 타이밍 불일치 위험<br />Lambda 중간 레이어 = 불필요한 오버헤드</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q34 -->
+<div id="dea-q34" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q34</span><span class="dea-badge topic">Redshift 쿼리 편집기 v2 &middot; 저장 프로시저 예약</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16"><b>Redshift 쿼리 편집기 v2(Query Editor v2)</b>는 Redshift에 내장된 SQL 편집 도구로, 추가 비용 없이 SQL 명령문 예약 실행 기능을 제공합니다. 별도 서비스(Lambda, EventBridge, Glue) 없이 Redshift 자체 기능으로 저장 프로시저를 자동 실행할 수 있습니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">Amazon Redshift에서 일별 집계 처리를 수행하는 저장 프로시저(Stored Procedure)가 있습니다. 이 프로시저를 매일 자동으로 실행하고 싶습니다. 가장 비용 효율적인 방법은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q34-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>Lambda 함수를 생성하여 저장 프로시저를 실행하도록 cron 작업을 예약합니다.</span></div>
+<div class="dea-inline-exp">❌ Lambda 함수에서는 cron 예약이 불가. EventBridge를 추가해야 예약이 가능하며, Lambda 호출마다 비용이 발생. <b>추가 서비스 구성과 비용</b>이 필요.</div>
+</li>
+<li id="q34-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>EC2 스팟 인스턴스에서 Redshift Data API를 사용하여 저장 프로시저를 예약하고 실행합니다.</span></div>
+<div class="dea-inline-exp">❌ EC2 인스턴스는 스팟이어도 인스턴스 시간당 비용이 발생. 단순 SQL 예약 실행에 EC2를 띄우는 것은 <b>비용 과다</b>. Redshift 내장 기능으로 충분.</div>
+</li>
+<li id="q34-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Redshift 쿼리 편집기 v2를 사용하여 저장 프로시저 실행을 원하는 일정으로 예약합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Redshift 쿼리 편집기 v2</span> &mdash; Redshift에 내장된 SQL 편집 도구. <b>추가 비용 없이</b> SQL 명령문 예약 실행 기능 제공. EventBridge가 백엔드에서 예약을 관리하고 Redshift Data API로 호출. 외부 서비스 설정 없이 Redshift 콘솔만으로 구성 가능. 가장 비용 효율적.</div>
+</li>
+<li id="q34-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>AWS Glue Python Shell 작업으로 저장 프로시저 실행을 예약합니다.</span></div>
+<div class="dea-inline-exp">❌ AWS Glue 작업은 실행마다 DPU(Data Processing Unit) 비용이 발생. 단순 SQL 호출에 Glue를 사용하는 것은 <b>불필요한 비용 낭비</b>.</div>
+</li>
+</ul>
+<button id="btn-q34" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q34" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">C &mdash; Redshift 쿼리 편집기 v2로 추가 비용 없이 예약 실행</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; Redshift SQL 예약 실행 방법 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>추가 비용</th>
+<th>설정 복잡도</th>
+<th>적합성</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>쿼리 편집기 v2 예약</b></td>
+<td><span class="dea-pill good">없음</span></td>
+<td><span class="dea-pill good">최소</span></td>
+<td><span class="dea-pill good">✓ 최적</span></td>
+</tr>
+<tr>
+<td>Lambda + EventBridge</td>
+<td>Lambda 호출 비용</td>
+<td>중간</td>
+<td>과도한 구성</td>
+</tr>
+<tr>
+<td>EC2 + Data API</td>
+<td>인스턴스 비용</td>
+<td>높음</td>
+<td><span class="dea-pill bad">비용 과다</span></td>
+</tr>
+<tr>
+<td>Glue Python Shell</td>
+<td>DPU 비용</td>
+<td>중간</td>
+<td><span class="dea-pill bad">비용 과다</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>"Redshift SQL/프로시저 정기 실행 + 비용 최소"<br />  &rarr;  <span class="dea-hl">Redshift 쿼리 편집기 v2 예약</span> (추가 비용 없음)<br /><br />Lambda/Glue/EC2 = 모두 추가 비용 발생<br />Redshift 내장 기능 = 이미 포함된 기능, 무료</code></div>
+</div>
+</div>
+<hr class="dea-q-divider" data-ke-style="style1" /><!-- Q35 -->
+<div id="dea-q35" class="dea-q-block">
+<div class="dea-meta"><span class="dea-badge qnum">Q35</span><span class="dea-badge topic">EMR &middot; Graviton &middot; 영구 스토리지 &middot; 비용 최적화</span><span class="dea-badge diff">⭐ 자주 출제</span></div>
+<p class="dea-seo-lead" data-ke-size="size16">EMR 비용 최적화 모범 사례는 <b>Graviton 기반 EC2 인스턴스 + 온디맨드&middot;스팟 혼합 사용 + S3 영구 스토리지</b>입니다. 스팟 인스턴스만 사용하면 중단 위험이 있고, HDFS는 클러스터 종료 시 데이터가 사라집니다.</p>
+<div class="dea-qcard">
+<div class="dea-stitle">📋 Question</div>
+<p data-ke-size="size16">대규모 데이터 분석을 위해 Amazon EMR을 도입하려 합니다. 컴퓨팅 리소스와 분리된 영구 스토리지가 필요하며, 고성능을 유지하면서도 비용을 최적화해야 합니다. 모범 사례에 부합하는 구성은 무엇일까요?</p>
+</div>
+<ul class="dea-opts" style="list-style-type:disc" data-ke-list-type="disc">
+<li id="q35-A" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">A</span><span>Graviton 기반 EC2 인스턴스를 사용합니다. 코어 노드에 온디맨드 인스턴스를, 태스크 노드에 스팟 인스턴스를 혼합하여 사용합니다. Amazon S3를 영구 데이터 스토어로 사용합니다.</span></div>
+<div class="dea-inline-exp">✅ <span class="dea-term">Graviton 기반 EC2</span> &mdash; ARM 아키텍처 기반으로 x86 대비 최대 40% 비용 절감. <span class="dea-term">온디맨드+스팟 혼합</span> &mdash; 안정적 코어 노드는 온디맨드, 탄력적 태스크 노드는 스팟으로 비용 절감. <span class="dea-term">Amazon S3</span> &mdash; 컴퓨팅과 분리된 영구 객체 스토리지. EMR 클러스터 종료 후에도 데이터 유지. EMR 모범 사례의 핵심 3요소 모두 충족.</div>
+</li>
+<li id="q35-B" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">B</span><span>Graviton 기반 EC2 인스턴스를 사용합니다. 모든 노드에 스팟 인스턴스만 사용합니다. Amazon S3를 영구 데이터 스토어로 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ 스팟 인스턴스는 2분 사전 알림 후 중단될 수 있음. <b>모든 노드를 스팟으로만 구성하면 클러스터 전체가 중단 위험</b>에 노출됨. 고성능 유지 요건 미충족.</div>
+</li>
+<li id="q35-C" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">C</span><span>Graviton 기반 EC2 인스턴스를 사용합니다. 온디맨드&middot;스팟 혼합 사용합니다. HDFS를 영구 데이터 스토어로 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ <span class="dea-term">HDFS(Hadoop Distributed File System)</span> &mdash; EMR 클러스터의 로컬 스토리지. <b>클러스터 종료 시 모든 데이터 삭제</b>됨. 영구 스토리지 요건 미충족.</div>
+</li>
+<li id="q35-D" class="dea-opt">
+<div class="dea-opt-row"><span class="dea-k">D</span><span>컴퓨팅 최적화 EC2 인스턴스를 프라이머리 노드에 사용합니다. 온디맨드&middot;스팟 혼합 사용합니다. HDFS를 영구 데이터 스토어로 사용합니다.</span></div>
+<div class="dea-inline-exp">❌ 프라이머리 노드는 컴퓨팅 집약적이지 않아 컴퓨팅 최적화 인스턴스 불필요. HDFS도 영구 스토리지 요건 미충족. 두 가지 모두 모범 사례와 맞지 않음.</div>
+</li>
+</ul>
+<button id="btn-q35" class="dea-btn">✅ 정답 확인하기</button>
+<div id="exp-q35" class="dea-exp">
+<div class="dea-ans-banner">
+<div class="dea-ans-icon">🎯</div>
+<div>
+<div class="dea-ans-sub">정답</div>
+<div class="dea-ans-main">A &mdash; Graviton + 온디맨드&middot;스팟 혼합 + S3 영구 스토리지</div>
+</div>
+</div>
+<div>
+<div class="dea-stitle">🔑 핵심 개념 &mdash; EMR 스토리지 비교</div>
+<table class="dea-table" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>스토리지</th>
+<th>영구성</th>
+<th>클러스터 종료 후</th>
+<th>영구 스토리지 적합?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Amazon S3</b></td>
+<td>영구</td>
+<td>데이터 유지</td>
+<td><span class="dea-pill good">✓ 권장</span></td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>일시적</td>
+<td><span class="dea-pill bad">데이터 삭제</span></td>
+<td><span class="dea-pill bad">✗</span></td>
+</tr>
+<tr>
+<td>EBS</td>
+<td>영구 가능</td>
+<td>수동 관리 필요</td>
+<td>조건부</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-memory">
+<div class="dea-mem-label">💡 이것만 기억하자</div>
+<code>EMR 모범 사례 3요소:<br />1. <span class="dea-hl">Graviton 기반 EC2</span>  (비용 절감)<br />2. <span class="dea-hl">온디맨드 + 스팟 혼합</span> (안정성 + 비용 균형)<br />3. <span class="dea-hl">Amazon S3</span>  (컴퓨팅 분리 영구 스토리지)<br /><br />HDFS = 클러스터 종료 시 데이터 사라짐 &rarr; 영구 스토리지 아님!</code></div>
+</div>
+</div>
+<div class="dea-tags"><span class="dea-tag">AWS DEA-C01</span> <span class="dea-tag">Glue 크롤러</span> <span class="dea-tag">Athena 파티셔닝</span> <span class="dea-tag">DSSE-KMS</span> <span class="dea-tag">EventBridge</span> <span class="dea-tag">Redshift 쿼리 편집기 v2</span> <span class="dea-tag">EMR 모범 사례</span> <span class="dea-tag">AWS 자격증</span></div>
+<script>
+(function(){
+  var questions=[
+    {id:'q31',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — Glue 크롤러'},
+    {id:'q32',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — DSSE-KMS'},
+    {id:'q33',ans:{'B':true},keys:['A','B','C','D'],label:'✅ 정답: B — EventBridge 이벤트 규칙'},
+    {id:'q34',ans:{'C':true},keys:['A','B','C','D'],label:'✅ 정답: C — 쿼리 편집기 v2 예약'},
+    {id:'q35',ans:{'A':true},keys:['A','B','C','D'],label:'✅ 정답: A — Graviton + 혼합 + S3'}
+  ];
+  for(var i=0;i<questions.length;i++){
+    (function(q){
+      var btn=document.getElementById('btn-'+q.id);
+      if(!btn)return;
+      btn.addEventListener('click',function(){
+        for(var j=0;j<q.keys.length;j++){
+          var el=document.getElementById(q.id+'-'+q.keys[j]);
+          if(el)el.classList.add(q.ans[q.keys[j]]?'ok':'no');
+        }
+        var exp=document.getElementById('exp-'+q.id);
+        if(exp)exp.className='dea-exp on';
+        btn.textContent=q.label;btn.disabled=true;
+        setTimeout(function(){
+          var f=document.getElementById(q.id+'-'+q.keys[0]);
+          if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+        },120);
+      });
+    })(questions[i]);
+  }
+})();
+</script>
+</article>
+</div>

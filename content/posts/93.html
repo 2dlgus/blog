@@ -1,0 +1,725 @@
+<!--
+id: 93
+제목: AWS DEA-C01 Domain 4 핵심 요약 — IAM·Lake Formation·KMS 보안 정리
+카테고리: Stack/AWS
+태그: 자격증, 암호화, AWS, 권한부여, 데이터 보안, DEA, Data Engineering, 데이터 거버넌스, 데이터 엔지니어링, Domain4
+날짜: 2026-03-20 20:53
+수정: 2026-03-21 22:52
+형식: html
+썸네일: /img/t/dJMcabwKCtk.webp
+-->
+<style>
+.pb-93 .dea-wrap{background:var(--y5)!important;color:var(--g90)!important;line-height:1.7!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+.pb-93 .dea-wrap *, .pb-93 .dea-wrap *::before, .pb-93 .dea-wrap *::after{box-sizing:border-box!important}
+.pb-93 .dea-hero{background:var(--p70)!important;padding:44px 24px 38px!important;text-align:center!important;position:relative!important;overflow:hidden!important}
+.pb-93 .dea-hero::before{content:''!important;position:absolute!important;inset:0!important;background:radial-gradient(ellipse at 30% 70%,color-mix(in srgb, var(--p50) 22%, transparent) 0%,transparent 65%)!important;pointer-events:none!important}
+.pb-93 .dea-hero-bc{display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex-wrap:wrap!important;margin-bottom:16px!important}
+.pb-93 .dea-hero-bc span{font-family:'JetBrains Mono',monospace!important;font-size:.7rem!important;font-weight:700!important;padding:3px 11px!important;border-radius:20px!important;position:relative!important}
+.pb-93 .bc-exam{background:var(--r50)!important;color:#fff!important}
+.pb-93 .bc-d4{background:var(--p50)!important;color:#fff!important}
+.pb-93 .bc-sep{color:var(--g70)!important}
+.pb-93 .dea-hero h1{font-size:clamp(1.4rem,4.5vw,2rem)!important;font-weight:900!important;color:#fff!important;line-height:1.25!important;margin:0 0 10px!important;position:relative!important;letter-spacing:-.5px!important}
+.pb-93 .dea-hero h1 em{font-style:normal!important;color:var(--p50)!important}
+.pb-93 .dea-hero-sub{color:var(--p50)!important;font-size:.9rem!important;margin:0!important;position:relative!important}
+.pb-93 .dea-nav{display:flex!important;flex-wrap:wrap!important;gap:8px!important;padding:12px 20px!important;background:var(--g0)!important;border-bottom:2px solid var(--y10)!important;position:sticky!important;top:0!important;z-index:200!important;box-shadow:0 2px 10px rgba(0,0,0,.06)!important}
+.pb-93 .dea-nb{padding:6px 14px!important;border-radius:20px!important;border:none!important;font-size:.78rem!important;font-weight:600!important;cursor:pointer!important;background:var(--y10)!important;color:var(--g70)!important;transition:all .18s!important;outline:none!important}
+.pb-93 .dea-nb:hover, .pb-93 .dea-nb.on{color:#fff!important}
+.pb-93 .dea-nb[data-t="0"]:hover, .pb-93 .dea-nb[data-t="0"].on{background:var(--p70)!important}
+.pb-93 .dea-nb[data-t="1"]:hover, .pb-93 .dea-nb[data-t="1"].on{background:var(--p50)!important}
+.pb-93 .dea-nb[data-t="2"]:hover, .pb-93 .dea-nb[data-t="2"].on{background:var(--i60)!important}
+.pb-93 .dea-nb[data-t="3"]:hover, .pb-93 .dea-nb[data-t="3"].on{background:var(--s60)!important}
+.pb-93 .dea-nb[data-t="4"]:hover, .pb-93 .dea-nb[data-t="4"].on{background:var(--y60)!important}
+.pb-93 .dea-nb[data-t="5"]:hover, .pb-93 .dea-nb[data-t="5"].on{background:var(--r60)!important}
+.pb-93 .dea-con{max-width:840px!important;margin:0 auto!important;padding:32px 20px 64px!important}
+.pb-93 .dea-task{margin-bottom:48px!important}
+.pb-93 .dea-hd{display:flex!important;align-items:center!important;gap:14px!important;padding:18px 22px!important;border-radius:12px!important;margin-bottom:20px!important}
+.pb-93 .hd1{background:var(--p50)!important}
+.pb-93 .hd2{background:var(--i60)!important}
+.pb-93 .hd3{background:var(--s60)!important}
+.pb-93 .hd4{background:var(--y60)!important}
+.pb-93 .hd5{background:var(--r60)!important}
+.pb-93 .dea-hn{font-family:'JetBrains Mono',monospace!important;font-size:1.8rem!important;font-weight:700!important;color:color-mix(in srgb, #fff 30%, transparent)!important;flex-shrink:0!important;line-height:1!important}
+.pb-93 .dea-hi h2{font-size:clamp(1rem,3vw,1.2rem)!important;font-weight:800!important;color:#fff!important;margin:0 0 3px!important;line-height:1.2!important}
+.pb-93 .dea-hi p{font-size:.8rem!important;color:color-mix(in srgb, #fff 75%, transparent)!important;margin:0!important}
+.pb-93 .dea-hp{margin-left:auto!important;font-family:'JetBrains Mono',monospace!important;font-size:1.4rem!important;font-weight:700!important;color:color-mix(in srgb, #fff 85%, transparent)!important;flex-shrink:0!important}
+.pb-93 .dea-tw{overflow-x:auto!important;margin:0 0 16px!important;border-radius:10px!important;border:1px solid var(--y10)!important}
+.pb-93 .dea-t{width:100%!important;border-collapse:collapse!important;font-size:.83rem!important;background:var(--g0)!important;min-width:440px!important}
+.pb-93 .dea-t thead tr{background:var(--p70)!important}
+.pb-93 .dea-t thead th{padding:10px 14px!important;text-align:left!important;font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;letter-spacing:.5px!important;white-space:nowrap!important}
+.pb-93 .dea-t tbody tr{border-bottom:1px solid var(--y10)!important}
+.pb-93 .dea-t tbody tr:last-child{border-bottom:none!important}
+.pb-93 .dea-t tbody tr:nth-child(even){background:var(--y5)!important}
+.pb-93 .dea-t tbody td{padding:10px 14px!important;color:var(--p70)!important;vertical-align:top!important;line-height:1.55!important}
+.pb-93 .dea-t tbody td strong{color:var(--g90)!important}
+.pb-93 .mono{font-family:'JetBrains Mono',monospace!important;font-size:.75rem!important;color:var(--p50)!important}
+.pb-93 .dea-co{border-radius:10px!important;padding:14px 18px!important;margin:14px 0!important;font-size:.87rem!important;line-height:1.75!important}
+.pb-93 .dea-ct{font-weight:700!important;font-size:.75rem!important;letter-spacing:.5px!important;margin-bottom:6px!important;display:block!important}
+.pb-93 .co-v{background:var(--g0)!important;color:var(--p60)!important}
+.pb-93 .co-b{background:var(--p5)!important;color:var(--p60)!important}
+.pb-93 .co-g{background:var(--s5)!important;color:var(--s60)!important}
+.pb-93 .co-a{background:var(--y5)!important;color:var(--y60)!important}
+.pb-93 .co-r{background:var(--g5)!important;color:var(--r60)!important}
+.pb-93 .co-p{background:var(--g5)!important;color:var(--r60)!important}
+.pb-93 .co-dk{background:var(--p70)!important;border:none!important;color:var(--p10)!important}
+.pb-93 .co-dk .dea-ct{color:var(--p50)!important}
+.pb-93 .dea-c2{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;margin:14px 0!important}
+.pb-93 .dea-c3{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:14px 0!important}
+@media(max-width:600px){.pb-93 .dea-c2, .pb-93 .dea-c3{grid-template-columns:1fr!important}}
+.pb-93 .dea-cd{background:var(--g0)!important;border:1px solid var(--y10)!important;border-radius:10px!important;padding:14px!important}
+.pb-93 .dea-cd h4{font-size:.88rem!important;font-weight:700!important;color:var(--g90)!important;margin:0 0 6px!important}
+.pb-93 .dea-cd p{font-size:.8rem!important;color:var(--g50)!important;margin:0!important;line-height:1.6!important}
+.pb-93 .dea-fl{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:4px!important;margin:10px 0!important}
+.pb-93 .dea-fn{border-radius:7px!important;padding:7px 12px!important;font-size:.75rem!important;font-weight:600!important;white-space:nowrap!important}
+.pb-93 .fn-v{background:var(--g0)!important;color:var(--p50)!important;border:1.5px solid var(--p10)!important}
+.pb-93 .fn-b{background:var(--p5)!important;color:var(--p60)!important;border:1.5px solid var(--p10)!important}
+.pb-93 .fn-g{background:var(--s5)!important;color:var(--s60)!important;border:1.5px solid var(--s10)!important}
+.pb-93 .fn-a{background:var(--y5)!important;color:var(--y60)!important;border:1.5px solid var(--y50)!important}
+.pb-93 .fn-o{background:var(--y5)!important;color:var(--r60)!important;border:1.5px solid var(--y50)!important}
+.pb-93 .fn-p{background:var(--g5)!important;color:var(--r60)!important;border:1.5px solid var(--p10)!important}
+.pb-93 .fn-gray{background:var(--g0)!important;color:var(--p60)!important;border:1.5px solid var(--p10)!important}
+.pb-93 .dea-fn small{display:block!important;font-size:.62rem!important;font-weight:400!important;opacity:.75!important;margin-top:2px!important}
+.pb-93 .dea-ar{color:var(--g40)!important;font-size:1rem!important;flex-shrink:0!important}
+.pb-93 .dea-sl{font-size:.7rem!important;font-weight:700!important;letter-spacing:1.5px!important;text-transform:uppercase!important;color:var(--g40)!important;padding-left:8px!important;margin:22px 0 12px!important;display:block!important}
+.pb-93 .dea-qa{background:var(--p70)!important;border-radius:12px!important;padding:20px!important;margin:16px 0!important}
+.pb-93 .dea-ql{font-family:'JetBrains Mono',monospace!important;font-size:.65rem!important;font-weight:700!important;letter-spacing:2px!important;color:var(--p50)!important;text-transform:uppercase!important;margin-bottom:10px!important;display:block!important}
+.pb-93 .dea-qq{font-size:.9rem!important;font-weight:700!important;color:var(--p10)!important;margin:0 0 12px!important;line-height:1.55!important}
+.pb-93 .dea-qa-a{background:var(--p70)!important;border-radius:0 7px 7px 0!important;padding:10px 14px!important;font-size:.84rem!important;color:var(--p50)!important;line-height:1.7!important}
+.pb-93 .dea-qa-a strong{color:var(--p50)!important}
+.pb-93 .dea-ex{background:linear-gradient(135deg,var(--p70) 0%,var(--p70) 100%)!important;border-radius:14px!important;padding:24px!important;margin:24px 0!important}
+.pb-93 .dea-et{font-family:'JetBrains Mono',monospace!important;font-size:.68rem!important;font-weight:700!important;color:var(--p50)!important;letter-spacing:2px!important;text-transform:uppercase!important;margin:0 0 14px!important;display:block!important}
+.pb-93 .dea-ex ul{margin:0!important;padding:0!important;list-style:none!important}
+.pb-93 .dea-ex li{display:flex!important;gap:10px!important;font-size:.86rem!important;color:var(--p50)!important;margin-bottom:9px!important;line-height:1.6!important}
+.pb-93 .dea-ex li:last-child{margin-bottom:0!important}
+.pb-93 .dea-ex .em{color:var(--p50)!important;flex-shrink:0!important;font-weight:700!important}
+.pb-93 .dea-ex strong{color:var(--p10)!important}
+.pb-93 .dea-dv{border:none!important;border-top:1px solid var(--y10)!important;margin:36px 0!important}
+.pb-93 .dea-tag{display:inline-block!important;font-family:'JetBrains Mono',monospace!important;font-size:.62rem!important;font-weight:700!important;padding:2px 7px!important;border-radius:4px!important;color:#fff!important;white-space:nowrap!important}
+.pb-93 .tv{background:var(--p50)!important}
+.pb-93 .tb{background:var(--i60)!important}
+.pb-93 .tg{background:var(--s60)!important}
+.pb-93 .ta{background:var(--y60)!important}
+.pb-93 .tp{background:var(--r60)!important}
+.pb-93 .tgr{background:var(--g50)!important}
+.pb-93 .dea-ft{text-align:center!important;font-size:.78rem!important;color:var(--g40)!important;padding:20px 0 6px!important;border-top:1px solid var(--y10)!important;margin-top:40px!important}
+.pb-93 .dea-ft a{color:var(--r60)!important;text-decoration:none!important}
+.pb-93 code{font-family:'JetBrains Mono',monospace!important;background:var(--g5)!important;padding:1px 5px!important;border-radius:3px!important;font-size:.78rem!important}
+</style>
+<div class="pb pb-93">
+<p data-ke-size="size16">&nbsp;</p>
+<p></p>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AWS DEA-C01 Domain 4 완전 정리","author":{"@type":"Person","name":"hyeonlee","url":"https://hyeonlee.net"},"publisher":{"@type":"Organization","name":"hyeonlee.net"},"datePublished":"2026-03-20","inLanguage":"ko"}</script>
+<p></p>
+<div>
+
+</div>
+<article class="dea-wrap"><header class="dea-hero">
+<div class="dea-hero-bc"><span class="bc-exam">AWS DEA-C01</span> <span class="bc-sep">&rsaquo;</span> <span class="bc-d4">Domain 4 &middot; 전체 압축 정리</span></div>
+<h1>Domain 4 &mdash; <i>데이터 보안 및 거버넌스</i><br />핵심만 압축 정리</h1>
+<p class="dea-hero-sub" data-ke-size="size16">인증 &middot; 권한부여 &middot; 암호화 &middot; 감사로그 &middot; PII 보호 &middot; Task 1~5 한 페이지</p>
+</header><nav class="dea-nav" aria-label="Task 필터"><button class="dea-nb on" data-t="0">전체</button> <button class="dea-nb" data-t="1">4.1 인증</button> <button class="dea-nb" data-t="2">4.2 권한부여</button> <button class="dea-nb" data-t="3">4.3 암호화&middot;마스킹</button> <button class="dea-nb" data-t="4">4.4 감사 로그</button> <button class="dea-nb" data-t="5">4.5 프라이버시&middot;거버넌스</button></nav>
+<div class="dea-con"><!-- ══ TASK 4.1 인증 ══ -->
+<section id="dt1" class="dea-task">
+<div class="dea-hd hd1"><span class="dea-hn">4.1</span>
+<div class="dea-hi">
+<h2 data-ke-size="size26">인증 메커니즘 적용</h2>
+<p data-ke-size="size16">Task 1 &middot; IAM 자격증명&middot;정책&middot;역할&middot;VPC 보안&middot;Secrets Manager</p>
+</div>
+<span class="dea-hp">18%</span></div>
+<div class="dea-co co-v"><span class="dea-ct">🔐 인증(Authentication) vs 권한부여(Authorization)</span> <b>인증</b> = 사용자를 식별하고 본인이 맞는지 확인 (누구인가?)<br /><b>권한부여</b> = 인증된 자격증명이 어디까지 접근할 수 있는지 결정 (무엇을 할 수 있는가?)</div>
+<span class="dea-sl">IAM 자격증명 유형 비교</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>유형</th>
+<th>특징</th>
+<th>자격증명</th>
+<th>사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>IAM User</b></td>
+<td>한 사람&middot;애플리케이션에 고유 연결</td>
+<td>장기(영구) 자격증명</td>
+<td>개별 개발자, 서비스 계정</td>
+</tr>
+<tr>
+<td><b>IAM Group</b></td>
+<td>동일 권한 필요한 사용자 묶음. 로그인 X</td>
+<td>&mdash;</td>
+<td>팀 단위 권한 일괄 관리</td>
+</tr>
+<tr>
+<td><b>IAM Role</b></td>
+<td>누구나 수임 가능. 특정인에 종속 X</td>
+<td>임시 자격증명 (STS)</td>
+<td>교차 계정 액세스, 서비스 간 연동</td>
+</tr>
+<tr>
+<td><b>Federated ID</b></td>
+<td>외부 IDP(SAML, OIDC) 자격증명 사용</td>
+<td>IAM Identity Center</td>
+<td>SSO, 기업 디렉터리 연동</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">IAM 정책 3종류 비교</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>정책 유형</th>
+<th>누가 만드나</th>
+<th>연결 대상</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="dea-tag tv">AWS 관리형</span></td>
+<td>AWS</td>
+<td>사용자&middot;그룹&middot;역할</td>
+<td>수정 불가. AWS가 직접 관리&middot;업데이트</td>
+</tr>
+<tr>
+<td><span class="dea-tag tb">고객 관리형</span></td>
+<td>고객</td>
+<td>여러 자격증명 재사용</td>
+<td>계정 내 여러 User/Group/Role에 연결 가능</td>
+</tr>
+<tr>
+<td><span class="dea-tag tgr">인라인</span></td>
+<td>고객</td>
+<td>단일 자격증명 전용</td>
+<td>1:1 관계. 자격증명 삭제 시 함께 삭제</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-co co-b"><span class="dea-ct">📌 IAM Role 2가지 정책 &mdash; 시험 포인트</span> 역할에는 항상 <b>2개의 정책</b>이 필요:<br />① <b>신뢰 정책(Trust Policy)</b> = 이 역할을 수임할 수 있는 사람/서비스 정의<br />② <b>자격증명 기반 정책(Identity-based Policy)</b> = 역할 수임 후 어떤 작업을 할 수 있는지 정의<br />⚠️ 정책에서 명시적으로 허용하지 않은 작업은 <b>기본적으로 거부(Deny)</b></div>
+<span class="dea-sl">정책 연결 위치 &mdash; 자격증명 기반 vs 리소스 기반</span>
+<div class="dea-c2">
+<div class="dea-cd">
+<h4 data-ke-size="size20">📋 자격증명 기반 정책</h4>
+<p data-ke-size="size16">IAM User&middot;Group&middot;Role에 연결. "이 자격증명이 무엇을 할 수 있나?"</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">🪣 리소스 기반 정책</h4>
+<p data-ke-size="size16">S3 버킷&middot;KMS 키 등 리소스에 직접 연결. "이 리소스에 누가 접근할 수 있나?"</p>
+</div>
+</div>
+<span class="dea-sl">VPC 네트워크 보안 요소</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>구성 요소</th>
+<th>역할</th>
+<th>핵심</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Security Group</b></td>
+<td>인스턴스 레벨 방화벽</td>
+<td>인바운드/아웃바운드 규칙. Stateful(응답 자동 허용)</td>
+</tr>
+<tr>
+<td><b>NACL</b></td>
+<td>서브넷 레벨 방화벽</td>
+<td>번호 순서 규칙. Stateless(요청&middot;응답 각각 허용 필요)</td>
+</tr>
+<tr>
+<td><b>Private Subnet</b></td>
+<td>외부 직접 접근 차단</td>
+<td>DB&middot;내부 서비스 배치. NAT Gateway로 외부 연결</td>
+</tr>
+<tr>
+<td><b>VPC Endpoint</b></td>
+<td>인터넷 없이 AWS 서비스 접근</td>
+<td>Gateway(S3&middot;DynamoDB) / Interface(나머지)</td>
+</tr>
+<tr>
+<td><b>VPC Flow Logs</b></td>
+<td>네트워크 트래픽 기록</td>
+<td>보안&middot;규정 준수 감사. CloudWatch 또는 S3로 전송</td>
+</tr>
+<tr>
+<td><b>AWS Network Firewall</b></td>
+<td>VPC 수준 방화벽</td>
+<td>트래픽 검사&middot;필터링. 심층 패킷 검사 지원</td>
+</tr>
+<tr>
+<td><b>Bastion Host</b></td>
+<td>Private 리소스 접근 중계</td>
+<td>Public Subnet에 배치. SSH 터널로 내부 접근</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">Secrets Manager &mdash; 비밀 수명주기</span>
+<div class="dea-fl">
+<div class="dea-fn fn-v">① 생성<small>Secrets Manager</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-v">② 저장<small>KMS 암호화</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-v">③ 사용<small>앱에서 API 호출</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-v">④ 자동 교체<small>Lambda 기반 Rotation</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-v">⑤ 삭제</div>
+</div>
+<div class="dea-co co-a"><span class="dea-ct">💡 Secrets Manager vs Parameter Store &mdash; 구분 포인트</span> <b>Secrets Manager</b> = 자동 교체(Rotation) 지원. DB&middot;API키&middot;OAuth 토큰. 더 높은 보안. 비용 있음.<br /><b>Parameter Store</b> = 자동 교체 X. 단순 설정값&middot;구성 데이터. 무료 티어 있음. Secrets Manager 비밀을 Parameter로 참조 가능(비밀 ID 앞에 <code>/</code> 필요).</div>
+<div class="dea-qa"><span class="dea-ql">📝 시험 시나리오 &mdash; QuickSight S3 권한 오류</span>
+<p class="dea-qq" data-ke-size="size16">새 S3 버킷에 Athena 테이블 생성 후 QuickSight에서 가져오기 실패. 권한 부족 오류. 사용자에게 권한은 있음. 원인과 해결책은?</p>
+<div class="dea-qa-a"><b>교차 서비스 액세스(Cross-Service Access)</b> 문제. 사용자 권한만으로는 불충분. <b>QuickSight 자체에도 S3 버킷 접근 권한을 별도로 부여</b>해야 함. QuickSight 콘솔 &rarr; 보안 설정 &rarr; 새 S3 버킷에 대한 권한 추가.</div>
+</div>
+</section>
+<hr class="dea-dv" data-ke-style="style1" /><!-- ══ TASK 4.2 권한부여 ══ -->
+<section id="dt2" class="dea-task">
+<div class="dea-hd hd2"><span class="dea-hn">4.2</span>
+<div class="dea-hi">
+<h2 data-ke-size="size26">권한 부여 메커니즘 적용</h2>
+<p data-ke-size="size16">Task 2 &middot; RBAC&middot;ABAC&middot;Lake Formation&middot;Redshift 권한 관리</p>
+</div>
+</div>
+<span class="dea-sl">RBAC vs ABAC &mdash; 핵심 비교</span>
+<div class="dea-c2">
+<div class="dea-cd" style="border-color:var(--i60)!important;background:var(--p5)!important">
+<h4 style="color:var(--p60)!important" data-ke-size="size20">👤 RBAC (역할 기반 액세스 제어)</h4>
+<p style="color:var(--p60)!important" data-ke-size="size16">역할에 따라 리소스 액세스 결정.<br />예: 개발자 역할 &rarr; 파이프라인 개발 권한<br />✅ 관리 단순. 역할=권한 명확<br />❌ 복잡한 비즈니스 로직엔 역할 폭발 문제<br />Lake Formation, Redshift RBAC 지원</p>
+</div>
+<div class="dea-cd" style="border-color:var(--p50)!important;background:var(--g0)!important">
+<h4 style="color:var(--p50)!important" data-ke-size="size20">🏷️ ABAC (속성 기반 액세스 제어)</h4>
+<p style="color:var(--p60)!important" data-ke-size="size16">태그(속성)를 기반으로 권한 동적 결정.<br />예: access-project=Heart 태그 매칭 시 접근<br />✅ 세분화&middot;동적 권한. 정책 수 감소<br />❌ 초기 구현 복잡. 속성 전략 설계 필요<br />Lake Formation LF-Tags, IAM 태그 조건 지원</p>
+</div>
+</div>
+<div class="dea-co co-b"><span class="dea-ct">💡 하이브리드 RBAC+ABAC</span> 두 모델을 결합하여 세분화 계층 추가. <b>사용자의 역할(RBAC) + 추가 속성(ABAC)</b>을 결합하여 액세스 결정. 복잡한 데이터 레이크 환경에서 권장.</div>
+<span class="dea-sl">Lake Formation 권한 관리 &mdash; 세분화 수준</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>수준</th>
+<th>Lake Formation 지원</th>
+<th>적용 대상</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>데이터베이스 수준</b></td>
+<td>✅</td>
+<td>데이터베이스 전체 접근 제어</td>
+</tr>
+<tr>
+<td><b>테이블 수준</b></td>
+<td>✅</td>
+<td>특정 테이블 접근 제어</td>
+</tr>
+<tr>
+<td><b>열(Column) 수준</b></td>
+<td>✅</td>
+<td>민감한 열만 마스킹&middot;숨기기</td>
+</tr>
+<tr>
+<td><b>행(Row) 수준</b></td>
+<td>✅ (행 필터)</td>
+<td>특정 조건 행만 노출</td>
+</tr>
+<tr>
+<td><b>셀(Cell) 수준</b></td>
+<td>✅</td>
+<td>DDM으로 셀 단위 마스킹</td>
+</tr>
+<tr>
+<td><b>LF-Tags 기반 (ABAC)</b></td>
+<td>✅</td>
+<td>수천 개 리소스를 몇 개 태그로 관리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">Amazon Redshift 권한 관리</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>방법</th>
+<th>명령어/기능</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>사용자 생성</b></td>
+<td class="mono">CREATE USER / ALTER USER</td>
+<td>데이터베이스 슈퍼 사용자만 생성&middot;삭제 가능</td>
+</tr>
+<tr>
+<td><b>RBAC 역할 기반</b></td>
+<td class="mono">CREATE ROLE / GRANT ROLE</td>
+<td>역할에 권한 부여 후 사용자에 역할 할당. 최소권한 원칙</td>
+</tr>
+<tr>
+<td><b>열 수준 권한</b></td>
+<td class="mono">GRANT SELECT(col) ON TABLE</td>
+<td>특정 열에 대한 SELECT&middot;UPDATE 권한만 부여</td>
+</tr>
+<tr>
+<td><b>동적 데이터 마스킹</b></td>
+<td>DDM 마스킹 정책</td>
+<td>쿼리 시점에 민감 데이터 변환. 실제 데이터 변경 X</td>
+</tr>
+<tr>
+<td><b>데이터 공유</b></td>
+<td>Lake Formation 통합</td>
+<td>Redshift 데이터 공유 객체에 DB&middot;테이블&middot;열&middot;행 수준 권한</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-qa"><span class="dea-ql">📝 시험 시나리오 &mdash; API Gateway IAM 권한 모델</span>
+<p class="dea-qq" data-ke-size="size16">API Gateway에서 API 개발자와 API 직접 호출자의 권한 모델이 다른 이유는?</p>
+<div class="dea-qa-a"><b>API 개발자</b> = API 생성&middot;배포&middot;관리. <code>apigateway:*</code> 권한 정책 &rarr; User/Role/Group에 연결<br /><b>API 직접 호출자</b> = API 실행. 메서드의 <code>authorizationType = AWS_IAM</code> 설정 후 실행 권한 정책 연결<br /><b>Lambda 백엔드 연동 시</b> = API Gateway 역할에 <code>lambda:InvokeFunction</code> 권한 추가 필요 (신뢰 정책 + 권한 정책)</div>
+</div>
+</section>
+<hr class="dea-dv" data-ke-style="style1" /><!-- ══ TASK 4.3 암호화·마스킹 ══ -->
+<section id="dt3" class="dea-task">
+<div class="dea-hd hd3"><span class="dea-hn">4.3</span>
+<div class="dea-hi">
+<h2 data-ke-size="size26">데이터 암호화 및 마스킹</h2>
+<p data-ke-size="size16">Task 3 &middot; KMS&middot;CloudHSM&middot;TLS&middot;암호화 vs 토큰화&middot;익명화&middot;마스킹</p>
+</div>
+</div>
+<span class="dea-sl">암호화 키 관리 서비스 비교</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>서비스</th>
+<th>관리 주체</th>
+<th>핵심 특징</th>
+<th>선택 기준</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>AWS KMS</b></td>
+<td>AWS (소프트웨어 HSM)</td>
+<td>대부분 AWS 서비스와 통합. CMK/AWS 관리형 키. CloudTrail로 키 사용 로깅. 봉투 암호화(Envelope Encryption)</td>
+<td>일반적인 AWS 서비스 암호화</td>
+</tr>
+<tr>
+<td><b>CloudHSM</b></td>
+<td>고객 (하드웨어 HSM 직접 관리)</td>
+<td>전용 하드웨어 보안 모듈. AWS는 하드웨어&middot;패치만 관리. 고객이 암호화 계정&middot;자격증명 직접 관리</td>
+<td>HSM 직접 제어 필요 시</td>
+</tr>
+<tr>
+<td><b>ACM</b></td>
+<td>AWS</td>
+<td>SSL/TLS X.509 인증서 생성&middot;갱신&middot;배포 자동화. NLB&middot;ALB&middot;CloudFront&middot;API Gateway에 연결</td>
+<td>TLS 인증서 관리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">전송 중(In-Transit) vs 저장 시(At-Rest) 암호화</span>
+<div class="dea-c2">
+<div class="dea-cd">
+<h4 data-ke-size="size20">🌐 전송 중 암호화</h4>
+<p data-ke-size="size16">&bull; <b>TLS</b>(Transport Layer Security) = 모든 AWS 서비스 HTTPS 엔드포인트 지원<br />&bull; AWS 데이터센터 간 네트워크 트래픽 = 물리 계층에서 투명하게 암호화<br />&bull; VPC 내&middot;피어링 VPC 간 = 네트워크 계층 투명 암호화<br />&bull; TLS 종단 옵션: NLB, ALB, CloudFront, API Gateway</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">🔒 저장 시 암호화</h4>
+<p data-ke-size="size16">&bull; <b>S3</b>: SSE-S3, SSE-KMS, SSE-C, 클라이언트 측<br />&bull; <b>EBS</b>: KMS 키로 볼륨 암호화<br />&bull; <b>RDS/Aurora</b>: KMS 통합 암호화<br />&bull; <b>Redshift</b>: KMS 또는 CloudHSM<br />&bull; <b>EMR</b>: EBS 암호화 + 로컬 디스크 별도 설정<br />&bull; <b>SQS</b>: SSE로 메시지 암호화<br />&bull; <b>Glue, SageMaker, Lambda</b>: KMS 통합</p>
+</div>
+</div>
+<div class="dea-co co-r"><span class="dea-ct">⚠️ EMR 암호화 주의 &mdash; 시험 출제 포인트</span> Amazon EBS 볼륨이 암호화되어도 <b>로컬 디스크는 자동으로 암호화되지 않음</b>. 보안 구성(Security Configuration)에서 <b>로컬 디스크 암호화를 별도로 추가</b>해야 함. 루트 디바이스 볼륨 암호화는 사용자 지정 <b>AMI + KMS 키로 EBS 루트 볼륨 암호화</b>하여 CloudFormation <code>CustomAmiID</code>로 지정.</div>
+<span class="dea-sl">암호화 vs 토큰화 vs 마스킹 vs 익명화 &mdash; 4개념 구분</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>기술</th>
+<th>방식</th>
+<th>복호화 가능?</th>
+<th>원본 관계</th>
+<th>사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>암호화</b></td>
+<td>알고리즘+키로 일반텍스트 &rarr; 암호텍스트</td>
+<td>✅ 키 있으면 가능</td>
+<td>수학적 관계</td>
+<td>저장&middot;전송 데이터 전반</td>
+</tr>
+<tr>
+<td><b>토큰화</b></td>
+<td>민감 데이터 &rarr; 임의 토큰. 볼트DB에 매핑 저장</td>
+<td>✅ 볼트 통해서만</td>
+<td>토큰은 의미 없는 임의값</td>
+<td>신용카드&middot;PII 처리</td>
+</tr>
+<tr>
+<td><b>데이터 마스킹</b></td>
+<td>변경된 값으로 기밀 데이터 일부 모호화</td>
+<td>✅ (원본 보존)</td>
+<td>일부 변환 (예: 010-****-5678)</td>
+<td>열람 제한, 테스트 환경</td>
+</tr>
+<tr>
+<td><b>데이터 익명화</b></td>
+<td>데이터셋에서 개인식별 정보 완전 제거</td>
+<td>❌ 복원 불가</td>
+<td>관계 단절</td>
+<td>분석용 공개 데이터</td>
+</tr>
+<tr>
+<td><b>키 솔팅</b></td>
+<td>해시 함수 입력에 임의 솔트 추가</td>
+<td>❌ 단방향</td>
+<td>솔트+암호 연결 해시</td>
+<td>패스워드 해싱</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="dea-co co-g"><span class="dea-ct">🪙 토큰화 설계 패턴 &mdash; 서버리스</span> Amazon Cognito(인증) &rarr; API Gateway &rarr; Lambda(토큰화 계층 호출) &rarr; KMS(데이터 키 생성) &rarr; DynamoDB(암호 텍스트 저장) + 토큰 &rarr; 애플리케이션 DB 저장.<br />보안 강화: Lambda는 VPC 내 배치. DynamoDB = <b>게이트웨이 엔드포인트</b>, KMS = <b>인터페이스 엔드포인트</b> 사용 (인터넷 우회).</div>
+<span class="dea-sl">Redshift 동적 데이터 마스킹(DDM)</span>
+<div class="dea-co co-v"><span class="dea-ct">🎭 DDM &mdash; 데이터 변환 없이 쿼리 시 마스킹</span> 실제 데이터는 그대로 저장. <b>쿼리 시점에만 마스킹 표현식 적용</b>. 특정 사용자/RBAC 역할에만 마스킹 정책 적용 가능. <b>조건부 열로 셀 수준 DDM</b> 가능. 동일 열에 여러 마스킹 정책 적용 후 다른 역할에 할당 가능.</div>
+</section>
+<hr class="dea-dv" data-ke-style="style1" /><!-- ══ TASK 4.4 감사 로그 ══ -->
+<section id="dt4" class="dea-task">
+<div class="dea-hd hd4"><span class="dea-hn">4.4</span>
+<div class="dea-hi">
+<h2 data-ke-size="size26">감사를 위해 로그 준비</h2>
+<p data-ke-size="size16">Task 4 &middot; CloudTrail Lake&middot;CloudWatch Logs&middot;EMR 로깅&middot;규정 준수</p>
+</div>
+</div>
+<div class="dea-co co-a"><span class="dea-ct">📋 감사 로그의 목적</span> HIPAA&middot;PCI 등 규정에서 특정 기간 동안 데이터 보관&middot;검색 가능성 요구. CloudWatch Logs 보존 정책으로 기간 지정(기본 무기한). <b>데이터 저장 + 검색 + 기간 후 삭제</b> 3가지 기능 모두 필요.</div>
+<span class="dea-sl">CloudTrail Lake &mdash; 중앙 집중식 이벤트 분석</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>이벤트 데이터 스토어</b></td>
+<td>CloudTrail 이벤트, Config 항목, Audit Manager 증거, AWS 외부 이벤트를 분리 저장</td>
+</tr>
+<tr>
+<td><b>SQL 쿼리</b></td>
+<td>여러 이벤트 데이터 스토어에 걸쳐 SQL JOIN 쿼리 실행 가능</td>
+</tr>
+<tr>
+<td><b>태그 기반 접근 제어</b></td>
+<td>추적(Trail)은 태그 기반 인증 미지원. 이벤트 데이터 스토어는 태그 기반 접근 제어 지원</td>
+</tr>
+<tr>
+<td><b>CloudWatch 지표 연동</b></td>
+<td>이벤트 데이터 스토어 수집량&middot;보존 기간 지표 제공</td>
+</tr>
+<tr>
+<td><b>외부 이벤트 통합</b></td>
+<td>AWS 외부 사용자 활동 데이터도 로깅&middot;저장 가능</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">로그 분석 도구 &mdash; 목적별 선택</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>도구</th>
+<th>용도</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>CloudWatch Logs Insights</b></td>
+<td>CloudWatch 로그 SQL 쿼리 분석</td>
+<td>Route 53&middot;Lambda&middot;CloudTrail&middot;VPC 로그 필드 자동 감지. 잠재적 원인 식별</td>
+</tr>
+<tr>
+<td><b>Athena + CloudWatch 커넥터</b></td>
+<td>CloudWatch 로그를 SQL로 쿼리</td>
+<td>로그 그룹=스키마, 로그 스트림=테이블 매핑. all_log_streams 뷰로 전체 조회</td>
+</tr>
+<tr>
+<td><b>CloudWatch Logs &rarr; OpenSearch</b></td>
+<td>실시간 로그 스트리밍&middot;검색</td>
+<td>구독 기능으로 거의 실시간 OpenSearch 전송. 대시보드&middot;검색 활용</td>
+</tr>
+<tr>
+<td><b>CloudTrail Lake SQL</b></td>
+<td>AWS API 호출 이력 중앙 분석</td>
+<td>여러 계정&middot;리전 이벤트를 단일 SQL로 분석</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">EMR 로깅 구성</span>
+<div class="dea-co co-a"><span class="dea-ct">📁 Amazon EMR 로그 구조</span> 기본: 프라이머리 노드의 <code>/mnt/var/log/</code> 디렉터리에 로그 파일 기록.<br /><b>S3 로그 보관</b>: 클러스터 생성 시 S3 버킷 지정 &rarr; 로그 자동 복사.<br /><b>CloudTrail 통합</b>: EMR API 호출(콘솔&middot;SDK 모두) 자동 기록 &rarr; S3 버킷에 지속 전달.<br />추적 없어도 CloudTrail 콘솔 이벤트 기록에서 최신 이벤트 조회 가능.</div>
+</section>
+<hr class="dea-dv" data-ke-style="style1" /><!-- ══ TASK 4.5 프라이버시·거버넌스 ══ -->
+<section id="dt5" class="dea-task">
+<div class="dea-hd hd5"><span class="dea-hn">4.5</span>
+<div class="dea-hi">
+<h2 data-ke-size="size26">데이터 프라이버시 및 거버넌스</h2>
+<p data-ke-size="size16">Task 5 &middot; PII 보호&middot;데이터 주권&middot;백업&middot;Macie&middot;안전한 데이터 레이크</p>
+</div>
+</div>
+<span class="dea-sl">전체 수명주기 PII 보호 전략</span>
+<div class="dea-tw">
+<table class="dea-t" data-ke-align="alignLeft">
+<thead>
+<tr>
+<th>보호 방법</th>
+<th>설명</th>
+<th>AWS 서비스</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>전송 중 보호</b></td>
+<td>TLS로 통신 채널 암호화</td>
+<td>ACM, NLB/ALB, CloudFront, API Gateway</td>
+</tr>
+<tr>
+<td><b>저장 시 보호</b></td>
+<td>볼륨&middot;객체&middot;DB 테이블 암호화</td>
+<td>KMS, CloudHSM, S3 SSE, EBS</td>
+</tr>
+<tr>
+<td><b>필드 수준 암호화</b></td>
+<td>페이로드 중 민감 필드만 선택적 암호화. 나머지는 일반 텍스트 유지</td>
+<td>CloudFront + Lambda@Edge</td>
+</tr>
+<tr>
+<td><b>PII 자동 탐지</b></td>
+<td>S3에서 주민번호&middot;신용카드&middot;이메일 등 자동 감지</td>
+<td>Amazon Macie</td>
+</tr>
+<tr>
+<td><b>민감 데이터 식별(ETL)</b></td>
+<td>Glue ETL에서 Comprehend 호출로 민감 정보 식별&middot;마스킹</td>
+<td>AWS Glue + Amazon Comprehend</td>
+</tr>
+<tr>
+<td><b>세분화된 접근 제어</b></td>
+<td>분석가&middot;과학자에게 열&middot;행 수준 제어된 접근</td>
+<td>Lake Formation + Athena/Redshift Spectrum</td>
+</tr>
+</tbody>
+</table>
+</div>
+<span class="dea-sl">안전한 데이터 레이크 파이프라인 &mdash; Macie 활용 흐름</span>
+<div class="dea-fl" style="flex-wrap:wrap!important">
+<div class="dea-fn fn-gray">원시 S3 버킷<small>데이터 수집</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-p">스캔 S3 버킷<small>Macie 민감 데이터 스캔</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-a">민감 데이터 발견?<small>수동 검토 버킷 이동</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-v">SNS 알림<small>관리자 승인/거부</small></div>
+<span class="dea-ar">&rarr;</span>
+<div class="dea-fn fn-g">스캔된 데이터 버킷<small>다음 수집 단계 시작</small></div>
+</div>
+<div class="dea-co co-p"><span class="dea-ct">🔄 파이프라인 오케스트레이션</span> <b>EventBridge</b>(6시간 반복 트리거) &rarr; <b>Step Functions</b>(워크플로 오케스트레이션) &rarr; <b>Lambda</b>(민감 데이터 스캔 논리) &rarr; <b>Macie</b>(스캔 실행) &rarr; <b>API Gateway</b>(검토자 결정 수신 REST API 2개 리소스)</div>
+<span class="dea-sl">S3 데이터 보호 기능 &mdash; 스토리지 관리자 역할</span>
+<div class="dea-c3">
+<div class="dea-cd">
+<h4 data-ke-size="size20">🔄 버전 관리</h4>
+<p data-ke-size="size16">객체 여러 버전 보존. 실수 삭제&middot;덮어쓰기 방지</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">📋 동일 리전 복제 (SRR)</h4>
+<p data-ke-size="size16">같은 리전 내 다른 버킷으로 자동 복제</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">🌏 교차 리전 복제 (CRR)</h4>
+<p data-ke-size="size16">다른 리전 버킷으로 복제. DR 대비</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">🔒 S3 Object Lock</h4>
+<p data-ke-size="size16">WORM(Write Once Read Many). 규정 준수 보관</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">🏷️ 태그 기반 백업</h4>
+<p data-ke-size="size16"><code>DataProtectionLevel: Critical</code> 태그로 백업 대상 S3 버킷 선별</p>
+</div>
+<div class="dea-cd">
+<h4 data-ke-size="size20">💾 AWS Backup</h4>
+<p data-ke-size="size16">백업 계획 정의. PITR(특정 시점 복원). 다른 계정&middot;리전 볼트에 복사 가능</p>
+</div>
+</div>
+<span class="dea-sl">데이터 주권 &mdash; 허용되지 않는 리전으로의 백업 방지</span>
+<div class="dea-co co-p"><span class="dea-ct">🌍 데이터 주권(Data Sovereignty) 핵심</span> 특정 AWS 리전 외부로 데이터 이동 금지 요구. <b>AWS Organizations + SCP(서비스 제어 정책)</b>으로 특정 리전 외 리소스 생성&middot;복제 차단. <b>AWS Backup Audit Manager</b>로 백업 정책 준수 감사&middot;보고. <b>CloudFormation StackSets</b>로 여러 계정&middot;리전에 CloudTrail&middot;Config 일관 배포.</div>
+<div class="dea-qa"><span class="dea-ql">📝 시험 시나리오 &mdash; Redshift 기밀 열 보호</span>
+<p class="dea-qq" data-ke-size="size16">Redshift에 기밀 데이터가 포함된 새 테이블을 여러 팀이 쿼리. 권한 있는 사용자만 기밀 열을 읽도록 하려면?</p>
+<div class="dea-qa-a"><b>방법 1</b>: Lake Formation + Redshift Spectrum &rarr; 열 수준 접근 제어<br /><b>방법 2</b>: Amazon Redshift 열 수준 <b>GRANT/REVOKE</b> 명령으로 직접 제어<br /><b>방법 3</b>: Redshift <b>DDM(동적 데이터 마스킹)</b>으로 역할별 마스킹 정책 적용 (원본 변경 없이 쿼리 시 마스킹)</div>
+</div>
+<span class="dea-sl">AWS Config &mdash; 구성 변경 추적 메커니즘</span>
+<div class="dea-co co-a"><span class="dea-ct">🔍 AWS Config 작동 원리</span> 활성화 시 계정 내 지원 AWS 리소스 탐색 &rarr; 각 리소스 <b>구성 항목(Configuration Item)</b> 생성.<br />리소스 변경 시 Describe/List API 직접 호출 &rarr; 구성 업데이트를 <b>구성 스트림</b>으로 S3 버킷에 전달.<br /><b>Config 규칙</b> = Lambda 함수와 연결된 평가 논리. 구성 변경&middot;알림 &rarr; <b>SNS 주제</b>로 스트림 가능.</div>
+</section>
+<hr class="dea-dv" data-ke-style="style1" /><!-- 시험 요약 -->
+<section>
+<div class="dea-ex"><span class="dea-et">🎯 Domain 4 시험 핵심 &mdash; 이것만 기억</span>
+<ul style="list-style-type:disc" data-ke-list-type="disc">
+<li><span class="em">①</span><span><b>인증 vs 권한부여</b> = 인증(누구인가) / 권한부여(무엇을 할 수 있나)</span></li>
+<li><span class="em">②</span><span><b>IAM Role 2개 정책 필수</b> = 신뢰 정책(수임 허용) + 자격증명 기반 정책(작업 허용)</span></li>
+<li><span class="em">③</span><span><b>IAM User</b> = 영구 자격증명 / <b>IAM Role</b> = 임시 자격증명(STS). 역할은 누구나 수임 가능</span></li>
+<li><span class="em">④</span><span><b>Secrets Manager</b> = 자동 교체(Rotation) 지원 / <b>Parameter Store</b> = 자동 교체 없음. 단순 설정값</span></li>
+<li><span class="em">⑤</span><span><b>RBAC</b> = 역할 기반 단순 관리 / <b>ABAC</b> = 태그 속성 기반 동적&middot;세분화. Lake Formation LF-Tags</span></li>
+<li><span class="em">⑥</span><span><b>EMR EBS 암호화 &ne; 로컬 디스크 암호화</b>. 로컬 디스크는 보안 구성에서 별도 추가 필요</span></li>
+<li><span class="em">⑦</span><span><b>암호화</b> = 수학적 복원 가능 / <b>토큰화</b> = 볼트 통해서만 복원 / <b>익명화</b> = 복원 불가 / <b>마스킹</b> = 부분 모호화</span></li>
+<li><span class="em">⑧</span><span><b>Redshift DDM</b> = 원본 데이터 변경 없이 쿼리 시점에 마스킹. 역할별 다른 마스킹 정책 가능</span></li>
+<li><span class="em">⑨</span><span><b>CloudTrail Lake</b> = 여러 계정&middot;리전 이벤트를 SQL로 중앙 분석. Config 항목&middot;외부 이벤트도 포함 가능</span></li>
+<li><span class="em">⑩</span><span><b>Macie &rarr; EventBridge 자동 Push</b>. Macie는 CloudWatch Logs로 직접 전송 X. Security Hub는 별도 설정 필요</span></li>
+<li><span class="em">⑪</span><span><b>필드 수준 암호화</b> = CloudFront + Lambda@Edge. 민감 필드만 선택적 암호화. 전체 페이로드 암호화와 다름</span></li>
+<li><span class="em">⑫</span><span><b>QuickSight 교차 서비스 권한</b> = 사용자 권한만으로 부족. QuickSight 자체에 S3 접근 권한을 별도 부여해야 함</span></li>
+<li><span class="em">⑬</span><span><b>데이터 주권</b> = SCP로 허용 리전 외 복제 차단. AWS Backup Audit Manager로 규정 준수 감사</span></li>
+<li><span class="em">⑭</span><span><b>AWS Config</b> = 리소스 구성 변경 추적&middot;규정 준수. Config 규칙 = Lambda 함수로 평가 논리 연결</span></li>
+</ul>
+</div>
+</section>
+<footer class="dea-ft">
+<p data-ke-size="size16">AWS DEA-C01 Domain 4 압축 정리 &middot; <a href="https://hyeonlee.net">hyeonlee.net</a></p>
+<p style="margin-top:4px" data-ke-size="size16">Domain 1~4 전체 정리 완성! 시험 합격을 응원합니다 🎯</p>
+</footer></div>
+</article>
+<script>
+(function() {
+  function df(t) {
+    var bs = document.querySelectorAll('.dea-nb');
+    for (var i = 0; i < bs.length; i++) bs[i].classList.remove('on');
+    var active = document.querySelector('.dea-nb[data-t="' + t + '"]');
+    if (active) active.classList.add('on');
+    for (var n = 1; n <= 5; n++) {
+      var el = document.getElementById('dt' + n);
+      if (!el) continue;
+      var show = (t === 0 || t === n);
+      el.style.display = show ? '' : 'none';
+      var hr = el.nextElementSibling;
+      if (hr && hr.tagName === 'HR') hr.style.display = show ? '' : 'none';
+    }
+  }
+  document.querySelectorAll('.dea-nb').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      df(parseInt(this.getAttribute('data-t'), 10));
+    });
+  });
+})();
+</script>
+</div>
